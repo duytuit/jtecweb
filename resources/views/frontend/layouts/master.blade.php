@@ -16,7 +16,7 @@
     <div class="page-wrapper">
         @include('frontend.layouts.partials.header')
         @yield('main-content')
-        @include('frontend.layouts.partials.footer')
+        {{-- @include('frontend.layouts.partials.footer') --}}
     </div>
 
     @include('frontend.layouts.partials.scripts')

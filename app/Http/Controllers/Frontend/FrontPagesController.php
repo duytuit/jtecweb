@@ -18,4 +18,8 @@ class FrontPagesController extends Controller
     {
         return view('frontend.pages.index');
     }
+    public function exam()
+    {
+        return view('frontend.pages.exam');
+    }
 }

@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Auth;
 */
 Auth::routes();
 Route::get( '/', [ FrontPagesController::class, 'index' ] )->name( 'index' );
+Route::get( '/exam', [ FrontPagesController::class, 'exam' ] )->name( 'exam' );
