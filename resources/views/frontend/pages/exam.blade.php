@@ -8,8 +8,8 @@
     <main class="main">
         <!-- Page Content -->
         <div class="container">
-            <form action="">
-                <table style="width: 100%; padding: 10px" border="1">
+            <form id="examForm">
+                <table style="width: 100%; padding: 10px">
                     <thead>
                          <tr>
                             <div>
@@ -45,45 +45,49 @@
                              <div>
                                 Ngày kiểm tra:
                              </div>
-                             <div>
+                             <div class="form-group">
                                  <input type="date" name="ngaykiemtra" class="form-control" style="width:100%">
                              </div>
                          </tr>
                     </thead>
                     <tbody>
-                         <tr>
-                            <div class="form-group">
-                                <div><strong>Câu 1 : </strong>Màu dây <strong>Trắng - Đỏ</strong> ký hiệu là gì ?</div>
-                                <div> <img src="{{ asset('public/assets/frontend/images/anh-mau-day/trang-do.png') }}" alt="" width="200" /></div>
-                            </div>
-                            <div><label for="cau1_xanh"><input type="radio" name="checkbox" value="value" id="cau1_xanh" class="largerCheckbox"><strong> a. </strong>Xanh</label></div>
-                            <div><label for="cau1_xanh1"><input type="radio" name="checkbox" value="value" id="cau1_xanh1" class="largerCheckbox"><strong> b. </strong>Đổ</label></div>
-                            <div><label for="cau1_xanh2"><input type="radio" name="checkbox" value="value" id="cau1_xanh2" class="largerCheckbox"><strong> c. </strong>Tím</label></div>
-                            <div><label for="cau1_xanh3"><input type="radio" name="checkbox" value="value" id="cau1_xanh3" class="largerCheckbox"><strong> d. </strong>Vàng</label></div>
-                         </tr>
-                         <tr>
-                            <div class="form-group">
-                                <div><strong>Câu 1 : </strong>Màu dây <strong>Trắng - Đỏ</strong> ký hiệu là gì ?</div>
-                                <div> <img src="{{ asset('public/assets/frontend/images/anh-mau-day/trang-do.png') }}" alt="" width="200" /></div>
-                            </div>
-                            <div><label for="cau2_xanh"><input type="radio" name="checkbox1" value="value" id="cau2_xanh" class="largerCheckbox"><strong> a. </strong>Xanh</label></div>
-                            <div><label for="cau2_xanh1"><input type="radio" name="checkbox1" value="value" id="cau2_xanh1" class="largerCheckbox"><strong> b. </strong>Đổ</label></div>
-                            <div><label for="cau2_xanh2"><input type="radio" name="checkbox1" value="value" id="cau2_xanh2" class="largerCheckbox"><strong> c. </strong>Tím</label></div>
-                            <div><label for="cau2_xanh3"><input type="radio" name="checkbox1" value="value" id="cau2_xanh3" class="largerCheckbox"><strong> d. </strong>Vàng</label></div>
-                         </tr>
-                         <tr>
-                            <div class="form-group">
-                                <div><strong>Câu 1 : </strong>Màu dây <strong>Trắng - Đỏ</strong> ký hiệu là gì ?</div>
-                                <div> <img src="{{ asset('public/assets/frontend/images/anh-mau-day/trang-do.png') }}" alt="" width="200" /></div>
-                            </div>
-                            <div><label for="cau3_xanh"><input type="radio" name="checkbox2" value="value" id="cau3_xanh" class="largerCheckbox"><strong> a. </strong>Xanh</label></div>
-                            <div><label for="cau3_xanh1"><input type="radio" name="checkbox2" value="value" id="cau3_xanh1" class="largerCheckbox"><strong> b. </strong>Đổ</label></div>
-                            <div><label for="cau3_xanh2"><input type="radio" name="checkbox2" value="value" id="cau3_xanh2" class="largerCheckbox"><strong> c. </strong>Tím</label></div>
-                            <div><label for="cau3_xanh3"><input type="radio" name="checkbox2" value="value" id="cau3_xanh3" class="largerCheckbox"><strong> d. </strong>Vàng</label></div>
-                         </tr>
+                        <div class="form-group">
+                            <a href="javascript:;" class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</a>
+                        </div>
+                        @php
+                            $array_exam = App\Helpers\ArrayHelper::arrayExamPd();
+                            shuffle($array_exam);
+                        @endphp
+                        @foreach ($array_exam as $index => $item)
+                            <tr>
+                                <div class="form-group">
+                                    <div><strong>Câu {{$index +1}} : </strong>Màu dây <strong>{{$item['name']}}</strong> ký hiệu là gì ?</div>
+                                    <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" /></div>
+                                </div>
+                                @php
+                                    $array_Answer = App\Helpers\ArrayHelper::mixAnswerInArray($item['answer']);
+                                @endphp
+                                @foreach ( $array_Answer as $index1 =>$item1 )
+                                     <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" name="cau_{{$item['id']}}"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                        <div class="form-group">
+                            <a href="javascript:;" class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</a>
+                        </div>
                     </tbody>
                 </table>
             </form>
         </div>
     </main>
+@endsection
+@section('scripts')
+    <script>
+        $('.examSubmit').click(function(e) {
+          e.preventDefault();
+         // Get all the forms elements and their values in one step
+         var values =   $('#examForm').serialize()
+          console.log(values);
+        });
+    </script>
 @endsection
