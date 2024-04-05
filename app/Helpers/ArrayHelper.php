@@ -35,333 +35,416 @@ class ArrayHelper
                 'id' => 1,
                 'name' => 'Màu Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\do.png',
-                'answer' => 'R'
+                'answer' => 'R',
+                'answer_list' => ['O', 'P', 'R', 'Y']
             ],
             [
                 'id' => 2,
                 'name' => 'Màu Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den.png',
-                'answer' => 'B'
+                'answer' => 'B',
+                'answer_list' => ['B', 'Br', 'R', 'Gr']
             ],
             [
                 'id' => 3,
                 'name' => 'Màu Xanh',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh.png',
-                'answer' => 'L'
+                'answer' => 'L',
+                'answer_list' => ['L', 'Lg', 'G', 'Sb']
+
             ],
             [
                 'id' => 4,
                 'name' => 'Màu Nâu',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau.png',
-                'answer' => 'Br'
+                'answer' => 'Br',
+                'answer_list' => ['Br', 'B', 'Gr', 'O']
+
             ],
             [
                 'id' => 5,
                 'name' => 'Màu vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vang.png',
-                'answer' => 'Y'
+                'answer' => 'Y',
+                'answer_list' => ['O', 'P', 'R', 'Y']
+
             ],
             [
                 'id' => 6,
                 'name' => 'Màu xanh lá cây',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacay.png',
-                'answer' => 'G'
+                'answer' => 'G',
+                'answer_list' => ['G', 'L', 'Lg', 'Sb']
+
+
+
             ],
             [
                 'id' => 7,
                 'name' => 'Màu xanh lộc non',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon.png',
-                'answer' => 'Lg'
+                'answer' => 'Lg',
+                'answer_list' => ['G', 'L', 'Lg', 'Sb']
+
+
             ],
             [
                 'id' => 8,
                 'name' => 'Màu cam',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\cam.png',
-                'answer' => 'O'
+                'answer' => 'O',
+                'answer_list' => ['O', 'B', 'Y', 'W']
             ],
             [
                 'id' => 9,
                 'name' => 'Màu xám',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xam.png',
-                'answer' => 'Gr'
+                'answer' => 'Gr',
+                'answer_list' => ['Br', 'Gr', 'R', 'B']
             ],
             [
                 'id' => 10,
                 'name' => 'Màu Hồng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\hong.png',
-                'answer' => 'P'
+                'answer' => 'P',
+                'answer_list' => ['O', 'P', 'R', 'Y']
             ],
             [
                 'id' => 11,
                 'name' => 'Màu xanh da trời',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhdatroi.png',
-                'answer' => 'Sb'
+                'answer' => 'Sb',
+                'answer_list' => ['G', 'L', 'Lg', 'Sb']
+
             ],
             [
                 'id' => 12,
                 'name' => 'Màu Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang.png',
-                'answer' => 'W'
+                'answer' => 'W',
+                'answer_list' => ['Gr', 'B', 'O', 'W']
+
             ],
             [
                 'id' => 13,
                 'name' => 'Màu tím',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\tim.png',
-                'answer' => 'V'
+                'answer' => 'V',
+                'answer_list' => ['O', 'P', 'V', 'Y']
+
             ],
             [
                 'id' => 14,
                 'name' => 'Đỏ - Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\dotrang.png',
-                'answer' => 'RW'
+                'answer' => 'RW',
+                'answer_list' => ['RW', 'WR', 'WV', 'WG']
+
             ],
             [
                 'id' => 15,
                 'name' => 'Đỏ - Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\doden.png',
-                'answer' => 'RB'
+                'answer' => 'RB',
+                'answer_list' => ['RB', 'BR', 'RY', 'RG']
             ],
             [
                 'id' => 16,
                 'name' => 'Đỏ - Vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\dovang.png',
-                'answer' => 'RY'
+                'answer' => 'RY',
+                'answer_list' => ['RB', 'YR', 'RY', 'RG']
             ],
             [
                 'id' => 17,
                 'name' => 'Đỏ - Xanh lá cây',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\doxanhlacay.png',
-                'answer' => 'RG'
+                'answer' => 'RG',
+                'answer_list' => ['RB', 'RL', 'RY', 'RG']
             ],
             [
                 'id' => 18,
                 'name' => 'Đỏ - Xanh',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\doxanh.png',
-                'answer' => 'RL'
+                'answer' => 'RL',
+                'answer_list' => ['RB', 'RL', 'RY', 'RG']
             ],
             [
                 'id' => 19,
                 'name' => 'Vàng - Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangdo.png',
-                'answer' => 'YR'
+                'answer' => 'YR',
+                'answer_list' => ['YR', 'YG', 'RY', 'YL']
+
             ],
             [
                 'id' => 20,
                 'name' => 'Vàng - Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangden.png',
-                'answer' => 'YB'
+                'answer' => 'YB',
+                'answer_list' => ['YR', 'YB', 'RY', 'BY']
             ],
             [
                 'id' => 21,
                 'name' => 'Vàng - Xanh lá cây',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangxanhlacay.png',
-                'answer' => 'YG'
+                'answer' => 'YG',
+                'answer_list' => ['YR', 'YG', 'RY', 'BY']
             ],
             [
                 'id' => 22,
                 'name' => 'Vàng - Xanh',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangxanh.png',
-                'answer' => 'YL'
+                'answer' => 'YL',
+                'answer_list' => ['YL', 'YB', 'YG', 'YW']
             ],
             [
                 'id' => 23,
                 'name' => 'Vàng - Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangtrang.png',
-                'answer' => 'YW'
+                'answer' => 'YW',
+                'answer_list' => ['YL', 'WY', 'YG', 'YW']
             ],
             [
                 'id' => 24,
                 'name' => 'Xanh lá cây- Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacaytrang.png',
-                'answer' => 'GW'
+                'answer' => 'GW',
+                'answer_list' => ['GW', 'WR', 'GB', 'WG']
+
             ],
             [
                 'id' => 25,
                 'name' => 'Xanh lá cây- Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacaydo.png',
-                'answer' => 'GR'
+                'answer' => 'GR',
+                'answer_list' => ['GR', 'RG', 'GB', 'GL']
+
             ],
             [
                 'id' => 26,
                 'name' => 'Xanh lá cây- Vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayvang.png',
-                'answer' => 'GY'
+                'answer' => 'GY',
+                'answer_list' => ['GY', 'GL', 'GB', 'GW']
+
             ],
             [
                 'id' => 27,
                 'name' => 'Xanh lá cây- Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayden.png',
-                'answer' => 'GB'
+                'answer' => 'GB',
+                'answer_list' => ['GY', 'GL', 'GB', 'BG']
             ],
             [
                 'id' => 28,
                 'name' => 'Xanh lá cây- Xanh',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayxanh.png',
-                'answer' => 'GL'
+                'answer' => 'GL',
+                'answer_list' => ['LG', 'GL', 'GB', 'GW']
             ],
             [
                 'id' => 29,
                 'name' => 'Xanh-Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-trang.png',
-                'answer' => 'LW'
+                'answer' => 'LW',
+                'answer_list' => ['LW', 'WL', 'LgW', 'GW']
+
             ],
             [
                 'id' => 30,
                 'name' => 'Xanh-Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-do.png',
-                'answer' => 'LR'
+                'answer' => 'LR',
+                'answer_list' => ['LR', 'RL', 'LgR', 'GR']
+
             ],
             [
                 'id' => 31,
                 'name' => 'Xanh-Vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-vang.png',
-                'answer' => 'LY'
+                'answer' => 'LY',
+                'answer_list' => ['LY', 'YL', 'GY', 'LB']
+
+
             ],
             [
                 'id' => 32,
                 'name' => 'Xanh-Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-den.png',
-                'answer' => 'LB'
+                'answer' => 'LB',
+                'answer_list' => ['LgB', 'BL', 'GB', 'LB']
+
+
             ],
             [
                 'id' => 33,
                 'name' => 'Xanh-Xanh lá cây',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-xanhlacay.png',
-                'answer' => 'LG'
+                'answer' => 'LG',
+                'answer_list' => ['LG', 'GL', 'LY', 'LB']
+
+
             ],
             [
                 'id' => 34,
                 'name' => 'Nâu-Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-trang.png',
-                'answer' => 'BrW'
+                'answer' => 'BrW',
+                'answer_list' => ['BrW', 'GrW', 'BrR', 'BrY']
             ],
             [
                 'id' => 35,
                 'name' => 'Nâu-Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-do.png',
-                'answer' => 'BrR'
+                'answer' => 'BrR',
+                'answer_list' => ['BrW', 'GrR', 'BrR', 'BrY']
             ],
             [
                 'id' => 36,
                 'name' => 'Nâu-Vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-vang.png',
-                'answer' => 'BrY'
+                'answer' => 'BrY',
+                'answer_list' => ['BrW', 'GrR', 'BrR', 'BrY']
             ],
             [
                 'id' => 37,
                 'name' => 'Nâu-Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-den.png',
-                'answer' => 'BrB'
+                'answer' => 'BrB',
+                'answer_list' => ['BrW', 'GrR', 'BrB', 'BrY']
             ],
             [
                 'id' => 38,
                 'name' => 'Xanh lọc non-Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-do.png',
-                'answer' => 'LgR'
+                'answer' => 'LgR',
+                'answer_list' => ['LgW', 'LgR', 'LR', 'GR']
             ],
             [
                 'id' => 39,
                 'name' => 'Xanh lọc non-Vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-vang.png',
-                'answer' => 'LgY'
+                'answer' => 'LgY',
+                'answer_list' => ['LgW', 'LgY', 'LY', 'GY']
             ],
             [
                 'id' => 40,
                 'name' => 'Xanh lọc non-Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-den.png',
-                'answer' => 'LgB'
+                'answer' => 'LgB',
+                'answer_list' => ['LB', 'LgR', 'LgB', 'GB']
             ],
             [
                 'id' => 41,
                 'name' => 'Xanh lọc non-Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-trang.png',
-                'answer' => 'LgW'
+                'answer' => 'LgW',
+                'answer_list' => ['LgW', 'GW', 'LW', 'GY']
             ],
             [
                 'id' => 42,
                 'name' => 'Đen-Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-trang.png',
-                'answer' => 'BW'
+                'answer' => 'BW',
+                'answer_list' => ['BW', 'WB', 'PW', 'WG']
             ],
             [
                 'id' => 43,
                 'name' => 'Đen-Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-do.png',
-                'answer' => 'BR'
+                'answer' => 'BR',
+                'answer_list' => ['BW', 'BR', 'RB', 'BY']
             ],
             [
                 'id' => 44,
                 'name' => 'Đen-Vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-vang.png',
-                'answer' => 'BY'
+                'answer' => 'BY',
+                'answer_list' => ['BW', 'BR', 'YB', 'BY']
+
             ],
             [
                 'id' => 45,
                 'name' => 'Đen-Xanh',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-xanh.png',
-                'answer' => 'BL'
+                'answer' => 'BL',
+                'answer_list' => ['BL', 'LB', 'BY', 'BW']
+
             ],
             [
                 'id' => 46,
                 'name' => 'Đen-Xanh lá cây',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-xanhlacay.png',
-                'answer' => 'BG'
+                'answer' => 'BG',
+                'answer_list' => ['BL', 'BG', 'BY', 'GB']
             ],
             [
                 'id' => 47,
                 'name' => 'Trắng - Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-do.png',
-                'answer' => 'WR'
+                'answer' => 'WR',
+                'answer_list' => ['WR', 'RW', 'WY', 'WV']
             ],
             [
                 'id' => 48,
                 'name' => 'Trắng - Xanh',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-xanh.png',
-                'answer' => 'WL'
+                'answer' => 'WL',
+                'answer_list' => ['WY', 'LW', 'WL', 'WV']
             ],
             [
                 'id' => 49,
                 'name' => 'Trắng - Vàng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-vang.png',
-                'answer' => 'WY'
+                'answer' => 'WY',
+                'answer_list' => ['WY', 'YW', 'WL', 'WR']
             ],
             [
                 'id' => 50,
                 'name' => 'Trắng - Tím',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-tim.png',
-                'answer' => 'WV'
+                'answer' => 'WV',
+                'answer_list' => ['WY', 'WV', 'WL', 'WR']
             ],
             [
                 'id' => 51,
                 'name' => 'Trắng-Xanh lá cây',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-xanhlacay.png',
-                'answer' => 'WG'
+                'answer' => 'WG',
+                'answer_list' => ['WG', 'WV', 'WL', 'GW']
+
             ],
             [
                 'id' => 52,
                 'name' => 'Cam - Trắng',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\cam-trang.png',
-                'answer' => 'OW'
+                'answer' => 'OW',
+                'answer_list' => ['GW', 'OW', 'WY', 'GW']
             ],
             [
                 'id' => 53,
                 'name' => 'Hồng - Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\hong-den.png',
-                'answer' => 'PB'
+                'answer' => 'PB',
+                'answer_list' => ['PB', 'BY', 'LgB', 'GB']
+
             ],
             [
                 'id' => 54,
                 'name' => 'Xám - Đỏ',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xam-do.png',
-                'answer' => 'GrR'
+                'answer' => 'GrR',
+                'answer_list' => ['BrW', 'GrR', 'BrR', 'BrY']
             ],
             [
                 'id' => 55,
                 'name' => 'Xám - Đen',
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xam-den.png',
-                'answer' => 'GrB'
-            ],
+                'answer' => 'GrB',
+                'answer_list' => ['BrW', 'GrB', 'BrB', 'GrY']
 
+            ]
         ];
     }
 }

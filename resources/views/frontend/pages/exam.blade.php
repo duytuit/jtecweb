@@ -28,7 +28,9 @@
                                Công đoạn:
                             </div>
                             <div>
-                                <input type="text" name="congdoan" class="form-control">
+                                <select class="form-control" name="congdoan">
+                                    <option value="1" selected >Cắm</option>
+                                </select>
                             </div>
                             <div>
                                 Họ và tên:
@@ -58,17 +60,19 @@
                             $array_exam = App\Helpers\ArrayHelper::arrayExamPd();
                             shuffle($array_exam);
                         @endphp
+                        <strong>Bạn hãy chọn đáp án đúng bằng cách tích vào ô có <u>ký hiệu</u> tương ứng với màu dây:</strong>
                         @foreach ($array_exam as $index => $item)
                             <tr>
                                 <div class="form-group">
-                                    <div><strong>Câu {{$index +1}} : </strong>Màu dây <strong>{{$item['name']}}</strong> ký hiệu là gì ?</div>
+                                    <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['name']}}</strong></div>
                                     <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" /></div>
                                 </div>
                                 @php
-                                    $array_Answer = App\Helpers\ArrayHelper::mixAnswerInArray($item['answer']);
+                                    $array_Answer =  $item['answer_list'];
+                                    shuffle($array_Answer);
                                 @endphp
                                 @foreach ( $array_Answer as $index1 =>$item1 )
-                                     <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="cau_{{$item['id']}}"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
+                                     <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
                                 @endforeach
                             </tr>
                         @endforeach
@@ -93,7 +97,15 @@
             method: 'POST',
             data: values,
             success: function(data){
-                console.log(data);
+                if(data.status == "success"){
+                  var results =Math.round(( data.exam.results/data.exam.total_questions)*100) ;
+                   if(results > 79){
+                    alert("Chúc mừng bạn đã đạt: "+results);
+                   }else{
+                    alert("Số điểm của bạn là: "+results+". Bạn chưa đạt");
+                   }
+
+                }
             }
           });
         });

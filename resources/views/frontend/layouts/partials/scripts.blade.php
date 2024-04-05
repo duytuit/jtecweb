@@ -4,3 +4,11 @@
 
 <!-- Main JS File -->
 <script src="{{ asset('public/assets/frontend/js/frontend-main.js') }}"></script>
+<script>
+$.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+</script>
+
