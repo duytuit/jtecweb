@@ -9,21 +9,20 @@
         <!-- Page Content -->
         <div class="container">
             <form id="examForm">
-                <table style="width: 100%; padding: 10px">
-                    <thead>
-                         <tr>
+
+                         <div>
                             <div>
                                 <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
                             </div>
-                        </tr>
-                         <tr>
+                        </div>
+                         <div>
                             <i>Điểm đạt: 80-100</i><br>
                             <i>Từ 50->79 điểm: kiểm tra lại sai 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                             <i>Dưới 50 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
                             <i>Thời gian làm bài <strong>05:00</strong></i><br>
                             <i>Thời gian còn lại là: <strong>01:00</strong></i><br>
-                         </tr>
-                         <tr>
+                         </div>
+                         <div>
                             <div>
                                Công đoạn:
                             </div>
@@ -50,9 +49,7 @@
                              <div class="form-group">
                                  <input type="date" name="ngaykiemtra" class="form-control" style="width:100%">
                              </div>
-                         </tr>
-                    </thead>
-                    <tbody>
+                         </div>
                         <div class="form-group">
                             <a href="javascript:;" class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</a>
                         </div>
@@ -61,8 +58,9 @@
                             shuffle($array_exam);
                         @endphp
                         <strong>Bạn hãy chọn đáp án đúng bằng cách tích vào ô có <u>ký hiệu</u> tương ứng với màu dây:</strong>
-                        @foreach ($array_exam as $index => $item)
-                            <tr>
+                        <div class="data_list">
+                            @foreach ($array_exam as $index => $item)
+                            <div>
                                 <div class="form-group">
                                     <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['name']}}</strong></div>
                                     <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" /></div>
@@ -74,13 +72,12 @@
                                 @foreach ( $array_Answer as $index1 =>$item1 )
                                      <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
                                 @endforeach
-                            </tr>
+                            </div>
                         @endforeach
+                        </div>
                         <div class="form-group">
                             <a href="javascript:;" class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</a>
                         </div>
-                    </tbody>
-                </table>
             </form>
         </div>
     </main>
