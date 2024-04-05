@@ -19,3 +19,4 @@ Route::get( '/', [ FrontPagesController::class, 'index' ] )->name( 'index' );
 Route::get( '/exam', [ FrontPagesController::class, 'exam' ] )->name( 'exam' );
 Route::get( '/test', [ FrontPagesController::class, 'test' ] )->name( 'test' );
 Route::get( '/test1', [ FrontPagesController::class, 'test1' ] )->name( 'test1' );
+Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');

@@ -20,5 +20,6 @@
     </div>
 
     @include('frontend.layouts.partials.scripts')
+    @yield('scripts')
 </body>
 </html>

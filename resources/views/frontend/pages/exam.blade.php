@@ -68,7 +68,7 @@
                                     $array_Answer = App\Helpers\ArrayHelper::mixAnswerInArray($item['answer']);
                                 @endphp
                                 @foreach ( $array_Answer as $index1 =>$item1 )
-                                     <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" name="cau_{{$item['id']}}"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
+                                     <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="cau_{{$item['id']}}"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
                                 @endforeach
                             </tr>
                         @endforeach
@@ -86,8 +86,16 @@
         $('.examSubmit').click(function(e) {
           e.preventDefault();
          // Get all the forms elements and their values in one step
-         var values =   $('#examForm').serialize()
+          var values =   $('#examForm').serialize()
           console.log(values);
+          $.ajax({
+            url: "{{ route('exam.store') }}",
+            method: 'POST',
+            data: values,
+            success: function(data){
+                console.log(data);
+            }
+          });
         });
     </script>
 @endsection

@@ -49,5 +49,9 @@ class FrontPagesController extends Controller
         shuffle($firstThreeElements);
         dd($firstThreeElements);
     }
+    public function store(Request $request)
+    {
+        dd($request);
+    }
 
 }
