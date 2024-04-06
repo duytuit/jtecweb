@@ -75,6 +75,9 @@ class FrontPagesController extends Controller
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results,// tổng số câu trả lời đúng
                 'total_questions' => count($arrayExam),// tổng số câu hỏi
+                'counting_time' => '01:00',// tổng số câu hỏi
+                'limit_time' => '05:00',// tổng số câu hỏi
+                'data' => json_encode($request->answer),// tổng số câu hỏi
                 'status' =>  0,// 0:chưa duyệt,1:đã duyệt
             ]);
             return $this->success(compact('exam'));

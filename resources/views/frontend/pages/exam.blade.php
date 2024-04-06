@@ -71,7 +71,7 @@
                                     @endphp
                                     <div>
                                         @foreach ( $array_Answer as $index1 =>$item1 )
-                                                <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
+                                                <div @if ($item['answer'] == $item1) class="right_answer" @endif><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -93,6 +93,22 @@
     <script>
         $('.examSubmit').click(function(e) {
             e.preventDefault();
+            console.log($(this).text());
+            if($(this).text() == "Nộp bài"){
+                submit_exam()
+            }else{
+                location.reload();
+            }
+        });
+        document.getElementById('datePicker').valueAsDate = new Date();
+        var timeInSecs;
+        var ticker;
+        function startTimer(secs) {
+            timeInSecs = parseInt(secs);
+            ticker = setInterval("tick()", 1000);
+        }
+
+        function submit_exam() {
             console.log('đã đóng');
             $('.examSubmit').prop("disabled", true);
             setTimeout(() => {
@@ -107,8 +123,10 @@
                 method: 'POST',
                 data: values,
                 success: function(data){
+                    $('.examSubmit').html('Làm lại');
                     if(data.status == "success"){
-                    var results =Math.round(( data.exam.results/data.exam.total_questions)*100) ;
+                        $(".right_answer").css("color", "blue");
+                        var results =Math.round(( data.exam.results/data.exam.total_questions)*100) ;
                     if(results > 79){
                         alert("Chúc mừng bạn đã đạt: "+results);
                     }else{
@@ -118,23 +136,17 @@
                     }
                 }
             });
-            });
-        document.getElementById('datePicker').valueAsDate = new Date();
-        var timeInSecs;
-        var ticker;
-        function startTimer(secs) {
-            timeInSecs = parseInt(secs);
-            ticker = setInterval("tick()", 1000); 
         }
 
         function tick() {
             var secs = timeInSecs;
             if (secs > 0) {
-                timeInSecs--; 
+                timeInSecs--;
             }
             else {
                 clearInterval(ticker);
-                //$(".examSubmit").trigger('click'); 
+                submit_exam()
+                //$(".examSubmit").trigger('click');
                 //startTimer(1*60); // 4 minutes in seconds
             }
 
@@ -145,6 +157,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(1*60); // 4 minutes in seconds
+        startTimer(5*60); // 4 minutes in seconds
     </script>
 @endsection

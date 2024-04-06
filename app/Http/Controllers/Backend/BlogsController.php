@@ -36,7 +36,6 @@ class BlogsController extends Controller
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
-
         if (request()->ajax()) {
             if ($isTrashed) {
                 $blogs = Blog::orderBy('id', 'desc')

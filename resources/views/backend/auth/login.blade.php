@@ -5,7 +5,7 @@
     <div class="auth-box">
         <div id="loginform">
             <div class="logo">
-                <span class="db"><img src="{{ asset('public/assets/logos/logo.png') }}" alt="logo" /></span>
+                <span class="db"><img src="{{ asset('public/assets/frontend/images/logos/logo-jtec.png') }}" width="250" alt="logo" /></span>
                 <h5 class="font-medium m-b-20">Sign In to Admin</h5>
             </div>
             <!-- Form -->

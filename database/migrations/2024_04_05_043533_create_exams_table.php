@@ -24,8 +24,22 @@ return new class extends Migration
             $table->integer('total_questions');
             $table->integer('status');
             $table->integer('confirm');
+            $table->string('counting_time');
+            $table->string('limit_time');
+            $table->longText('data');
             $table->timestamps();
             $table->softDeletes();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('updated_by')
+                ->references('id')
+                ->on('admins')
+                ->onDelete('cascade');
+            $table->foreign('deleted_by')
+                ->references('id')
+                ->on('admins')
+                ->onDelete('cascade');
         });
     }
 
