@@ -145,7 +145,10 @@
             }
             else {
                 clearInterval(ticker);
-                submit_exam()
+                if($('.examSubmit').first().text() == "Nộp bài"){
+                    submit_exam()
+                }
+                //submit_exam()
                 //$(".examSubmit").trigger('click');
                 //startTimer(1*60); // 4 minutes in seconds
             }
@@ -157,6 +160,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(5*60); // 4 minutes in seconds
+        startTimer(60); // 4 minutes in seconds
     </script>
 @endsection
