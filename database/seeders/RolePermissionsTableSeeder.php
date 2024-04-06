@@ -123,6 +123,13 @@ class RolePermissionsTableSeeder extends Seeder
                 'slider.delete',
             ],
 
+            'exam' => [
+                'exam.view',
+                'exam.create',
+                'exam.edit',
+                'exam.delete',
+            ],
+
             'tracking' => [
                 'tracking.view',
                 'tracking.delete',

@@ -14,7 +14,7 @@
                     <a href="{{ route('exam') }}?type=2">
                   <div class="card">
                         <div class="card_content">
-                            <h2 class="card_title">Công đoạn dập</h2>
+                            <h2 class="card_title">Công Đoạn Cắm</h2>
                             <p class="card_text">Kiểm tra năng lực nhận biết màu dây</p>
                             <a href="{{ route('exam') }}?type=2" class="btn card_btn">Bắt đầu làm bài</a>
                           </div>

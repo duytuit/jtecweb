@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\BlogsController;
 use App\Http\Controllers\Backend\ContactsController;
 use App\Http\Controllers\Backend\CacheController;
+use App\Http\Controllers\Backend\ExamController;
 use App\Http\Controllers\Backend\LanguagesController;
 use App\Http\Controllers\Backend\SettingsController;
 
@@ -60,6 +61,16 @@ Route::group(['prefix' => ''], function () {
     Route::get('blogs/trashed/view', [BlogsController::class, 'trashed'])->name('blogs.trashed');
     Route::delete('blogs/trashed/destroy/{id}', [BlogsController::class, 'destroyTrash'])->name('blogs.trashed.destroy');
     Route::put('blogs/trashed/revert/{id}', [BlogsController::class, 'revertFromTrash'])->name('blogs.trashed.revert');
+});
+
+/**
+ * Exam Management Routes
+ */
+Route::group(['prefix' => ''], function () {
+    Route::resource('exams', ExamController::class);
+    Route::get('exams/trashed/view', [ExamController::class, 'trashed'])->name('exams.trashed');
+    Route::delete('exams/trashed/destroy/{id}', [ExamController::class, 'destroyTrash'])->name('exams.trashed.destroy');
+    Route::put('exams/trashed/revert/{id}', [ExamController::class, 'revertFromTrash'])->name('exams.trashed.revert');
 });
 
 /**

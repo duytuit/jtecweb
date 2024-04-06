@@ -20,7 +20,6 @@
                             <i>Từ 50->79 điểm: kiểm tra lại sai 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                             <i>Dưới 50 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
                             <i>Thời gian làm bài <strong>05:00</strong></i><br>
-                            <i>Thời gian còn lại là: <strong>01:00</strong></i><br>
                          </div>
                          <div>
                             <div>
@@ -47,64 +46,105 @@
                                 Ngày kiểm tra:
                              </div>
                              <div class="form-group">
-                                 <input type="date" name="ngaykiemtra" class="form-control" style="width:100%">
+                                 <input type="date" id="datePicker" name="ngaykiemtra" value="{{time()}}" class="form-control" style="width:100%">
                              </div>
                          </div>
                         <div class="form-group">
-                            <a href="javascript:;" class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</a>
+                            <button class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</button>
                         </div>
                         @php
                             $array_exam = App\Helpers\ArrayHelper::arrayExamPd();
                             shuffle($array_exam);
                         @endphp
                         <strong>Bạn hãy chọn đáp án đúng bằng cách tích vào ô có <u>ký hiệu</u> tương ứng với màu dây:</strong>
-                        <div class="data_list">
+                        <div class="cards">
                             @foreach ($array_exam as $index => $item)
-                            <div>
-                                <div class="form-group">
-                                    <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['name']}}</strong></div>
-                                    <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" /></div>
+                            <div class="cards_item">
+                                <div class="card_question">
+                                    <div class="form-group">
+                                        <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['name']}}</strong></div>
+                                        <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" /></div>
+                                    </div>
+                                    @php
+                                        $array_Answer =  $item['answer_list'];
+                                        shuffle($array_Answer);
+                                    @endphp
+                                    <div>
+                                        @foreach ( $array_Answer as $index1 =>$item1 )
+                                                <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                                @php
-                                    $array_Answer =  $item['answer_list'];
-                                    shuffle($array_Answer);
-                                @endphp
-                                @foreach ( $array_Answer as $index1 =>$item1 )
-                                     <div><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
-                                @endforeach
                             </div>
                         @endforeach
                         </div>
                         <div class="form-group">
-                            <a href="javascript:;" class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</a>
+                            <button class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</button>
                         </div>
             </form>
+        </div>
+        <div class="time_count_down">
+             <div id="countdown">
+             </div>
         </div>
     </main>
 @endsection
 @section('scripts')
     <script>
         $('.examSubmit').click(function(e) {
-          e.preventDefault();
-         // Get all the forms elements and their values in one step
-          var values =   $('#examForm').serialize()
-          console.log(values);
-          $.ajax({
-            url: "{{ route('exam.store') }}",
-            method: 'POST',
-            data: values,
-            success: function(data){
-                if(data.status == "success"){
-                  var results =Math.round(( data.exam.results/data.exam.total_questions)*100) ;
-                   if(results > 79){
-                    alert("Chúc mừng bạn đã đạt: "+results);
-                   }else{
-                    alert("Số điểm của bạn là: "+results+". Bạn chưa đạt");
-                   }
+            e.preventDefault();
+            console.log('đã đóng');
+            $('.examSubmit').prop("disabled", true);
+            setTimeout(() => {
+                $('.examSubmit').prop('disabled', false);
+                console.log('đã mở');
+            }, 2000)
+            // Get all the forms elements and their values in one step
+            var values =   $('#examForm').serialize()
+            console.log(values);
+            $.ajax({
+                url: "{{ route('exam.store') }}",
+                method: 'POST',
+                data: values,
+                success: function(data){
+                    if(data.status == "success"){
+                    var results =Math.round(( data.exam.results/data.exam.total_questions)*100) ;
+                    if(results > 79){
+                        alert("Chúc mừng bạn đã đạt: "+results);
+                    }else{
+                        alert("Số điểm của bạn là: "+results+". Bạn chưa đạt");
+                    }
 
+                    }
                 }
+            });
+            });
+        document.getElementById('datePicker').valueAsDate = new Date();
+        var timeInSecs;
+        var ticker;
+        function startTimer(secs) {
+            timeInSecs = parseInt(secs);
+            ticker = setInterval("tick()", 1000); 
+        }
+
+        function tick() {
+            var secs = timeInSecs;
+            if (secs > 0) {
+                timeInSecs--; 
             }
-          });
-        });
+            else {
+                clearInterval(ticker);
+                //$(".examSubmit").trigger('click'); 
+                //startTimer(1*60); // 4 minutes in seconds
+            }
+
+            var mins = Math.floor(secs/60);
+            secs %= 60;
+            var pretty = ( (mins < 10) ? "0" : "" ) + mins + ":" + ( (secs < 10) ? "0" : "" ) + secs;
+
+            document.getElementById("countdown").innerHTML = pretty;
+        }
+
+        startTimer(1*60); // 4 minutes in seconds
     </script>
 @endsection
