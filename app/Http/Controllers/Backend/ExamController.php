@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExamController extends Controller
@@ -26,164 +27,50 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($isTrashed = false)
+    public function index(Request $request)
     {
 
         if (is_null($this->user) || !$this->user->can('exam.view')) {
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
-        if (request()->ajax()) {
-            if ($isTrashed) {
-                $exams = Exam::orderBy('id', 'desc')
-                    ->get();
-            } else {
-                $exams = Exam::orderBy('id', 'desc')
-                    ->where('deleted_at', null)
-                    ->get();
-            }
-            $datatable = DataTables::of($exams, $isTrashed)
-                ->addIndexColumn()
-                ->addColumn(
-                    'action',
-                    function ($row) use ($isTrashed) {
-                        $csrf = "" . csrf_field() . "";
-                        $method_delete = "" . method_field("delete") . "";
-                        $method_put = "" . method_field("put") . "";
-                        $html = '';
-
-                        if ($row->deleted_at === null) {
-                            $deleteRoute =  route('admin.exams.destroy', [$row->id]);
-                            // if ($this->user->can('exam.edit')) {
-                            //     $html .= '<a class="btn waves-effect waves-light btn-success btn-sm btn-circle ml-1 " title="Edit exam Details" href="' . route('admin.exams.edit', $row->id) . '"><i class="fa fa-edit"></i></a>';
-                            // }
-                            if ($this->user->can('exam.delete')) {
-                                $html .= '<a class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white" title="Delete Admin" id="deleteItem' . $row->id . '"><i class="fa fa-trash"></i></a>';
-                            }
-                        } else {
-                            if ($this->user->can('exam.delete')) {
-                                $deleteRoute =  route('admin.exams.trashed.destroy', [$row->id]);
-                                $revertRoute = route('admin.exams.trashed.revert', [$row->id]);
-
-                                $html .= '<a class="btn waves-effect waves-light btn-warning btn-sm btn-circle ml-1" title="Revert Back" id="revertItem' . $row->id . '"><i class="fa fa-check"></i></a>';
-                                $html .= '
-                                <form id="revertForm' . $row->id . '" action="' . $revertRoute . '" method="post" style="display:none">' . $csrf . $method_put . '
-                                    <button type="submit" class="btn waves-effect waves-light btn-rounded btn-success"><i
-                                            class="fa fa-check"></i> Confirm Revert</button>
-                                    <button type="button" class="btn waves-effect waves-light btn-rounded btn-secondary" data-dismiss="modal"><i
-                                            class="fa fa-times"></i> Cancel</button>
-                                </form>';
-                                $html .= '<a class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white" title="Delete exam Permanently" id="deleteItemPermanent' . $row->id . '"><i class="fa fa-trash"></i></a>';
-                            }
-                        }
-
-                        if ($this->user->can('exam.delete')) {
-                            $html .= '<script>
-                            $("#deleteItem' . $row->id . '").click(function(){
-                                swal.fire({ title: "Are you sure?",text: "exam will be deleted as trashed !",type: "warning",showCancelButton: true,confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, delete it!"
-                                }).then((result) => { if (result.value) {$("#deleteForm' . $row->id . '").submit();}})
-                            });
-                        </script>';
-
-                            $html .= '<script>
-                            $("#deleteItemPermanent' . $row->id . '").click(function(){
-                                swal.fire({ title: "Are you sure?",text: "exam will be deleted permanently, both from trash !",type: "warning",showCancelButton: true,confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, delete it!"
-                                }).then((result) => { if (result.value) {$("#deletePermanentForm' . $row->id . '").submit();}})
-                            });
-                        </script>';
-
-                            $html .= '<script>
-                            $("#revertItem' . $row->id . '").click(function(){
-                                swal.fire({ title: "Are you sure?",text: "exam will be revert back from trash !",type: "warning",showCancelButton: true,confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, Revert Back!"
-                                }).then((result) => { if (result.value) {$("#revertForm' . $row->id . '").submit();}})
-                            });
-                        </script>';
-
-                            $html .= '
-                            <form id="deleteForm' . $row->id . '" action="' . $deleteRoute . '" method="post" style="display:none">' . $csrf . $method_delete . '
-                                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-success"><i
-                                        class="fa fa-check"></i> Confirm Delete</button>
-                                <button type="button" class="btn waves-effect waves-light btn-rounded btn-secondary" data-dismiss="modal"><i
-                                        class="fa fa-times"></i> Cancel</button>
-                            </form>';
-
-                            $html .= '
-                            <form id="deletePermanentForm' . $row->id . '" action="' . $deleteRoute . '" method="post" style="display:none">' . $csrf . $method_delete . '
-                                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-success"><i
-                                        class="fa fa-check"></i> Confirm Permanent Delete</button>
-                                <button type="button" class="btn waves-effect waves-light btn-rounded btn-secondary" data-dismiss="modal"><i
-                                        class="fa fa-times"></i> Cancel</button>
-                            </form>';
-                        }
-                        return $html;
-                    }
-                )
-
-                ->editColumn('name', function ($row) {
-                    return $row->name;
-                })
-                ->editColumn('code', function ($row) {
-                    return $row->code;
-                })
-                ->editColumn('sub_dept', function ($row) {
-                    if ($row->sub_dept == 1) {
-                        return 'Cắm';
-                    }  else {
-                        return '---';
-                    }
-                })
-                ->editColumn('cycle_name', function ($row) {
-                    return $row->cycle_name;
-                })
-                ->editColumn('create_date', function ($row) {
-                    return $row->create_date;
-                })
-                ->editColumn('total_questions', function ($row) {
-                    return $row->total_questions;
-                })
-                ->editColumn('marks', function ($row) {
-                    return round(($row->results/$row->total_questions)*100);
-                })
-                ->editColumn('confirm', function ($row) {
-                    return $row->confirm;
-                })
-                ->editColumn('counting_time', function ($row) {
-                    return $row->counting_time;
-                })
-                ->editColumn('limit_time', function ($row) {
-                    return $row->limit_time;
-                })
-                ->editColumn('status', function ($row) {
-                    if ($row->status) {
-                        return '<span class="badge badge-success font-weight-100">Đã duyệt</span>';
-                    } else if ($row->deleted_at != null) {
-                        return '<span class="badge badge-danger">Trashed</span>';
-                    } else {
-                        return '<span class="badge badge-warning">Chờ duyệt</span>';
-                    }
-                });
-            $rawColumns = [
-                'name',
-                'code',
-                'sub_dept',
-                'cycle_name',
-                'create_date',
-                'results',
-                'total_questions',
-                'marks',
-                'status',
-                'confirm',
-                'counting_time',
-                'limit_time',
-                'action'
-            ];
-            return $datatable->rawColumns($rawColumns)
-                ->make(true);
+        // Phân trang
+        $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $data['keyword'] = $request->input('keyword', '');
+        $data['advance'] = 0;
+        if ($data['keyword']) {
+            // Tìm kiếm nhanh
+            $data['keyword'] = $request->input('keyword', '');
+        } else {
+            // Tìm kiếm nâng cao
+            //$data['advance'] = 1;
+            $data['filter'] = $request->all();
         }
-        $count_exams = count(Exam::select('id')->get());
-        $count_active_exams = count(Exam::select('id')->where('status', 1)->get());
-        $count_trashed_exams = count(Exam::select('id')->where('deleted_at', '!=', null)->get());
-        return view('backend.pages.exams.index', compact('count_exams', 'count_active_exams', 'count_trashed_exams'));
+        
+        $data['lists'] = Exam::where( function($query) use($request){
+            if (isset($request->bdc_apartment_id) && $request->bdc_apartment_i != null) {
+                $bdc_apartment_id = $request->bdc_apartment_id;
+                $query->where('bdc_apartment_id', $bdc_apartment_id);
+            }
+            if (isset($request->cycle_name) && $request->cycle_nam != null) {
+                $cycle_name = $request->cycle_name;
+                $query->where('cycle_name', $cycle_name);
+            }
+            if(isset($request->ip_place_id) && $request->ip_place_i != null){
+                $query->whereHas('apartment', function ($query) use ($request) {
+                    $ip_place_id = $request->ip_place_id;
+                        $query->where('building_place_id', $ip_place_id);
+                });
+            }
+            if (isset($request['from_date']) && isset($request['to_date'])) {
+                $from_date = Carbon::parse($request['from_date'])->format('Y-m-d');
+                $to_date   = Carbon::parse($request['to_date'])->format('Y-m-d');
+                $query->whereDate('bdc_bills.created_at', '>=', $from_date);
+                $query->whereDate('bdc_bills.created_at', '<=', $to_date);
+            }
+        })->paginate($data['per_page']);
+        //dd($data);
+        return view('backend.pages.exams.index',$data);
     }
 
     /**
@@ -275,6 +162,19 @@ class ExamController extends Controller
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
-        return $this->index(true);
+        return 1;
+    }
+    public function action(Request $request)
+    {
+        $method = $request->input('method','');
+        if ($method == 'per_page') {
+            $this->per_page($request);
+            return back();
+        }else if($method == 'restore_apartment') {
+            return back()->with('success', 'thành công!');
+        }else{
+            return back()->with('success', 'thành công!');
+        }
+       
     }
 }
