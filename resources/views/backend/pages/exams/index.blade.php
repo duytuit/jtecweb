@@ -98,7 +98,7 @@
                 </div>
                 <div class="col-sm-6 text-center">
                     <div class="pagination-panel">
-                        {{ $lists->links('vendor.pagination.bootstrap-4') }}
+                        {{ $lists->appends(Request::all())->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
                     </div>
                 </div>
                 <div class="col-sm-3 text-right">
