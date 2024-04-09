@@ -51,7 +51,6 @@
                             $array_exam = App\Helpers\ArrayHelper::arrayExamPd();
                             shuffle($array_exam);
                         @endphp
-                        <strong>Bạn hãy chọn đáp án đúng bằng cách tích vào ô có <u>ký hiệu</u> tương ứng với màu dây:</strong>
                         <div class="cards map_question">
                             @foreach ($array_exam as $index => $item)
                                 <a href="javascript:;" id="label_{{$item['id']}}" class="map_item" data-id="{{$item['id']}}" data-value="{{$item['answer']}}" onclick="getMapQuestion({{$item['id']}})">
@@ -59,6 +58,7 @@
                                 </a>
                             @endforeach
                         </div>
+                        <strong>Bạn hãy chọn đáp án đúng bằng cách tích vào ô có <u>ký hiệu</u> tương ứng với màu dây:</strong>
                         <div class="cards">
                             @foreach ($array_exam as $index => $item)
                             <div class="cards_item" id="{{$item['id']}}">
