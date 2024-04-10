@@ -74,8 +74,7 @@
                             <th>Tổng câu</th>
                             <th>Trả lời đúng</th>
                             <th>Điểm</th>
-                            <th>Thời gian nộp</th>
-                            <th>Thời gian thi</th>
+                            <th>Thời gian làm bài</th>
                             <th>Trạng thái</th>
                             <th>Người duyệt</th>
                             <th width="100">Action</th>
@@ -83,10 +82,32 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($lists as $item)
+                        @foreach ($lists as $index=> $item)
                         <tr>
                             <td><input type="checkbox" name="ids[]" value="{{ $item->id }}" class="greyCheck checkSingle" /></td>
-                            <td>{{ $item->id }}</td>
+                            <td>{{ $index+1 }}</td>
+                            <td>{{ $item->code }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->sub_dept ==1?'Cắm':'' }}</td>
+                            <td>{{ $item->cycle_name }}</td>
+                            <td>{{ $item->create_date }}</td>
+                            <td>{{ $item->total_questions }}</td>
+                            <td>{{ $item->results }}</td>
+                            <td>{{ round(($item->results/$item->total_questions)*100) }}</td>
+                            <td>{{ $item->counting_time }}</td>
+                            <td></td>
+                            <td>
+                                @if ( $item->status)
+                                    <span class="badge badge-success font-weight-100">Đã duyệt</span>
+                                @else
+                                    <span class="badge badge-warning">Chờ duyệt</span>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="javascript:;" class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white btn-delete" data-url="{{ route('admin.exams.trashed.destroy',[$item->id]) }}" data-id="{{$item->id}}" data-token="{{ csrf_token() }}" title="Delete Admin">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -118,5 +139,25 @@
 
 @section('scripts')
     <script>
+        $('a.deleteItem').click(function () {
+            var target = $(this).data('target');
+            $("#deleteForm").attr("action", $(this).data('action'));
+            var $form = $(target);
+            swal.fire({
+                 title: "Are you sure?",
+                 text: "exam will be deleted as trashed !",
+                 type: "warning",
+                 showCancelButton: true,
+                 confirmButtonColor: "#DD6B55",
+                 confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                console.log(result);
+                if (result.value) {
+                    $("#deleteForm").submit();
+                }
+            })
+
+        })
+
     </script>
 @endsection

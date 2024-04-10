@@ -46,7 +46,7 @@ class ExamController extends Controller
             //$data['advance'] = 1;
             $data['filter'] = $request->all();
         }
-        
+
         $data['lists'] = Exam::where( function($query) use($request){
             if (isset($request->bdc_apartment_id) && $request->bdc_apartment_i != null) {
                 $bdc_apartment_id = $request->bdc_apartment_id;
@@ -132,22 +132,23 @@ class ExamController extends Controller
      * @param integer $id
      * @return void Destroy the data permanently
      */
-    public function destroyTrash($id)
+    public function destroyTrash(Request $request)
     {
-        if (is_null($this->user) || !$this->user->can('exam.delete')) {
-            $message = 'You are not allowed to access this page !';
-            return view('errors.403', compact('message'));
-        }
-        $exam = Exam::find($id);
-        if (is_null($exam)) {
-            session()->flash('error', "The page is not found !");
-            return redirect()->route('admin.exams.index');
-        }
+        dd($request->all());
+        // if (is_null($this->user) || !$this->user->can('exam.delete')) {
+        //     $message = 'You are not allowed to access this page !';
+        //     return view('errors.403', compact('message'));
+        // }
+        // $exam = Exam::find($id);
+        // if (is_null($exam)) {
+        //     session()->flash('error', "The page is not found !");
+        //     return redirect()->route('admin.exams.index');
+        // }
 
-        // Delete exam permanently
-        $exam->delete();
+        // // Delete exam permanently
+        // $exam->delete();
 
-        session()->flash('success', 'exam has been deleted permanently !!');
+        // session()->flash('success', 'exam has been deleted permanently !!');
         return redirect()->route('admin.exams.index');
     }
 
@@ -175,6 +176,6 @@ class ExamController extends Controller
         }else{
             return back()->with('success', 'thành công!');
         }
-       
+
     }
 }

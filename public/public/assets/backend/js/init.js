@@ -123,14 +123,14 @@ $(document).ready(function () {
           is_confirm = false;
       }
       $('input[name=method]', $form).val(method);
-      
+
       if (method == 'active') {
           $('input[name=method]', $form).val('status');
           $('input[name=status]', $form).val(1);
       } else if (method == 'inactive') {
           $('input[name=method]', $form).val('status');
           $('input[name=status]', $form).val(0);
-      } 
+      }
       else if (method == 'capnhat_ngay_hach_toan') {
           $form.append('<input type="hidden" name="ngay_hach_toan" value="'+ $('.history_transaction_accounting_from_date').val()+'" />');
       }
@@ -146,16 +146,20 @@ $(document).ready(function () {
       if (confirm('Có chắc bạn muốn xóa?')) {
           var id = $(this).data('id');
           var url = $(this).data('url');
-          var _token = $('meta[name="csrf-token"]').attr('content');
+          var token = $(this).data('token');
           var data = {
-              _token: _token,
+              _token : token,
               method: 'delete',
               ids: [id]
           };
-
-          $.post(url, data, function (json) {
-              location.reload();
-          });
+          $.ajax({
+            url: url,
+            method: 'post',
+            data: data,
+            success: function(data){
+                location.reload();
+            }
+        });
       }
   });
 
