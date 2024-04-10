@@ -70,7 +70,8 @@ Route::group(['prefix' => ''], function () {
     Route::resource('exams', ExamController::class);
     Route::post('exams/action', [ExamController::class, 'action'])->name('exams.action');
     Route::get('exams/trashed/view', [ExamController::class, 'trashed'])->name('exams.trashed');
-    Route::post('exams/trashed/destroy/{id}', [ExamController::class, 'destroyTrash'])->name('exams.trashed.destroy');
+    Route::get('exams/export', [ExamController::class, 'exportExcel'])->name('exams.export');
+    Route::delete('exams/trashed/destroy/{id}', [ExamController::class, 'destroyTrash'])->name('exams.trashed.destroy');
     Route::put('exams/trashed/revert/{id}', [ExamController::class, 'revertFromTrash'])->name('exams.trashed.revert');
 });
 

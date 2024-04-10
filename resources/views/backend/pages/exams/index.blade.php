@@ -15,9 +15,9 @@
                     <span class="btn-group">
                         <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a class="btn-action" data-target="#form-categories" data-method="delete" href="javascript:;"><i class="fa fa-trash"></i> Xóa</a></li>
-                            <li><a class="btn-action" data-target="#form-categories" data-method="active" href="javascript:;"><i class="fa fa-check"></i> Active</a></li>
-                            <li><a class="btn-action" data-target="#form-categories" data-method="inactive" href="javascript:;"><i class="fa fa-times"></i> Inactive</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i class="fa fa-trash"></i> Xóa</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="active" href="javascript:;"><i class="fa fa-check"></i> Active</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="inactive" href="javascript:;"><i class="fa fa-times"></i> Inactive</a></li>
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
@@ -95,7 +95,6 @@
                             <td>{{ $item->results }}</td>
                             <td>{{ round(($item->results/$item->total_questions)*100) }}</td>
                             <td>{{ $item->counting_time }}</td>
-                            <td></td>
                             <td>
                                 @if ( $item->status)
                                     <span class="badge badge-success font-weight-100">Đã duyệt</span>
@@ -103,10 +102,15 @@
                                     <span class="badge badge-warning">Chờ duyệt</span>
                                 @endif
                             </td>
+                            <td></td>
                             <td>
-                                <a href="javascript:;" class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white btn-delete" data-url="{{ route('admin.exams.trashed.destroy',[$item->id]) }}" data-id="{{$item->id}}" data-token="{{ csrf_token() }}" title="Delete Admin">
+                                <a href="javascript:;" class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white" onclick="deleteItem({{ $item->id }})" title="Delete Admin">
                                     <i class="fa fa-trash"></i>
                                 </a>
+                                <form id="deleteForm{{ $item->id }}" action="{{ route('admin.exams.trashed.destroy',[$item->id]) }}" method="post" style="display:none">
+                                     @csrf
+                                    <input type="hidden" name="_method" value="delete">
+                                </form>
                             </td>
                         </tr>
                         @endforeach
@@ -139,25 +143,18 @@
 
 @section('scripts')
     <script>
-        $('a.deleteItem').click(function () {
-            var target = $(this).data('target');
-            $("#deleteForm").attr("action", $(this).data('action'));
-            var $form = $(target);
-            swal.fire({
-                 title: "Are you sure?",
-                 text: "exam will be deleted as trashed !",
-                 type: "warning",
-                 showCancelButton: true,
-                 confirmButtonColor: "#DD6B55",
-                 confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                console.log(result);
-                if (result.value) {
-                    $("#deleteForm").submit();
-                }
-            })
-
-        })
-
+           function deleteItem(params) {
+                swal.fire({
+                    title: "Bạn có chắc chắn?",
+                    text: "bản ghi này sẽ được chuyển vào thùng rác!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Vâng, Xóa nó!"
+                }).then((result) => {
+                    if (result.value) {
+                        $("#deleteForm"+params).submit();
+                }})
+           }
     </script>
 @endsection

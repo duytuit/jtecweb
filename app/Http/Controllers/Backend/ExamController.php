@@ -72,7 +72,10 @@ class ExamController extends Controller
         //dd($data);
         return view('backend.pages.exams.index',$data);
     }
-
+    public function exportExcel(Request $request)
+    {
+        return Exam::query()->get()->downloadExcel('query-download.xlsx');
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -96,7 +99,7 @@ class ExamController extends Controller
         $exam->status = 0;
         $exam->save();
 
-        session()->flash('success', 'exam has been deleted successfully as trashed !!');
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
         return redirect()->route('admin.exams.index');
     }
 
@@ -132,23 +135,22 @@ class ExamController extends Controller
      * @param integer $id
      * @return void Destroy the data permanently
      */
-    public function destroyTrash(Request $request)
+    public function destroyTrash($id)
     {
-        dd($request->all());
-        // if (is_null($this->user) || !$this->user->can('exam.delete')) {
-        //     $message = 'You are not allowed to access this page !';
-        //     return view('errors.403', compact('message'));
-        // }
-        // $exam = Exam::find($id);
-        // if (is_null($exam)) {
-        //     session()->flash('error', "The page is not found !");
-        //     return redirect()->route('admin.exams.index');
-        // }
+        if (is_null($this->user) || !$this->user->can('exam.delete')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+        $exam = Exam::find($id);
+        if (is_null($exam)) {
+            session()->flash('error', "The page is not found !");
+            return redirect()->route('admin.exams.index');
+        }
 
-        // // Delete exam permanently
-        // $exam->delete();
+        // Delete exam permanently
+        $exam->delete();
 
-        // session()->flash('success', 'exam has been deleted permanently !!');
+        session()->flash('success', 'Bản ghi đã được xóa!!');
         return redirect()->route('admin.exams.index');
     }
 
