@@ -46,12 +46,3 @@ Route::post('upload', function (Request $request) {
     $storedPath = $image->move('images', $image->getClientOriginalName());
     return "Lưu trữ thành công";
 })->name('upload.handle');
-<<<<<<< HEAD
-=======
-
-
-
-// Route::get('qr-code', function () {
-//     return QrCode::size(500)->generate('Welcome to kerneldev.com!');
-// });
->>>>>>> b34e37073ee5d41bbc1b6e47d15bd1689fd851ae
