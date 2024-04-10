@@ -24,7 +24,7 @@
                                 @csrf
                                 <div class="input-group">
                                     <input type="file" name="import_file" class="form-control" />
-                                    <button type="submit" class="btn btn-primary">Thêm Ảnh</button>
+                                    <button type="submit" class="btn btn-primary">Nhập câu hỏi</button>
                                 </div>
 
                             </form>
