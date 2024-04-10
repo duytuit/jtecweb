@@ -31,13 +31,7 @@
                                 </select>
                             </div>
                             <div>
-                                Họ và tên:
-                             </div>
-                             <div>
-                                 <input type="text" name="hovaten" class="form-control">
-                             </div>
-                             <div>
-                                Mã nhận viên:
+                                Mã nhân viên:
                              </div>
                              <div>
                                  <input type="text" name="manhanvien" class="form-control">
@@ -47,7 +41,8 @@
                              </div>
                              <div class="form-group">
                                  <input type="date" id="datePicker" name="ngaykiemtra" value="{{time()}}" class="form-control" style="width:100%">
-                             </div>
+                                 <input type="hidden" id="count_timer" name="count_timer" value="{{$start_time}}">
+                                </div>
                          </div>
                         <div class="form-group">
                             <button class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</button>
@@ -56,10 +51,17 @@
                             $array_exam = App\Helpers\ArrayHelper::arrayExamPd();
                             shuffle($array_exam);
                         @endphp
+                        <div class="cards map_question">
+                            @foreach ($array_exam as $index => $item)
+                                <a href="javascript:;" id="label_{{$item['id']}}" class="map_item" data-id="{{$item['id']}}" data-value="{{$item['answer']}}" onclick="getMapQuestion({{$item['id']}})">
+                                    {{$index +1}}
+                                </a>
+                            @endforeach
+                        </div>
                         <strong>Bạn hãy chọn đáp án đúng bằng cách tích vào ô có <u>ký hiệu</u> tương ứng với màu dây:</strong>
                         <div class="cards">
                             @foreach ($array_exam as $index => $item)
-                            <div class="cards_item">
+                            <div class="cards_item" id="{{$item['id']}}">
                                 <div class="card_question">
                                     <div class="form-group">
                                         <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['name']}}</strong></div>
@@ -71,7 +73,7 @@
                                     @endphp
                                     <div>
                                         @foreach ( $array_Answer as $index1 =>$item1 )
-                                                <div @if ($item['answer'] == $item1) class="right_answer" @endif><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
+                                                <div @if ($item['answer'] == $item1) class="right_answer" @endif><label for="cau__{{$item['id']}}_answer_{{$index1}}"><input type="radio" value="{{$item1}}" onclick="getCheck({{$item['id']}})" name="answer[{{$item['id']}}]"  id="cau__{{$item['id']}}_answer_{{$index1}}" class="largerCheckbox"><strong> {{$index1+1}}. </strong> {{$item1}}</label></div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -91,9 +93,25 @@
 @endsection
 @section('scripts')
     <script>
+        // $("#button").click(function() {
+        //     $('html, body').animate({
+        //         scrollTop: $("#myDiv").offset().top
+        //     }, 2000);
+        // });
+        function getCheck(params) {
+            $("#label_"+params).css("background-color","blueviolet")
+        }
+        function getMapQuestion(id){
+                console.log(id);
+                $('html, body').animate({
+                    scrollTop: $("#"+id).offset().top
+                }, 1000);
+                $(".cards_item").css("background-color","transparent")
+                $("#"+id).css("background-color","#dee2e6")
+        }
         $('.examSubmit').click(function(e) {
             e.preventDefault();
-            console.log($(this).text());
+            // console.log($(this).text());
             if($(this).text() == "Nộp bài"){
                 submit_exam()
             }else{
@@ -123,16 +141,32 @@
                 method: 'POST',
                 data: values,
                 success: function(data){
+                    // if(data?.warning){
+                    //     alert(data?.warning);
+                    //     location.reload();
+                    // }
                     $('.examSubmit').html('Làm lại');
+                    $('.map_question a').each(function(i, obj) {
+                        var member_answer = $('input[name="answer['+$(this).data('id')+']"]:checked').val()
+                        if(member_answer){
+                            if(member_answer != $(this).data('value')){
+                                $(this).css("background-color","red")
+                                $('input[name="answer['+$(this).data('id')+']"]:checked').css({"accent-color":"red"})
+                                $('input[name="answer['+$(this).data('id')+']"]:checked').parent().css({"color":"red"})
+                            }else{
+                                $(this).css("background-color","blue")
+                            }
+                        }
+                    });
                     if(data.status == "success"){
-                        $(".right_answer").css("color", "blue");
-                        var results =Math.round(( data.exam.results/data.exam.total_questions)*100) ;
-                    if(results > 79){
-                        alert("Chúc mừng bạn đã đạt: "+results);
-                    }else{
-                        alert("Số điểm của bạn là: "+results+". Bạn chưa đạt");
-                    }
 
+                        $(".right_answer").css("color", "blue");
+                        var results = Math.round(( data.exam.results/data.exam.total_questions)*100) ;
+                        if(results > 79){
+                            alert("Chúc mừng bạn đã đạt: "+results);
+                        }else{
+                            alert("Số điểm của bạn là: "+results+". Bạn chưa đạt");
+                        }
                     }
                 }
             });
@@ -156,7 +190,6 @@
             var mins = Math.floor(secs/60);
             secs %= 60;
             var pretty = ( (mins < 10) ? "0" : "" ) + mins + ":" + ( (secs < 10) ? "0" : "" ) + secs;
-
             document.getElementById("countdown").innerHTML = pretty;
         }
 

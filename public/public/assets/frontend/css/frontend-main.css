@@ -404,3 +404,22 @@ li.nav-item:hover {
   input.largerCheckbox {
     transform: scale(1.5);
 }
+.map_item{
+    width: 30px;
+    height: 30px;
+    background-color: #adb5bd;
+    display: flex;
+    justify-content: center;
+    color: white;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+.map_question {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 60px;
+    background-color: #f8f9fa;
+    z-index: 1;
+  }
+

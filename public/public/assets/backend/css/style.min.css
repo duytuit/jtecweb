@@ -36974,3 +36974,8 @@ div.dataTables_wrapper div.dataTables_processing {
 
 
 /** Custom Styles **/
+.pagination-panel {
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+}
