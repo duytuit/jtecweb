@@ -29,7 +29,12 @@ body {
 .img-logo {
     width: 150px;
 }
-
+.img{
+    max-width: 100%;
+}
+.img img{
+    max-width: 100%;
+}
 .navbar {
     padding: 0px !important;
 }
