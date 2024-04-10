@@ -97,9 +97,9 @@
                             <td>{{ $item->counting_time }}</td>
                             <td>
                                 @if ( $item->status)
-                                    <span class="badge badge-success font-weight-100">Đã duyệt</span>
+                                    <span class="badge badge-success font-weight-100">Đạt</span>
                                 @else
-                                    <span class="badge badge-warning">Chờ duyệt</span>
+                                    <span class="badge badge-warning">Chưa đạt</span>
                                 @endif
                             </td>
                             <td></td>
