@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class Controller extends BaseController
 {
@@ -52,5 +54,11 @@ class Controller extends BaseController
         }
 
         return response()->json($data, $status);
+    }
+    public function per_page(Request $request)
+    {
+        $per_page = $request->input('per_page', 10);
+        Cookie::queue('per_page', $per_page, 60 * 24 * 30);
+        return back();
     }
 }
