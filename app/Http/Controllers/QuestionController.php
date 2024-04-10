@@ -12,7 +12,6 @@ class QuestionController extends Controller
 {
     public function index()
     {
-        // dd(123);
         $questions = Question::all();
         return view('question.index', compact('questions'));
     }

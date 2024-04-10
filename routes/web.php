@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\FrontPagesController;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 */
 Auth::routes();
 
+Route::get('qrcode', [App\Http\Controllers\QrcodeController::class, 'index']);
+Route::post('qrcode',[App\Http\Controllers\QrcodeController::class, 'importQrcodeData']);
 Route::get('question/import', [App\Http\Controllers\QuestionController::class, 'index']);
 Route::post('question/import',[App\Http\Controllers\QuestionController::class, 'importExcelData']);
 
@@ -43,3 +46,12 @@ Route::post('upload', function (Request $request) {
     $storedPath = $image->move('images', $image->getClientOriginalName());
     return "Lưu trữ thành công";
 })->name('upload.handle');
+<<<<<<< HEAD
+=======
+
+
+
+// Route::get('qr-code', function () {
+//     return QrCode::size(500)->generate('Welcome to kerneldev.com!');
+// });
+>>>>>>> b34e37073ee5d41bbc1b6e47d15bd1689fd851ae
