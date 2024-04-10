@@ -16,9 +16,10 @@
                             </div>
                         </div>
                          <div>
-                            <i>Điểm đạt: 80-100</i><br>
-                            <i>Từ 50->79 điểm: kiểm tra lại sai 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
-                            <i>Dưới 50 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
+                             <strong>Tiêu chuẩn đánh giá</strong>
+                            <i>Điểm đạt: 96-100</i><br>
+                            <i>Từ 90->95 điểm: kiểm tra lại sai 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
+                            <i>Dưới 90 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
                             <i>Thời gian làm bài <strong>05:00</strong></i><br>
                          </div>
                          <div>
