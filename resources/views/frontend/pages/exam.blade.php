@@ -67,7 +67,7 @@
                             <div class="cards_item" id="{{$item['id']}}">
                                 <div class="card_question">
                                     <div class="form-group">
-                                        <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['name']}}</strong></div>
+                                        <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['show_question'] == 1 ? $item['name']:''}}</strong></div>
                                         <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" /></div>
                                     </div>
                                     @php
@@ -196,6 +196,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(5*60); // 4 minutes in seconds
+        startTimer(4.9*60); // 4 minutes in seconds
     </script>
 @endsection

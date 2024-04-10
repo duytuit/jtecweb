@@ -68,7 +68,7 @@ class ExamController extends Controller
                 $query->whereDate('bdc_bills.created_at', '>=', $from_date);
                 $query->whereDate('bdc_bills.created_at', '<=', $to_date);
             }
-        })->paginate($data['per_page']);
+        })->orderBy('code')->orderBy('cycle_name')->orderBy('status','desc')->paginate($data['per_page']);
         //dd($data);
         return view('backend.pages.exams.index',$data);
     }
@@ -175,6 +175,11 @@ class ExamController extends Controller
             return back();
         }else if($method == 'restore_apartment') {
             return back()->with('success', 'thành công!');
+        }else if($method == 'delete') {
+            if(isset($request->ids)){
+               $count_record = Exam::whereIn('id',$request->ids)->delete();
+            }
+            return back()->with('success','đã xóa '.$count_record.' bản ghi');
         }else{
             return back()->with('success', 'thành công!');
         }

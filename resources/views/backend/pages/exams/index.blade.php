@@ -15,9 +15,9 @@
                     <span class="btn-group">
                         <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i class="fa fa-trash"></i> Xóa</a></li>
-                            <li><a class="btn-action" data-target="#form_lists" data-method="active" href="javascript:;"><i class="fa fa-check"></i> Active</a></li>
-                            <li><a class="btn-action" data-target="#form_lists" data-method="inactive" href="javascript:;"><i class="fa fa-times"></i> Inactive</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="active" href="javascript:;"><i class="fa fa-check" style="color: green;"></i> Duyệt</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="inactive" href="javascript:;"><i class="fa fa-times"></i> Bỏ duyệt</a></li>
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
@@ -37,20 +37,35 @@
         <form id="form-search-advance" action="{{ route('admin.exams.index') }}" method="get" class="hidden">
             <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
                 <div class="row form-group space-5">
-                    <div class="col-sm-3">
-                        <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa" class="form-control" />
+                    <div class="col-sm-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="text" class="form-control date_picker" name="from_date" id="from_date"
+                            value="{{ @$filter['from_date'] }}" placeholder="Từ..." autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="text" class="form-control date_picker" name="to_date" id="to_date"
+                            value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
+                        </div>
                     </div>
                     <div class="col-sm-3">
                         <input type="text" placeholder="Người tạo" class="form-control" />
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <select name="status" class="form-control" style="width: 100%;">
                             <option value="">Trạng thái</option>
                             <option value="1" {{ @$filter['status'] === '1' ? 'selected' : '' }}>Active</option>
                             <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-1">
                         <button class="btn btn-warning btn-block">Tìm kiếm</button>
                     </div>
                 </div>
@@ -61,7 +76,7 @@
             <input type="hidden" name="method" value="" />
             <input type="hidden" name="status" value="" />
             <div class="table-responsive product-table">
-                <table class="table table-striped table-bordered display" id="exams_table">
+                <table class="table table-bordered" id="exams_table">
                     <thead>
                         <tr>
                             <th width="3%"><input type="checkbox" class="greyCheck checkAll" data-target=".checkSingle" /></th>
@@ -76,21 +91,44 @@
                             <th>Điểm</th>
                             <th>Thời gian làm bài</th>
                             <th>Trạng thái</th>
+                            <th>Kết quả</th>
                             <th>Người duyệt</th>
                             <th width="100">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-
+                         @php
+                             $code=0;
+                             $cycle_name=0;
+                             $check=0;
+                         @endphp
                         @foreach ($lists as $index=> $item)
                         <tr>
                             <td><input type="checkbox" name="ids[]" value="{{ $item->id }}" class="greyCheck checkSingle" /></td>
                             <td>{{ $index+1 }}</td>
-                            <td>{{ $item->code }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->sub_dept ==1?'Cắm':'' }}</td>
+                            @if ($cycle_name != $item->cycle_name)
+                                @php
+                                    $check = 1;
+                                    $cycle_name=$item->cycle_name;
+                                @endphp
+                            @else
+                                @php
+                                    $check = 0;
+                                @endphp
+                            @endif
+                            @if ($code != $item->code)
+                                @php
+                                    $check = 1;
+                                    $code=$item->code;
+                                @endphp
+                                <td>{{ $item->code }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->sub_dept ==1?'Cắm':'' }}</td>
+                            @else
+                               <td colspan="3"></td>
+                            @endif
                             <td>{{ $item->cycle_name }}</td>
-                            <td>{{ $item->create_date }}</td>
+                            <td>{{ date('d-m-Y', strtotime(@$item->create_date))  }}</td>
                             <td>{{ $item->total_questions }}</td>
                             <td>{{ $item->results }}</td>
                             <td>{{ round(($item->results/$item->total_questions)*100) }}</td>
@@ -99,18 +137,32 @@
                                 @if ( $item->status)
                                     <span class="badge badge-success font-weight-100">Đạt</span>
                                 @else
-                                    <span class="badge badge-warning">Chưa đạt</span>
+                                    <span class="badge badge-warning">Chưa Đạt</span>
                                 @endif
                             </td>
-                            <td></td>
+                            @if ($cycle_name == $item->cycle_name && $check ==1)
+                                <td rowspan="{{$lists->where('code',$code)->where('cycle_name',$cycle_name)->count()}}" style="vertical-align: middle;">
+                                    @php
+                                        $pass = $lists->where('code',$code)->where('cycle_name',$cycle_name)->where('status',1)->count()
+                                    @endphp
+                                     @if ($pass >= 2)
+                                        <span class="badge badge-info font-weight-100">Đỗ</span>
+                                    @else
+                                        <span class="badge badge-secondary">Thi lại</span>
+                                    @endif
+                                </td>
+                            @endif
                             <td>
-                                <a href="javascript:;" class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white" onclick="deleteItem({{ $item->id }})" title="Delete Admin">
+
+                            </td>
+                            <td>
+                                {{-- <a href="javascript:;" class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white" onclick="deleteItem({{ $item->id }})" title="Delete Admin">
                                     <i class="fa fa-trash"></i>
-                                </a>
-                                <form id="deleteForm{{ $item->id }}" action="{{ route('admin.exams.trashed.destroy',[$item->id]) }}" method="post" style="display:none">
+                                </a> --}}
+                                {{-- <form id="deleteForm{{ $item->id }}" action="{{ route('admin.exams.trashed.destroy',[$item->id]) }}" method="post" style="display:none">
                                      @csrf
                                     <input type="hidden" name="_method" value="delete">
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                         @endforeach
@@ -138,11 +190,16 @@
                     </span>
                 </div>
             </div>
+        </form>
     </div>
 @endsection
 
 @section('scripts')
     <script>
+           $('input.date_picker').datepicker({
+            autoclose: true,
+            dateFormat: "dd-mm-yy"
+           }).val();
            function deleteItem(params) {
                 swal.fire({
                     title: "Bạn có chắc chắn?",

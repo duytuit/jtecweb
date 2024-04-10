@@ -36979,3 +36979,19 @@ div.dataTables_wrapper div.dataTables_processing {
     display: flex;
     justify-content: center;
 }
+
+.dropdown-menu li {
+    height: 30px;
+    padding: 5px;
+}
+.dropdown-menu li:hover {
+    background-color: darkgrey;
+}
+.dropdown-menu li a{
+    display: block;
+    color: #343a40;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    white-space: nowrap;
+}
