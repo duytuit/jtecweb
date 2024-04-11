@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exports\ExamExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
@@ -36,7 +37,12 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        $this->addEmployee();
+        $where = [];
+        $where[] = ['id', '=', 16];
+        return (new ExamExport($where))->download('invoices.xlsx');
+        //return Exam::query()->get()->downloadExcel('query-download.xlsx')->allFields();
+
+        //$this->addEmployee();
         //dd($fruits);
         // mảng cần tìm
         //$key=array_search("R", array_column(json_decode(json_encode($fruits),TRUE), 'answer'));
@@ -87,7 +93,7 @@ class FrontPagesController extends Controller
                 'counting_time' => gmdate('i:s',$counting_time),// thời gian làm bài
                 'limit_time' => '05:00',// tổng số câu hỏi
                 'data' => json_encode($request->answer),// tổng số câu hỏi
-                'status' =>  0,// 0:chưa duyệt,1:đã duyệt
+                'status' => round(($results/count($arrayExam))*100) > 95 ?  1:0,// 0:chưa duyệt,1:đã duyệt
                 'mission' =>  0,// số lần thi
             ]);
             return $this->success(compact('exam'));

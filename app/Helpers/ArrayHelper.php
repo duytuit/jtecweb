@@ -45,7 +45,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den.png',
                 'answer' => 'B',
                 'answer_list' => ['B', 'Br', 'R', 'Gr'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 3,
@@ -71,7 +71,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vang.png',
                 'answer' => 'Y',
                 'answer_list' => ['O', 'P', 'R', 'Y'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -80,7 +80,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacay.png',
                 'answer' => 'G',
                 'answer_list' => ['G', 'L', 'Lg', 'Sb'],
-                'show_question' => 1
+                'show_question' => 0
 
 
 
@@ -91,7 +91,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon.png',
                 'answer' => 'Lg',
                 'answer_list' => ['G', 'L', 'Lg', 'Sb'],
-                'show_question' => 1
+                'show_question' => 0
 
 
             ],
@@ -101,7 +101,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\cam.png',
                 'answer' => 'O',
                 'answer_list' => ['O', 'B', 'Y', 'W'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 9,
@@ -117,7 +117,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\hong.png',
                 'answer' => 'P',
                 'answer_list' => ['O', 'P', 'R', 'Y'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 11,
@@ -134,7 +134,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang.png',
                 'answer' => 'W',
                 'answer_list' => ['Gr', 'B', 'O', 'W'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -161,7 +161,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\doden.png',
                 'answer' => 'RB',
                 'answer_list' => ['RB', 'BR', 'RY', 'RG'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 16,
@@ -169,7 +169,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\dovang.png',
                 'answer' => 'RY',
                 'answer_list' => ['RB', 'YR', 'RY', 'RG'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 17,
@@ -177,7 +177,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\doxanhlacay.png',
                 'answer' => 'RG',
                 'answer_list' => ['RB', 'RL', 'RY', 'RG'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 18,
@@ -185,7 +185,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\doxanh.png',
                 'answer' => 'RL',
                 'answer_list' => ['RB', 'RL', 'RY', 'RG'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 19,
@@ -193,7 +193,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangdo.png',
                 'answer' => 'YR',
                 'answer_list' => ['YR', 'YG', 'RY', 'YL'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -202,7 +202,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangden.png',
                 'answer' => 'YB',
                 'answer_list' => ['YR', 'YB', 'RY', 'BY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 21,
@@ -210,7 +210,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangxanhlacay.png',
                 'answer' => 'YG',
                 'answer_list' => ['YR', 'YG', 'RY', 'BY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 22,
@@ -218,7 +218,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangxanh.png',
                 'answer' => 'YL',
                 'answer_list' => ['YL', 'YB', 'YG', 'YW'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 23,
@@ -226,7 +226,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\vangtrang.png',
                 'answer' => 'YW',
                 'answer_list' => ['YL', 'WY', 'YG', 'YW'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 24,
@@ -234,7 +234,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacaytrang.png',
                 'answer' => 'GW',
                 'answer_list' => ['GW', 'WR', 'GB', 'WG'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -243,7 +243,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacaydo.png',
                 'answer' => 'GR',
                 'answer_list' => ['GR', 'RG', 'GB', 'GL'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -252,7 +252,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayvang.png',
                 'answer' => 'GY',
                 'answer_list' => ['GY', 'GL', 'GB', 'GW'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -261,7 +261,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayden.png',
                 'answer' => 'GB',
                 'answer_list' => ['GY', 'GL', 'GB', 'BG'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 28,
@@ -269,7 +269,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayxanh.png',
                 'answer' => 'GL',
                 'answer_list' => ['LG', 'GL', 'GB', 'GW'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 29,
@@ -277,7 +277,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-trang.png',
                 'answer' => 'LW',
                 'answer_list' => ['LW', 'WL', 'LgW', 'GW'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -286,7 +286,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-do.png',
                 'answer' => 'LR',
                 'answer_list' => ['LR', 'RL', 'LgR', 'GR'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -295,7 +295,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-vang.png',
                 'answer' => 'LY',
                 'answer_list' => ['LY', 'YL', 'GY', 'LB'],
-                'show_question' => 1
+                'show_question' => 0
 
 
             ],
@@ -305,7 +305,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-den.png',
                 'answer' => 'LB',
                 'answer_list' => ['LgB', 'BL', 'GB', 'LB'],
-                'show_question' => 1
+                'show_question' => 0
 
 
             ],
@@ -315,7 +315,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-xanhlacay.png',
                 'answer' => 'LG',
                 'answer_list' => ['LG', 'GL', 'LY', 'LB'],
-                'show_question' => 1
+                'show_question' => 0
 
 
             ],
@@ -325,7 +325,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-trang.png',
                 'answer' => 'BrW',
                 'answer_list' => ['BrW', 'GrW', 'BrR', 'BrY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 35,
@@ -333,7 +333,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-do.png',
                 'answer' => 'BrR',
                 'answer_list' => ['BrW', 'GrR', 'BrR', 'BrY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 36,
@@ -341,7 +341,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-vang.png',
                 'answer' => 'BrY',
                 'answer_list' => ['BrW', 'GrR', 'BrR', 'BrY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 37,
@@ -349,7 +349,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-den.png',
                 'answer' => 'BrB',
                 'answer_list' => ['BrW', 'GrR', 'BrB', 'BrY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 38,
@@ -357,7 +357,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-do.png',
                 'answer' => 'LgR',
                 'answer_list' => ['LgW', 'LgR', 'LR', 'GR'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 39,
@@ -365,7 +365,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-vang.png',
                 'answer' => 'LgY',
                 'answer_list' => ['LgW', 'LgY', 'LY', 'GY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 40,
@@ -373,7 +373,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-den.png',
                 'answer' => 'LgB',
                 'answer_list' => ['LB', 'LgR', 'LgB', 'GB'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 41,
@@ -381,7 +381,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-trang.png',
                 'answer' => 'LgW',
                 'answer_list' => ['LgW', 'GW', 'LW', 'GY'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 42,
@@ -389,7 +389,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-trang.png',
                 'answer' => 'BW',
                 'answer_list' => ['BW', 'WB', 'PW', 'WG'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 43,
@@ -405,7 +405,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-vang.png',
                 'answer' => 'BY',
                 'answer_list' => ['BW', 'BR', 'YB', 'BY'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -414,7 +414,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-xanh.png',
                 'answer' => 'BL',
                 'answer_list' => ['BL', 'LB', 'BY', 'BW'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -423,7 +423,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\den-xanhlacay.png',
                 'answer' => 'BG',
                 'answer_list' => ['BL', 'BG', 'BY', 'GB'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 47,
@@ -431,7 +431,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-do.png',
                 'answer' => 'WR',
                 'answer_list' => ['WR', 'RW', 'WY', 'WV'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 48,
@@ -439,7 +439,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-xanh.png',
                 'answer' => 'WL',
                 'answer_list' => ['WY', 'LW', 'WL', 'WV'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 49,
@@ -447,7 +447,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-vang.png',
                 'answer' => 'WY',
                 'answer_list' => ['WY', 'YW', 'WL', 'WR'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 50,
@@ -463,7 +463,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-xanhlacay.png',
                 'answer' => 'WG',
                 'answer_list' => ['WG', 'WV', 'WL', 'GW'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -472,7 +472,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\cam-trang.png',
                 'answer' => 'OW',
                 'answer_list' => ['GW', 'OW', 'WY', 'GW'],
-                'show_question' => 1
+                'show_question' => 0
             ],
             [
                 'id' => 53,
@@ -480,7 +480,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\hong-den.png',
                 'answer' => 'PB',
                 'answer_list' => ['PB', 'BY', 'LgB', 'GB'],
-                'show_question' => 1
+                'show_question' => 0
 
             ],
             [
@@ -497,7 +497,7 @@ class ArrayHelper
                 'path_image' => 'public\assets\frontend\images\anh-mau-day\xam-den.png',
                 'answer' => 'GrB',
                 'answer_list' => ['BrW', 'GrB', 'BrB', 'GrY'],
-                'show_question' => 1
+                'show_question' => 0
 
             ]
         ];

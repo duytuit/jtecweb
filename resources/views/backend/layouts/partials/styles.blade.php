@@ -37,6 +37,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/backend/js/iCheck/square/blue.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/backend/js/iCheck/square/green.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/backend/js/iCheck/square/grey.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/backend/js/jquery-ui/jquery-ui.min.css') }}" />
 <link href="{{ asset('public/assets/backend/css/style.min.css') }}" rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

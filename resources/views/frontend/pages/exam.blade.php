@@ -16,9 +16,11 @@
                             </div>
                         </div>
                          <div>
-                             <strong>Tiêu chuẩn đánh giá</strong>
-                            <i>Điểm đạt: 96-100</i><br>
-                            <i>Từ 90->95 điểm: kiểm tra lại sai 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
+                            <div>
+                                <strong>Tiêu chuẩn đánh giá</strong>
+                            </div>
+                            <i>Điểm đạt: 96->100 điểm</i><br>
+                            <i>Từ 90->95 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                             <i>Dưới 90 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
                             <i>Thời gian làm bài <strong>05:00</strong></i><br>
                          </div>
@@ -65,7 +67,7 @@
                             <div class="cards_item" id="{{$item['id']}}">
                                 <div class="card_question">
                                     <div class="form-group">
-                                        <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['name']}}</strong></div>
+                                        <div><strong>Câu {{$index +1}} : </strong><strong>{{$item['show_question'] == 1 ? $item['name']:''}}</strong></div>
                                         <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" /></div>
                                     </div>
                                     @php
@@ -194,6 +196,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(5*60); // 4 minutes in seconds
+        startTimer(4.9*60); // 4 minutes in seconds
     </script>
 @endsection

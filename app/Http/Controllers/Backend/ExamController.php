@@ -46,7 +46,7 @@ class ExamController extends Controller
             //$data['advance'] = 1;
             $data['filter'] = $request->all();
         }
-        
+
         $data['lists'] = Exam::where( function($query) use($request){
             if (isset($request->bdc_apartment_id) && $request->bdc_apartment_i != null) {
                 $bdc_apartment_id = $request->bdc_apartment_id;
@@ -68,11 +68,14 @@ class ExamController extends Controller
                 $query->whereDate('bdc_bills.created_at', '>=', $from_date);
                 $query->whereDate('bdc_bills.created_at', '<=', $to_date);
             }
-        })->paginate($data['per_page']);
+        })->orderBy('code')->orderBy('cycle_name')->orderBy('status','desc')->paginate($data['per_page']);
         //dd($data);
         return view('backend.pages.exams.index',$data);
     }
-
+    public function exportExcel(Request $request)
+    {
+        return Exam::query()->get()->downloadExcel('query-download.xlsx');
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -96,7 +99,7 @@ class ExamController extends Controller
         $exam->status = 0;
         $exam->save();
 
-        session()->flash('success', 'exam has been deleted successfully as trashed !!');
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
         return redirect()->route('admin.exams.index');
     }
 
@@ -147,7 +150,7 @@ class ExamController extends Controller
         // Delete exam permanently
         $exam->delete();
 
-        session()->flash('success', 'exam has been deleted permanently !!');
+        session()->flash('success', 'Bản ghi đã được xóa!!');
         return redirect()->route('admin.exams.index');
     }
 
@@ -172,9 +175,14 @@ class ExamController extends Controller
             return back();
         }else if($method == 'restore_apartment') {
             return back()->with('success', 'thành công!');
+        }else if($method == 'delete') {
+            if(isset($request->ids)){
+               $count_record = Exam::whereIn('id',$request->ids)->delete();
+            }
+            return back()->with('success','đã xóa '.$count_record.' bản ghi');
         }else{
             return back()->with('success', 'thành công!');
         }
-       
+
     }
 }

@@ -53,6 +53,8 @@
 
 <!--Custom JavaScript -->
 <script src="{{ asset('public/assets/backend/js/iCheck/icheck.min.js') }}"></script>
+<script src="{{ asset('public/assets/backend/js/iCheck/icheck.min.js') }}"></script>
+<script src="{{ asset('public/assets/backend/js/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('public/assets/backend/js/custom.min.js') }}"></script>
 <script src="{{ asset('public/assets/backend/js/init.js') }}"></script>
 <!--This page JavaScript -->
