@@ -21,6 +21,20 @@ class QrcodeController extends Controller
         ]);
         $collection = Excel::toArray(new QrcodeImport, $request->file('import_file'));
         return view('qrcode.index', compact('collection'));
-        // dd($collection);
+        // dd($inputCode);
+    }
+}
+
+class QrcodeGenerateController extends Controller
+{
+    public function QrcodeGenerate(Request $request)
+    {
+        $request->validate([
+            'InputCode' => 'required',
+        ]);
+
+        $inputCode = $request->input('InputCode');
+        return view('qrcode.index', compact('inputCode'));
+        dd($inputCode);
     }
 }
