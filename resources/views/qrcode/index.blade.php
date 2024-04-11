@@ -43,7 +43,10 @@
                                             @if ($item[0])
                                                 <tr>
                                                     <td>{{ $item[0] }}</td>
-                                                    <td style="text-align: center;">{!! QrCode::size(250)->generate((string) $item[0]) !!} </td>
+                                                    <td style="text-align: center;">
+                                                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate((string) $item[0])) !!} ">
+                                                    </td>
+                                                    
                                                 </tr>
                                             @endif
                                         @endforeach
