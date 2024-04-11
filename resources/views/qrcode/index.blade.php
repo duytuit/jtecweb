@@ -49,7 +49,10 @@
                                             <tr>
                                                 <td>{{ $inputCode }}</td>
                                                 <td style="text-align: center;">
-                                                    <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate($inputCode)) !!} ">
+                                                    @php
+                                                        $img = 'data:image/svg+xml;base64, ' . base64_encode(QrCode::size(100)->margin(1)->generate((string) $inputCode) );
+                                                    @endphp
+                                                    <img src="{{$img}}">
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -62,19 +65,21 @@
                                                 <tr>
                                                     <td>{{ $item[0] }}</td>
                                                     <td style="text-align: center;">
-                                                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate((string) $item[0])) !!} ">
+                                                        @php
+                                                            $img = 'data:image/svg+xml;base64, ' . base64_encode(QrCode::size(100)->margin(1)->generate((string) $item[0]) );
+                                                        @endphp
                                                         {{-- {!! QrCode::size(250)->margin(1)->generate((string) $item[0]) !!}  --}}
-                                                        {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->generate((string) $item[0])) !!}"> --}}
+                                                        <img src="{{ $img}}">
                                                         {{-- {!! QrCode::format('png')->size(50)->generate((string) $item[0]); !!} --}}
                                                     </td>
-                                                    
+
                                                 </tr>
                                             @endif
                                         @endforeach
                                     </tbody>
                                     @endif
                                 </table>
-                           
+
                         </div>
                     </div>
                 </div>
