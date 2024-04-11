@@ -9,7 +9,7 @@
         <!-- Page Content -->
         <div class="container">
             <form id="examForm">
-
+                        {{-- <a href="javascript:;" class="abc123">test</a> --}}
                          <div>
                             <div>
                                 <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
@@ -96,11 +96,9 @@
 @endsection
 @section('scripts')
     <script>
-        // $("#button").click(function() {
-        //     $('html, body').animate({
-        //         scrollTop: $("#myDiv").offset().top
-        //     }, 2000);
-        // });
+        $(".abc123").click(function() {
+            swal("Chúc mừng bạn đã đạt: 100");
+        });
         function getCheck(params) {
             $("#label_"+params).css("background-color","blueviolet")
         }
@@ -166,9 +164,9 @@
                         $(".right_answer").css("color", "blue");
                         var results = Math.round(( data.exam.results/data.exam.total_questions)*100) ;
                         if(results > 79){
-                            alert("Chúc mừng bạn đã đạt: "+results);
+                            swal("Chúc mừng bạn đã đạt: "+results);
                         }else{
-                            alert("Số điểm của bạn là: "+results+". Bạn chưa đạt");
+                            swal("Số điểm của bạn là: "+results+". Bạn chưa đạt");
                         }
                     }
                 }
