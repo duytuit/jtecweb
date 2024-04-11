@@ -7,7 +7,7 @@
 @section('admin-content')
     @include('backend.pages.exams.partials.header-breadcrumbs')
     <div class="container-fluid">
-        {{-- @include('backend.pages.exams.partials.top-show') --}}
+        @include('backend.pages.exams.partials.top-show')
         @include('backend.layouts.partials.messages')
         <form id="form-search" action="{{ route('admin.exams.index',) }}" method="get">
             <div class="row form-group">
@@ -21,7 +21,7 @@
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
-                    <a href="{{ route('admin.exams.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Export</a>
+                    <a href="{{ route('admin.exams.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
                 <div class="col-sm-4 text-right">
                         <div class="input-group">
@@ -95,10 +95,9 @@
                             <th>Trả lời đúng</th>
                             <th>Điểm</th>
                             <th>Thời gian làm bài</th>
-                            <th>Trạng thái</th>
+                            <th>Lần thi</th>
                             <th>Kết quả</th>
-                            <th>Người duyệt</th>
-                            <th width="100">Action</th>
+                            <th>Đánh giá</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,12 +131,25 @@
                             @else
                                <td colspan="3"></td>
                             @endif
+                            {{-- @if ($cycle_name == $item->cycle_name && $check ==1)
+                                <td rowspan="{{$lists->where('code',$code)->where('cycle_name',$cycle_name)->count()}}" style="vertical-align: middle;">
+                                    @php
+                                        $pass = $lists->where('code',$code)->where('cycle_name',$cycle_name)->where('status',1)->count()
+                                    @endphp
+                                        @if ($pass >= 2)
+                                        <span class="badge badge-info font-weight-100">Đỗ</span>
+                                    @else
+                                        <span class="badge badge-secondary">Thi lại</span>
+                                    @endif
+                                </td>
+                            @endif --}}
                             <td>{{ $item->cycle_name }}</td>
                             <td>{{ date('d-m-Y', strtotime(@$item->create_date))  }}</td>
                             <td>{{ $item->total_questions }}</td>
                             <td>{{ $item->results }}</td>
                             <td>{{ $item->scores }}</td>
                             <td>{{ $item->counting_time }}</td>
+                            <td>{{'lần '.$item->mission}}</td>
                             <td>
                                 @if ( $item->status)
                                     <span class="badge badge-success font-weight-100">Đạt</span>
@@ -145,30 +157,14 @@
                                     <span class="badge badge-warning">Chưa Đạt</span>
                                 @endif
                             </td>
-                            @if ($cycle_name == $item->cycle_name && $check ==1)
-                                <td rowspan="{{$lists->where('code',$code)->where('cycle_name',$cycle_name)->count()}}" style="vertical-align: middle;">
-                                    @php
-                                        $pass = $lists->where('code',$code)->where('cycle_name',$cycle_name)->where('status',1)->count()
-                                    @endphp
-                                     @if ($pass >= 2)
-                                        <span class="badge badge-info font-weight-100">Đỗ</span>
-                                    @else
-                                        <span class="badge badge-secondary">Thi lại</span>
-                                    @endif
-                                </td>
-                            @endif
                             <td>
+                                @if ( $item->status)
+                                   <span class="badge badge-info font-weight-100">Đỗ</span>
+                                @else
+                                   <span class="badge badge-secondary">Thi lại</span>
+                                @endif
+                            </td>
 
-                            </td>
-                            <td>
-                                {{-- <a href="javascript:;" class="btn waves-effect waves-light btn-danger btn-sm btn-circle ml-1 text-white" onclick="deleteItem({{ $item->id }})" title="Delete Admin">
-                                    <i class="fa fa-trash"></i>
-                                </a> --}}
-                                {{-- <form id="deleteForm{{ $item->id }}" action="{{ route('admin.exams.trashed.destroy',[$item->id]) }}" method="post" style="display:none">
-                                     @csrf
-                                    <input type="hidden" name="_method" value="delete">
-                                </form> --}}
-                            </td>
                         </tr>
                         @endforeach
                     </tbody>

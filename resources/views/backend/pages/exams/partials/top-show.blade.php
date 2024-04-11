@@ -4,46 +4,63 @@
 <!-- ============================================================== -->
 <div class="row mt-1">
     <!-- Column -->
-    <div class="col-md-6 col-lg-3 col-xlg-3 pointer"  onclick="location.href='{{ route('admin.exams.index') }}'">
+    <div class="col-md-6 col-lg-6 col-xlg-6" >
         <div class="card card-hover">
-            <div class="box bg-info text-center">
-                <h1 class="font-light text-white">{{ $count_exams }}</h1>
-                <h6 class="text-white">Total Exams</h6>
+            <div class="bg-info text-center" style="border-radius: 2px">
+                <div class="bg-yellow">
+                    <div class="font-light text-white">LẦN 1</div>
+                    <div class="text-white" style="display: flex;
+                        justify-content: space-around;">
+                         <div>
+                             <div>Tổng</div>
+                             <div>43</div>
+                         </div>
+                         <div>
+                            <div>Đạt</div>
+                            <div>13</div>
+                        </div>
+                         <div>
+                            <div>Chưa đạt</div>
+                            <div>3</div>
+                        </div>
+                         <div>
+                            <div>Chưa thi</div>
+                             <div>5</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Column -->
-    <div class="col-md-6 col-lg-3 col-xlg-3 pointer"  onclick="location.href='{{ route('admin.exams.index') }}'">
+    <div class="col-md-6 col-lg-6 col-xlg-6" >
         <div class="card card-hover">
-            <div class="box bg-success text-center">
-                <h1 class="font-light text-white">{{ $count_active_exams }}</h1>
-                <h6 class="text-white">Active Exams</h6>
+            <div class="bg-info text-center" style="border-radius: 2px">
+                <div class="bg-yellow">
+                    <div class="font-light text-white">LẦN 2</div>
+                    <div class="text-white" style="display: flex;
+                        justify-content: space-around;">
+                         <div>
+                             <div>Tổng</div>
+                             <div>43</div>
+                         </div>
+                         <div>
+                            <div>Đạt</div>
+                            <div>13</div>
+                        </div>
+                         <div>
+                            <div>Chưa đạt</div>
+                            <div>3</div>
+                        </div>
+                         <div>
+                            <div>Chưa thi</div>
+                             <div>5</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Column -->
-    <div class="col-md-6 col-lg-3 col-xlg-3 pointer" onclick="location.href='{{ route('admin.exams.trashed') }}'">
-        <div class="card card-hover">
-            <div class="box bg-primary text-center">
-                <h1 class="font-light text-white">{{ $count_exams - $count_active_exams }} / {{ $count_trashed_exams }} </h1>
-                <h6 class="text-white">Inactive/Trashed exams</h6>
-            </div>
-        </div>
-    </div>
-
-    @if (Auth::user()->can('exam.create'))
-    <div class="col-md-6 col-lg-3 col-xlg-3 pointer" onclick="location.href='{{ route('admin.exams.create') }}'">
-        <div class="card card-hover">
-            <div class="box bg-info text-center">
-                <h1 class="font-light text-white">
-                    <i class="fa fa-plus-circle"></i>
-                </h1>
-                <h6 class="text-white">Create New Exam</h6>
-            </div>
-        </div>
-    </div>
-    @endif
 
 </div>
