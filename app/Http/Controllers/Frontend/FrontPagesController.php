@@ -37,14 +37,7 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        $getYear = Carbon::now()->year;
-        $cycle_name=[];
-        for ($i=0; $i <= 1; $i++) {
-           for ($j=1; $j <= 12; $j++) {
-            $cycle_name[] = $j.($getYear-$i);
-           }
-        }
-        dd( $cycle_name);
+
         //$this->updateScoresAndStatus();
         $dsgfg= Exam::all();
         return (new ExamExport( $dsgfg))->download('exam.xlsx');
