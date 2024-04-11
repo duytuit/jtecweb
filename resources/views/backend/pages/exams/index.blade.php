@@ -21,7 +21,7 @@
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
-                    <a href="{{ route('admin.exams.exportExcel') }}" class="btn btn-success"><i class="fa fa-edit"></i> Export</a>
+                    <a href="{{ route('admin.exams.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Export</a>
                 </div>
                 <div class="col-sm-4 text-right">
                         <div class="input-group">
