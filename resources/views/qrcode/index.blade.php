@@ -81,15 +81,6 @@
 @endsection
 
 @section('scripts')
-{{-- <script>
-    function UpdateQRCode() {
-        // var inputValue = document.getElementById('inputcode').value;
-        var inputValue = document.getElementById('inputcode').value.toString();
-        var qrcodeImg = document.getElementById("qrcodeImg");
-        document.getElementById('getQrcode').innerText  = inputValue;
-        // qrcodeImg.src = "data:image/png;base64, " + "{!! base64_encode(QrCode::format('png')->size(50)->margin(1)->generate(" + inputValue + ")) !!}";
-        console.log(inputValue);
-    }
-</script> --}}
-
+<script>
+</script>
 @endsection
