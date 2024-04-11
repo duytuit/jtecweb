@@ -23,16 +23,11 @@ class QrcodeController extends Controller
         return view('qrcode.index', compact('collection'));
         // dd($inputCode);
     }
-}
-
-class QrcodeGenerateController extends Controller
-{
     public function QrcodeGenerate(Request $request)
     {
         $request->validate([
             'InputCode' => 'required',
         ]);
-
         $inputCode = $request->input('InputCode');
         return view('qrcode.index', compact('inputCode'));
         dd($inputCode);
