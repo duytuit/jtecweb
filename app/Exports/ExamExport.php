@@ -2,51 +2,26 @@
 namespace App\Exports;
 
 use App\Models\Exam;
+use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ExamExport implements FromQuery,WithHeadings
+class ExamExport implements FromView
 {
     use Exportable;
 
-    public $options;
+    public $data;
 
-    public function __construct(array $options)
+    public function __construct($data)
     {
-        $this->options = $options;
+        $this->data = $data;
     }
-
-    public function query()
+    public function view(): View
     {
-        $model = Exam::query();
-        $model = $model->where($this->options);
-        return  $model;
-    }
-    public function headings(): array
-    {
-        return [
-            'id',
-            'name',
-            'code',
-            'sub_dept',
-            'cycle_name',
-            'create_date',
-            'results',
-            'total_questions',
-            'status',
-            'confirm',
-            'counting_time',
-            'limit_time',
-            'data',
-            'created_at',
-            'updated_at',
-            'deleted_at',
-            'updated_by',
-            'deleted_by',
-            'mission'
-        ];
-
-
+        return view('backend.exports.examExport', [ 'lists' =>$this->data]);
     }
 }

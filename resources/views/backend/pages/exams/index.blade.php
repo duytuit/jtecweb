@@ -9,7 +9,7 @@
     <div class="container-fluid">
         {{-- @include('backend.pages.exams.partials.top-show') --}}
         @include('backend.layouts.partials.messages')
-        <form id="form-search" action="{{ route('admin.exams.index') }}" method="get">
+        <form id="form-search" action="{{ route('admin.exams.index',) }}" method="get">
             <div class="row form-group">
                 <div class="col-sm-8">
                     <span class="btn-group">
@@ -21,16 +21,16 @@
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
-                    <a href="#" class="btn btn-success"><i class="fa fa-edit"></i> Export</a>
+                    <a href="{{ route('admin.exams.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Export</a>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <div class="input-group">
-                        <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa" class="form-control" />
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-info"><span class="fa fa-search"></span></button>
-                            <button type="button" class="btn btn-warning btn-search-advance" data-toggle="show" data-target=".search-advance"><span class="fa fa-filter"></span></button>
+                        <div class="input-group">
+                            <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa" class="form-control" />
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-info"><span class="fa fa-search"></span></button>
+                                <button type="button" class="btn btn-warning btn-search-advance" data-toggle="show" data-target=".search-advance"><span class="fa fa-filter"></span></button>
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </form><!-- END #form-search -->
@@ -55,17 +55,22 @@
                             value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <input type="text" placeholder="Người tạo" class="form-control" />
+                    <div class="col-sm-2">
+                        <select name="cycle_name" class="form-control" style="width: 100%;">
+                            <option value="">Kỳ thi</option>
+                             @foreach ($cycleNames as $item)
+                                <option value="{{$item}}" {{ @$filter['cycle_name'] === $item ? 'selected' : '' }}>{{$item}}</option>
+                             @endforeach
+                        </select>
                     </div>
                     <div class="col-sm-2">
                         <select name="status" class="form-control" style="width: 100%;">
                             <option value="">Trạng thái</option>
-                            <option value="1" {{ @$filter['status'] === '1' ? 'selected' : '' }}>Active</option>
-                            <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Inactive</option>
+                            <option value="1" {{ @$filter['status'] === '1' ? 'selected' : '' }}>Đạt</option>
+                            <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Chưa đạt</option>
                         </select>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <button class="btn btn-warning btn-block">Tìm kiếm</button>
                     </div>
                 </div>
@@ -131,7 +136,7 @@
                             <td>{{ date('d-m-Y', strtotime(@$item->create_date))  }}</td>
                             <td>{{ $item->total_questions }}</td>
                             <td>{{ $item->results }}</td>
-                            <td>{{ round(($item->results/$item->total_questions)*100) }}</td>
+                            <td>{{ $item->scores }}</td>
                             <td>{{ $item->counting_time }}</td>
                             <td>
                                 @if ( $item->status)

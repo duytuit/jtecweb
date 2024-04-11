@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
+
 class ArrayHelper
 {
     public static function objArraySearch($array, $key, $value)
@@ -26,6 +28,17 @@ class ArrayHelper
         array_push($firstThreeElements, $value);
         shuffle($firstThreeElements);
         return $firstThreeElements;
+    }
+
+    public static function cycleName() {
+        $getYear = Carbon::now()->year;
+        $cycle_name=[];
+        for ($i=0; $i <= 1; $i++) {
+           for ($j=1; $j <= 12; $j++) {
+            $cycle_name[] = $j.($getYear-$i);
+           }
+        }
+        return $cycle_name;
     }
 
     public static function arrayExamPd()

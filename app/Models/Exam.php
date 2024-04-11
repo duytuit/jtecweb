@@ -11,7 +11,28 @@ class Exam extends Model
     use HasFactory,SoftDeletes;
     protected $guarded = [];
 
-    protected $seachable = ['title', 'status', 'pub_profile_id', 'bdc_handbook_category_id', 'bdc_handbook_type_id','id','department_id','order','feature','bdc_business_partners_id','url_video'];
+    protected $seachable = [
+        'id',
+        'name',
+        'code',
+        'sub_dept',
+        'cycle_name',
+        'create_date',
+        'results',
+        'total_questions',
+        'status',
+        'confirm',
+        'counting_time',
+        'limit_time',
+        'data',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'updated_by',
+        'deleted_by',
+        'mission',
+        'scores'
+    ];
 
     // public function handbook_department()
     // {
@@ -20,7 +41,7 @@ class Exam extends Model
     // public function businesspartners()
     // {
     //     return $this->belongsTo(BusinessPartners::class, 'bdc_business_partners_id');
-    // } 
+    // }
 
     public function scopeFilter($query, $input)
     {
@@ -35,9 +56,9 @@ class Exam extends Model
         //   ->filter($keyword)
         //   ->orderBy('updated_at', 'DESC')
         //   ->paginate($per_page);
-        
-        if (isset($input['handbook_keyword'])) {
-            $search = $input['handbook_keyword'];
+
+        if (isset($input['keyword'])) {
+            $search = $input['keyword'];
             $query->where(function ($q) use ($search) {
                 foreach ($this->seachable as $value) {
                     $q->orWhere($value, 'LIKE', '%' . $search . '%');

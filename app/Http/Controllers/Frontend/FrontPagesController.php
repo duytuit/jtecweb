@@ -37,9 +37,17 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        $where = [];
-        $where[] = ['id', '=', 16];
-        return (new ExamExport($where))->download('invoices.xlsx');
+        $getYear = Carbon::now()->year;
+        $cycle_name=[];
+        for ($i=0; $i <= 1; $i++) {
+           for ($j=1; $j <= 12; $j++) {
+            $cycle_name[] = $j.($getYear-$i);
+           }
+        }
+        dd( $cycle_name);
+        //$this->updateScoresAndStatus();
+        $dsgfg= Exam::all();
+        return (new ExamExport( $dsgfg))->download('exam.xlsx');
         //return Exam::query()->get()->downloadExcel('query-download.xlsx')->allFields();
 
         //$this->addEmployee();
@@ -203,6 +211,16 @@ class FrontPagesController extends Controller
                 ]);
             }
         }
+    }
+    public function updateScoresAndStatus(){
+           $fdgfdgf = Exam::all();
+           foreach ($fdgfdgf as $key => $value) {
+               $scores = round(($value->results/$value->total_questions)*100);
+               $value->update([
+                     'scores' =>$scores,
+                     'status' =>$scores > 95 ?  1:0
+               ]);
+           }
     }
 
 }

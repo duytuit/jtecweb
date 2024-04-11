@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\ExamExport;
+use App\Helpers\ArrayHelper;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,45 +38,53 @@ class ExamController extends Controller
         }
         // Phân trang
         $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
-        $data['keyword'] = $request->input('keyword', '');
+        $data['keyword'] = $request->input('keyword', null);
         $data['advance'] = 0;
-        if ($data['keyword']) {
-            // Tìm kiếm nhanh
-            $data['keyword'] = $request->input('keyword', '');
-        } else {
-            // Tìm kiếm nâng cao
-            //$data['advance'] = 1;
-            $data['filter'] = $request->all();
+        if (count($request->except('keyword')) > 0) {
+           // Tìm kiếm nâng cao
+           $data['advance'] = 1;
+           $data['filter'] = $request->all();
         }
-
+        $data['cycleNames'] = ArrayHelper::cycleName();
         $data['lists'] = Exam::where( function($query) use($request){
-            if (isset($request->bdc_apartment_id) && $request->bdc_apartment_i != null) {
-                $bdc_apartment_id = $request->bdc_apartment_id;
-                $query->where('bdc_apartment_id', $bdc_apartment_id);
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
             }
-            if (isset($request->cycle_name) && $request->cycle_nam != null) {
-                $cycle_name = $request->cycle_name;
-                $query->where('cycle_name', $cycle_name);
+            if (isset($request->cycle_name) && $request->cycle_name != null) {
+                $query->where('cycle_name', $request->cycle_name);
             }
-            if(isset($request->ip_place_id) && $request->ip_place_i != null){
-                $query->whereHas('apartment', function ($query) use ($request) {
-                    $ip_place_id = $request->ip_place_id;
-                        $query->where('building_place_id', $ip_place_id);
-                });
+            if(isset($request->status) && $request->status != null){
+                $query->where('status', $request->status);
             }
-            if (isset($request['from_date']) && isset($request['to_date'])) {
-                $from_date = Carbon::parse($request['from_date'])->format('Y-m-d');
-                $to_date   = Carbon::parse($request['to_date'])->format('Y-m-d');
-                $query->whereDate('bdc_bills.created_at', '>=', $from_date);
-                $query->whereDate('bdc_bills.created_at', '<=', $to_date);
+            if (isset($request->from_date) && isset($request->to_date)) {
+                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                $query->whereDate('create_date', '>=', $from_date);
+                $query->whereDate('create_date', '<=', $to_date);
             }
         })->orderBy('code')->orderBy('cycle_name')->orderBy('status','desc')->paginate($data['per_page']);
-        //dd($data);
         return view('backend.pages.exams.index',$data);
     }
     public function exportExcel(Request $request)
     {
-        return Exam::query()->get()->downloadExcel('query-download.xlsx');
+        $data = Exam::where( function($query) use($request){
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+            if (isset($request->cycle_name) && $request->cycle_name != null) {
+                $query->where('cycle_name', $request->cycle_name);
+            }
+            if(isset($request->status) && $request->status != null){
+                $query->where('status', $request->status);
+            }
+            if (isset($request->from_date) && isset($request->to_date)) {
+                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                $query->whereDate('create_date', '>=', $from_date);
+                $query->whereDate('create_date', '<=', $to_date);
+            }
+        })->orderBy('code')->orderBy('cycle_name')->orderBy('status','desc')->get();
+       return (new ExamExport($data))->download('exam.xlsx');
     }
     /**
      * Remove the specified resource from storage.
