@@ -49,7 +49,7 @@
                                             <tr>
                                                 <td>{{ $inputCode }}</td>
                                                 <td style="text-align: center;">
-                                                    {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->margin(1)->generate($inputCode)) !!} "> --}}
+                                                    <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate($inputCode)) !!} ">
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -62,8 +62,10 @@
                                                 <tr>
                                                     <td>{{ $item[0] }}</td>
                                                     <td style="text-align: center;">
-                                                        {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->margin(1)->generate((string) $item[0])) !!} "> --}}
-                                                        <td style="text-align: center;">{!! QrCode::size(250)->generate((string) $item[0]) !!} </td>
+                                                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate((string) $item[0])) !!} ">
+                                                        {{-- {!! QrCode::size(250)->margin(1)->generate((string) $item[0]) !!}  --}}
+                                                        {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->generate((string) $item[0])) !!}"> --}}
+                                                        {{-- {!! QrCode::format('png')->size(50)->generate((string) $item[0]); !!} --}}
                                                     </td>
                                                     
                                                 </tr>
