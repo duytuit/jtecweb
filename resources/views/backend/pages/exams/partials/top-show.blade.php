@@ -13,19 +13,19 @@
                         justify-content: space-around;">
                          <div>
                              <div>Tổng</div>
-                             <div>{{$emp->count()}}</div>
+                             <div>{{count($emp)}}</div>
                          </div>
                          <div>
                             <div>Đạt</div>
-                            <div>{{$emp_pass_1->count()}}</div>
+                            <div>{{count($emp_pass_1)}}</div>
                         </div>
                          <div>
                             <div>Chưa đạt</div>
-                            <div>{{$emp_fail_1->count()}}</div>
+                            <div>{{count($emp_fail_1)}}</div>
                         </div>
                          <div>
                             <div>Chưa thi</div>
-                            <div>{{$emp_yet_1->count()}}</div>
+                            <div>{{count($emp_yet_1)}}</div>
                         </div>
                     </div>
                 </div>
@@ -43,19 +43,19 @@
                         justify-content: space-around;">
                          <div>
                              <div>Tổng</div>
-                             <div>{{$emp->count()}}</div>
+                             <div>{{count($emp)}}</div>
                          </div>
                          <div>
                             <div>Đạt</div>
-                            <div>{{$emp_pass_2->count()}}</div>
+                            <div>{{count($emp_pass_2)}}</div>
                         </div>
                          <div>
                             <div>Chưa đạt</div>
-                            <div>{{$emp_fail_2->count()}}</div>
+                            <div>{{count($emp_fail_2)}}</div>
                         </div>
                          <div>
                             <div>Chưa thi</div>
-                            <div>{{$emp_yet_2->count()}}</div>
+                            <div>{{count($emp_yet_2)}}</div>
                         </div>
                     </div>
                 </div>
