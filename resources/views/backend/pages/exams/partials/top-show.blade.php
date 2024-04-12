@@ -13,19 +13,19 @@
                         justify-content: space-around;">
                          <div>
                              <div>Tổng</div>
-                             <div>{{count($emp)}}</div>
+                             <div>{{count($emp_pass_1)+count($emp_fail_1)+count($emp_yet_1)}}</div>
                          </div>
                          <div>
                             <div>Đạt</div>
-                            <div>{{count($emp_pass_1)}}</div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode( $emp_pass_1)}}" data-type="1"  style="color: white">{{count($emp_pass_1)}}</a></div>
                         </div>
                          <div>
                             <div>Chưa đạt</div>
-                            <div>{{count($emp_fail_1)}}</div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_1)}}" data-type="2"   style="color: white">{{count($emp_fail_1)}}</a></div>
                         </div>
                          <div>
                             <div>Chưa thi</div>
-                            <div>{{count($emp_yet_1)}}</div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_yet_1)}}" data-type="3"  style="color: white">{{count($emp_yet_1)}}</a></div>
                         </div>
                     </div>
                 </div>
@@ -43,19 +43,19 @@
                         justify-content: space-around;">
                          <div>
                              <div>Tổng</div>
-                             <div>{{count($emp)}}</div>
+                             <div>{{count($emp_pass_2)+count($emp_fail_2)+count($emp_yet_2)}}</div>
                          </div>
                          <div>
                             <div>Đạt</div>
-                            <div>{{count($emp_pass_2)}}</div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_pass_2)}}" data-type="4" style="color: white">{{count($emp_pass_2)}}</a></div>
                         </div>
                          <div>
                             <div>Chưa đạt</div>
-                            <div>{{count($emp_fail_2)}}</div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_2)}}" data-type="5"  style="color: white">{{count($emp_fail_2)}}</a></div>
                         </div>
                          <div>
                             <div>Chưa thi</div>
-                            <div>{{count($emp_yet_2)}}</div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_yet_2)}}" data-type="6"  style="color: white">{{count($emp_yet_2)}}</a></div>
                         </div>
                     </div>
                 </div>
