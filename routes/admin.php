@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\BlogsController;
 use App\Http\Controllers\Backend\ContactsController;
 use App\Http\Controllers\Backend\CacheController;
 use App\Http\Controllers\Backend\ExamController;
+use App\Http\Controllers\Backend\ProductvtController;
 use App\Http\Controllers\Backend\LanguagesController;
 use App\Http\Controllers\Backend\SettingsController;
 
@@ -91,5 +92,16 @@ Route::group(['prefix' => 'settings'], function () {
     Route::resource('languages', LanguagesController::class);
 });
 
+/**
+ * Productivity Management Routes
+ */
+Route::group(['prefix' => ''], function () {
+    Route::get('productvt', [ProductvtController::class, 'index']);
+    Route::get('productvt/edit',[ProductvtController::class, 'ProductvtEdit']);
+    Route::post('productvt',[ProductvtController::class, 'ProductvtData']);
+});
+
+
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);
+

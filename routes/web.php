@@ -26,7 +26,6 @@ Route::post('qrcode/generate',[App\Http\Controllers\QrcodeController::class, 'Qr
 Route::get('question/import', [App\Http\Controllers\QuestionController::class, 'index']);
 Route::post('question/import',[App\Http\Controllers\QuestionController::class, 'importExcelData']);
 
-// Route::post('sanluong',[App\Http\Controllers\SanluongController::class, 'sanLuong']);
 
 Route::get( '/', [ FrontPagesController::class, 'index' ] )->name( 'index' );
 Route::get( '/exam', [ FrontPagesController::class, 'exam' ] )->name( 'exam' );
@@ -36,6 +35,12 @@ Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.s
 
 
 
+// Route::get('sanluong', function () {
+//     return view('workforce-prd.index');
+// });
+// Route::get('sanluong', [App\Http\Controllers\SanluongController::class, 'index']);
+// Route::get('sanluong/edit',[App\Http\Controllers\SanluongController::class, 'SanluongEdit']);
+// Route::post('sanluong',[App\Http\Controllers\SanluongController::class, 'SanluongData']);
 
 // Route::get('/', function () {
 //     return view('form');

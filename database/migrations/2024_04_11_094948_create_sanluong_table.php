@@ -15,6 +15,15 @@ return new class extends Migration
     {
         Schema::create('sanluong', function (Blueprint $table) {
             $table->id();
+            $table->date('ngaylamviec');
+            $table->integer('muctieu');
+            $table->string('maylamviec');
+            $table->integer('macodenv');
+            $table->string('calamviec');
+            $table->integer('sltrenmay');
+            $table->integer('slnhanvien');
+            $table->string('phantram');
+            $table->string('ghichu');
             $table->timestamps();
         });
     }
