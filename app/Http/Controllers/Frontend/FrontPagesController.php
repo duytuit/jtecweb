@@ -83,12 +83,14 @@ class FrontPagesController extends Controller
         $mytime = Carbon::now();
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
         $scores = round(($results/count($arrayExam))*100);
+        $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
+        $mission = Exam::where(['code'=>$request->manhanvien,'cycle_name'=>$cycle_name])->count();
         try {
             $exam = Exam::create([
                 'name' =>$emp? $emp->first_name.' '.$emp->last_name : $request->manhanvien, //tên nhân viên
                 'code' => $request->manhanvien, // mã nhân viên
                 'sub_dept' => $request->congdoan, // công đoạn
-                'cycle_name' => Carbon::parse($request->ngaykiemtra)->format('mY'), // kỳ thi
+                'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results,// tổng số câu trả lời đúng
                 'total_questions' => count($arrayExam),// tổng số câu hỏi
@@ -96,7 +98,7 @@ class FrontPagesController extends Controller
                 'limit_time' => '05:00',// tổng số câu hỏi
                 'data' => json_encode($request->answer),// tổng số câu hỏi
                 'status' => $scores > 95 ?  1:0,// 0:chưa duyệt,1:đã duyệt
-                'mission' =>  0,// số lần thi
+                'mission' =>  $mission+1,// số lần thi
                 'scores' => $scores,// điểm thi
             ]);
             return $this->success(compact('exam'));

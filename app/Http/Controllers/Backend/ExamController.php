@@ -62,7 +62,7 @@ class ExamController extends Controller
                 $query->whereDate('create_date', '>=', $from_date);
                 $query->whereDate('create_date', '<=', $to_date);
             }
-        })->orderBy('code')->orderBy('cycle_name')->orderBy('status','desc')->paginate($data['per_page']);
+        })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->paginate($data['per_page']);
         return view('backend.pages.exams.index',$data);
     }
     public function exportExcel(Request $request)
@@ -83,7 +83,7 @@ class ExamController extends Controller
                 $query->whereDate('create_date', '>=', $from_date);
                 $query->whereDate('create_date', '<=', $to_date);
             }
-        })->orderBy('code')->orderBy('cycle_name')->orderBy('status','desc')->get();
+        })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
        return (new ExamExport($data))->download('exam.xlsx');
     }
     /**
