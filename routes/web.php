@@ -26,6 +26,7 @@ Route::post('qrcode/generate',[App\Http\Controllers\QrcodeController::class, 'Qr
 Route::get('question/import', [App\Http\Controllers\QuestionController::class, 'index']);
 Route::post('question/import',[App\Http\Controllers\QuestionController::class, 'importExcelData']);
 
+// Route::post('sanluong',[App\Http\Controllers\SanluongController::class, 'sanLuong']);
 
 Route::get( '/', [ FrontPagesController::class, 'index' ] )->name( 'index' );
 Route::get( '/exam', [ FrontPagesController::class, 'exam' ] )->name( 'exam' );
