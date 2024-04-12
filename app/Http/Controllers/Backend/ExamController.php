@@ -7,9 +7,11 @@ use App\Helpers\ArrayHelper;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExamController extends Controller
@@ -45,7 +47,42 @@ class ExamController extends Controller
            $data['advance'] = 1;
            $data['filter'] = $request->all();
         }
+        $current_cycleName = Carbon::now()->format('mY');
         $data['cycleNames'] = ArrayHelper::cycleName();
+        $data['emp'] = Employee::select('code')->pluck('code');
+        $data['emp_pass_1'] = Exam::select('code',DB::raw('MIN(create_date) as min_create_date'))->whereIn('code',$data['emp'])->where('cycle_name',$current_cycleName)->where('status',1)->groupBy('code')->pluck('code');
+        $data['emp_fail_1'] = Exam::select('code',DB::raw('MIN(create_date) as min_create_date'))->whereIn('code',$data['emp'])->where('cycle_name',$current_cycleName)->whereNotIn('code',$data['emp_pass_1'])->where('status',0)->groupBy('code')->pluck('code');
+        $data['emp_yet_1'] = Employee::select('code')->whereNotIn('code',$data['emp_pass_1'])->whereNotIn('code',$data['emp_fail_1'])->pluck('code');
+        $sql_pass_2="SELECT
+                    tb2.code,
+                    min( tb2.create_date ) AS min_date 
+                FROM
+                    ( SELECT `code`, min( create_date ) AS min_date FROM exams WHERE `status` = 1 AND cycle_name = $current_cycleName GROUP BY `code` ) AS tb1
+                    INNER JOIN exams AS tb2 ON tb1.code = tb2.code 
+                    AND tb2.`status` = 1
+                    AND cycle_name = $current_cycleName 
+                WHERE
+                    tb2.create_date > tb1.min_date AND
+                    tb2.deleted_at is null
+                GROUP BY
+                    tb2.code";
+       
+        $sql_fail_2="SELECT
+                    tb2.code,
+                    min( tb2.create_date ) AS min_date 
+                FROM
+                    ( SELECT `code`, min( create_date ) AS min_date FROM exams WHERE `status` = 0 AND cycle_name = $current_cycleName GROUP BY `code` ) AS tb1
+                    INNER JOIN exams AS tb2 ON tb1.code = tb2.code 
+                    AND tb2.`status` = 0
+                    AND cycle_name = $current_cycleName 
+                WHERE
+                    tb2.create_date > tb1.min_date AND
+                    tb2.deleted_at is null
+                GROUP BY
+                    tb2.code";
+        $data['emp_pass_2'] = DB::table(DB::raw("($sql_pass_2) as tb_3"))->pluck('code');
+        $data['emp_fail_2'] = DB::table(DB::raw("($sql_fail_2) as tb_3"))->whereNotIn('code',$data['emp_pass_2'])->pluck('code');
+        $data['emp_yet_2'] = Employee::select('code')->whereNotIn('code',$data['emp_pass_2'])->whereNotIn('code',$data['emp_fail_2'])->pluck('code');
         $data['lists'] = Exam::where( function($query) use($request){
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
@@ -136,7 +173,7 @@ class ExamController extends Controller
                 $query->whereDate('create_date', '>=', $from_date);
                 $query->whereDate('create_date', '<=', $to_date);
             }
-        })->orderBy('code')->orderBy('cycle_name')->orderBy('status','desc')->get();
+        })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
        return (new ExamExport($data))->download('exam.xlsx');
     }
     /**
