@@ -62,7 +62,7 @@
                     {{-- <div class="card_image"><img src="https://picsum.photos/500/300/?image=2"></div> --}}
                     <div class="card_content">
                       <h2 class="card_title">Công đoạn Demo</h2>
-                      <p class="card_text">Nội dung kiểm tra</p>
+                      <p class="card_text">Nội dung kiểm tra mới</p>
                       <a href="#" class="btn card_btn">Bắt đầu làm bài</a>
                     </div>
                   </div>
