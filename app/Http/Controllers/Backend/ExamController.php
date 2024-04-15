@@ -69,6 +69,7 @@ class ExamController extends Controller
                                     ->where('cycle_name',$current_cycleName)
                                     ->whereNotIn('created_at',$created_at_emp_pass_1)
                                     ->whereNotIn('code',$code_emp_pass_1)
+                                    ->whereNotIn('code',array_column($data['emp_fail_1_90_95'],'code'))
                                     ->where('status',0)->where('scores','<',90)->groupBy('code')->get()->ToArray();
         $data['emp_yet_1'] = Employee::select('code')
                                     ->whereNotIn('code',$code_emp_pass_1)
@@ -92,6 +93,7 @@ class ExamController extends Controller
                                     ->whereNotIn('created_at',$created_at_emp_pass_1)
                                     ->whereNotIn('created_at',array_column($data['emp_pass_2'],'max_created_at'))
                                     ->whereNotIn('code',$code_emp_pass_2)
+                                    ->whereNotIn('code',array_column($data['emp_fail_2_90_95'],'code'))
                                     ->where('status',0)->where('scores','<',90)->groupBy('code')->get()->ToArray();
         $data['emp_yet_2'] = Employee::select('code')
                                     ->whereNotIn('code',$code_emp_pass_2)
