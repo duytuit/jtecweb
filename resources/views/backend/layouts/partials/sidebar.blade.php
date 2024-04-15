@@ -69,7 +69,7 @@
                 </li>
                 @endcan
 
-                @if ($user->can('category.view') || $user->can('category.create'))
+                {{-- @if ($user->can('category.view') || $user->can('category.create'))
                 <li class="sidebar-item ">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="mdi mdi-tune"></i>
@@ -95,9 +95,9 @@
                         @endif
                     </ul>
                 </li>
-                @endif
+                @endif --}}
 
-                @if ($user->can('page.view') || $user->can('page.create'))
+                {{-- @if ($user->can('page.view') || $user->can('page.create'))
                 <li class="sidebar-item ">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="mdi mdi-tag-text-outline"></i>
@@ -123,9 +123,9 @@
                         @endif
                     </ul>
                 </li>
-                @endif
+                @endif --}}
 
-                @if ($user->can('service.view') || $user->can('service.create'))
+                {{-- @if ($user->can('service.view') || $user->can('service.create'))
                 <li class="sidebar-item ">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="mdi mdi-arrow-right-drop-circle"></i>
@@ -151,9 +151,9 @@
                         @endif
                     </ul>
                 </li>
-                @endif
+                @endif --}}
 
-                @if ($user->can('booking_request.view') || $user->can('booking_request.edit') || $user->can('booking_request.delete'))
+                {{-- @if ($user->can('booking_request.view') || $user->can('booking_request.edit') || $user->can('booking_request.delete'))
                 @php
                     $count_pending_booking_request = \Modules\Booking\Entities\BookingRequest::where('status', 'pending')->count();
                 @endphp
@@ -174,9 +174,9 @@
                         @endif
                     </ul>
                 </li>
-                @endif
+                @endif --}}
 
-                @if ($user->can('blog.view') || $user->can('blog.create'))
+                {{-- @if ($user->can('blog.view') || $user->can('blog.create'))
                     <li class="sidebar-item ">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                             <i class="mdi mdi-view-list"></i>
@@ -202,7 +202,7 @@
                             @endif
                         </ul>
                     </li>
-                @endif
+                @endif --}}
 
                 @if ($user->can('exam.view') || $user->can('exam.create'))
                     <li class="sidebar-item ">
@@ -232,7 +232,7 @@
                     </li>
                 @endif
 
-                @if ($user->can('contact.view') || $user->can('contact.create'))
+                {{-- @if ($user->can('contact.view') || $user->can('contact.create'))
                     <li class="sidebar-item ">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                             <i class="mdi mdi-email"></i>
@@ -249,7 +249,7 @@
                             @endif
                         </ul>
                     </li>
-                @endif
+                @endif --}}
 
                 {{-- <li class="nav-small-cap">
                     <i class="mdi mdi-dots-horizontal"></i>
