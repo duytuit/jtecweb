@@ -49,10 +49,9 @@ class FrontPagesController extends Controller
         $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
         return (new DetailReportExport($data))->download('detail-report.xlsx');
     }
-    public function exam()
+    public function exam(Request $request)
     {
-        $start_time=Carbon::now();
-        return view('frontend.pages.exam',['start_time'=>$start_time]);
+        return view('frontend.pages.exam');
     }
     public function test()
     {

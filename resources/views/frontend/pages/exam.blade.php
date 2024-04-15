@@ -37,14 +37,14 @@
                                 Mã nhân viên:
                              </div>
                              <div>
-                                 <input type="text" name="manhanvien" class="form-control">
+                                 <input type="text" name="manhanvien" value="{{Request::query('code')}}" class="form-control" readonly>
                              </div>
                              <div>
                                 Ngày kiểm tra:
                              </div>
                              <div class="form-group">
                                  <input type="date" id="datePicker" name="ngaykiemtra" value="{{time()}}" class="form-control" style="width:100%">
-                                 <input type="hidden" id="count_timer" name="count_timer" value="{{$start_time}}">
+                                 <input type="hidden" id="count_timer" name="count_timer" value="{{date('Y-m-d H:i:s')}}">
                                 </div>
                          </div>
                         <div class="form-group">
