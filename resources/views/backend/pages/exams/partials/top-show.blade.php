@@ -25,10 +25,10 @@
                                 <table class="table-bordered">
                                     <tr>
                                         <td style="padding: 0 10px">
-                                            90->95đ
+                                            Thi lại
                                         </td>
                                         <td style="padding: 0 10px">
-                                            < 90đ
+                                           Đào tạo lại
                                         </td>
                                     </tr>
                                     <tr>
@@ -70,10 +70,10 @@
                                 <table class="table-bordered">
                                     <tr>
                                         <td style="padding: 0 10px">
-                                            90->95đ
+                                           Thi lại
                                         </td>
                                         <td style="padding: 0 10px">
-                                            < 90đ
+                                           Đào tạo lại
                                         </td>
                                     </tr>
                                     <tr>
