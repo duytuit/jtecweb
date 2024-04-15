@@ -1,4 +1,9 @@
 <?php
+# Author: Yujin Boby
+# Web: https://serverok.in/php-script-to-pull-changes-from-git-repository
+# Email: admin@serverOk.in
+# This script pull latest code from git.
+
 
 $result = exec("git pull origin main 2>&1", $r2);
 
@@ -23,3 +28,4 @@ echo "<pre>";
 foreach ($r2 as $line) {
         echo $line . "\n";
 }
+
