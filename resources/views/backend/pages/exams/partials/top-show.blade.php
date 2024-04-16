@@ -32,15 +32,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_1_90_95)}}" data-type="4" style="color: white">{{count($emp_fail_1_90_95)}}</a></div></td>
-                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_1_90)}}" data-type="4" style="color: white">{{count($emp_fail_1_90)}}</a></div></td>
+                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_1_90_95)}}" data-type="2" style="color: white">{{count($emp_fail_1_90_95)}}</a></div></td>
+                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_1_90)}}" data-type="3" style="color: white">{{count($emp_fail_1_90)}}</a></div></td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                          <div>
                             <div>Chưa thi</div>
-                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_yet_1)}}" data-type="3"  style="color: white">{{count($emp_yet_1)}}</a></div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_yet_1)}}" data-type="4"  style="color: white">{{count($emp_yet_1)}}</a></div>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                          </div>
                          <div>
                             <div>Đạt</div>
-                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_pass_2)}}" data-type="4" style="color: white">{{count($emp_pass_2)}}</a></div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_pass_2)}}" data-type="5" style="color: white">{{count($emp_pass_2)}}</a></div>
                         </div>
                          <div>
                             <div>Chưa đạt</div>
@@ -77,15 +77,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_2_90_95)}}" data-type="4" style="color: white">{{count($emp_fail_2_90_95)}}</a></div></td>
-                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_2_90)}}" data-type="4" style="color: white">{{count($emp_fail_2_90)}}</a></div></td>
+                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_2_90_95)}}" data-type="6" style="color: white">{{count($emp_fail_2_90_95)}}</a></div></td>
+                                        <td> <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_fail_2_90)}}" data-type="7" style="color: white">{{count($emp_fail_2_90)}}</a></div></td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                          <div>
                             <div>Chưa thi</div>
-                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_yet_2)}}" data-type="6"  style="color: white">{{count($emp_yet_2)}}</a></div>
+                            <div><a href="javascript:;" class="detailReport" data-emp="{{json_encode($emp_yet_2)}}" data-type="8"  style="color: white">{{count($emp_yet_2)}}</a></div>
                         </div>
                     </div>
                 </div>

@@ -32,18 +32,24 @@ class FrontPagesController extends Controller
             $data['title'] = 'Thi lần 1 đạt';
         }
         if($request->type == 2){
-            $data['title'] = 'Thi lần 1 chưa đạt';
+            $data['title'] = 'Thi lần 1 chưa đạt( thi lại )';
         }
         if($request->type == 3){
-            $data['title'] = 'Chưa thi lần 1';
+            $data['title'] = 'Thi lần 1 chưa đạt( đào tạo lại )';
         }
         if($request->type == 4){
-            $data['title'] = 'Thi lần 2 đạt';
+            $data['title'] = 'Chưa thi lần 1';
         }
         if($request->type == 5){
-            $data['title'] = 'Thi lần 2 chưa đạt';
+            $data['title'] = 'Thi lần 2 đạt';
         }
         if($request->type == 6){
+            $data['title'] = 'Thi lần 2 chưa đạt( thi lại )';
+        }
+        if($request->type == 7){
+            $data['title'] = 'Thi lần 2 chưa đạt( thi lại )';
+        }
+        if($request->type == 8){
             $data['title'] = 'Chưa thi lần 2';
         }
         $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
