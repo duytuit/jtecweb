@@ -16,3 +16,4 @@ npm-debug.log
 yarn-error.log
 composer.lock
 .DS_Store
+/public/pull.php

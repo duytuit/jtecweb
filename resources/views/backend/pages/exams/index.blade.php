@@ -214,5 +214,29 @@
                         $("#deleteForm"+params).submit();
                 }})
            }
+           $('.detailReport').click(function(e) {
+               e.preventDefault();
+               var emp = $(this).data('emp');
+               var type = $(this).data('type');
+               values={
+                    _token : $('meta[name="csrf-token"]').attr('content'),
+                    emp:emp,
+                    type:type
+                };
+                $.ajax({
+                    url: "{{ route('exam.detailReport') }}",
+                    method: 'POST',
+                    data: values,
+                    xhrFields:{
+                        responseType: 'blob'
+                    },
+                    success: function(response){
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(response);
+                        link.download = `Invoice_details_report.xlsx`;
+                        link.click();
+                    }
+                });
+           })
     </script>
 @endsection
