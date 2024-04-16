@@ -194,6 +194,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(4.9*60); // 4 minutes in seconds
+        startTimer(5*60); // 4 minutes in seconds
     </script>
 @endsection
