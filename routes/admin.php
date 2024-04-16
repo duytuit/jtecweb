@@ -95,13 +95,19 @@ Route::group(['prefix' => 'settings'], function () {
 /**
  * Productivity Management Routes
  */
-Route::group(['prefix' => ''], function () {
-    Route::get('productvt', [ProductvtController::class, 'index']);
-    Route::get('productvt/edit',[ProductvtController::class, 'ProductvtEdit']);
-    Route::post('productvt',[ProductvtController::class, 'ProductvtData']);
+Route::group(['prefix' => 'productvt'], function () {
+    Route::get('', [ProductvtController::class, 'index'])->name('productvt.index');
+    Route::get('/user-input', [ProductvtController::class, 'UserInput'])->name('productvt.user-input');
+    Route::get('/edit',[ProductvtController::class, 'ProductvtEdit'])->name('productvt.edit');
+    // Route::put('/edit',[ProductvtController::class, 'ProductvtUpdate'])->name('productvt.edit');
+    Route::post('',[ProductvtController::class, 'ProductvtData'])->name('productvt.view');
 });
 
-
+// Route::group(['prefix' => 'productvt'], function () {
+//     Route::get('', [ProductvtController::class, 'index'])->name('productvt.index');
+//     Route::get('/edit',[ProductvtController::class, 'ProductvtEdit'])->name('productvt.edit');
+//     Route::post('',[ProductvtController::class, 'ProductvtData'])->name('productvt.index');
+// });
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);
 

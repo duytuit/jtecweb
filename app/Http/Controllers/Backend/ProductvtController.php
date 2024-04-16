@@ -1,17 +1,39 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use App\Models\Productvt;
 use App\Imports\ProductvtImport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductvtController extends Controller
 {
+    public $user;
+
+    public function __construct()
+    {
+        // dd(1);
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+    }
+
     public function index()
     {
+        // dd(123);
         $productvt = Productvt::all();
-        return view('productvt.index', compact('productvt'));
+    //    dd($productvt);
+    //    return route('admin.productvt.index', compact('productvt'));
+        return view('backend.pages.productvt.index', compact('productvt'));
+    }
+    public function UserInput(Request $request)
+    {
+        $productvt = Productvt::all();
+        return view('backend.pages.productvt.user-input', compact('productvt'));
+
     }
 
     public function ProductvtData(Request $request)
@@ -40,18 +62,19 @@ class ProductvtController extends Controller
             'ghichu' => $request->ghichu
         ]);
 
-        return redirect()->back()->with('status','Lưu dữ liệu thành công');
-
+        // return redirect()->back()->with('status','Lưu dữ liệu thành công');
+        return redirect()->route('admin.productvt.index');
+        // return view('backend.pages.productvt.index', compact('productvt'));
     }
     public function ProductvtEdit($ngaylamviec)
     {
         $productvt = Productvt::find($ngaylamviec);
-        return view('productvt.edit', compact('productvt'));
+        return view('backend.pages.productvt.edit', compact('productvt'));
     }
     public function ProductvtUpdate(Request $request, $ngaylamviec)
     {
         $productvt = Productvt::find($ngaylamviec);
-        return view('productvt.edit', compact('productvt'));
+        return view('backend.pages.productvt.edit', compact('productvt'));
 
         $productvt = Productvt::find($ngaylamviec);
 
@@ -66,7 +89,7 @@ class ProductvtController extends Controller
         $productvt->ghichu = $request->ghichu;
 
         $productvt->update();
-        return redirect()->back()->with('status','Sửa thành công');
-    
+        // return redirect()->back()->with('status','Sửa thành công');
+        return view('backend.pages.productvt.index', compact('productvt'));
     }
 }

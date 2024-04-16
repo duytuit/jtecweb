@@ -38,13 +38,11 @@ Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.s
 // Route::get('sanluong', function () {
 //     return view('workforce-prd.index');
 // });
-// Route::get('sanluong', [App\Http\Controllers\SanluongController::class, 'index']);
-// Route::get('sanluong/edit',[App\Http\Controllers\SanluongController::class, 'SanluongEdit']);
-// Route::post('sanluong',[App\Http\Controllers\SanluongController::class, 'SanluongData']);
 
-// Route::get('/', function () {
-//     return view('form');
-// });
+// Route::get('productvt', [App\Http\Controllers\Backend\ProductvtController::class, 'index']);
+// Route::get('productvt/edit',[App\Http\Controllers\Backend\ProductvtController::class, 'ProductvtEdit']);
+// Route::post('productvt',[App\Http\Controllers\Backend\ProductvtController::class, 'ProductvtData']);
+
 
 Route::post('upload', function (Request $request) {
     if (!$request->hasFile('image')) {

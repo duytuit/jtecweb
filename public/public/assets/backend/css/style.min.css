@@ -29152,7 +29152,8 @@ html[dir=ltr] body .p-l-0 {
 }
 
 .page-wrapper {
-    background: #f2f4f5;
+    /* background: #f2f4f5; */
+    background-color: #fff;
     position: relative;
     display: none
 }
@@ -36995,3 +36996,44 @@ div.dataTables_wrapper div.dataTables_processing {
     line-height: 1.42857143;
     white-space: nowrap;
 }
+
+/* 
+productivity San luong style
+ */
+
+.custom-container{
+    max-width: 1920px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.sanluong-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+  }
+  
+  .sanluong-table td {
+    border-color: #9b9b9b;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+  }
+  
+  .sanluong-table th {
+    border-color: #9b9b9b;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+  }
+
+  
