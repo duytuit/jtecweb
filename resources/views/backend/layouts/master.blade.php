@@ -6,11 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('backend.layouts.partials.meta_tags')
     <title>@yield('title', config('app.name'))</title>
     @include('backend.layouts.partials.styles')
     @yield('styles')
-    
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HX7G827G7B"></script>
     <script>
@@ -27,7 +28,7 @@
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
     @include('backend.layouts.partials.preloader')
-    
+
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -50,7 +51,7 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
-            
+
 
             @yield('admin-content')
 
@@ -70,7 +71,7 @@
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
-    
+
     @include('backend.layouts.partials.theme-options')
     <div class="chat-windows"></div>
     @include('backend.layouts.partials.scripts')
