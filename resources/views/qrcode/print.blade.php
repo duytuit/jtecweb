@@ -34,7 +34,7 @@
                                         {!! QrCode::size(100)->margin(1)->generate((string) $item[0]) !!}
                                     </div>
                                     <div class="card-position">
-                                        <strong>CẮT</strong>
+                                        <strong>{{ $item[1] }}</strong>
                                     </div>
                                 </div>
                             </div>

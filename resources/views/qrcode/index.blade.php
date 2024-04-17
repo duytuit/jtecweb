@@ -54,6 +54,7 @@
                                     <tr>
                                         <th>Mã</th>
                                         <th>QR code</th>
+                                        <th>Bộ phận</th>
                                     </tr>
                                 </thead>
                                 @if (@$inputCode)
@@ -70,6 +71,7 @@
                                                 @endphp
                                                 <img src="{{ $img }}">
                                             </td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 @endif
@@ -83,6 +85,7 @@
                                                     <td style="text-align: center;">
                                                         <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate((string) $item[0])) !!} ">
                                                     </td>
+                                                    <td>{{ $item[1] }}</td>
                                                 </tr>
                                             @endif
                                         @endforeach
