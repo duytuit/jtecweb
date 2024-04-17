@@ -38285,7 +38285,8 @@ productivity San luong style
     vertical-align: middle;
 }
 
-.tension .btn {
+.tension .btn,
+.view-content .btn {
     padding: 7px 11px;
     border: 1px solid #999;
     display: inline-block;
@@ -38295,7 +38296,8 @@ productivity San luong style
     min-height: 44px;
 }
 
-.tension .btn:hover {
+.tension .btn:hover,
+.view-content .btn:hover {
     border-color: #0000FF;
     background-color: #C0FFFF;
     color: #000;
@@ -38366,8 +38368,16 @@ productivity San luong style
     word-break: normal;
     text-align: center;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.tension-content table input[type=number].input-value{
+    -moz-appearance: textfield;
+}
 
-.input-text {
+.input-value {
     width: 100%;
     height: 100%;
     border: 0;
@@ -38423,7 +38433,25 @@ textarea.note {
 .view-content .button-group button.btn {
     border-radius: 5px;
 }
+.view-content .button-group .search-logo {
+    height: 25px;
+}
+.view-content .print-group{
+    margin-bottom: 20px;
+}
+.view-content .print-group .btn-print{
+    padding: 5px 15px;
+    margin-right: 20px;
+}
+.view-content .print-group .print-output{
+min-height: 30px;
+padding: 5px 15px;
 
+}
+.view-content .print-group .print-output{
+min-height: 30px;
+padding: 5px 10px;
+}
 .view-content .print-group .print-logo {
     height: 50px;
 }
@@ -38448,6 +38476,7 @@ textarea.note {
 .result-content table {
     border-collapse: collapse;
     border-spacing: 0;
+    width: 100%;
 }
 
 .result-content td {

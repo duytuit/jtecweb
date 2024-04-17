@@ -46,11 +46,11 @@
                 </button>
             </div>
             <div class="print-group">
-                <button class="btn">
+                <button class="btn btn-print">
                     <img src="/public/assets/images/pages/tension/printer.png" alt="" class="print-logo">
                     <span>In</span>
                 </button>
-                <select name="print" id="print-output">
+                <select name="print" id="printoutput" class="print-output">
                     <option value="print-to-pdf" selected>Microsoft Print to PDF</option>
                     <option value="print-to-onenote">OneNote (Desktop)</option>
                 </select>

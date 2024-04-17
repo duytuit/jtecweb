@@ -46,16 +46,19 @@
                             <td>0.5</td>
                             <td>&gt;=9</td>
                             <td class="bgc-C0FFC0 py-0">
-                                <input class="input-text" type="text">
+                                <input name="inputvalue1" class="input-value" type="number">
                             </td>
-                            <td></td>
+                            @php
+                                $color = '#000';
+                            @endphp
+                            <td style="background-color: {{ $color }}"></td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>0.85</td>
                             <td>&gt;=15</td>
                             <td class="bgc-C0FFFF">
-                                <input class="input-text" type="text">
+                                <input name="inputvalue2" class="input-value" type="number">
                             </td>
                             <td></td>
                         </tr>
@@ -64,7 +67,7 @@
                             <td>2</td>
                             <td>&gt;=29</td>
                             <td class="bgc-C0C0FF">
-                                <input class="input-text" type="text">
+                                <input name="inputvalue3" class="input-value" type="number">
                             </td>
                             <td></td>
                         </tr>
