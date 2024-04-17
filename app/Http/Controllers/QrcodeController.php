@@ -50,6 +50,13 @@ class QrcodeController extends Controller
             ],
         ]);
         $printcollection = Excel::toArray(new QrcodeImport, $request->file('import_file_print'));
+        $request->session()->put('printcollection', $printcollection);
+        return view('qrcode.print', compact('printcollection'));
+    }
+
+    public function GetDataPrint(Request $request)
+    {
+       $printcollection = $request->session()->get('printcollection');
         return view('qrcode.print', compact('printcollection'));
     }
 }
