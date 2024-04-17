@@ -47,12 +47,17 @@ class FrontPagesController extends Controller
             $data['title'] = 'Thi lần 2 chưa đạt( thi lại )';
         }
         if($request->type == 7){
-            $data['title'] = 'Thi lần 2 chưa đạt( thi lại )';
+            $data['title'] = 'Thi lần 2 chưa đạt( đào tạo lại )';
         }
         if($request->type == 8){
             $data['title'] = 'Chưa thi lần 2';
         }
-        $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
+        if($request->type == 2 || $request->type == 3 || $request->type == 6 || $request->type == 7){
+            $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->whereIn('created_at',array_column($request->emp,'createdAt'))->get();
+        }else{
+            $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
+        }
+
         return (new DetailReportExport($data))->download('detail-report.xlsx');
     }
     public function exam(Request $request)
