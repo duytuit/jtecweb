@@ -13,17 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('question', function (Blueprint $table) {
-            $table->id();
-            $table->string('myid');
-            $table->string('name');
-            $table->string('image');
-            $table->string('answer');
-            $table->string('answer_list');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('question')) {
+            Schema::create('question', function (Blueprint $table) {
+                $table->id();
+                $table->string('myid');
+                $table->string('name');
+                $table->string('image');
+                $table->string('answer');
+                $table->string('answer_list');
+                $table->timestamps();
+            });
+        }
     }
-
     /**
      * Reverse the migrations.
      *
