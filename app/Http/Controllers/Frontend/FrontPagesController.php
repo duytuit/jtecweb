@@ -53,8 +53,12 @@ class FrontPagesController extends Controller
             $data['title'] = 'Chưa thi lần 2';
         }
         if($request->type == 2 || $request->type == 3 || $request->type == 6 || $request->type == 7){
-            dd(array_column($request->emp,'createdAt'));
-            $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->whereIn('created_at',array_column($request->emp,'createdAt'))->get();
+            $query = Employee::whereIn('code',array_column($request->emp,'code'));
+            $createdAts = array_column($request->emp,'createdAt');
+            foreach ($createdAts as $key => $value) {
+                $query->where('created_at','like','%'.$value.'%');
+            }
+            $data['lists'] =  $query->get();
         }else{
             $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
         }
