@@ -464,21 +464,30 @@ input.largerCheckbox {
 }
 
 .print-wrapper .card-code {
-    font-size: 28px;
-    padding: 10px 0;
+    font-size: calc(min(1.3vw,24px));
+    /* padding: 10px 0; */
     border-bottom: 1px solid #000;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .print-wrapper .card-qrcode {
-    padding: 20px 0;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .print-wrapper .card-position {
-    font-size: 28px;
+    font-size: calc(min(1.3vw,24px));
+    text-wrap: nowrap;
     border-top: 1px solid #000;
-    /* padding-top: 10px; */
-    margin: auto;
-
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .print-btn {
