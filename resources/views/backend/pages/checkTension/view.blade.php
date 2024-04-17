@@ -10,13 +10,13 @@
             <div class="input-group d-flex">
                 <div class="menu">
                     <p class="label">Menu</p>
-                    <select name="" id="">
+                    <select name="" id="menuSelect" class="menuSelect">
                         <option value="succang" selected>Sức căng</option>
                     </select>
                 </div>
                 <div class="search-text">
                     <p class="label">Nội dung</p>
-                    <input type="text">
+                    <input type="text" id="searchinput" name="searchinput" class="search-input">
                 </div>
                 <div class="search-from">
                     <p class="label">Từ ngày</p>
@@ -27,9 +27,9 @@
                     <input type="date">
                 </div>
             </div>
-            <div class="btn-group">
+            <div class="button-group d-flex">
                 <button class="btn">
-                    <img src="/public/assets/images/pages/tension/search.png" alt="" class="tension-logo">
+                    <img src="/public/assets/images/pages/tension/search.png" alt="" class="search-logo">
                     <span>Tìm kiếm</span>
                 </button>
                 <button class="btn">
@@ -47,7 +47,7 @@
             </div>
             <div class="print-group">
                 <button class="btn">
-                    {{-- <img src="/public/assets/images/pages/tension/search.png" alt="" class="tension-logo"> --}}
+                    <img src="/public/assets/images/pages/tension/printer.png" alt="" class="print-logo">
                     <span>In</span>
                 </button>
                 <select name="print" id="print-output">
