@@ -436,7 +436,8 @@ input.largerCheckbox {
 }
 .print-container{
     width: 100%;
-    max-width: unset;
+    max-width: 2100px;
+    margin: 0 auto;
 }
 
 .wrapper-25 {
@@ -448,6 +449,7 @@ input.largerCheckbox {
 
 .print-wrapper .card {
     width: 19.5%;
+    height: auto;
     aspect-ratio: 4/5;
     text-align: center;
     border-color: #000;

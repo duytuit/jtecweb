@@ -29,7 +29,7 @@
                     <span>Xem - Xuất</span>
                 </button>
             </div>
-            <div class="content">
+            <div class="tension-content">
                 <table>
                     <thead>
                         <tr>
