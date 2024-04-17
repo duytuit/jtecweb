@@ -56,7 +56,7 @@ class FrontPagesController extends Controller
             $query = Employee::whereIn('code',array_column($request->emp,'code'));
             $createdAts = array_column($request->emp,'createdAt');
             foreach ($createdAts as $key => $value) {
-                $query->where('created_at','like','%'.$value.'%');
+                $query->whereDate('created_at',$value);
             }
             $data['lists'] =  $query->get();
         }else{
