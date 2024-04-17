@@ -51,7 +51,7 @@ class ExamController extends Controller
         $current_cycleName = Carbon::now()->format('mY');
         $data['cycleName'] = $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
-        $data['emp'] = Employee::select('code')->pluck('code');
+        $data['emp'] = Employee::select('code')->where('status',1)->pluck('code');
         $data['emp_pass_1'] = Exam::select('code',DB::raw('MIN(created_at) as createdAt'))
                                     ->whereIn('code',$data['emp'])
                                     ->where('cycle_name',$current_cycleName)
@@ -71,7 +71,7 @@ class ExamController extends Controller
                                     ->whereNotIn('code',$code_emp_pass_1)
                                     ->whereNotIn('code',array_column($data['emp_fail_1_90_95'],'code'))
                                     ->where('status',0)->where('scores','<',90)->groupBy('code')->get()->ToArray();
-        $data['emp_yet_1'] = Employee::select('code')
+        $data['emp_yet_1'] = Employee::select('code')->where('status',1)
                                     ->whereNotIn('code',$code_emp_pass_1)
                                     ->whereNotIn('code',array_column($data['emp_fail_1_90_95'],'code'))->whereNotIn('code',array_column($data['emp_fail_1_90'],'code'))->get()->ToArray();
         $data['emp_pass_2'] = Exam::select('code',DB::raw('MAX(created_at) as createdAt'))
@@ -95,7 +95,7 @@ class ExamController extends Controller
                                     ->whereNotIn('code',$code_emp_pass_2)
                                     ->whereNotIn('code',array_column($data['emp_fail_2_90_95'],'code'))
                                     ->where('status',0)->where('scores','<',90)->groupBy('code')->get()->ToArray();
-        $data['emp_yet_2'] = Employee::select('code')
+        $data['emp_yet_2'] = Employee::select('code')->where('status',1)
                                     ->whereNotIn('code',$code_emp_pass_2)
                                     ->whereNotIn('code',array_column($data['emp_fail_2_90_95'],'code'))->whereNotIn('code',array_column($data['emp_fail_2_90'],'code'))->get()->ToArray();
 
