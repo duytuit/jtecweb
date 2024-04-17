@@ -30,7 +30,8 @@
                                         <strong>{{ $item[0] }}</strong>
                                     </div>
                                     <div class="card-qrcode">
-                                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate((string) $item[0])) !!} ">
+                                        {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate((string) $item[0])) !!} "> --}}
+                                        {!! QrCode::size(100)->margin(1)->generate((string) $item[0]) !!}
                                     </div>
                                     <div class="card-position">
                                         <strong>CẮT</strong>

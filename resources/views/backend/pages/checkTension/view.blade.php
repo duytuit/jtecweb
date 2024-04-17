@@ -7,7 +7,7 @@
                 <h1 class="title">TRUY XUẤT THÔNG TIN</h1>
                 <img src="/public/assets/images/logo/logo.png" alt="" class="tension-logo">
             </div>
-            <div class="input-search d-flex">
+            <div class="input-group d-flex">
                 <div class="menu">
                     <p class="label">Menu</p>
                     <select name="" id="">

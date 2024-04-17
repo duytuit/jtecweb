@@ -38395,3 +38395,15 @@ textarea.note {
 .tt-dd{
     width: 15%;
 }
+
+.view-content {
+
+}
+.view-content .input-group{
+justify-content: center;
+gap: 20px;
+}
+.view-content .label{
+    color: #000;
+    text-align: center;
+}
