@@ -38346,9 +38346,7 @@ productivity San luong style
 }
 
 .tension-content table td {
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #000;
     font-family: Arial, sans-serif;
     overflow: hidden;
     padding: 5px;
@@ -38386,25 +38384,82 @@ textarea.note {
     resize: none;
 }
 
-.tt-tc{
+.tt-tc {
     width: 25%;
 }
+
 .clb {
     width: 25%;
 }
-.tt-dd{
+
+.tt-dd {
     width: 15%;
 }
 
-.view-content {
-font-size: 16px;
+.view-container {
+    width: 100%;
+    padding: 20px;
 }
-.view-content .input-group{
+
+.view-content {
+    font-size: 16px;
+}
+
+.view-content .input-group {
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+.view-content .input-group .search-input{
+min-width: 15ch;
+}
+.view-content .button-group{
 justify-content: center;
 gap: 20px;
 }
-.view-content .label{
+.view-content .button-group button.btn{
+    border-radius: 5px;
+}
+.view-content .print-group .print-logo{
+height: 50px;
+}
+.view-content .label {
     color: #000;
     text-align: center;
     margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.view-content .menuSelect {
+    height: 30px;
+}
+
+.result-content {}
+
+.result-content table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.result-content td {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+}
+
+.result-content th {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
 }
