@@ -65,7 +65,7 @@ class FrontPagesController extends Controller
         }else{
             $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
         }
-
+          dd($data);
         return (new DetailReportExport($data))->download('detail-report.xlsx');
     }
     public function exam(Request $request)
