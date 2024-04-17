@@ -21,8 +21,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 Auth::routes();
 
 Route::get('qrcode', [App\Http\Controllers\QrcodeController::class, 'index']);
+Route::get('qrcode/export', [App\Http\Controllers\QrcodeController::class] )->name('QrExportExcel');
 Route::post('qrcode',[App\Http\Controllers\QrcodeController::class, 'importQrcodeData']);
 Route::post('qrcode/generate',[App\Http\Controllers\QrcodeController::class, 'QrcodeGenerate']);
+
 Route::get('question/import', [App\Http\Controllers\QuestionController::class, 'index']);
 Route::post('question/import',[App\Http\Controllers\QuestionController::class, 'importExcelData']);
 
