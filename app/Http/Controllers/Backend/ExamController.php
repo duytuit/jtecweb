@@ -253,8 +253,7 @@ class ExamController extends Controller
         if (is_null($this->user) || !$this->user->can('exam.view')) {
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
-        }
-        return 1;
+        }return 1;
     }
     public function action(Request $request)
     {

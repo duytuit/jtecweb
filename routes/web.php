@@ -21,11 +21,13 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 Auth::routes();
 
 Route::get('qrcode', [App\Http\Controllers\QrcodeController::class, 'index']);
+Route::get('qrcode/export', [App\Http\Controllers\QrcodeController::class], 'QrExportExcel' )->name('QrExportExcel');
+Route::post('qrcode/print', [App\Http\Controllers\QrcodeController::class, 'QrCodePrint']);
 Route::post('qrcode',[App\Http\Controllers\QrcodeController::class, 'importQrcodeData']);
 Route::post('qrcode/generate',[App\Http\Controllers\QrcodeController::class, 'QrcodeGenerate']);
+
 Route::get('question/import', [App\Http\Controllers\QuestionController::class, 'index']);
 Route::post('question/import',[App\Http\Controllers\QuestionController::class, 'importExcelData']);
-
 
 Route::get( '/', [ FrontPagesController::class, 'index' ] )->name( 'index' );
 Route::get( '/exam', [ FrontPagesController::class, 'exam' ] )->name( 'exam' );
@@ -36,10 +38,14 @@ Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.s
 
 
 
-
-// Route::get('/', function () {
-//     return view('form');
+// Route::get('sanluong', function () {
+//     return view('workforce-prd.index');
 // });
+
+// Route::get('productvt', [App\Http\Controllers\Backend\ProductvtController::class, 'index']);
+// Route::get('productvt/edit',[App\Http\Controllers\Backend\ProductvtController::class, 'ProductvtEdit']);
+// Route::post('productvt',[App\Http\Controllers\Backend\ProductvtController::class, 'ProductvtData']);
+
 
 Route::post('upload', function (Request $request) {
     if (!$request->hasFile('image')) {

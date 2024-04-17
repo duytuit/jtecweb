@@ -5,6 +5,7 @@ namespace App\Imports;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
+
 class QrcodeImport implements ToCollection
 {
     /**
@@ -19,4 +20,5 @@ class QrcodeImport implements ToCollection
             }
         }
     }
+
 }
