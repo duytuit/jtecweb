@@ -38397,7 +38397,7 @@ textarea.note {
 }
 
 .view-content {
-
+font-size: 16px;
 }
 .view-content .input-group{
 justify-content: center;
@@ -38406,4 +38406,5 @@ gap: 20px;
 .view-content .label{
     color: #000;
     text-align: center;
+    margin-bottom: 5px;
 }
