@@ -38285,7 +38285,7 @@ productivity San luong style
     vertical-align: middle;
 }
 
-.btn {
+.tension .btn {
     padding: 7px 11px;
     border: 1px solid #999;
     display: inline-block;
@@ -38295,7 +38295,7 @@ productivity San luong style
     min-height: 44px;
 }
 
-.btn:hover {
+.tension .btn:hover {
     border-color: #0000FF;
     background-color: #C0FFFF;
     color: #000;
@@ -38410,19 +38410,28 @@ textarea.note {
     gap: 20px;
     padding: 20px 0;
 }
-.view-content .input-group .search-input{
-min-width: 15ch;
+
+.view-content .input-group .search-input {
+    min-width: 15ch;
 }
-.view-content .button-group{
-justify-content: center;
-gap: 20px;
+
+.view-content .button-group {
+    justify-content: center;
+    gap: 20px;
 }
-.view-content .button-group button.btn{
+
+.view-content .button-group button.btn {
     border-radius: 5px;
 }
-.view-content .print-group .print-logo{
-height: 50px;
+
+.view-content .print-group .print-logo {
+    height: 50px;
 }
+
+.view-content .print-group .search-logo {
+    height: 50px;
+}
+
 .view-content .label {
     color: #000;
     text-align: center;
