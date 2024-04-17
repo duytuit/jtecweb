@@ -28,7 +28,7 @@
                                 </div>
                             </form>
                             <hr>
-                            <form action="{{ url('qrcode/print') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ url('qrcode/printfile') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
                                     <input type="file" name="import_file_print" class="form-control" />
