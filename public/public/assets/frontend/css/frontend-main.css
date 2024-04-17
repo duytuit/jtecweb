@@ -464,7 +464,7 @@ input.largerCheckbox {
 }
 
 .print-wrapper .card-code {
-    font-size: calc(min(1.3vw,24px));
+    font-size: calc(min(1.5vw,28px));
     /* padding: 10px 0; */
     border-bottom: 1px solid #000;
     height: 15%;
@@ -481,7 +481,7 @@ input.largerCheckbox {
 }
 
 .print-wrapper .card-position {
-    font-size: calc(min(1.3vw,24px));
+    font-size: calc(min(1.5vw,30px));
     text-wrap: nowrap;
     border-top: 1px solid #000;
     height: 25%;
