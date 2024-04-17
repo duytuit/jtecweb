@@ -41,4 +41,15 @@ class QrcodeController extends Controller
         return view('qrcode.index', compact('inputCode'));
         // dd($inputCode);
     }
+    public function QrCodePrint(Request $request)
+    {
+        $request->validate([
+            'import_file_print' => [
+                'required',
+                'file',
+            ],
+        ]);
+        $printcollection = Excel::toArray(new QrcodeImport, $request->file('import_file_print'));
+        return view('qrcode.print', compact('printcollection'));
+    }
 }

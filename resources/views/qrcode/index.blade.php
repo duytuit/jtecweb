@@ -24,16 +24,25 @@
                                 @csrf
                                 <div class="input-group">
                                     <input type="file" name="import_file" class="form-control" />
-                                    <button type="submit" class="btn btn-primary">Nhập dữ liệu</button>
+                                    <button type="submit" class="btn btn-primary">Xem mã Qrcode</button>
                                 </div>
-                                {{-- @if (@$collection)
+                            </form>
+                            <hr>
+                            <form action="{{ url('qrcode/print') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="input-group">
+                                    <input type="file" name="import_file_print" class="form-control" />
+                                    <button type="submit" class="btn btn-primary">In dữ liệu</button>
+                                </div>
+                            </form>
+                            <hr>
+                            {{-- @if (@$collection)
                                     <a href="{{ route('QrExportExcel') }}" class="btn btn-success">
                                         <i class="fa fa-edit"></i>Xuất Excel</a>
                                 @endif --}}
-                            </form>
-                            <hr>
                             <form action="{{ url('qrcode/generate') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+                               
                                 <div class="input-group">
                                     <input type="text" id="inputcode" name="InputCode" class="form-control" />
                                     <button type="submit" class="btn btn-primary">Tạo mã QR</button>
