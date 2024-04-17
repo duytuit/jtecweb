@@ -11,6 +11,7 @@ use App\Models\Exam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FrontPagesController extends Controller
 {
@@ -53,11 +54,11 @@ class FrontPagesController extends Controller
             $data['title'] = 'Chưa thi lần 2';
         }
         if($request->type == 2 || $request->type == 3 || $request->type == 6 || $request->type == 7){
-            $query = Employee::whereIn('code',array_column($request->emp,'code'));
             $createdAts = array_column($request->emp,'createdAt');
-            foreach ($createdAts as $key => $value) {
-                $query->whereDate('created_at',$value);
-            }
+            $query = Employee::whereIn('code',array_column($request->emp,'code'))->whereIn(DB::raw("DATE(created_at)"),$createdAts);
+            // foreach ($createdAts as $key => $value) {
+            //     $query->whereDate('created_at',$value);
+            // }
             $data['lists'] =  $query->get();
         }else{
             $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
