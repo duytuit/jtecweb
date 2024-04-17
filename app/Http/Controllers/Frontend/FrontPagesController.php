@@ -54,6 +54,7 @@ class FrontPagesController extends Controller
             $data['title'] = 'Chưa thi lần 2';
         }
         if($request->type == 2 || $request->type == 3 || $request->type == 6 || $request->type == 7){
+            dd(324);
             $emp =$request->emp;
             foreach ($emp as $key => $value) {
                 $resuls =  Employee::where('code',$value['code'])->whereDate('created_at','=',$value['createdAt'])->first();
