@@ -5,13 +5,17 @@
             <tr>
                 <th>Mã NV</th>
                 <th>Tên NV</th>
+                <th>Lần thi</th>
+                <th>Điểm</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($lists as $index=> $item)
             <tr>
                 <td>{{$item->code}}</td>
-                <td>{{$item->first_name.' '.$item->last_name}}</td>
+                <td>{{$item->employee->first_name.' '.$item->employee->last_name}}</td>
+                <td>{{@$item->examinations}}</td>
+                <td>{{@$item->scores}}</td>
             </tr>
             @endforeach
         </tbody>

@@ -34,10 +34,10 @@ class Exam extends Model
         'scores'
     ];
 
-    // public function handbook_department()
-    // {
-    //     return $this->belongsTo(Department::class, 'department_id');
-    // }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'code','code');
+    }
     // public function businesspartners()
     // {
     //     return $this->belongsTo(BusinessPartners::class, 'bdc_business_partners_id');

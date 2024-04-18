@@ -51,53 +51,70 @@ class ExamController extends Controller
         $current_cycleName = Carbon::now()->format('mY');
         $data['cycleName'] = $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
-        $data['emp'] = Employee::select('code')->pluck('code');
-        $data['emp_pass_1'] = Exam::select('code',DB::raw('MIN(created_at) as min_created_at'))
+        $data['emp'] = Employee::select('code')->where('status',1)->pluck('code');
+
+        $data['emp_pass_1'] = Exam::select('id','code')->whereIn('code',$data['emp'])
+                                    ->where('cycle_name',$current_cycleName)
+                                    ->where('status',1)
+                                    ->where('scores','>',95)
+                                    ->where('examinations',1)
+                                    ->groupBy('code')->orderBy('examinations')
+                                    ->get()->ToArray();
+
+        $data['emp_fail_1_90_95'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
                                     ->where('cycle_name',$current_cycleName)
-                                    ->where('status',1)->groupBy('code')->get()->ToArray();
-        $code_emp_pass_1 = array_column($data['emp_pass_1'],'code');
-        $created_at_emp_pass_1 = array_column($data['emp_pass_1'],'min_created_at');
-        $data['emp_fail_1_90_95'] = Exam::select('code',DB::raw('MIN(created_at) as min_created_at'))
+                                    ->where('examinations',1)
+                                    ->where('status',0)
+                                    ->where('scores','>=',90)->where('scores','<=',95)
+                                    ->groupBy('code')->orderBy('examinations')
+                                    ->get()->ToArray();
+
+        $data['emp_fail_1_90'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
                                     ->where('cycle_name',$current_cycleName)
-                                    ->whereNotIn('created_at',$created_at_emp_pass_1)
-                                    ->whereNotIn('code',$code_emp_pass_1)
-                                    ->where('status',0)->where('scores','>=',90)->where('scores','<=',95)->groupBy('code')->get()->ToArray();
-        $data['emp_fail_1_90'] = Exam::select('code',DB::raw('MIN(created_at) as min_created_at'))
-                                    ->whereIn('code',$data['emp'])
-                                    ->where('cycle_name',$current_cycleName)
-                                    ->whereNotIn('created_at',$created_at_emp_pass_1)
-                                    ->whereNotIn('code',$code_emp_pass_1)
+                                    ->where('examinations',1)
+                                    ->where('status',0)->where('scores','<',90)
+                                    ->groupBy('code')->orderBy('examinations')
+                                    ->get()->ToArray();
+
+        $data['emp_yet_1'] = Employee::select('code')->where('status',1)
+                                    ->whereNotIn('code',array_column($data['emp_pass_1'],'code'))
                                     ->whereNotIn('code',array_column($data['emp_fail_1_90_95'],'code'))
-                                    ->where('status',0)->where('scores','<',90)->groupBy('code')->get()->ToArray();
-        $data['emp_yet_1'] = Employee::select('code')
-                                    ->whereNotIn('code',$code_emp_pass_1)
-                                    ->whereNotIn('code',array_column($data['emp_fail_1_90_95'],'code'))->whereNotIn('code',array_column($data['emp_fail_1_90'],'code'))->get()->ToArray();
-        $data['emp_pass_2'] = Exam::select('code',DB::raw('MAX(created_at) as max_created_at'))
+                                    ->whereNotIn('code',array_column($data['emp_fail_1_90'],'code'))
+                                    ->get()->ToArray();
+       
+        $data['emp_pass_2'] = Exam::select('id','code')->whereIn('code',$data['emp'])
+                                    ->where('cycle_name',$current_cycleName)
+                                    ->where('status',1)
+                                    ->where('scores','>',95)
+                                    ->where('examinations',2)
+                                    ->groupBy('code')->orderBy('examinations')
+                                    ->get()->ToArray();
+
+        $data['emp_fail_2_90_95'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
                                     ->where('cycle_name',$current_cycleName)
-                                    ->whereNotIn('created_at',$created_at_emp_pass_1)
-                                    ->where('status',1)->groupBy('code')->get()->ToArray();
-        $code_emp_pass_2 = array_column($data['emp_pass_2'],'code');
-        $data['emp_fail_2_90_95'] = Exam::select('code',DB::raw('MAX(created_at) as max_created_at'))
+                                    ->where('examinations',2)
+                                    ->where('status',0)
+                                    ->where('scores','>=',90)->where('scores','<=',95)
+                                    ->groupBy('code')->orderBy('examinations')
+                                    ->get()->ToArray();
+
+        $data['emp_fail_2_90'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
                                     ->where('cycle_name',$current_cycleName)
-                                    ->whereNotIn('created_at',$created_at_emp_pass_1)
-                                    ->whereNotIn('created_at',array_column($data['emp_pass_2'],'max_created_at'))
-                                    ->whereNotIn('code',$code_emp_pass_2)
-                                    ->where('status',0)->where('scores','>=',90)->where('scores','<=',95)->groupBy('code')->get()->ToArray();
-        $data['emp_fail_2_90'] = Exam::select('code',DB::raw('MAX(created_at) as max_created_at'))
-                                    ->whereIn('code',$data['emp'])
-                                    ->where('cycle_name',$current_cycleName)
-                                    ->whereNotIn('created_at',$created_at_emp_pass_1)
-                                    ->whereNotIn('created_at',array_column($data['emp_pass_2'],'max_created_at'))
-                                    ->whereNotIn('code',$code_emp_pass_2)
+                                    ->where('examinations',2)
+                                    ->where('status',0)
+                                    ->where('scores','<',90)
+                                    ->groupBy('code')->orderBy('examinations')
+                                    ->get()->ToArray();
+
+        $data['emp_yet_2'] = Employee::select('code')->where('status',1)
+                                    ->whereNotIn('code',array_column($data['emp_pass_2'],'code'))
                                     ->whereNotIn('code',array_column($data['emp_fail_2_90_95'],'code'))
-                                    ->where('status',0)->where('scores','<',90)->groupBy('code')->get()->ToArray();
-        $data['emp_yet_2'] = Employee::select('code')
-                                    ->whereNotIn('code',$code_emp_pass_2)
-                                    ->whereNotIn('code',array_column($data['emp_fail_2_90_95'],'code'))->whereNotIn('code',array_column($data['emp_fail_2_90'],'code'))->get()->ToArray();
+                                    ->whereNotIn('code',array_column($data['emp_fail_2_90'],'code'))
+                                    ->get()->ToArray();
 
         $data['lists'] = Exam::where( function($query) use($request){
             if (isset($request->keyword) && $request->keyword != null) {

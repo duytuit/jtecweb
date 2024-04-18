@@ -40,7 +40,17 @@ class ArrayHelper
         }
         return $cycle_name;
     }
-
+    public static function conversionDate(){
+        return [
+            1=>[1,15],
+            2=>[16,100]
+        ];
+    }
+    public static function getRangeDateExaminations() {
+        return [
+            1=>15
+        ];
+    }
     public static function arrayExamPd()
     {
         return [

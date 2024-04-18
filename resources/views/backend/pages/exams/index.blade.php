@@ -95,9 +95,9 @@
                             <th>Trả lời đúng</th>
                             <th>Điểm</th>
                             <th>Thời gian làm bài</th>
+                            <th>Đợt thi</th>
                             <th>Lần thi</th>
                             <th>Kết quả</th>
-                            <th>Đánh giá</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,6 +105,7 @@
                              $code=0;
                              $cycle_name=0;
                              $check=0;
+                             $examinations=0;
                          @endphp
                         @foreach ($lists as $index=> $item)
                         <tr>
@@ -144,24 +145,18 @@
                                 </td>
                             @endif --}}
                             <td>{{ $item->cycle_name }}</td>
-                            <td>{{ date('d-m-Y', strtotime(@$item->create_date))  }}</td>
+                            <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at))  }}</td>
                             <td>{{ $item->total_questions }}</td>
                             <td>{{ $item->results }}</td>
                             <td>{{ $item->scores }}</td>
                             <td>{{ $item->counting_time }}</td>
-                            <td>{{'lần '.$item->mission}}</td>
+                            <td>{{'Đợt '.$item->examinations }}</td>
+                            <td>{{'Lần '.$item->mission}}</td>
                             <td>
                                 @if ( $item->status)
                                     <span class="badge badge-success font-weight-100">Đạt</span>
                                 @else
                                     <span class="badge badge-warning">Chưa Đạt</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if ( $item->status)
-                                   <span class="badge badge-info font-weight-100">Đỗ</span>
-                                @else
-                                   <span class="badge badge-secondary">Thi lại</span>
                                 @endif
                             </td>
 
