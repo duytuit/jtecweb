@@ -53,19 +53,7 @@ class FrontPagesController extends Controller
         if($request->type == 8){
             $data['title'] = 'Chưa thi lần 2';
         }
-        if($request->type == 2 || $request->type == 3 || $request->type == 6 || $request->type == 7){
-
-            $emp =$request->emp;
-            foreach ($emp as $key => $value) {
-                $resuls =  Exam::where('code',$value['code'])->where('created_at','like','%'.$value['createdAt'].'%')->first();
-                if( $resuls){
-                    $data['lists'][] =$resuls;
-                }
-            }
-
-        }else{
-            $data['lists'] = Exam::whereIn('code',array_column($request->emp,'code'))->get();
-        }
+        $data['lists'] = Exam::whereIn('id',array_column($request->emp,'id'))->get();
         return (new DetailReportExport($data))->download('detail-report.xlsx');
     }
     public function exam(Request $request)
@@ -80,6 +68,9 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
+
+        $this->updateExaminations();
+      
         // $this->updateMission();
         //$this->updateScoresAndStatus();
        // $dsgfg= Exam::all();
@@ -127,7 +118,19 @@ class FrontPagesController extends Controller
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
         $scores = round(($results/count($arrayExam))*100);
         $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
-        $mission = Exam::where(['code'=>$request->manhanvien,'cycle_name'=>$cycle_name])->count();
+        $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
+       
+        $conversionDates = ArrayHelper::conversionDate();
+        $examinations=1;
+        $date_examinations=[];
+        foreach ($conversionDates as $key => $value) {
+            if( ($value[0] <= $ngaykiemtra->day) && ($ngaykiemtra->day <= $value[1])){
+                $date_examinations[]=$ngaykiemtra->year.'-'.$ngaykiemtra->month.'-'.$value[0];
+                $date_examinations[]=$value[1] == 100 ? $ngaykiemtra->endOfMonth()->format('Y-m-d') : $ngaykiemtra->year.'-'.$ngaykiemtra->month.'-'.$value[1];
+                $examinations=$key;
+            }
+        }
+        $mission = Exam::where(['code'=>$request->manhanvien,'cycle_name'=>$cycle_name,'examinations'=>$examinations])->count();
         try {
             $exam = Exam::create([
                 'name' =>$emp? $emp->first_name.' '.$emp->last_name : $request->manhanvien, //tên nhân viên
@@ -143,6 +146,8 @@ class FrontPagesController extends Controller
                 'status' => $scores > 95 ?  1:0,// 0:chưa duyệt,1:đã duyệt
                 'mission' =>  $mission+1,// số lần thi
                 'scores' => $scores,// điểm thi
+                'examinations' => $examinations,// đợt thi
+                'date_examinations' => json_encode($date_examinations),// khoảng thời gian thi
             ]);
             return $this->success(compact('exam'));
         } catch (\Exception $e) {
@@ -259,6 +264,27 @@ class FrontPagesController extends Controller
                      'status' =>$scores > 95 ?  1:0
                ]);
            }
+    }
+    public function updateExaminations()
+    {
+        $fdgfdgf = Exam::all();
+        foreach ($fdgfdgf as $key1 => $value1) {
+            $conversionDates = ArrayHelper::conversionDate();
+            $examinations=0;
+            $date_examinations=[];
+            $ngaykiemtra = Carbon::parse($value1->create_date);
+            foreach ($conversionDates as $key => $value) {
+                if( ($value[0] <= $ngaykiemtra->day) && ($ngaykiemtra->day <= $value[1])){
+                    $date_examinations[]=$ngaykiemtra->year.'-'.$ngaykiemtra->month.'-'.$value[0];
+                    $date_examinations[]=$value[1] == 100 ? $ngaykiemtra->endOfMonth()->format('Y-m-d') : $ngaykiemtra->year.'-'.$ngaykiemtra->month.'-'.$value[1];
+                    $examinations=$key;
+                }
+            }
+            $value1->update([
+                'examinations' => $examinations,// điểm thi
+                'date_examinations' => json_encode($date_examinations),// điểm thi
+            ]);
+        }
     }
     public function updateMission(){
         $fdgfdgf = Exam::orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
