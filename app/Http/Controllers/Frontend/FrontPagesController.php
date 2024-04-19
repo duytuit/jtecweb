@@ -268,12 +268,13 @@ class FrontPagesController extends Controller
     public function updateCreateDate(){
         $fdgfdgf = Employee::all();
         foreach ($fdgfdgf as $key => $value) {
-            echo '============</br>';
+
            $fdgf=  Exam::select('id')->where('code',$value->code)
             ->where('cycle_name',042024)
             ->where('examinations',1)
             ->where('status',1)
             ->groupBy('code')->count();
+            echo $fdgf.'============</br>';
             if($fdgf > 1){
                 $fdgf345 =  Exam::where('code',$value->code)
                 ->where('cycle_name',042024)
