@@ -280,7 +280,7 @@ class FrontPagesController extends Controller
                 ->where('cycle_name',42024)
                 ->where('examinations',1)
                 ->where('status',1)
-                ->groupBy('code')->orderBy('id','desc')
+                ->orderBy('id','desc')->groupBy('code')
                 ->first();
                 echo $fdgf345->id.' code '.$fdgf345->code.'</br>';
             }
