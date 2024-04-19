@@ -270,14 +270,14 @@ class FrontPagesController extends Controller
         foreach ($fdgfdgf as $key => $value) {
 
            $fdgf=  Exam::select('id')->where('code',$value->code)
-            ->where('cycle_name',042024)
+            ->where('cycle_name',42024)
             ->where('examinations',1)
             ->where('status',1)
             ->groupBy('code')->count();
             echo $fdgf.'============</br>';
             if($fdgf > 1){
                 $fdgf345 =  Exam::where('code',$value->code)
-                ->where('cycle_name',042024)
+                ->where('cycle_name',42024)
                 ->where('examinations',1)
                 ->where('status',1)
                 ->groupBy('code')->orderBy('id','desc')
