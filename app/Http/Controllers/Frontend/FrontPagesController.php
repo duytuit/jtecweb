@@ -282,7 +282,8 @@ class FrontPagesController extends Controller
                 ->where('status',1)
                 ->groupBy('code')
                 ->first();
-                echo $fdgf345->_id.' code '.$fdgf345->code.'</br>';
+               $fdgdfg = Exam::find($fdgf345->_id);
+                echo $fdgdfg->_id.' code '.$fdgdfg->code.'</br>';
             }
 
         }
