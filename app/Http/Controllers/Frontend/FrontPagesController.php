@@ -276,13 +276,13 @@ class FrontPagesController extends Controller
             ->groupBy('code')->count();
             echo $fdgf.'============</br>';
             if($fdgf > 1){
-                $fdgf345 =  Exam::where('code',$value->code)
+                $fdgf345 =  Exam::select('code',DB::raw('MAX(id) as _id'))->where('code',$value->code)
                 ->where('cycle_name',42024)
                 ->where('examinations',1)
                 ->where('status',1)
-                ->orderBy('id','desc')->groupBy('code')
+                ->groupBy('code')
                 ->get();
-                echo $fdgf345[0]->id.' code '.$fdgf345[0]->code.'</br>';
+                echo $fdgf345[0]->_id.' code '.$fdgf345[0]->code.'</br>';
             }
 
         }
