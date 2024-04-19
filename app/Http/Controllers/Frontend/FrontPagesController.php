@@ -70,7 +70,7 @@ class FrontPagesController extends Controller
     {
 
         $this->updateExaminations();
-      
+
         // $this->updateMission();
         //$this->updateScoresAndStatus();
        // $dsgfg= Exam::all();
@@ -119,7 +119,7 @@ class FrontPagesController extends Controller
         $scores = round(($results/count($arrayExam))*100);
         $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
         $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
-       
+
         $conversionDates = ArrayHelper::conversionDate();
         $examinations=1;
         $date_examinations=[];
@@ -264,6 +264,16 @@ class FrontPagesController extends Controller
                      'status' =>$scores > 95 ?  1:0
                ]);
            }
+    }
+    public function updateCreateDate(){
+        $fdgfdgf = Employee::all();
+        foreach ($fdgfdgf as $key => $value) {
+            $scores = round(($value->results/$value->total_questions)*100);
+            $value->update([
+                  'scores' =>$scores,
+                  'status' =>$scores > 95 ?  1:0
+            ]);
+        }
     }
     public function updateExaminations()
     {
