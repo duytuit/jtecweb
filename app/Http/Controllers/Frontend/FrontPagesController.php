@@ -69,7 +69,7 @@ class FrontPagesController extends Controller
     public function test1()
     {
 
-        $this->updateCreateDate();
+       // $this->updateCreateDate();
 
         // $this->updateMission();
         //$this->updateScoresAndStatus();
