@@ -283,6 +283,11 @@ class FrontPagesController extends Controller
                 ->groupBy('code')
                 ->first();
                $fdgdfg = Exam::find($fdgf345->_id);
+               $fdgdfg->update([
+                  'examinations'=>2,
+                  'create_date'=>'2024-04-19',
+                  'mission' =>  1// số lần thi
+               ]);
                 echo $fdgdfg->id.' code '.$fdgdfg->code.'</br>';
             }
 
