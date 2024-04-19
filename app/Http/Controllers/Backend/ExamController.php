@@ -58,24 +58,27 @@ class ExamController extends Controller
                                     ->where('status',1)
                                     ->where('scores','>',95)
                                     ->where('examinations',1)
-                                    ->groupBy('code')->orderBy('examinations')
+                                    ->groupBy('code')->orderBy('id','desc')
                                     ->get()->ToArray();
 
         $data['emp_fail_1_90_95'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
+                                    ->whereNotIn('code',array_column($data['emp_pass_1'],'code'))
                                     ->where('cycle_name',$current_cycleName)
                                     ->where('examinations',1)
                                     ->where('status',0)
                                     ->where('scores','>=',90)->where('scores','<=',95)
-                                    ->groupBy('code')->orderBy('examinations')
+                                    ->groupBy('code')->orderBy('id','desc')
                                     ->get()->ToArray();
 
         $data['emp_fail_1_90'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
+                                    ->whereNotIn('code',array_column($data['emp_pass_1'],'code'))
+                                    ->whereNotIn('code',array_column($data['emp_fail_1_90_95'],'code'))
                                     ->where('cycle_name',$current_cycleName)
                                     ->where('examinations',1)
                                     ->where('status',0)->where('scores','<',90)
-                                    ->groupBy('code')->orderBy('examinations')
+                                    ->groupBy('code')->orderBy('id','desc')
                                     ->get()->ToArray();
 
         $data['emp_yet_1'] = Employee::select('code')->where('status',1)
@@ -83,31 +86,34 @@ class ExamController extends Controller
                                     ->whereNotIn('code',array_column($data['emp_fail_1_90_95'],'code'))
                                     ->whereNotIn('code',array_column($data['emp_fail_1_90'],'code'))
                                     ->get()->ToArray();
-       
+
         $data['emp_pass_2'] = Exam::select('id','code')->whereIn('code',$data['emp'])
                                     ->where('cycle_name',$current_cycleName)
                                     ->where('status',1)
                                     ->where('scores','>',95)
                                     ->where('examinations',2)
-                                    ->groupBy('code')->orderBy('examinations')
+                                    ->groupBy('code')->orderBy('id','desc')
                                     ->get()->ToArray();
 
         $data['emp_fail_2_90_95'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
+                                    ->whereNotIn('code',array_column($data['emp_pass_2'],'code'))
                                     ->where('cycle_name',$current_cycleName)
                                     ->where('examinations',2)
                                     ->where('status',0)
                                     ->where('scores','>=',90)->where('scores','<=',95)
-                                    ->groupBy('code')->orderBy('examinations')
+                                    ->groupBy('code')->orderBy('id','desc')
                                     ->get()->ToArray();
 
         $data['emp_fail_2_90'] = Exam::select('id','code')
                                     ->whereIn('code',$data['emp'])
+                                    ->whereNotIn('code',array_column($data['emp_pass_2'],'code'))
+                                    ->whereNotIn('code',array_column($data['emp_fail_2_90_95'],'code'))
                                     ->where('cycle_name',$current_cycleName)
                                     ->where('examinations',2)
                                     ->where('status',0)
                                     ->where('scores','<',90)
-                                    ->groupBy('code')->orderBy('examinations')
+                                    ->groupBy('code')->orderBy('id','desc')
                                     ->get()->ToArray();
 
         $data['emp_yet_2'] = Employee::select('code')->where('status',1)
