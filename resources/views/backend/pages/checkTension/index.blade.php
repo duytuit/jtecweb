@@ -7,15 +7,13 @@
                 <h1 class="title">NHẬP DỮ LIỆU SỨC CĂNG</h1>
                 <img src="/public/assets/images/logo/logo.png" alt="" class="tension-logo">
             </div>
-            @php
-            $id = 0; // Gán một giá trị cụ thể cho biến $id
-        @endphp
-            <form action="{{ url('admin/checkTension/view') }}" method="POST">
+            {{-- <form action="{{ url('admin/checkTension/complate') }}" method="POST"> --}}
+                <form action="{{ route('admin.checkTension.view') }}" method="POST">
                 {{-- <form action="{{ route('admin.checkTension.view', ['id' => $id]) }}" method="POST"> --}}
                 @csrf
                 <div class="computer">
                     <span class="text">TÊN MÁY TÍNH</span>
-                    <select id="selectComputer" name="selectComputer" class="computer-select"
+                    <select name="selectComputer" class="computer-select"
                         aria-label="Default select example">
                         <option value="MT-N013" selected>MT-N013</option>
                         <option value="MT-N014">MT-N014</option>
@@ -52,7 +50,7 @@
                                 <td>0.5</td>
                                 <td>&gt;=9</td>
                                 <td class="bgc-C0FFC0 py-0">
-                                    <input name="weight125" class="input-value" type="number" data-target="9">
+                                    <input name="weight125" class="input-value" type="number" step="0.1" data-target="9">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -61,7 +59,7 @@
                                 <td>0.85</td>
                                 <td>&gt;=15</td>
                                 <td class="bgc-C0FFFF">
-                                    <input name="weight2" class="input-value" type="number" data-target="15">
+                                    <input name="weight2" class="input-value" type="number" step="0.1" data-target="15">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -70,7 +68,7 @@
                                 <td>2</td>
                                 <td>&gt;=29</td>
                                 <td class="bgc-C0C0FF">
-                                    <input name="weight55" class="input-value" type="number" data-target="29">
+                                    <input name="weight55" class="input-value" type="number" step="0.1" data-target="29">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>

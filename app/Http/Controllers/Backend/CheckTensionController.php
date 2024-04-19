@@ -36,25 +36,52 @@ class CheckTensionController extends Controller
         $checkTension = CheckTension::all();
         return view('backend.pages.checkTension.view', compact('checkTension'));
     }
-    public function edit($id)
-    {
-        $checkTension = CheckTension::find($id);
-        return view('backend.pages.checkTension.index', compact('checkTension'));
-    }
+
+    // public function edit($id)
+    // {
+    //     $checkTension = CheckTension::find($id);
+    //     return view('backend.pages.checkTension.index', compact('checkTension'));
+    // }
 
     public function saveData(Request $request)
     {
         $checkTension = new CheckTension();
-    
-        // $checkTension->create_date = now();
+        $checkTension->target125 = '9';
+        $checkTension->target2 = '15';
+        $checkTension->target55 = '29';
         $checkTension->weight125 = $request->input('weight125');
         $checkTension->weight2 = $request->input('weight2');
         $checkTension->weight55 = $request->input('weight55');
-        // $checkTension->machine = $request->input('selectComputer');
-        // $checkTension->checkresult = $request->input('checkresult');
-    
+        $checkTension->selectComputer = $request->input('selectComputer');
+        if ($checkTension->weight125 >= $checkTension->target125 and $checkTension->weight2 >= $checkTension->target2 and $checkTension->weight55 >= $checkTension->target55) {
+            $checkTension->checkresult = 'OK';
+        } else {
+            $checkTension->checkresult = 'NG';
+        }
         $checkTension->save();
-        return redirect()->back()->with('status','Lưu thành công');
+
+        // dd($checkTension);
+        return view('backend.pages.checkTension.view', compact('checkTension'));
     }
-    
+
+    // public function viewData(Request $request)
+    // {
+    //     $checkTension = new CheckTension();
+    //     $checkTension->target125 = '9';
+    //     $checkTension->target2 = '15';
+    //     $checkTension->target55 = '29';
+    //     $checkTension->weight125 = $request->input('weight125');
+    //     $checkTension->weight2 = $request->input('weight2');
+    //     $checkTension->weight55 = $request->input('weight55');
+    //     $checkTension->selectComputer = $request->input('selectComputer');
+    //     if ($checkTension->weight125 >= $checkTension->target125 and $checkTension->weight2 >= $checkTension->target2 and $checkTension->weight55 >= $checkTension->target55) {
+    //         $checkTension->checkresult = 'OK';
+    //     } else {
+    //         $checkTension->checkresult = 'NG';
+    //     }
+    //     $checkTension->save();
+
+    //     // dd($checkTension);
+    //     return view('backend.pages.checkTension.view', compact('checkTension'));
+    // }
 }
