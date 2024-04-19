@@ -282,7 +282,7 @@ class FrontPagesController extends Controller
                 ->where('status',1)
                 ->groupBy('code')->orderBy('id','desc')
                 ->first();
-                echo $fdgf345->id.'</br>';
+                echo $fdgf345->id.' code '.$fdgf345->code.'</br>';
             }
 
         }
