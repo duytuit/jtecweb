@@ -77,6 +77,10 @@
       </thead>
       <tbody>
         <tr>
+          @foreach ($checkTension as $item)
+          <td></td>
+          <td>{{ $item->id }}</td>
+          <td>{{ $item->weight125 }}</td>
           <td></td>
           <td></td>
           <td></td>
@@ -87,9 +91,7 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          @endforeach
         </tr>
       </tbody>
     </table>

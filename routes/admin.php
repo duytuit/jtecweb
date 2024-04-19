@@ -109,7 +109,8 @@ Route::group(['prefix' => 'productvt'], function () {
 
 Route::group(['prefix' => 'checkTension'], function () {
     Route::get('/',[CheckTensionController::class, 'index'])->name('checkTension.index');
-    Route::get('/view',[CheckTensionController::class, 'view'])->name('checkTension.view');
+    Route::post('/view',[CheckTensionController::class, 'saveData'])->name('checkTension.view');
+
 });
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);

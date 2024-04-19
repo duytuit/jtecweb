@@ -17,18 +17,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->dateTime('create_date');
+            // $table->dateTime('create_date');
             $table->float('target125');
             $table->float('target2');
             $table->float('target55');
             $table->float('weight125');
             $table->float('weight2');
             $table->float('weight55');
-            $table->string('machine');
-            $table->string('result');
+            // $table->string('machine');
+            // $table->string('checkresult');
             $table->timestamps();
 
-            // $table->index('create_date');
         });
     }
 
