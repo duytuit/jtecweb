@@ -53,7 +53,12 @@ class FrontPagesController extends Controller
         if($request->type == 8){
             $data['title'] = 'Chưa thi lần 2';
         }
-        $data['lists'] = Exam::whereIn('id',array_column($request->emp,'id'))->get();
+        if($request->type == 4 || $request->type == 8){
+            $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
+        }else{
+            $data['lists'] = Exam::whereIn('id',array_column($request->emp,'id'))->get();
+        }
+
         return (new DetailReportExport($data))->download('detail-report.xlsx');
     }
     public function exam(Request $request)
