@@ -281,8 +281,8 @@ class FrontPagesController extends Controller
                 ->where('examinations',1)
                 ->where('status',1)
                 ->orderBy('id','desc')->groupBy('code')
-                ->first();
-                echo $fdgf345->id.' code '.$fdgf345->code.'</br>';
+                ->get();
+                echo $fdgf345[0]->id.' code '.$fdgf345[0]->code.'</br>';
             }
 
         }
