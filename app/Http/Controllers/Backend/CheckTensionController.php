@@ -23,14 +23,38 @@ class CheckTensionController extends Controller
 
     public function index()
     {
-        // dd(123);
+        // if (is_null($this->user) || !$this->user->can('backend.pages.checkTension.index')) {
+        //     $message = 'Bạn cần đăng nhập trước khi làm việc';
+        //     return view('errors.403', compact('message'));
+        // }
         $checkTension = CheckTension::all();
         return view('backend.pages.checkTension.index', compact('checkTension'));
     }
+    
     public function view()
     {
-        // dd(123);
         $checkTension = CheckTension::all();
         return view('backend.pages.checkTension.view', compact('checkTension'));
     }
+    public function edit($id)
+    {
+        $checkTension = CheckTension::find($id);
+        return view('backend.pages.checkTension.index', compact('checkTension'));
+    }
+
+    public function saveData(Request $request)
+    {
+        $checkTension = new CheckTension();
+    
+        // $checkTension->create_date = now();
+        $checkTension->weight125 = $request->input('weight125');
+        $checkTension->weight2 = $request->input('weight2');
+        $checkTension->weight55 = $request->input('weight55');
+        // $checkTension->machine = $request->input('selectComputer');
+        // $checkTension->checkresult = $request->input('checkresult');
+    
+        $checkTension->save();
+        return redirect()->back()->with('status','Lưu thành công');
+    }
+    
 }

@@ -41,9 +41,7 @@
                 <div class="cards_item">
                   <div class="card">
                     <div class="card_content">
-                      <h2 class="card_title">Công đoạn Demo</h2>
-                      <p class="card_text">Nội dung kiểm tra</p>
-                      <a href="#" class="btn card_btn">Bắt đầu làm bài</a>
+                      <h2 class="card_title"><a href="#" class="btn card_btn">Kiểm tra sức căng</a></h2>
                     </div>
                   </div>
                 </div>
