@@ -39122,11 +39122,11 @@ input::-webkit-inner-spin-button {
     -moz-appearance: textfield;
 }
 
-.input-value {
+.tension-content input.input-value {
     width: 100%;
     height: 100%;
     border: 0;
-    background-color: transparent;
+    background-color: transparent !important;
     text-align: center;
     display: inline-block;
 }

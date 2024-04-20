@@ -36,8 +36,10 @@
         {{-- <img src="/public/assets/images/pages/tension/search.png" alt="" class="tension-logo"> --}}
         <span>Xóa bộ nối</span>
       </button>
-      <a href="{{ route('admin.checkTension.exportExcel',Request::all()) }}" class="btn btn-success">
-        <i class="fa fa-edit"></i> Xuất file</a>
+      <button class="btn">
+        {{-- <img src="/public/assets/images/pages/tension/search.png" alt="" class="tension-logo"> --}}
+        <span>Xuất file</span>
+      </button>
       <button class="btn">
         {{-- <img src="/public/assets/images/pages/tension/search.png" alt="" class="tension-logo"> --}}
         <span>Thoát</span>
@@ -74,23 +76,21 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($viewdata  as $item)
         <tr>
           <td></td>
-          <td>{{$item->id}}</td>
-          <td>{{$item->code}}</td>
-          <td>{{$item->name}}</td>
-          <td>{{ $item->created_at}}</td>
-          <td>{{ $item->target125}}</td>
-          <td>{{ $item->weight125 }}</td>
-          <td>{{ $item->target2}}</td>
-          <td>{{ $item->weight2 }}</td>
-          <td>{{ $item->target55}}</td>
-          <td>{{ $item->weight55 }}</td>
-          <td>{{ $item->selectComputer}}</td>
-          <td>{{ $item->checkresult}}</td>
+          <td>{{$checkTension->id}}</td>
+          <td>{{$checkTension->code}}</td>
+          <td>{{$checkTension->name}}</td>
+          <td>{{ $checkTension->created_at}}</td>
+          <td>{{ $checkTension->target125}}</td>
+          <td>{{ $checkTension->weight125 }}</td>
+          <td>{{ $checkTension->target2}}</td>
+          <td>{{ $checkTension->weight2 }}</td>
+          <td>{{ $checkTension->target55}}</td>
+          <td>{{ $checkTension->weight55 }}</td>
+          <td>{{ $checkTension->selectComputer}}</td>
+          <td>{{ $checkTension->checkresult}}</td>
         </tr>
-        @endforeach
       </tbody>
     </table>
   </div>

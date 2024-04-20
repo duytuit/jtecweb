@@ -8,7 +8,7 @@
                 <img src="/public/assets/images/logo/logo.png" alt="" class="tension-logo">
             </div>
             {{-- <form action="{{ url('admin/checkTension/complate') }}" method="POST"> --}}
-                <form action="{{ route('admin.checkTension.view') }}" method="POST">
+                <form action="{{ route('admin.checkTension.complete') }}" method="POST">
                 {{-- <form action="{{ route('admin.checkTension.view', ['id' => $id]) }}" method="POST"> --}}
                 @csrf
                 <div class="computer">
@@ -29,9 +29,9 @@
                     <button class="btn btn-save">
                         <span>Lưu dữ liệu</span>
                     </button>
-                    <button class="btn btn-export">
+                    <a href="{{ url('admin/checkTension/view') }}" class="btn btn-export">
                         <span>Xem - Xuất</span>
-                    </button>
+                    </a>
                 </div>
                 <div class="tension-content">
                     <table>
@@ -79,8 +79,7 @@
                                     <input type="radio" id="checkOk" name="checkOk" value="" checked="checked">
                                     <label for="checkOk">OK</label>
                                 </td>
-                                <td colspan="2" rowspan="2">
-                                    <textarea class="note" name="note" id=""></textarea>
+                                <td class="result-all" colspan="2" rowspan="2">
                                 </td>
                             </tr>
                             <tr>
@@ -142,6 +141,8 @@
                 var text = (inputValue >= targetValue) ? 'OK' : 'NG';
                 inputElement.closest('tr').find('.td-color').css('background-color', color);
                 inputElement.closest('tr').find('.td-color').text(text);
+                inputElement.closest('tbody').find('.result-all').css('background-color', color);
+                inputElement.closest('tbody').find('.result-all').text(text);
             }
         });
         $(document).ready(function() {
@@ -150,4 +151,5 @@
                 $('input[type="radio"]').not(this).prop('checked', false);
             });
         });
+    </script>
     @endsection
