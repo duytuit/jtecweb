@@ -71,23 +71,25 @@ class CheckTensionController extends Controller
 
     public function exportExcel(Request $request)
     {
-        $data = CheckTension::where( function($query) use($request){
-            if (isset($request->keyword) && $request->keyword != null) {
-                $query->filter($request);
-            }
-            if (isset($request->cycle_name) && $request->cycle_name != null) {
-                $query->where('cycle_name', $request->cycle_name);
-            }
-            if(isset($request->status) && $request->status != null){
-                $query->where('status', $request->status);
-            }
-            if (isset($request->from_date) && isset($request->to_date)) {
-                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
-                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
-                $query->whereDate('create_date', '>=', $from_date);
-                $query->whereDate('create_date', '<=', $to_date);
-            }
-        })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
+        // $data = CheckTension::where( function($query) use($request){
+        //     if (isset($request->keyword) && $request->keyword != null) {
+        //         $query->filter($request);
+        //     }
+        //     if (isset($request->cycle_name) && $request->cycle_name != null) {
+        //         $query->where('cycle_name', $request->cycle_name);
+        //     }
+        //     if(isset($request->status) && $request->status != null){
+        //         $query->where('status', $request->status);
+        //     }
+        //     if (isset($request->from_date) && isset($request->to_date)) {
+        //         $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+        //         $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+        //         $query->whereDate('create_date', '>=', $from_date);
+        //         $query->whereDate('create_date', '<=', $to_date);
+        //     }
+        // })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
+        // $data = CheckTension::all(){
+        // }->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
        return (new CheckTension($data))->download('tension.xlsx');
     }
 }

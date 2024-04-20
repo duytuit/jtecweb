@@ -460,6 +460,8 @@ input.largerCheckbox {
 }
 
 .print-wrapper .card-body {
+    display: flex;
+    flex-direction: column;
     padding: 0;
 }
 
@@ -467,14 +469,14 @@ input.largerCheckbox {
     font-size: 32px;
     /* padding: 10px 0; */
     border-bottom: 1px solid #000;
-    height: 15%;
+    height: 1.5em;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .print-wrapper .card-qrcode {
-    height: 60%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -482,12 +484,15 @@ input.largerCheckbox {
 
 .print-wrapper .card-position {
     font-size: 32px;
-    text-wrap: nowrap;
     border-top: 1px solid #000;
-    height: 25%;
+    height: 3.5em;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.print-wrapper .card-position strong{
+    max-width: 95%;
+    margin: 0 auto;
 }
 .print-wrapper .custom-size{
     gap: 20px;
