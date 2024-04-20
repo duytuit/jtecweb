@@ -16,16 +16,15 @@ return new class extends Migration
         Schema::create('checktension', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('code');
-            // $table->dateTime('create_date');
-            $table->float('target125');
-            $table->float('target2');
-            $table->float('target55');
-            $table->float('weight125');
-            $table->float('weight2');
-            $table->float('weight55');
-            // $table->string('machine');
-            // $table->string('checkresult');
+            $table->string('code')->comment('Mã code nhân viên');
+            $table->float('target125')->comment('Giá trị đối chiếu Chủng loại B - 1.25');
+            $table->float('target2')->comment('Giá trị đối chiếu Chủng loại B - 2');
+            $table->float('target55')->comment('Giá trị đối chiếu Chủng loại B - 5.5');
+            $table->float('weight125')->comment('Nhập vào giá trị Chủng loại B - 1.25');
+            $table->float('weight2')->comment('Nhập vào giá trị Chủng loại B - 2');
+            $table->float('weight55')->comment('Nhập vào giá trị Chủng loại B - 5.5');
+            $table->string('selectComputer')->comment('Chọn máy kiểm tra');
+            $table->string('checkresult')->comment('Kết quả kiểm tra');
             $table->timestamps();
 
         });

@@ -7,15 +7,13 @@
                 <h1 class="title">NHẬP DỮ LIỆU SỨC CĂNG</h1>
                 <img src="/public/assets/images/logo/logo.png" alt="" class="tension-logo">
             </div>
-            @php
-            $id = 0; // Gán một giá trị cụ thể cho biến $id
-        @endphp
-            <form action="{{ url('admin/checkTension/view') }}" method="POST">
+            {{-- <form action="{{ url('admin/checkTension/complate') }}" method="POST"> --}}
+                <form action="{{ route('admin.checkTension.complete') }}" method="POST">
                 {{-- <form action="{{ route('admin.checkTension.view', ['id' => $id]) }}" method="POST"> --}}
                 @csrf
                 <div class="computer">
                     <span class="text">TÊN MÁY TÍNH</span>
-                    <select id="selectComputer" name="selectComputer" class="computer-select"
+                    <select name="selectComputer" class="computer-select"
                         aria-label="Default select example">
                         <option value="MT-N013" selected>MT-N013</option>
                         <option value="MT-N014">MT-N014</option>
@@ -31,9 +29,9 @@
                     <button class="btn btn-save">
                         <span>Lưu dữ liệu</span>
                     </button>
-                    <button class="btn btn-export">
+                    <a href="{{ url('admin/checkTension/view') }}" class="btn btn-export">
                         <span>Xem - Xuất</span>
-                    </button>
+                    </a>
                 </div>
                 <div class="tension-content">
                     <table>
@@ -52,7 +50,7 @@
                                 <td>0.5</td>
                                 <td>&gt;=9</td>
                                 <td class="bgc-C0FFC0 py-0">
-                                    <input name="weight125" class="input-value" type="number" data-target="9">
+                                    <input name="weight125" class="input-value" type="number" step="0.1" data-target="9">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -61,7 +59,7 @@
                                 <td>0.85</td>
                                 <td>&gt;=15</td>
                                 <td class="bgc-C0FFFF">
-                                    <input name="weight2" class="input-value" type="number" data-target="15">
+                                    <input name="weight2" class="input-value" type="number" step="0.1" data-target="15">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -70,7 +68,7 @@
                                 <td>2</td>
                                 <td>&gt;=29</td>
                                 <td class="bgc-C0C0FF">
-                                    <input name="weight55" class="input-value" type="number" data-target="29">
+                                    <input name="weight55" class="input-value" type="number" step="0.1" data-target="29">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -81,8 +79,7 @@
                                     <input type="radio" id="checkOk" name="checkOk" value="" checked="checked">
                                     <label for="checkOk">OK</label>
                                 </td>
-                                <td colspan="2" rowspan="2">
-                                    <textarea class="note" name="note" id=""></textarea>
+                                <td class="result-all" colspan="2" rowspan="2">
                                 </td>
                             </tr>
                             <tr>
@@ -144,6 +141,8 @@
                 var text = (inputValue >= targetValue) ? 'OK' : 'NG';
                 inputElement.closest('tr').find('.td-color').css('background-color', color);
                 inputElement.closest('tr').find('.td-color').text(text);
+                inputElement.closest('tbody').find('.result-all').css('background-color', color);
+                inputElement.closest('tbody').find('.result-all').text(text);
             }
         });
         $(document).ready(function() {
@@ -152,4 +151,5 @@
                 $('input[type="radio"]').not(this).prop('checked', false);
             });
         });
+    </script>
     @endsection
