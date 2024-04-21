@@ -73,8 +73,11 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-
-       // $this->updateCreateDate();
+    //   Exam::find(24)->update([
+    //     'scores' =>435,
+    //     'status' =>7
+    //   ]);
+       $this->addEmployee();
 
         // $this->updateMission();
         //$this->updateScoresAndStatus();
@@ -237,7 +240,9 @@ class FrontPagesController extends Controller
             231164 =>    "Hoàng Thị Yên",
             231166 =>    "Đỗ Thị Nhung",
             231218 =>    "Nguyễn Văn Quân",
-            240317 =>    "Nguyễn Thị Thúy"
+            240317 =>    "Nguyễn Thị Thúy",
+            24031656 =>    "Nguyễn Thị Thúy 123",
+            240341656 =>    "Nguyễn Thị Thúy 1235"
         ];
 
         foreach ($employee as $key => $value) {
@@ -265,7 +270,7 @@ class FrontPagesController extends Controller
            foreach ($fdgfdgf as $key => $value) {
                $scores = round(($value->results/$value->total_questions)*100);
                $value->update([
-                     'scores' =>$scores,
+                     'scores' =>$scores+1,
                      'status' =>$scores > 95 ?  1:0
                ]);
            }
