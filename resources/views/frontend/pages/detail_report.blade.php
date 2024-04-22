@@ -13,7 +13,7 @@
             @foreach ($lists as $index=> $item)
             <tr>
                 <td>{{$item->code}}</td>
-                <td>{{$item->employee->first_name.' '.$item->employee->last_name}}</td>
+                <td>{{@$item->first_name ? @$item->first_name.' '.$item->last_name : @$item->employee->first_name.' '.$item->employee->last_name}}</td>
                 <td>{{@$item->examinations}}</td>
                 <td>{{@$item->scores}}</td>
             </tr>

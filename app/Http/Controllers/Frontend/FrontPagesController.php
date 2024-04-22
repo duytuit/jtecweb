@@ -53,7 +53,12 @@ class FrontPagesController extends Controller
         if($request->type == 8){
             $data['title'] = 'Chưa thi lần 2';
         }
-        $data['lists'] = Exam::whereIn('id',array_column($request->emp,'id'))->get();
+        if($request->type == 4 || $request->type == 8){
+            $data['lists'] = Employee::whereIn('code',array_column($request->emp,'code'))->get();
+        }else{
+            $data['lists'] = Exam::whereIn('id',array_column($request->emp,'id'))->get();
+        }
+
         return (new DetailReportExport($data))->download('detail-report.xlsx');
     }
     public function exam(Request $request)
@@ -68,9 +73,12 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
+    //   Exam::find(24)->update([
+    //     'scores' =>435,
+    //     'status' =>7
+    //   ]);
+       $this->addEmployee();
 
-        $this->updateExaminations();
-      
         // $this->updateMission();
         //$this->updateScoresAndStatus();
        // $dsgfg= Exam::all();
@@ -119,7 +127,7 @@ class FrontPagesController extends Controller
         $scores = round(($results/count($arrayExam))*100);
         $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
         $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
-       
+
         $conversionDates = ArrayHelper::conversionDate();
         $examinations=1;
         $date_examinations=[];
@@ -232,7 +240,9 @@ class FrontPagesController extends Controller
             231164 =>    "Hoàng Thị Yên",
             231166 =>    "Đỗ Thị Nhung",
             231218 =>    "Nguyễn Văn Quân",
-            240317 =>    "Nguyễn Thị Thúy"
+            240317 =>    "Nguyễn Thị Thúy",
+            24031656 =>    "Nguyễn Thị Thúy 123",
+            240341656 =>    "Nguyễn Thị Thúy 1235"
         ];
 
         foreach ($employee as $key => $value) {
@@ -260,10 +270,38 @@ class FrontPagesController extends Controller
            foreach ($fdgfdgf as $key => $value) {
                $scores = round(($value->results/$value->total_questions)*100);
                $value->update([
-                     'scores' =>$scores,
+                     'scores' =>$scores+1,
                      'status' =>$scores > 95 ?  1:0
                ]);
            }
+    }
+    public function updateCreateDate(){
+        $fdgfdgf = Employee::all();
+        foreach ($fdgfdgf as $key => $value) {
+
+           $fdgf=  Exam::select('id')->where('code',$value->code)
+            ->where('cycle_name',42024)
+            ->where('examinations',1)
+            ->where('status',1)
+            ->groupBy('code')->count();
+            echo $fdgf.'============</br>';
+            if($fdgf > 1){
+                $fdgf345 =  Exam::select('code',DB::raw('MAX(id) as _id'))->where('code',$value->code)
+                ->where('cycle_name',42024)
+                ->where('examinations',1)
+                ->where('status',1)
+                ->groupBy('code')
+                ->first();
+               $fdgdfg = Exam::find($fdgf345->_id);
+               $fdgdfg->update([
+                  'examinations'=>2,
+                  'create_date'=>'2024-04-19',
+                  'mission' =>  1// số lần thi
+               ]);
+                echo $fdgdfg->id.' code '.$fdgdfg->code.'</br>';
+            }
+
+        }
     }
     public function updateExaminations()
     {
