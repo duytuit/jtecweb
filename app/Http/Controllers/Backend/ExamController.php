@@ -288,9 +288,12 @@ class ExamController extends Controller
             return back()->with('success', 'thành công!');
         }else if($method == 'delete') {
             if(isset($request->ids)){
-               $count_record = Exam::whereIn('id',$request->ids)->delete();
+                foreach ($request->ids as $key => $value) {
+                    $count_record = Exam::find($value)->delete();
+                }
+              
             }
-            return back()->with('success','đã xóa '.$count_record.' bản ghi');
+            return back()->with('success','đã xóa '.count($request->ids).' bản ghi');
         }else{
             return back()->with('success', 'thành công!');
         }

@@ -18,7 +18,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="title">Blog Title <span class="required">*</span></label>
-                                    <input type="text" class="form-control" id="title" name="title" value="{{ $blog->title }}" placeholder="Enter Title" required=""/>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{ $blog->title }}" placeholder="Enter Title" required="sdfdsfd"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
