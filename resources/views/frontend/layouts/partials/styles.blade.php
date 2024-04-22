@@ -10,5 +10,3 @@
 
 <!-- Main CSS File -->
 <link rel="stylesheet" href="{{ asset('public/assets/frontend/css/frontend-main.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/frontend/css/print.css') }}" media="print" />
-

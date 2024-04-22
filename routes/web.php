@@ -21,20 +21,24 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 Auth::routes();
 
 Route::get('qrcode', [App\Http\Controllers\QrcodeController::class, 'index']);
-Route::get('qrcode/export', [App\Http\Controllers\QrcodeController::class], 'QrExportExcel' )->name('QrExportExcel');
+// Route::get('qrcode/kho', [App\Http\Controllers\QrcodeController::class, 'indexKho']);
+Route::get('qrcode/export', [App\Http\Controllers\QrcodeController::class], 'QrExportExcel')->name('QrExportExcel');
 Route::post('qrcode/printfile', [App\Http\Controllers\QrcodeController::class, 'QrCodePrint'])->name('QrCodePrint');
-Route::get('qrcode/printfile', [App\Http\Controllers\QrcodeController::class,'GetDataPrint']);
-Route::post('qrcode',[App\Http\Controllers\QrcodeController::class, 'importQrcodeData']);
-Route::post('qrcode/generate',[App\Http\Controllers\QrcodeController::class, 'QrcodeGenerate']);
+Route::get('qrcode/printfile', [App\Http\Controllers\QrcodeController::class, 'GetDataPrint']);
+Route::post('qrcode', [App\Http\Controllers\QrcodeController::class, 'importQrcodeData']);
+Route::post('qrcode/generate', [App\Http\Controllers\QrcodeController::class, 'QrcodeGenerate']);
+
+Route::post('qrcode/printfile2', [App\Http\Controllers\QrcodeController::class, 'QrCodePrint2'])->name('QrCodePrint2');
+Route::get('qrcode/printfile2', [App\Http\Controllers\QrcodeController::class, 'GetDataPrint2']);
 
 Route::get('question/import', [App\Http\Controllers\QuestionController::class, 'index']);
-Route::post('question/import',[App\Http\Controllers\QuestionController::class, 'importExcelData']);
+Route::post('question/import', [App\Http\Controllers\QuestionController::class, 'importExcelData']);
 
-Route::get( '/', [ FrontPagesController::class, 'index' ] )->name( 'index' );
-Route::get( '/exam', [ FrontPagesController::class, 'exam' ] )->name( 'exam' );
-Route::post( '/exam/detailReport', [ FrontPagesController::class, 'detailReport' ] )->name( 'exam.detailReport' );
-Route::get( '/test', [ FrontPagesController::class, 'test' ] )->name( 'test' );
-Route::get( '/test1', [ FrontPagesController::class, 'test1' ] )->name( 'test1' );
+Route::get('/', [FrontPagesController::class, 'index'])->name('index');
+Route::get('/exam', [FrontPagesController::class, 'exam'])->name('exam');
+Route::post('/exam/detailReport', [FrontPagesController::class, 'detailReport'])->name('exam.detailReport');
+Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
+Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
 Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');
 
 

@@ -20,29 +20,34 @@
                         </div>
                         <div class="card-body">
 
-                            <form action="{{ url('qrcode') }}" method="POST" enctype="multipart/form-data">
+                            {{-- <form action="{{ url('qrcode') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
                                     <input type="file" name="import_file" class="form-control" />
                                     <button type="submit" class="btn btn-primary">Xem mã Qrcode</button>
                                 </div>
                             </form>
-                            <hr>
-                            <form action="{{ url('qrcode/printfile') }}" method="POST" enctype="multipart/form-data">
+                            <hr> --}}
+
+                            <form class="cat-style" action="{{ url('qrcode/printfile') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
                                     <input type="file" name="import_file_print" class="form-control" />
-                                    <button type="submit" class="btn btn-primary">In dữ liệu</button>
+                                    <button type="submit" class="btn btn-primary">In dữ liệu - Bp Cắt</button>
                                 </div>
                             </form>
                             <hr>
-                            {{-- @if (@$collection)
-                                    <a href="{{ route('QrExportExcel') }}" class="btn btn-success">
-                                        <i class="fa fa-edit"></i>Xuất Excel</a>
-                                @endif --}}
+                            <form action="{{ url('qrcode/printfile2') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="input-group">
+                                    <input type="file" name="import_file_print2" class="form-control" />
+                                    <button type="submit" class="btn btn-success">In dữ liệu - Bp Kho</button>
+                                </div>
+                            </form>
+                            <hr>
                             <form action="{{ url('qrcode/generate') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                               
                                 <div class="input-group">
                                     <input type="text" id="inputcode" name="InputCode" class="form-control" />
                                     <button type="submit" class="btn btn-primary">Tạo mã QR</button>
@@ -102,5 +107,9 @@
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+        if (has(#kho)) {
+            $('.cat-style').css('display', 'none');
+        }
+    </script>
 @endsection

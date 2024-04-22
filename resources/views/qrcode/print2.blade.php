@@ -11,8 +11,8 @@
             <a href="/qrcode" class="btn btn-primary">Quay lại tạo Qrcode</a>
         </div>
         <div class="print-container">
-            <div class="print-wrapper">
-                @if (@$printcollection)
+            <div class="print2-wrapper">
+                @if (@$printcollection2)
                     @php
                         $counter = 0;
                     @endphp
@@ -35,28 +35,27 @@
                             </div>
                         </div>
                     </div>
-                    @foreach ($printcollection[0] as $item)
+                    @foreach ($printcollection2[0] as $item)
                         @if ($item[0])
-                            @if ($counter % 25 == 0)
-                                <div class="wrapper-25 d-flex ">
+                            @if ($counter % 14 == 0)
+                                <div class="wrapper-14 d-flex ">
                             @endif
-
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="card-code">
+                                <div class="card-title justify-content-between d-flex">
+                                    <span class="title-left">{{ $item[1] }}</span>
+                                    <span class="title-right text-right">{{ $item[2] }}</span>
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-around">
+                                    <div class="card-code text-center">
+                                        <span class="d-block">CODE</span>
                                         <strong>{{ $item[0] }}</strong>
                                     </div>
                                     <div class="card-qrcode">
-                                        {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate((string) $item[0])) !!} "> --}}
                                         {!! QrCode::size(100)->margin(1)->generate((string) $item[0]) !!}
-                                    </div>
-                                    <div class="card-position">
-                                        <strong>{{ $item[1] }}</strong>
                                     </div>
                                 </div>
                             </div>
-
-                            @if ($counter % 25 == 24 || $loop->last)
+                            @if ($counter % 14 == 13 || $loop->last)
             </div>
             @endif
 
@@ -74,46 +73,46 @@
 
 @section('scripts')
     <script>
-        $( document ).ready(function() {
+        $(document).ready(function() {
 
             let font_size = $('.card-code, .card-position').css('font-size');
             $('.fs-default').text(font_size);
 
             let img_size = $('.card-qrcode svg').css('width');
             $('.img-default').text(img_size);
-        
 
-        $('.img_plus').click(function(e) {
-            e.preventDefault();
-            let img_size = $('.card-qrcode svg').css('width');
-            let img_plus = (parseInt(img_size.replace("px", "")) + 1) + 'px';
-            $('.card-qrcode svg').attr('width', img_plus);
-            $('.card-qrcode svg').attr('height', img_plus);
-            $('.img-default').text(img_plus);
-        })
-        $('.img_minus').click(function(e) {
-            e.preventDefault();
-            let img_size = $('.card-qrcode svg').css('width');
-            let img_minus = (parseInt(img_size.replace("px", "")) - 1) + 'px';
-            $('.card-qrcode svg').attr('width', img_minus);
-            $('.card-qrcode svg').attr('height', img_minus);
-            $('.img-default').text(img_minus);
-        })
 
-        $('.text_plus').click(function(e) {
-            e.preventDefault();
-            let font_size = $('.card-code, .card-position').css('font-size');
-            let fs_plus = (parseInt(font_size.replace("px", "")) + 1) + 'px';
-            $('.card-code, .card-position').css('font-size', fs_plus);
-            $('.fs-default').text(fs_plus);
-        })
-        $('.text_minus').click(function(e) {
-            e.preventDefault();
-            let font_size = $('.card-code, .card-position').css('font-size');
-            let fs_minus = (parseInt(font_size.replace("px", "")) - 1) + 'px';
-            $('.card-code, .card-position').css('font-size', fs_minus);
-            $('.fs-default').text(fs_minus);
-        })
-    });
+            $('.img_plus').click(function(e) {
+                e.preventDefault();
+                let img_size = $('.card-qrcode svg').css('width');
+                let img_plus = (parseInt(img_size.replace("px", "")) + 1) + 'px';
+                $('.card-qrcode svg').attr('width', img_plus);
+                $('.card-qrcode svg').attr('height', img_plus);
+                $('.img-default').text(img_plus);
+            })
+            $('.img_minus').click(function(e) {
+                e.preventDefault();
+                let img_size = $('.card-qrcode svg').css('width');
+                let img_minus = (parseInt(img_size.replace("px", "")) - 1) + 'px';
+                $('.card-qrcode svg').attr('width', img_minus);
+                $('.card-qrcode svg').attr('height', img_minus);
+                $('.img-default').text(img_minus);
+            })
+
+            $('.text_plus').click(function(e) {
+                e.preventDefault();
+                let font_size = $('.card-code').css('font-size');
+                let fs_plus = (parseInt(font_size.replace("px", "")) + 1) + 'px';
+                $('.card-code').css('font-size', fs_plus);
+                $('.fs-default').text(fs_plus);
+            })
+            $('.text_minus').click(function(e) {
+                e.preventDefault();
+                let font_size = $('.card-code').css('font-size');
+                let fs_minus = (parseInt(font_size.replace("px", "")) - 1) + 'px';
+                $('.card-code').css('font-size', fs_minus);
+                $('.fs-default').text(fs_minus);
+            })
+        });
     </script>
 @endsection

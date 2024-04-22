@@ -24,13 +24,10 @@ class QrcodeController extends Controller
                 'file',
             ],
         ]);
-        $collection = Excel::toArray(new QrcodeImport, $request->file('import_file'));
-
+        $collection = Excel::toArray(new QrcodeImport, $request->file('import_file_print'));
         return view('qrcode.index', compact('collection'));
         // return Excel::download(new QrCodeExport($collection), 'qrcode.xlsx');
-    //    return (new QrCodeExport($collection))->download('qrcode.xlsx');
-
-
+        //    return (new QrCodeExport($collection))->download('qrcode.xlsx');
     }
     public function QrcodeGenerate(Request $request)
     {
@@ -56,7 +53,26 @@ class QrcodeController extends Controller
 
     public function GetDataPrint(Request $request)
     {
-       $printcollection = $request->session()->get('printcollection');
+        $printcollection = $request->session()->get('printcollection');
         return view('qrcode.print', compact('printcollection'));
+    }
+
+    public function QrCodePrint2(Request $request)
+    {
+        $request->validate([
+            'import_file_print2' => [
+                'required',
+                'file',
+            ],
+        ]);
+        $printcollection2 = Excel::toArray(new QrcodeImport, $request->file('import_file_print2'));
+        // dd($printcollection2);
+        $request->session()->put('printcollection2', $printcollection2);
+        return view('qrcode.print2', compact('printcollection2'));
+    }
+    public function GetDataPrint2(Request $request)
+    {
+        $printcollection2 = $request->session()->get('printcollection2');
+        return view('qrcode.print2', compact('printcollection2'));
     }
 }

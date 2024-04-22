@@ -490,13 +490,89 @@ input.largerCheckbox {
     align-items: center;
     justify-content: center;
 }
-.print-wrapper .card-position strong{
+
+.print-wrapper .card-position strong {
     max-width: 95%;
     margin: 0 auto;
 }
-.print-wrapper .custom-size{
+
+.print-wrapper .custom-size {
     gap: 20px;
 }
+
 .print-btn {
     margin: 20px auto;
+}
+
+.wrapper-14 {
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    page-break-before: always;
+}
+
+.print2-wrapper {}
+
+.print2-wrapper .custom-size {
+    gap: 20px;
+}
+
+.print2-wrapper .card {
+    width: 48%;
+    height: auto;
+    aspect-ratio: 4/1.5;
+    text-align: center;
+    border-color: #000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.print2-wrapper .card .card-title {
+    font-size: 20px;
+}
+
+.print2-wrapper .card .card-title span {
+    display: inline-block;
+}
+
+.print2-wrapper .card-body {
+    padding: 0;
+    flex: 1 auto;
+}
+
+.print2-wrapper .card-body .card-code {
+    font-size: 30px;
+}
+
+.print2-wrapper .card-body .card-code span {
+    font-size: 20px;
+}
+
+@media print {
+
+    .print-btn {
+        display: none !important;
+    }
+
+    .navbar {
+        display: none !important;
+    }
+
+    .wrapper-25 {
+        padding-top: 20px;
+    }
+
+    .wrapper-14 {
+        padding-top: 20px;
+    }
+
+    .custom-size {
+        display: none !important;
+    }
+
+
 }
