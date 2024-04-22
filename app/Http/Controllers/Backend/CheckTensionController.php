@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\CheckTension;
+use App\Exports\CheckTensionExport;
 // use App\Imports\CheckTensionImport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,13 +55,11 @@ class CheckTensionController extends Controller
         $checkTension->weight2 = $request->input('weight2');
         $checkTension->weight55 = $request->input('weight55');
         $checkTension->selectComputer = $request->input('selectComputer');
-        if ($checkTension->weight125 >= $checkTension->target125 and $checkTension->weight2 >= $checkTension->target2 and $checkTension->weight55 >= $checkTension->target55) {
-            $checkTension->checkresult = 'OK';
-        } else {
-            $checkTension->checkresult = 'NG';
-        }
+
+        $checkTension->checkresult = $request->input('resultAll');
+
         $checkTension->save();
-        
+
         return view('backend.pages.checkTension.complete', compact('checkTension'));
     }
     public function viewData()
@@ -69,8 +68,8 @@ class CheckTensionController extends Controller
         return view('backend.pages.checkTension.view', compact('viewdata'));
     }
 
-    public function exportExcel(Request $request)
-    {
+    // public function exportExcel(Request $request)
+    // {
         // $data = CheckTension::where( function($query) use($request){
         //     if (isset($request->keyword) && $request->keyword != null) {
         //         $query->filter($request);
@@ -88,8 +87,11 @@ class CheckTensionController extends Controller
         //         $query->whereDate('create_date', '<=', $to_date);
         //     }
         // })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
-        // $data = CheckTension::all(){
-        // }->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
-       return (new CheckTension($data))->download('tension.xlsx');
-    }
+    // }
+
+    public function exportExcel(Request $request)
+{
+    $data = CheckTension::all();
+    return (new CheckTensionExport($data))->download('tension.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+}
 }

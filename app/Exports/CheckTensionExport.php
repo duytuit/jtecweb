@@ -21,6 +21,6 @@ class CheckTensionExport implements FromView
     }
     public function view(): View
     {
-        return view('backend.exports.examExport', [ 'lists' =>$this->data]);
+        return view('backend.exports.CheckTensionExport', [ 'viewdata' =>$this->data]);
     }
 }
