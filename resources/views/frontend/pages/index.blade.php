@@ -24,7 +24,7 @@
                 <div class="cards_item">
                     <div class="card">
                         <div class="card_content">
-                            <a href="/qrcode">
+                            <a href="/qrcode#cat">
                                 <h2 class="card_title">
                                     Tạo QR code
                                 </h2>

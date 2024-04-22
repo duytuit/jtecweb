@@ -38,7 +38,8 @@
                                 </div>
                             </form>
                             <hr>
-                            <form action="{{ url('qrcode/printfile2') }}" method="POST" enctype="multipart/form-data">
+                            <form class="kho-style" action="{{ url('qrcode/printfile2') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
                                     <input type="file" name="import_file_print2" class="form-control" />
@@ -108,8 +109,11 @@
 
 @section('scripts')
     <script>
-        if (has(#kho)) {
+        if (window.location.hash = '#kho') {
             $('.cat-style').css('display', 'none');
+        }
+        if (window.location.hash = '#cat') {
+            $('.kho-style').css('display', 'none');
         }
     </script>
 @endsection
