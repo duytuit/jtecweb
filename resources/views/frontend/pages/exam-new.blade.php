@@ -54,9 +54,11 @@
                 </div>
                 @php
                     $groupQuestion1 = App\Helpers\ArrayHelper::groupQuestion1();
-                    $names = $groupQuestion1['groupname'];
+                    $names1 = $groupQuestion1['groupname'];
                     $array_exam = $groupQuestion1['question'];
+                    // $shuffledArray = $array_exam->shuffle();
                     shuffle($array_exam);
+                    $array_exam = array_slice($array_exam, 0, 20); // Chọn ra 20 phần tử từ mảng đã xáo trộn
                 @endphp
 
                 <div class="cards map_question">
@@ -67,22 +69,46 @@
                         </a>
                     @endforeach
                 </div>
-                <strong>{{ $names }}</strong>
+                <strong>{{ $names1 }}</strong>
                 <div class="cards">
                     @foreach ($array_exam as $index => $item)
                         <div class="cards_item" id="{{ $item['id'] }}">
                             <div class="card_question">
                                 <div class="form-group">
-                                    <div>
-                                        <strong>Câu {{ $index + 1 }} : </strong>
-                                        <strong>{{ $item['show_question'] == 1 ? $item['name'] : '' }}</strong>
-                                        <input type="text">
+                                    <div><strong>Câu {{ $index + 1 }} :
+                                        </strong><strong>{{ $item['show_question'] == 1 ? $item['name'] : '' }}</strong>
                                     </div>
+                                    <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" />
+                                    </div>
+                                </div>
+                                @php
+                                    $array_Answer = $item['answer_list'];
+                                    $firstThree = array_slice($array_Answer, 0, 3);
+                                    shuffle($firstThree);
+                                    for ($i = 0; $i < 3; $i++) {
+                                        $array_Answer[$i] = $firstThree[$i];
+                                    }
+                                @endphp
+                                <div>
+                                    @foreach ($array_Answer as $index1 => $item1)
+                                        <div @if ($item['answer'] == $item1) class="right_answer" @endif><label
+                                                for="cau__{{ $item['id'] }}_answer_{{ $index1 }}"><input
+                                                    type="radio" value="{{ $item1 }}"
+                                                    onclick="getCheck({{ $item['id'] }})"
+                                                    name="answer[{{ $item['id'] }}]"
+                                                    id="cau__{{ $item['id'] }}_answer_{{ $index1 }}"
+                                                    class="largerCheckbox"><strong> {{ $index1 + 1 }}. </strong>
+                                                {{ $item1 }}</label></div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
+
+
+
+
                 <div class="form-group">
                     <button class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</button>
                 </div>
