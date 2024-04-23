@@ -8,13 +8,12 @@
                 <img src="/public/assets/images/logo/logo.png" alt="" class="tension-logo">
             </div>
             {{-- <form action="{{ url('admin/checkTension/complate') }}" method="POST"> --}}
-                <form action="{{ route('admin.checkTension.complete') }}" method="POST">
+            <form action="{{ route('admin.checkTension.complete') }}" method="POST">
                 {{-- <form action="{{ route('admin.checkTension.view', ['id' => $id]) }}" method="POST"> --}}
                 @csrf
                 <div class="computer">
                     <span class="text">TÊN MÁY TÍNH</span>
-                    <select name="selectComputer" class="computer-select"
-                        aria-label="Default select example">
+                    <select name="selectComputer" class="computer-select" aria-label="Default select example">
                         <option value="MT-N013" selected>MT-N013</option>
                         <option value="MT-N014">MT-N014</option>
                         <option value="MT-N037">MT-N037</option>
@@ -50,7 +49,8 @@
                                 <td>0.5</td>
                                 <td>&gt;=9</td>
                                 <td class="bgc-C0FFC0 py-0">
-                                    <input name="weight125" class="input-value" type="number" step="0.1" data-target="9">
+                                    <input name="weight125" class="input-value" type="number" step="0.1"
+                                        data-target="9">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -59,7 +59,8 @@
                                 <td>0.85</td>
                                 <td>&gt;=15</td>
                                 <td class="bgc-C0FFFF">
-                                    <input name="weight2" class="input-value" type="number" step="0.1" data-target="15">
+                                    <input name="weight2" class="input-value" type="number" step="0.1"
+                                        data-target="15">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -68,7 +69,8 @@
                                 <td>2</td>
                                 <td>&gt;=29</td>
                                 <td class="bgc-C0C0FF">
-                                    <input name="weight55" class="input-value" type="number" step="0.1" data-target="29">
+                                    <input name="weight55" class="input-value" type="number" step="0.1"
+                                        data-target="29">
                                 </td>
                                 <td class="td-color"></td>
                             </tr>
@@ -76,15 +78,16 @@
                                 <td rowspan="2" class="border-right-0"><strong>Áp lực khí:</strong></td>
                                 <td rowspan="2" class="border-left-0">0.55~0.65Mpa</td>
                                 <td class="border-bottom-0 pb-0">
-                                    <input type="radio" id="checkOk" name="checkOk" value="" checked="checked">
+                                    <input type="radio" id="checkOk" name="checkOk" value="OK">
                                     <label for="checkOk">OK</label>
                                 </td>
                                 <td class="result-all" colspan="2" rowspan="2">
+                                    <input id="resultAll" class="resultAll" name="resultAll" type="text" value="">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border-top-0">
-                                    <input type="radio" id="checkNg" name="checkNg" value="">
+                                    <input type="radio" id="checkNg" name="checkNg" value="NG">
                                     <label for="checkNg">NG</label>
                                 </td>
                             </tr>
@@ -130,10 +133,21 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            var allOK = true;
             $('.input-value').on('input', function() {
-                var inputValue = $(this).val();
-                var targetValue = $(this).data('target');
-                updateColor($(this), inputValue, targetValue);
+                $('.input-value').each(function() {
+                    var inputValue = $(this).val();
+                    var targetValue = $(this).data('target');
+                    updateColor($(this), inputValue, targetValue);
+                });
+
+                var inputValue = $('.input-value').val();
+                var targetValue = $('.input-value').data('target');
+                 if (inputValue >= targetValue){
+                    updateResult(true);
+                 } else{
+                    updateResult(false);
+                 }
             });
 
             function updateColor(inputElement, inputValue, targetValue) {
@@ -141,15 +155,55 @@
                 var text = (inputValue >= targetValue) ? 'OK' : 'NG';
                 inputElement.closest('tr').find('.td-color').css('background-color', color);
                 inputElement.closest('tr').find('.td-color').text(text);
-                inputElement.closest('tbody').find('.result-all').css('background-color', color);
-                inputElement.closest('tbody').find('.result-all').text(text);
             }
-        });
-        $(document).ready(function() {
+
             $('input[type="radio"]').on('change', function() {
                 var selectedValue = $(this).val();
+                if ($(this).is(':checked') && selectedValue === 'OK') {
+                    $('.input-value').on('input', function() {
+                        var inputValue = $(this).val();
+                        var targetValue = $(this).data('target');
+                        var allOK = (inputValue >= targetValue);
+                        if (allOK === true) {
+                            allOK = true;
+                            updateResult(allOK);
+                        } else {
+                            allOK = false;
+                            updateResult(false);
+                        }
+                        updateResult(allOK);
+
+                    });
+                } else {
+                    updateResult(false);
+                // $('input[type="radio"]').not(this).prop('checked', false);
+
+                }
+                // updateResult(false);
                 $('input[type="radio"]').not(this).prop('checked', false);
+            });
+
+
+
+
+            function updateResult(allOK) {
+                var color = allOK ? '#0000ff' : '#ff0000';
+                var text = allOK ? 'OK' : 'NG';
+                $('.result-all').css('background-color', color);
+                $('.resultAll').val(text);
+            }
+
+            $('.input-value').on('keydown', function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    var inputs = $('.input-value');
+                    var currentIndex = inputs.index(this);
+                    var nextIndex = currentIndex + 1;
+                    if (nextIndex < inputs.length) {
+                        inputs[nextIndex].focus();
+                    }
+                }
             });
         });
     </script>
-    @endsection
+@endsection

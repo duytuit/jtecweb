@@ -8,11 +8,11 @@
     <main class="main">
         <div class="print-btn text-center">
             <a href="javascript:window.print()" class="btn btn-success">In dữ liệu A4</a>
-            <a href="/qrcode#cat" class="btn btn-primary">Quay lại tạo Qrcode</a>
+            <a href="/qrcode#kho" class="btn btn-primary">Quay lại tạo Qrcode</a>
         </div>
         <div class="print-container">
-            <div class="print-wrapper">
-                @if (@$printcollection)
+            <div class="print2-wrapper">
+                @if (@$printcollection2)
                     @php
                         $counter = 0;
                     @endphp
@@ -34,29 +34,37 @@
                                 <button class="btn btn-secondary img_plus">+</button>
                             </div>
                         </div>
+                        {{-- <div class="custom-item">
+                            <label for="">Số lượng trong 1 trang</label>
+                            <div>
+                                <button class="btn btn-secondary quantity_minus">-</button>
+                                <span id="quantityDefault" class="quantity-default"></span>
+                                <button class="btn btn-secondary quantity_plus">+</button>
+                            </div>
+                        </div> --}}
                     </div>
-                    @foreach ($printcollection[0] as $item)
+                    @foreach ($printcollection2[0] as $item)
                         @if ($item[0])
-                            @if ($counter % 25 == 0)
-                                <div class="wrapper-25 d-flex ">
+                            @if ($counter % 12 == 0)
+                                <div class="wrapper-div d-flex ">
                             @endif
-
+                            <script></script>
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="card-code">
+                                <div class="card-title justify-content-between d-flex">
+                                    <span class="title-left"> {{ $item[1] . ' ' . $item[2] }}</span>
+                                    <span class="title-right text-right">{{ $item[3] . ' ' . $item[4] }}</span>
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-around">
+                                    <div class="card-code text-center">
+                                        <span class="d-block">CODE</span>
                                         <strong>{{ $item[0] }}</strong>
                                     </div>
                                     <div class="card-qrcode">
-                                        {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->margin(1)->generate((string) $item[0])) !!} "> --}}
-                                        {!! QrCode::size(100)->margin(1)->generate((string) $item[0]) !!}
-                                    </div>
-                                    <div class="card-position">
-                                        <strong>{{ $item[1] }}</strong>
+                                        {!! QrCode::size(100)->margin(1)->generate((string) $item[2] . $item[0]) !!}
                                     </div>
                                 </div>
                             </div>
-
-                            @if ($counter % 25 == 24 || $loop->last)
+                            @if ($counter % 12 == 11 || $loop->last)
             </div>
             @endif
 
@@ -75,6 +83,9 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            let quantity = 12;
+            $('.quantity-default').text(quantity);
+
 
             let font_size = $('.card-code, .card-position').css('font-size');
             $('.fs-default').text(font_size);
@@ -102,18 +113,31 @@
 
             $('.text_plus').click(function(e) {
                 e.preventDefault();
-                let font_size = $('.card-code, .card-position').css('font-size');
+                let font_size = $('.card-code').css('font-size');
                 let fs_plus = (parseInt(font_size.replace("px", "")) + 1) + 'px';
-                $('.card-code, .card-position').css('font-size', fs_plus);
+                $('.card-code').css('font-size', fs_plus);
                 $('.fs-default').text(fs_plus);
             })
             $('.text_minus').click(function(e) {
                 e.preventDefault();
-                let font_size = $('.card-code, .card-position').css('font-size');
+                let font_size = $('.card-code').css('font-size');
                 let fs_minus = (parseInt(font_size.replace("px", "")) - 1) + 'px';
-                $('.card-code, .card-position').css('font-size', fs_minus);
+                $('.card-code').css('font-size', fs_minus);
                 $('.fs-default').text(fs_minus);
             })
+
+            // $('.quantity_plus').click(function(e) {
+            //     e.preventDefault();
+            //     let quantity = $('.quantity-default').text();
+            //     let quantity_plus = (parseInt(quantity.replace("px", "")) + 1);
+            //     $('.quantity-default').text(quantity_plus);
+            // })
+            // $('.quantity_minus').click(function(e) {
+            //     e.preventDefault();
+            //     let quantity = $('.quantity-default').text();
+            //     let quantity_minus = (parseInt(quantity.replace("px", "")) - 1);
+            //     $('.quantity-default').text(quantity_minus);
+            // })
         });
     </script>
 @endsection
