@@ -79,18 +79,18 @@ class FrontPagesController extends Controller
         // $store = DB::connection('oracle')
         //         ->table('DFW_Z20F')
         //         ->where('年月度',202403)->count();
-        // $store = DB::connection('oracle')
-        //         ->table('TAD_Z60M')
-        //         ->where('場所C','like', '%0111%')
-        //         ->where('品目K','like', '%7%')
-        //         ->where('品目C','like', 'AVS5B%')->get();
+        $store = DB::connection('oracle')
+                ->table('TAD_Z60M')
+                ->where('場所C','like', '%0111%')
+                ->where('品目K','like', '%7%')
+                ->where('品目C','like', 'AVS5B%')->get();
 
        // $getEmployeeWorkingMission1 = Employee::select('code')->where('status',1)->whereDate('end_date_company','<=',Carbon::now()->format('Y-m').'-1')->pluck('code');
         // Employee::where('code',160933)->update([
         //     'end_date_company'=>null
         // ]);
-        $getEmployeeWorkingMission1= Carbon::parse(substr('42024',1,4).'-'.substr('42024',0,1).'-1')->format("Y-m");
-        dd($getEmployeeWorkingMission1);
+        // $getEmployeeWorkingMission1= Carbon::parse(substr('42024',1,4).'-'.substr('42024',0,1).'-1')->format("Y-m");
+        dd($store);
     //   Exam::find(24)->update([
     //     'scores' =>435,
     //     'status' =>7
