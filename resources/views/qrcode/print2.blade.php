@@ -51,8 +51,8 @@
                             <script></script>
                             <div class="card">
                                 <div class="card-title justify-content-between d-flex">
-                                    <span class="title-left">{{ $item[1] }}</span>
-                                    <span class="title-right text-right">{{ $item[2] }}</span>
+                                    <span class="title-left"> {{ $item[1] . ' ' . $item[2] }}</span>
+                                    <span class="title-right text-right">{{ $item[3] . ' ' . $item[4] }}</span>
                                 </div>
                                 <div class="card-body d-flex align-items-center justify-content-around">
                                     <div class="card-code text-center">
@@ -60,7 +60,7 @@
                                         <strong>{{ $item[0] }}</strong>
                                     </div>
                                     <div class="card-qrcode">
-                                        {!! QrCode::size(100)->margin(1)->generate((string) $item[0]) !!}
+                                        {!! QrCode::size(100)->margin(1)->generate((string) $item[2] . $item[0]) !!}
                                     </div>
                                 </div>
                             </div>
