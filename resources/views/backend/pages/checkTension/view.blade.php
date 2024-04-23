@@ -2,6 +2,7 @@
 
 @section('admin-content')
 <div class="view-container">
+  
   <div class="view-content">
     <div class="head">
       <h1 class="title">TRUY XUẤT THÔNG TIN</h1>
@@ -16,7 +17,7 @@
       </div>
       <div class="search-text">
         <p class="label">Nội dung</p>
-        <input type="text" id="searchinput" name="searchinput" class="search-input">
+        <input type="text" name="keyword" id="searchinput" name="searchinput" class="search-input">
       </div>
       <div class="search-from">
         <p class="label">Từ ngày</p>
@@ -44,10 +45,11 @@
       </button>
     </div>
     <div class="print-group">
-      <button class="btn btn-print">
+      <a href="javascript:window.print()" class="btn btn-success">
         <img src="/public/assets/images/pages/tension/printer.png" alt="" class="print-logo">
         <span>In</span>
-      </button>
+      </a>
+
       <select name="print" id="printoutput" class="print-output">
         <option value="print-to-pdf" selected>Microsoft Print to PDF</option>
         <option value="print-to-onenote">OneNote (Desktop)</option>

@@ -1,12 +1,16 @@
-.print-btn{
+.print-btn {
     display: none !important;
 }
+
 .navbar {
     display: none !important;
 }
+
 .wrapper-25 {
     padding-top: 20px;
 }
-.custom-size{
+
+.custom-size {
     display: none !important;
 }
+
