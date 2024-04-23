@@ -20,7 +20,7 @@
                                     <label class="control-label" for="first_name">First Name <span
                                             class="required">*</span></label>
                                     <input type="text" class="form-control" id="first_name" name="first_name"
-                                        value="{{ old('first_name') }}" placeholder="Enter First Name" required="" />
+                                        value="{{ old('first_name') }}" placeholder="Enter First Name" required="" data-parsley-required-message="Trường Tên là bắt buộc"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -28,7 +28,7 @@
                                     <label class="control-label" for="last_name">Last Name <span
                                             class="optional">(optional)</span></label>
                                     <input type="text" class="form-control" id="last_name" name="last_name"
-                                        value="{{ old('last_name') }}" placeholder="Enter Last Name" />
+                                        value="{{ old('last_name') }}" placeholder="Enter Last Name" required data-parsley-required-message="Trường Họ tên là bắt buộc" />
                                 </div>
                             </div>
                             <div class="col-md-3">

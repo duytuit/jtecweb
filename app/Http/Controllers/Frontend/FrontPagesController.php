@@ -6,8 +6,10 @@ use App\Exports\DetailReportExport;
 use App\Exports\ExamExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Accessory;
 use App\Models\Employee;
 use App\Models\Exam;
+use App\Models\InventoryAccessory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,11 +75,27 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
+
+        // $store = DB::connection('oracle')
+        //         ->table('DFW_Z20F')
+        //         ->where('年月度',202403)->count();
+        // $store = DB::connection('oracle')
+        //         ->table('TAD_Z60M')
+        //         ->where('場所C','like', '%0111%')
+        //         ->where('品目K','like', '%7%')
+        //         ->where('品目C','like', 'AVS5B%')->get();
+
+       // $getEmployeeWorkingMission1 = Employee::select('code')->where('status',1)->whereDate('end_date_company','<=',Carbon::now()->format('Y-m').'-1')->pluck('code');
+        // Employee::where('code',160933)->update([
+        //     'end_date_company'=>null
+        // ]);
+        $getEmployeeWorkingMission1= Carbon::parse(substr('42024',1,4).'-'.substr('42024',0,1).'-1')->format("Y-m");
+        dd($getEmployeeWorkingMission1);
     //   Exam::find(24)->update([
     //     'scores' =>435,
     //     'status' =>7
     //   ]);
-       $this->addEmployee();
+      // $this->addEmployee();
 
         // $this->updateMission();
         //$this->updateScoresAndStatus();
