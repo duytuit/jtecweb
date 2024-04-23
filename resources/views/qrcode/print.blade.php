@@ -8,7 +8,7 @@
     <main class="main">
         <div class="print-btn text-center">
             <a href="javascript:window.print()" class="btn btn-success">In dữ liệu A4</a>
-            <a href="/qrcode" class="btn btn-primary">Quay lại tạo Qrcode</a>
+            <a href="/qrcode#cat" class="btn btn-primary">Quay lại tạo Qrcode</a>
         </div>
         <div class="print-container">
             <div class="print-wrapper">
@@ -74,46 +74,46 @@
 
 @section('scripts')
     <script>
-        $( document ).ready(function() {
+        $(document).ready(function() {
 
             let font_size = $('.card-code, .card-position').css('font-size');
             $('.fs-default').text(font_size);
 
             let img_size = $('.card-qrcode svg').css('width');
             $('.img-default').text(img_size);
-        
 
-        $('.img_plus').click(function(e) {
-            e.preventDefault();
-            let img_size = $('.card-qrcode svg').css('width');
-            let img_plus = (parseInt(img_size.replace("px", "")) + 1) + 'px';
-            $('.card-qrcode svg').attr('width', img_plus);
-            $('.card-qrcode svg').attr('height', img_plus);
-            $('.img-default').text(img_plus);
-        })
-        $('.img_minus').click(function(e) {
-            e.preventDefault();
-            let img_size = $('.card-qrcode svg').css('width');
-            let img_minus = (parseInt(img_size.replace("px", "")) - 1) + 'px';
-            $('.card-qrcode svg').attr('width', img_minus);
-            $('.card-qrcode svg').attr('height', img_minus);
-            $('.img-default').text(img_minus);
-        })
 
-        $('.text_plus').click(function(e) {
-            e.preventDefault();
-            let font_size = $('.card-code, .card-position').css('font-size');
-            let fs_plus = (parseInt(font_size.replace("px", "")) + 1) + 'px';
-            $('.card-code, .card-position').css('font-size', fs_plus);
-            $('.fs-default').text(fs_plus);
-        })
-        $('.text_minus').click(function(e) {
-            e.preventDefault();
-            let font_size = $('.card-code, .card-position').css('font-size');
-            let fs_minus = (parseInt(font_size.replace("px", "")) - 1) + 'px';
-            $('.card-code, .card-position').css('font-size', fs_minus);
-            $('.fs-default').text(fs_minus);
-        })
-    });
+            $('.img_plus').click(function(e) {
+                e.preventDefault();
+                let img_size = $('.card-qrcode svg').css('width');
+                let img_plus = (parseInt(img_size.replace("px", "")) + 1) + 'px';
+                $('.card-qrcode svg').attr('width', img_plus);
+                $('.card-qrcode svg').attr('height', img_plus);
+                $('.img-default').text(img_plus);
+            })
+            $('.img_minus').click(function(e) {
+                e.preventDefault();
+                let img_size = $('.card-qrcode svg').css('width');
+                let img_minus = (parseInt(img_size.replace("px", "")) - 1) + 'px';
+                $('.card-qrcode svg').attr('width', img_minus);
+                $('.card-qrcode svg').attr('height', img_minus);
+                $('.img-default').text(img_minus);
+            })
+
+            $('.text_plus').click(function(e) {
+                e.preventDefault();
+                let font_size = $('.card-code, .card-position').css('font-size');
+                let fs_plus = (parseInt(font_size.replace("px", "")) + 1) + 'px';
+                $('.card-code, .card-position').css('font-size', fs_plus);
+                $('.fs-default').text(fs_plus);
+            })
+            $('.text_minus').click(function(e) {
+                e.preventDefault();
+                let font_size = $('.card-code, .card-position').css('font-size');
+                let fs_minus = (parseInt(font_size.replace("px", "")) - 1) + 'px';
+                $('.card-code, .card-position').css('font-size', fs_minus);
+                $('.fs-default').text(fs_minus);
+            })
+        });
     </script>
 @endsection

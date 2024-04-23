@@ -8,7 +8,7 @@
     <main class="main">
         <div class="print-btn text-center">
             <a href="javascript:window.print()" class="btn btn-success">In dữ liệu A4</a>
-            <a href="/qrcode" class="btn btn-primary">Quay lại tạo Qrcode</a>
+            <a href="/qrcode#kho" class="btn btn-primary">Quay lại tạo Qrcode</a>
         </div>
         <div class="print-container">
             <div class="print2-wrapper">
@@ -34,12 +34,21 @@
                                 <button class="btn btn-secondary img_plus">+</button>
                             </div>
                         </div>
+                        {{-- <div class="custom-item">
+                            <label for="">Số lượng trong 1 trang</label>
+                            <div>
+                                <button class="btn btn-secondary quantity_minus">-</button>
+                                <span id="quantityDefault" class="quantity-default"></span>
+                                <button class="btn btn-secondary quantity_plus">+</button>
+                            </div>
+                        </div> --}}
                     </div>
                     @foreach ($printcollection2[0] as $item)
                         @if ($item[0])
-                            @if ($counter % 14 == 0)
-                                <div class="wrapper-14 d-flex ">
+                            @if ($counter % 12 == 0)
+                                <div class="wrapper-div d-flex ">
                             @endif
+                            <script></script>
                             <div class="card">
                                 <div class="card-title justify-content-between d-flex">
                                     <span class="title-left">{{ $item[1] }}</span>
@@ -55,7 +64,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if ($counter % 14 == 13 || $loop->last)
+                            @if ($counter % 12 == 11 || $loop->last)
             </div>
             @endif
 
@@ -74,6 +83,9 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            let quantity = 12;
+            $('.quantity-default').text(quantity);
+
 
             let font_size = $('.card-code, .card-position').css('font-size');
             $('.fs-default').text(font_size);
@@ -113,6 +125,19 @@
                 $('.card-code').css('font-size', fs_minus);
                 $('.fs-default').text(fs_minus);
             })
+
+            // $('.quantity_plus').click(function(e) {
+            //     e.preventDefault();
+            //     let quantity = $('.quantity-default').text();
+            //     let quantity_plus = (parseInt(quantity.replace("px", "")) + 1);
+            //     $('.quantity-default').text(quantity_plus);
+            // })
+            // $('.quantity_minus').click(function(e) {
+            //     e.preventDefault();
+            //     let quantity = $('.quantity-default').text();
+            //     let quantity_minus = (parseInt(quantity.replace("px", "")) - 1);
+            //     $('.quantity-default').text(quantity_minus);
+            // })
         });
     </script>
 @endsection
