@@ -6,8 +6,10 @@ use App\Exports\DetailReportExport;
 use App\Exports\ExamExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Accessory;
 use App\Models\Employee;
 use App\Models\Exam;
+use App\Models\InventoryAccessory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,11 +82,7 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        //   Exam::find(24)->update([
-        //     'scores' =>435,
-        //     'status' =>7
-        //   ]);
-        $this->addEmployee();
+
 
         // $this->updateMission();
         //$this->updateScoresAndStatus();
