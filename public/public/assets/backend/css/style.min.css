@@ -18920,7 +18920,7 @@ body[data-theme="dark"] .ct-grid {
 }
 
 html {
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
 }
@@ -18928,7 +18928,7 @@ html {
 .popover,
 .tooltip,
 body {
-    font-family: Rubik, sans-serif;
+    /* font-family: Rubik, sans-serif; */
 }
 
 body {
@@ -38411,10 +38411,12 @@ productivity San luong style
     background-color: #c0ffff;
     color: #000;
 }
-.tension .computer-select{
-min-height: 44px;
-padding: 0 5px;
+
+.tension .computer-select {
+    min-height: 44px;
+    padding: 0 5px;
 }
+
 .tension-logo {
     height: 30px;
 }
@@ -38541,10 +38543,13 @@ textarea.note {
     gap: 20px;
     padding: 20px 0;
 }
-.view-content .input-group select, .view-content .input-group input{
-min-height: 30px;
-padding: 0 10px;
+
+.view-content .input-group select,
+.view-content .input-group input {
+    min-height: 30px;
+    padding: 0 10px;
 }
+
 .view-content .input-group .search-input {
     min-width: 15ch;
 }
@@ -38649,4 +38654,8 @@ padding: 0 10px;
     .view-content {
         display: none !important;
     }
+}
+
+.fs-16 {
+    font-size: 16px;
 }
