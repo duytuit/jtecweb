@@ -168,6 +168,66 @@ class FrontPagesController extends Controller
         }
     }
 
+    public function storeNew(Request $request)
+    {
+        //dd($request->exists('answer'));
+        $emp = Employee::where('code', $request->manhanvien)->first();
+        // if(!$emp){
+        //     return $this->success(['warning'=>'Nhân viên không có trên hệ thống!']);
+        // }
+        $arrayExam = ArrayHelper::groupQuestion();
+        dd($arrayExam);
+        if (!$request->exists('answer')) {
+            return $this->error(['error', 'chưa chọn đáp án']);
+        }
+        $results = 0;
+        foreach ($request->answer as $key => $value) {
+            $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
+            if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
+                $results++;
+            }
+        }
+        $mytime = Carbon::now();
+        $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
+        $scores = round(($results / count($arrayExam)) * 100);
+        $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
+        $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
+
+        $conversionDates = ArrayHelper::conversionDate();
+        $examinations = 1;
+        $date_examinations = [];
+        foreach ($conversionDates as $key => $value) {
+            if (($value[0] <= $ngaykiemtra->day) && ($ngaykiemtra->day <= $value[1])) {
+                $date_examinations[] = $ngaykiemtra->year . '-' . $ngaykiemtra->month . '-' . $value[0];
+                $date_examinations[] = $value[1] == 100 ? $ngaykiemtra->endOfMonth()->format('Y-m-d') : $ngaykiemtra->year . '-' . $ngaykiemtra->month . '-' . $value[1];
+                $examinations = $key;
+            }
+        }
+        $mission = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations])->count();
+        try {
+            $exam = Exam::create([
+                'name' => $emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien, //tên nhân viên
+                'code' => $request->manhanvien, // mã nhân viên
+                'sub_dept' => $request->congdoan, // công đoạn
+                'cycle_name' => $cycle_name, // kỳ thi
+                'create_date' => $request->ngaykiemtra, // ngày làm bài thi
+                'results' => $results, // tổng số câu trả lời đúng
+                'total_questions' => count($arrayExam), // tổng số câu hỏi
+                'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
+                'limit_time' => '05:00', // tổng số câu hỏi
+                'data' => json_encode($request->answer), // tổng số câu hỏi
+                'status' => $scores > 95 ?  1 : 0, // 0:chưa duyệt,1:đã duyệt
+                'mission' =>  $mission + 1, // số lần thi
+                'scores' => $scores, // điểm thi
+                'examinations' => $examinations, // đợt thi
+                'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
+            ]);
+            return $this->success(compact('exam'));
+        } catch (\Exception $e) {
+            return $this->error(['error', $e->getMessage()]);
+        }
+    }
+
     public function addEmployee()
     {
         $employee = [

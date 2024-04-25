@@ -288,7 +288,7 @@
             var values = $('#examForm').serialize()
             console.log(values);
             $.ajax({
-                url: "{{ route('exam.store') }}",
+                url: "{{ route('exam.storeNew') }}",
                 method: 'POST',
                 data: values,
                 success: function(data) {

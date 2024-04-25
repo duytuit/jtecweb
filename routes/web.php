@@ -43,6 +43,7 @@ Route::post('/exam/detailReport', [FrontPagesController::class, 'detailReport'])
 Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
 Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
 Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');
+Route::post('/exam/storeNew', [FrontPagesController::class, 'storeNew'])->name('exam.storeNew');
 
 
 
