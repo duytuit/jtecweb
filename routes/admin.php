@@ -66,7 +66,7 @@ Route::group(['prefix' => ''], function () {
 });
 
 
-Route::namespace('Backend')->group(function () {
+Route::namespace('App\Http\Controllers\Backend')->group(function () {
     /**
      * Exam Management Routes
      */
