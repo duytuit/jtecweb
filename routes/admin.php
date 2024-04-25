@@ -65,17 +65,188 @@ Route::group(['prefix' => ''], function () {
     Route::put('blogs/trashed/revert/{id}', [BlogsController::class, 'revertFromTrash'])->name('blogs.trashed.revert');
 });
 
-/**
- * Exam Management Routes
- */
-Route::group(['prefix' => ''], function () {
-    Route::resource('exams', ExamController::class);
-    Route::post('exams/action', [ExamController::class, 'action'])->name('exams.action');
-    Route::get('exams/trashed/view', [ExamController::class, 'trashed'])->name('exams.trashed');
-    Route::get('exams/exportExcel', [ExamController::class, 'exportExcel'])->name('exams.exportExcel');
-    Route::delete('exams/trashed/destroy/{id}', [ExamController::class, 'destroyTrash'])->name('exams.trashed.destroy');
-    Route::put('exams/trashed/revert/{id}', [ExamController::class, 'revertFromTrash'])->name('exams.trashed.revert');
+
+Route::namespace('Backend')->group(function () {
+    /**
+     * Exam Management Routes
+     */
+    Route::prefix('exams')->name('exams.')->group(function () {
+        Route::get('','ExamController@index')->name('index');
+        Route::get('create','ExamController@create')->name('create');
+        Route::get('show/{id}','ExamController@show')->name('show');
+        Route::get('exportExcel', 'ExamController@exportExcel')->name('exportExcel');
+        Route::post('action','ExamController@action')->name('action');
+        Route::delete('trashed/destroy/{id}','ExamController@destroyTrash')->name('trashed.destroy');
+        Route::get('trashed/view', 'ExamController@trashed')->name('trashed');
+        Route::put('trashed/revert/{id}','ExamController@revertFromTrash')->name('trashed.revert');
+    });
+    /**
+     * Department Management Routes
+     */
+    Route::prefix('departments')->name('departments.')->group(function () {
+        Route::get('', 'DepartmentController@index')->name('index');
+        Route::get('create', 'DepartmentController@create')->name('create');
+        Route::get('edit/{id}', 'DepartmentController@edit')->name('edit');
+        Route::get('exportExcel', 'DepartmentController@exportExcel')->name('exportExcel');
+        Route::post('save', 'DepartmentController@save')->name('save');
+        Route::post('update', 'DepartmentController@update')->name('update');
+        Route::post('action', 'DepartmentController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
+    });
+
+
+    /**
+     * Acivity Management Routes
+     */
+    Route::prefix('activitys')->name('activitys.')->group(function () {
+        Route::get('', 'ActivityController@index')->name('index');
+        Route::get('create', 'ActivityController@create')->name('create');
+        Route::get('edit/{id}', 'ActivityController@edit')->name('edit');
+        Route::get('exportExcel', 'ActivityController@exportExcel')->name('exportExcel');
+        Route::post('save', 'ActivityController@save')->name('save');
+        Route::post('update', 'ActivityController@update')->name('update');
+        Route::post('action', 'ActivityController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'ActivityController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'ActivityController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Campaign Management Routes
+     */
+    Route::prefix('campaigns')->name('campaigns.')->group(function () {
+        Route::get('', 'CampaignController@index')->name('index');
+        Route::get('create', 'CampaignController@create')->name('create');
+        Route::get('edit/{id}', 'CampaignController@edit')->name('edit');
+        Route::get('exportExcel', 'CampaignController@exportExcel')->name('exportExcel');
+        Route::post('save', 'CampaignController@save')->name('save');
+        Route::post('update', 'CampaignController@update')->name('update');
+        Route::post('action', 'CampaignController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'CampaignController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'CampaignController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * CampaignDetails Management Routes
+     */
+    Route::prefix('campaignDetails')->name('campaignDetails.')->group(function () {
+        Route::get('', 'CampaignDetailController@index')->name('index');
+        Route::get('create', 'CampaignDetailController@create')->name('create');
+        Route::get('edit/{id}', 'CampaignDetailController@edit')->name('edit');
+        Route::get('exportExcel', 'CampaignDetailController@exportExcel')->name('exportExcel');
+        Route::post('save', 'CampaignDetailController@save')->name('save');
+        Route::post('update', 'CampaignDetailController@update')->name('update');
+        Route::post('action', 'CampaignDetailController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'CampaignDetailController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'CampaignDetailController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Comment Management Routes
+     */
+    Route::prefix('comments')->name('comments.')->group(function () {
+        Route::get('', 'CommentController@index')->name('index');
+        Route::get('create', 'CommentController@create')->name('create');
+        Route::get('edit/{id}', 'CommentController@edit')->name('edit');
+        Route::get('exportExcel', 'CommentController@exportExcel')->name('exportExcel');
+        Route::post('save', 'CommentController@save')->name('save');
+        Route::post('update', 'CommentController@update')->name('update');
+        Route::post('action', 'CommentController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'CommentController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'CommentController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Cronjob Management Routes
+     */
+    Route::prefix('cronjobs')->name('cronjobs.')->group(function () {
+        Route::get('', 'CronjobController@index')->name('index');
+        Route::get('create', 'CronjobController@create')->name('create');
+        Route::get('edit/{id}', 'CronjobController@edit')->name('edit');
+        Route::get('exportExcel', 'CronjobController@exportExcel')->name('exportExcel');
+        Route::post('save', 'CronjobController@save')->name('save');
+        Route::post('update', 'CronjobController@update')->name('update');
+        Route::post('action', 'CronjobController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'CronjobController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'CronjobController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Employee Management Routes
+     */
+    Route::prefix('employees')->name('employees.')->group(function () {
+        Route::get('', 'EmployeeController@index')->name('index');
+        Route::get('create', 'EmployeeController@create')->name('create');
+        Route::get('edit/{id}', 'EmployeeController@edit')->name('edit');
+        Route::get('exportExcel', 'EmployeeController@exportExcel')->name('exportExcel');
+        Route::post('save', 'EmployeeController@save')->name('save');
+        Route::post('update', 'EmployeeController@update')->name('update');
+        Route::post('action', 'EmployeeController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'EmployeeController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'EmployeeController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Employee Department Management Routes
+     */
+    Route::prefix('employeeDepartments')->name('employeeDepartments.')->group(function () {
+        Route::get('', 'EmployeeDepartmentController@index')->name('index');
+        Route::get('create', 'EmployeeDepartmentController@create')->name('create');
+        Route::get('edit/{id}', 'EmployeeDepartmentController@edit')->name('edit');
+        Route::get('exportExcel', 'EmployeeDepartmentController@exportExcel')->name('exportExcel');
+        Route::post('save', 'EmployeeDepartmentController@save')->name('save');
+        Route::post('update', 'EmployeeDepartmentController@update')->name('update');
+        Route::post('action', 'EmployeeDepartmentController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'EmployeeDepartmentController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'EmployeeDepartmentController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Log Import Management Routes
+     */
+    Route::prefix('logImports')->name('logImports.')->group(function () {
+        Route::get('', 'LogImportController@index')->name('index');
+        Route::get('create', 'LogImportController@create')->name('create');
+        Route::get('edit/{id}', 'LogImportController@edit')->name('edit');
+        Route::get('exportExcel', 'LogImportController@exportExcel')->name('exportExcel');
+        Route::post('save', 'LogImportController@save')->name('save');
+        Route::post('update', 'LogImportController@update')->name('update');
+        Route::post('action', 'LogImportController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'LogImportController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'LogImportController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Required Management Routes
+     */
+    Route::prefix('requireds')->name('requireds.')->group(function () {
+        Route::get('', 'RequiredController@index')->name('index');
+        Route::get('create', 'RequiredController@create')->name('create');
+        Route::get('edit/{id}', 'RequiredController@edit')->name('edit');
+        Route::get('exportExcel', 'RequiredController@exportExcel')->name('exportExcel');
+        Route::post('save', 'RequiredController@save')->name('save');
+        Route::post('update', 'RequiredController@update')->name('update');
+        Route::post('action', 'RequiredController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'RequiredController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');
+    });
+
+    /**
+     * Signature Submission Management Routes
+     */
+    Route::prefix('signatureSubmissions')->name('signatureSubmissions.')->group(function () {
+        Route::get('', 'SignatureSubmissionController@index')->name('index');
+        Route::get('create', 'SignatureSubmissionController@create')->name('create');
+        Route::get('edit/{id}', 'SignatureSubmissionController@edit')->name('edit');
+        Route::get('exportExcel', 'SignatureSubmissionController@exportExcel')->name('exportExcel');
+        Route::post('save', 'SignatureSubmissionController@save')->name('save');
+        Route::post('update', 'SignatureSubmissionController@update')->name('update');
+        Route::post('action', 'SignatureSubmissionController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'SignatureSubmissionController@revertFromTrash')->name('trashed.revert');
+        Route::delete('trashed/destroy/{id}', 'SignatureSubmissionController@destroyTrash')->name('trashed.destroy');
+    });
 });
+
 
 /**
  * Contact Routes
