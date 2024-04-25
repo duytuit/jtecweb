@@ -10,6 +10,7 @@
         <div class="container">
             <form id="examForm">
                 {{-- <a href="javascript:;" class="abc123">test</a> --}}
+                <input name="type" type="hidden" value="{{ Request::query('type') }}">
                 <div>
                     <div>
                         <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
@@ -316,13 +317,14 @@
                         }
                     });
                     if (data.status == "success") {
-
                         $(".right_answer").css("color", "blue");
-                        var results = Math.round((data.exam.results / data.exam.total_questions) * 100);
-                        if (results > 79) {
-                            swal("Chúc mừng bạn đã đạt: " + results);
+                        // var results = Math.round((data.exam.results / data.exam.total_questions) * 100);
+                        // var results = data.exam.results;
+                        var scores = data.exam.scores;
+                        if (scores > 79) {
+                            swal("Chúc mừng bạn đã đạt: " + scores);
                         } else {
-                            swal("Số điểm của bạn là: " + results + ". Bạn chưa đạt");
+                            swal("Số điểm của bạn là: " + scores + ". Bạn chưa đạt");
                         }
                     }
                 }

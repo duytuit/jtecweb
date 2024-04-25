@@ -161,6 +161,7 @@ class FrontPagesController extends Controller
                 'scores' => $scores, // điểm thi
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
+                'type' => $request->type,
             ]);
             return $this->success(compact('exam'));
         } catch (\Exception $e) {
@@ -170,26 +171,28 @@ class FrontPagesController extends Controller
 
     public function storeNew(Request $request)
     {
-        //dd($request->exists('answer'));
+        // dd($request->all());
         $emp = Employee::where('code', $request->manhanvien)->first();
-        // if(!$emp){
-        //     return $this->success(['warning'=>'Nhân viên không có trên hệ thống!']);
-        // }
-        $arrayExam = ArrayHelper::groupQuestion();
-        dd($arrayExam);
-        if (!$request->exists('answer')) {
-            return $this->error(['error', 'chưa chọn đáp án']);
-        }
+
+        $groupQuestion = ArrayHelper::groupQuestion();
         $results = 0;
-        foreach ($request->answer as $key => $value) {
-            $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
-            if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
-                $results++;
+        $scores = 0;
+        $totalQuestion = 0;
+        foreach ($groupQuestion as $questionItem) {
+            $arrayExam = $questionItem['question'];
+            $totalQuestion = $totalQuestion + count($arrayExam);
+            foreach ($request->answer as $key => $item) {
+                $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
+                if (count($array_answer) > 0 && current($array_answer)['answer'] == $item) {
+                    $results++;
+                    $scores =  $scores + $questionItem['point'];
+                }
             }
         }
+        // dd($scores);
         $mytime = Carbon::now();
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
-        $scores = round(($results / count($arrayExam)) * 100);
+        // $scores = round(($results / count($arrayExam)) * 100);
         $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
         $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
 
@@ -212,15 +215,16 @@ class FrontPagesController extends Controller
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng
-                'total_questions' => count($arrayExam), // tổng số câu hỏi
+                'total_questions' => $totalQuestion, // tổng số câu hỏi
                 'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
                 'limit_time' => '05:00', // tổng số câu hỏi
                 'data' => json_encode($request->answer), // tổng số câu hỏi
-                'status' => $scores > 95 ?  1 : 0, // 0:chưa duyệt,1:đã duyệt
+                'status' => $scores > 79 ?  1 : 0, // 0:chưa duyệt,1:đã duyệt
                 'mission' =>  $mission + 1, // số lần thi
                 'scores' => $scores, // điểm thi
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
+                'type' => $request->type,
             ]);
             return $this->success(compact('exam'));
         } catch (\Exception $e) {
@@ -331,6 +335,7 @@ class FrontPagesController extends Controller
             }
         }
     }
+
     public function updateScoresAndStatus()
     {
         $fdgfdgf = Exam::all();
@@ -338,10 +343,11 @@ class FrontPagesController extends Controller
             $scores = round(($value->results / $value->total_questions) * 100);
             $value->update([
                 'scores' => $scores + 1,
-                'status' => $scores > 95 ?  1 : 0
+                'status' => $scores > 80 ?  1 : 0
             ]);
         }
     }
+
     public function updateCreateDate()
     {
         $fdgfdgf = Employee::all();

@@ -10,16 +10,23 @@
         <!-- Page Content -->
         <div class="container">
             <div class="cards">
-                <div class="cards_item" data-toggle="modal" data-target="#modalConfirmCode">
-                    <a>
-                        <div class="card">
-                            <div class="card_content">
-                                <h2 class="card_title">Công Đoạn Cắm</h2>
-                                <p class="card_text">Kiểm tra năng lực nhận biết màu dây</p>
-                                <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
-                            </div>
+                <div class="cards_item">
+                    <div class="card js_card_btn" data-type="1">
+                        <div class="card_content">
+                            <h2 class="card_title">Công Đoạn Cắm</h2>
+                            <p class="card_text">Kiểm tra năng lực nhận biết màu dây</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
                         </div>
-                    </a>
+                    </div>
+                </div>
+                <div class="cards_item js_card_btn" data-type="2">
+                    <div class="card">
+                        <div class="card_content">
+                            <h2 class="card_title">Công Đoạn Cắm - NEW</h2>
+                            <p class="card_text">Kiểm tra năng lực nhận biết màu dây</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="cards_item">
                     <div class="card">
@@ -98,9 +105,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="confirmCode" action="{{ route('exam') }}?type=2" method="GET">
+                    <form id="confirmCode" action="{{ route('exam') }}" method="GET">
                         <input type="text" name="code" class="form-control" placeholder="Nhập mã nhân viên" required>
-                        <input type="hidden" name="type" value="2">
+                        <input type="hidden" name="type" id="confirmType">
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -113,5 +120,10 @@
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+        $('.js_card_btn').click(function() {
+            $('#modalConfirmCode').modal('show');
+            $('#confirmType').val($(this).data('type'));
+        })
+    </script>
 @endsection
