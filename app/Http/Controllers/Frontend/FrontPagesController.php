@@ -71,7 +71,7 @@ class FrontPagesController extends Controller
     // New exam
     public function examNew(Request $request)
     {
-        return view('frontend.pages.exam-new');
+        return view('frontend.pages.examNew');
     }
 
     public function test()
@@ -83,14 +83,14 @@ class FrontPagesController extends Controller
     public function test1()
     {
 
-
+        $this->updateType();
         // $this->updateMission();
         //$this->updateScoresAndStatus();
         // $dsgfg= Exam::all();
         // return (new ExamExport( $dsgfg))->download('exam.xlsx');
         //return Exam::query()->get()->downloadExcel('query-download.xlsx')->allFields();
 
-        //$this->addEmployee();
+        // $this->addEmployee();
         //dd($fruits);
         // mảng cần tìm
         //$key=array_search("R", array_column(json_decode(json_encode($fruits),TRUE), 'answer'));
@@ -161,35 +161,41 @@ class FrontPagesController extends Controller
                 'scores' => $scores, // điểm thi
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
+                'type' => $request->type,
             ]);
             return $this->success(compact('exam'));
         } catch (\Exception $e) {
             return $this->error(['error', $e->getMessage()]);
         }
     }
-
+    public function updateType()
+    {
+        Exam::where('type', 0)->update(['type' => 1]);
+        echo 'thanhf cong';
+    }
     public function storeNew(Request $request)
     {
-        //dd($request->exists('answer'));
-        $emp = Employee::where('code', $request->manhanvien)->first();
-        // if(!$emp){
-        //     return $this->success(['warning'=>'Nhân viên không có trên hệ thống!']);
-        // }
-        $arrayExam = ArrayHelper::groupQuestion();
-        dd($arrayExam);
-        if (!$request->exists('answer')) {
-            return $this->error(['error', 'chưa chọn đáp án']);
-        }
+        // dd($request->all());
+        $emp = Employee::where(['code' => $request->manhanvien], ['type' => $request->type])->first();
+        $groupQuestion = ArrayHelper::groupQuestion();
         $results = 0;
-        foreach ($request->answer as $key => $value) {
-            $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
-            if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
-                $results++;
+        $scores = 0;
+        $totalQuestion = 0;
+        foreach ($groupQuestion as $questionItem) {
+            $arrayExam = $questionItem['question'];
+            $totalQuestion += $questionItem['quantity_question'];
+            foreach ($request->answer as $key => $item) {
+                $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
+                if (count($array_answer) > 0 && current($array_answer)['answer'] == $item) {
+                    $results++;
+                    $scores =  $scores + $questionItem['point'];
+                }
             }
         }
+        // dd($totalQuestion);
         $mytime = Carbon::now();
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
-        $scores = round(($results / count($arrayExam)) * 100);
+        // $scores = round(($results / count($arrayExam)) * 100);
         $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
         $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
 
@@ -212,15 +218,16 @@ class FrontPagesController extends Controller
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng
-                'total_questions' => count($arrayExam), // tổng số câu hỏi
+                'total_questions' => $totalQuestion, // tổng số câu hỏi
                 'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
                 'limit_time' => '05:00', // tổng số câu hỏi
                 'data' => json_encode($request->answer), // tổng số câu hỏi
-                'status' => $scores > 95 ?  1 : 0, // 0:chưa duyệt,1:đã duyệt
+                'status' => $scores > 79 ?  1 : 0, // 0:chưa duyệt,1:đã duyệt
                 'mission' =>  $mission + 1, // số lần thi
                 'scores' => $scores, // điểm thi
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
+                'type' => $request->type,
             ]);
             return $this->success(compact('exam'));
         } catch (\Exception $e) {
@@ -331,6 +338,7 @@ class FrontPagesController extends Controller
             }
         }
     }
+
     public function updateScoresAndStatus()
     {
         $fdgfdgf = Exam::all();
@@ -338,10 +346,11 @@ class FrontPagesController extends Controller
             $scores = round(($value->results / $value->total_questions) * 100);
             $value->update([
                 'scores' => $scores + 1,
-                'status' => $scores > 95 ?  1 : 0
+                'status' => $scores > 80 ?  1 : 0
             ]);
         }
     }
+
     public function updateCreateDate()
     {
         $fdgfdgf = Employee::all();

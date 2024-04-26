@@ -37,7 +37,7 @@ Route::get('/', [FrontPagesController::class, 'index'])->name('index');
 Route::get('/exam', [FrontPagesController::class, 'exam'])->name('exam');
 
 // New exam
-Route::get('/exam-new', [FrontPagesController::class, 'examNew'])->name('examNew');
+Route::get('/examNew', [FrontPagesController::class, 'examNew'])->name('examNew');
 
 Route::post('/exam/detailReport', [FrontPagesController::class, 'detailReport'])->name('exam.detailReport');
 Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
