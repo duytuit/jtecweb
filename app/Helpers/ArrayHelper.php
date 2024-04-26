@@ -968,8 +968,8 @@ class ArrayHelper
                         'id' => 63,
                         'name' => 'Kiểm tra tụt chốt tại công đoạn cắm phương pháp nào là đúng',
                         'path_image' => null,
-                        'answer' => 'Kiểm tra bằng máy thông điện và Soi đèn pin',
-                        'answer_list' => ['Nhìn bằng mắt thường', 'Soi đèn pin', 'Kiểm tra bằng máy thông điện', 'Kiểm tra bằng máy thông điện và Soi đèn pin'],
+                        'answer' => 'Nhìn bằng mắt thường và Soi đèn pin',
+                        'answer_list' => ['Nhìn bằng mắt thường', 'Soi đèn pin', 'Kiểm tra bằng máy thông điện', 'Nhìn bằng mắt thường và Soi đèn pin'],
                         'show_question' => 1,
 
                     ],

@@ -12,7 +12,7 @@
                         $year = substr($cycleName, 2);
                         $formattedDate = $month . '/' . $year;
                     @endphp
-                    <div class="text-white">Kết quả lần <b>1</b> tháng <b>{{ $formattedDate }}</b></div>
+                    <div class="text-white text-uppercase">KẾT QUẢ BÀI KIỂM TRA KIẾN THỨC CÔNG NHÂN MỚI</div>
                     <div class="text-white" style="display: flex;
                         justify-content: space-around;">
                         <div>

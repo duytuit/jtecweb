@@ -98,13 +98,13 @@
                             <th>Mã NV</th>
                             <th>Tên NV</th>
                             <th>Công đoạn</th>
-                            <th>Kỳ thi</th>
-                            <th>Ngày thi</th>
+                            <th>Ngày vào công ty</th>
                             <th>Tổng câu</th>
                             <th>Trả lời đúng</th>
                             <th>Điểm</th>
                             <th>Thời gian làm bài</th>
                             <th>Kết quả</th>
+                            <th>Ngày thi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,20 +140,7 @@
                                 @else
                                     <td colspan="3"></td>
                                 @endif
-                                {{-- @if ($cycle_name == $item->cycle_name && $check == 1)
-                                <td rowspan="{{$lists->where('code',$code)->where('cycle_name',$cycle_name)->count()}}" style="vertical-align: middle;">
-                                    @php
-                                        $pass = $lists->where('code',$code)->where('cycle_name',$cycle_name)->where('status',1)->count()
-                                    @endphp
-                                        @if ($pass >= 2)
-                                        <span class="badge badge-info font-weight-100">Đỗ</span>
-                                    @else
-                                        <span class="badge badge-secondary">Thi lại</span>
-                                    @endif
-                                </td>
-                            @endif --}}
-                                <td>{{ $item->cycle_name }}</td>
-                                <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at)) }}</td>
+                                <td></td>
                                 <td>{{ $item->total_questions }}</td>
                                 <td>{{ $item->results }}</td>
                                 <td>{{ $item->scores }}</td>
@@ -165,7 +152,7 @@
                                         <span class="badge badge-warning">Chưa Đạt</span>
                                     @endif
                                 </td>
-
+                                <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at)) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
