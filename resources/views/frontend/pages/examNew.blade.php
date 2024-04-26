@@ -13,7 +13,7 @@
                 <input name="type" type="hidden" value="{{ Request::query('type') }}">
                 <div>
                     <div>
-                        <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
+                        <strong style=" text-transform: uppercase;">Bài kiểm tra kiến thức công nhân mới</strong>
                     </div>
                 </div>
                 <div>
@@ -196,14 +196,16 @@
                         $array_quantity = $questionItem['quantity_question'];
                         $array_exam = array_slice($array_exam, 0, $array_quantity); // Số lượng câu hỏi
                     @endphp
-                    <strong class="px-3">{{ $names }}</strong>
+                    <strong class="px-3">{!! $names !!}</strong>
                     <div class="cards d-block">
                         @foreach ($array_exam as $index => $item)
                             <div class="cards_item w-100" id="{{ $item['id'] }}">
                                 <div class="card_question">
                                     <div class="form-group">
                                         <div><strong>Câu {{ $index + 1 }} :
-                                            </strong><strong>{{ $item['show_question'] == 1 ? $item['name'] : '' }}</strong>
+                                            </strong>
+                                            {{-- <div>{!! $item['show_question'] == 1 ? $item['name'] : '' !!}</div> --}}
+                                            <strong>{!! $item['show_question'] == 1 ? $item['name'] : '' !!}</strong>
                                         </div>
                                     </div>
                                     @php
@@ -355,6 +357,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(5 * 60); // 4 minutes in seconds
+        startTimer(10 * 60); // 4 minutes in seconds
     </script>
 @endsection

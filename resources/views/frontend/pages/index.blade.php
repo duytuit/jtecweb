@@ -22,8 +22,8 @@
                 <div class="cards_item js_card_btn" data-type="2">
                     <div class="card">
                         <div class="card_content">
-                            <h2 class="card_title">Công Đoạn Cắm - NEW</h2>
-                            <p class="card_text">Kiểm tra năng lực nhận biết màu dây</p>
+                            <h2 class="card_title">Công Đoạn Cắm</h2>
+                            <p class="card_text">Kiểm tra đánh giá công nhân</p>
                             <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
                         </div>
                     </div>
