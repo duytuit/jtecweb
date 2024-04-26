@@ -96,8 +96,13 @@
                                 @endforeach
                             </div>
                             @foreach (array_slice($groupQuestion, 2) as $array_exam_index)
+                                @php
+                                    $array_quantity = $array_exam_index['quantity_question'];
+                                    $array_exam = $array_exam_index['question'];
+                                    $array_exam = array_slice($array_exam, 0, $array_quantity);
+                                @endphp
                                 <div class="d-flex flex-wrap">
-                                    @foreach ($array_exam_index['question'] as $index => $item)
+                                    @foreach ($array_exam as $index => $item)
                                         <a href="javascript:;" id="label_{{ $item['id'] }}" class="map_item"
                                             data-id="{{ $item['id'] }}" data-value="{{ $item['answer'] }}"
                                             onclick="getMapQuestion({{ $item['id'] }})">
@@ -166,7 +171,7 @@
                                     $array_Answer = $item['answer_list'];
                                     shuffle($array_Answer);
                                 @endphp
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between flex-wrap">
                                     @foreach ($array_Answer as $index1 => $item1)
                                         <div @if ($item['answer'] == $item1) class="right_answer" @endif>
                                             <label for="cau__{{ $item['id'] }}_answer_{{ $index1 }}">
