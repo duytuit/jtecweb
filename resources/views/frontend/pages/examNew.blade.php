@@ -10,6 +10,7 @@
         <div class="container">
             <form id="examForm">
                 {{-- <a href="javascript:;" class="abc123">test</a> --}}
+                <input name="type" type="hidden" value="{{ Request::query('type') }}">
                 <div>
                     <div>
                         <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
@@ -63,12 +64,14 @@
                     // Nhóm câu hỏi 1
                     $names1 = $groupQuestion[0]['groupname'];
                     $array_exam1 = $groupQuestion[0]['question'];
-                    $array_exam1 = array_slice($array_exam1, 0, 20); // Số lượng câu hỏi
+                    $array_quantity1 = $groupQuestion[0]['quantity_question'];
+                    $array_exam1 = array_slice($array_exam1, 0, $array_quantity1); // Số lượng câu hỏi
 
                     // Nhóm câu hỏi 2
                     $names2 = $groupQuestion[1]['groupname'];
                     $array_exam2 = $groupQuestion[1]['question'];
-                    $array_exam2 = array_slice($array_exam2, 0, 2); // Số lượng câu hỏi
+                    $array_quantity2 = $groupQuestion[1]['quantity_question'];
+                    $array_exam2 = array_slice($array_exam2, 0, $array_quantity2); // Số lượng câu hỏi
                 @endphp
 
                 <div class="cards map_question">
@@ -190,6 +193,8 @@
                     @php
                         $names = $questionItem['groupname'];
                         $array_exam = $questionItem['question'];
+                        $array_quantity = $questionItem['quantity_question'];
+                        $array_exam = array_slice($array_exam, 0, $array_quantity); // Số lượng câu hỏi
                     @endphp
                     <strong class="px-3">{{ $names }}</strong>
                     <div class="cards d-block">
@@ -316,13 +321,14 @@
                         }
                     });
                     if (data.status == "success") {
-
                         $(".right_answer").css("color", "blue");
-                        var results = Math.round((data.exam.results / data.exam.total_questions) * 100);
-                        if (results > 79) {
-                            swal("Chúc mừng bạn đã đạt: " + results);
+                        // var results = Math.round((data.exam.results / data.exam.total_questions) * 100);
+                        // var results = data.exam.results;
+                        var scores = data.exam.scores;
+                        if (scores > 79) {
+                            swal("Chúc mừng bạn đã đạt: " + scores);
                         } else {
-                            swal("Số điểm của bạn là: " + results + ". Bạn chưa đạt");
+                            swal("Số điểm của bạn là: " + scores + ". Bạn chưa đạt");
                         }
                     }
                 }

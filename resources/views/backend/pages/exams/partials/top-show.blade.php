@@ -1,7 +1,7 @@
 <!-- ============================================================== -->
 <!-- Top Show Data of List Exam -->
 <!-- ============================================================== -->
-<div class="row mt-1 fs-16">
+<div class="row mt-1 fs-16 font-times-new">
     <!-- Column -->
     <div class="col-md-6 col-lg-6 col-xlg-6">
         <div class="card card-hover">

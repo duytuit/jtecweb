@@ -15,61 +15,68 @@
                 </li>
 
                 @if ($user->can('dashboard.view'))
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.index') }}" aria-expanded="false">
-                        <i class="mdi mdi-creation"></i>
-                        <span class="hide-menu">Dashboard</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.index') }}"
+                            aria-expanded="false">
+                            <i class="mdi mdi-creation"></i>
+                            <span class="hide-menu">Dashboard</span>
+                        </a>
+                    </li>
                 @endcan
 
                 @if ($user->can('admin.view') || $user->can('admin.create') || $user->can('role.view') || $user->can('role.create'))
-                <li class="sidebar-item ">
-                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                        <i class="mdi mdi-account"></i>
-                        <span class="hide-menu">Users & Roles </span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.admins.index') || Route::is('admin.admins.create') || Route::is('admin.admins.edit')) ? 'in' : null }}">
-                        @if ($user->can('admin.view'))
-                        <li class="sidebar-item">
-                            <a href="{{ route('admin.admins.index') }}" class="sidebar-link {{ (Route::is('admin.admins.index') || Route::is('admin.admins.edit')) ? 'active' : null }}">
-                                <i class="mdi mdi-view-list"></i>
-                                <span class="hide-menu"> User List </span>
-                            </a>
-                        </li>
-                        @endcan
+                    <li class="sidebar-item ">
+                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                            aria-expanded="false">
+                            <i class="mdi mdi-account"></i>
+                            <span class="hide-menu">Users & Roles </span>
+                        </a>
+                        <ul aria-expanded="false"
+                            class="collapse first-level {{ Route::is('admin.admins.index') || Route::is('admin.admins.create') || Route::is('admin.admins.edit') ? 'in' : null }}">
+                            @if ($user->can('admin.view'))
+                                <li class="sidebar-item">
+                                    <a href="{{ route('admin.admins.index') }}"
+                                        class="sidebar-link {{ Route::is('admin.admins.index') || Route::is('admin.admins.edit') ? 'active' : null }}">
+                                        <i class="mdi mdi-view-list"></i>
+                                        <span class="hide-menu"> User List </span>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        @if ($user->can('admin.create'))
-                        <li class="sidebar-item">
-                            <a href="{{ route('admin.admins.create') }}" class="sidebar-link {{ Route::is('admin.admins.create') ? 'active' : null }}">
-                                <i class="mdi mdi-plus-circle"></i>
-                                <span class="hide-menu"> New User </span>
-                            </a>
-                        </li>
-                        @endcan
+                            @if ($user->can('admin.create'))
+                                <li class="sidebar-item">
+                                    <a href="{{ route('admin.admins.create') }}"
+                                        class="sidebar-link {{ Route::is('admin.admins.create') ? 'active' : null }}">
+                                        <i class="mdi mdi-plus-circle"></i>
+                                        <span class="hide-menu"> New User </span>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        @if ($user->can('role.view'))
-                        <li class="sidebar-item">
-                            <a href="{{ route('admin.roles.index') }}" class="sidebar-link {{ Route::is('admin.roles.index') ? 'active' : null }}">
-                                <i class="mdi mdi-view-quilt"></i>
-                                <span class="hide-menu"> Roles </span>
-                            </a>
-                        </li>
-                        @endcan
+                            @if ($user->can('role.view'))
+                                <li class="sidebar-item">
+                                    <a href="{{ route('admin.roles.index') }}"
+                                        class="sidebar-link {{ Route::is('admin.roles.index') ? 'active' : null }}">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> Roles </span>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        @if ($user->can('role.create'))
-                        <li class="sidebar-item">
-                            <a href="{{ route('admin.roles.create') }}" class="sidebar-link {{ Route::is('admin.roles.create') ? 'active' : null }}">
-                                <i class="mdi mdi-plus-circle"></i>
-                                <span class="hide-menu"> New Role </span>
-                            </a>
-                        </li>
-                        @endcan
-                    </ul>
-                </li>
-                @endcan
+                            @if ($user->can('role.create'))
+                                <li class="sidebar-item">
+                                    <a href="{{ route('admin.roles.create') }}"
+                                        class="sidebar-link {{ Route::is('admin.roles.create') ? 'active' : null }}">
+                                        <i class="mdi mdi-plus-circle"></i>
+                                        <span class="hide-menu"> New Role </span>
+                                    </a>
+                                </li>
+                            @endcan
+        </ul>
+    </li>
+@endcan
 
-                {{-- @if ($user->can('category.view') || $user->can('category.create'))
+{{-- @if ($user->can('category.view') || $user->can('category.create'))
                 <li class="sidebar-item ">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="mdi mdi-tune"></i>
@@ -97,7 +104,7 @@
                 </li>
                 @endif --}}
 
-                {{-- @if ($user->can('page.view') || $user->can('page.create'))
+{{-- @if ($user->can('page.view') || $user->can('page.create'))
                 <li class="sidebar-item ">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="mdi mdi-tag-text-outline"></i>
@@ -125,7 +132,7 @@
                 </li>
                 @endif --}}
 
-                {{-- @if ($user->can('service.view') || $user->can('service.create'))
+{{-- @if ($user->can('service.view') || $user->can('service.create'))
                 <li class="sidebar-item ">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="mdi mdi-arrow-right-drop-circle"></i>
@@ -153,7 +160,7 @@
                 </li>
                 @endif --}}
 
-                {{-- @if ($user->can('booking_request.view') || $user->can('booking_request.edit') || $user->can('booking_request.delete'))
+{{-- @if ($user->can('booking_request.view') || $user->can('booking_request.edit') || $user->can('booking_request.delete'))
                 @php
                     $count_pending_booking_request = \Modules\Booking\Entities\BookingRequest::where('status', 'pending')->count();
                 @endphp
@@ -176,7 +183,7 @@
                 </li>
                 @endif --}}
 
-                {{-- @if ($user->can('blog.view') || $user->can('blog.create'))
+{{-- @if ($user->can('blog.view') || $user->can('blog.create'))
                     <li class="sidebar-item ">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                             <i class="mdi mdi-view-list"></i>
@@ -204,86 +211,101 @@
                     </li>
                 @endif --}}
 
-                @if ($user->can('exam.view') || $user->can('exam.create'))
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Thi trắc nghiệm </span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.exams.index') || Route::is('admin.exams.create') || Route::is('admin.exams.edit')) ? 'in' : null }}">
-                            @if ($user->can('exam.view'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.exams.index') }}" class="sidebar-link {{ (Route::is('admin.exams.index') || Route::is('admin.exams.edit')) ? 'active' : null }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            @endif
+@if ($user->can('exam.view') || $user->can('exam.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Thi trắc nghiệm </span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.exams.index') || Route::is('admin.exams.create') || Route::is('admin.exams.edit') ? 'in' : null }}">
+            @if ($user->can('exam.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.exams.index') }}"
+                        class="sidebar-link {{ Route::is('admin.exams.index') || Route::is('admin.exams.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Kiểm tra màu dây </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.exams.audit') }}"
+                        class="sidebar-link {{ Route::is('admin.exams.audit') || Route::is('admin.exams.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Đánh giá công nhân </span>
+                    </a>
+                </li>
+            @endif
 
-                            @if ($user->can('exam.create'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.exams.create') }}" class="sidebar-link {{ Route::is('admin.exams.create') ? 'active' : null }}">
-                                        <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> Cấu hình </span>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
+            @if ($user->can('exam.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.exams.create') }}"
+                        class="sidebar-link {{ Route::is('admin.exams.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
 
-                {{-- @if ($user->can('productvt.view')) --}}
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Sản lượng </span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.productvt.index') || Route::is('admin.productvt.create') || Route::is('admin.productvt.edit')) ? 'in' : null }}">
-                            {{-- @if ($user->can('productvt.view')) --}}
-                                <li class="sidebar-item">
-                                    {{-- <a href="{{ route('admin.productvt.index') }}" class="sidebar-link {{ (Route::is('admin.productvt.index') || Route::is('admin.productvt.edit')) ? 'active' : null }}"> --}}
-                                    <a class="sidebar-link" href="{{ url('admin/productvt') }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            {{-- @endif --}}
-                        </ul>
-                    </li>
-                {{-- @endif --}}
+{{-- @if ($user->can('productvt.view')) --}}
+<li class="sidebar-item ">
+    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+        aria-expanded="false">
+        <i class="mdi mdi-view-list"></i>
+        <span class="hide-menu">Sản lượng </span>
+    </a>
+    <ul aria-expanded="false"
+        class="collapse first-level {{ Route::is('admin.productvt.index') || Route::is('admin.productvt.create') || Route::is('admin.productvt.edit') ? 'in' : null }}">
+        {{-- @if ($user->can('productvt.view')) --}}
+        <li class="sidebar-item">
+            {{-- <a href="{{ route('admin.productvt.index') }}" class="sidebar-link {{ (Route::is('admin.productvt.index') || Route::is('admin.productvt.edit')) ? 'active' : null }}"> --}}
+            <a class="sidebar-link" href="{{ url('admin/productvt') }}">
+                <i class="mdi mdi-view-list"></i>
+                <span class="hide-menu"> Danh sách </span>
+            </a>
+        </li>
+        {{-- @endif --}}
+    </ul>
+</li>
+{{-- @endif --}}
 
 
-                {{-- 張力を確認してください
+{{-- 張力を確認してください
                 Kiểm tra sức căng
                 Check Tension --}}
-                {{-- @if ($user->can('checkTension.view')) --}}
-                <li class="sidebar-item ">
-                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                        <i class="mdi mdi-view-list"></i>
-                        <span class="hide-menu">Kiểm tra sức căng</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.checkTension.index') || Route::is('admin.checkTension.create') || Route::is('admin.checkTension.edit')) ? 'in' : null }}">
-                        {{-- @if ($user->can('checkTension.view')) --}}
-                            <li class="sidebar-item">
-                                {{-- <a href="{{ route('admin.checkTension.index') }}" class="sidebar-link {{ (Route::is('admin.checkTension.index') || Route::is('admin.checkTension.edit')) ? 'active' : null }}"> --}}
-                                <a class="sidebar-link" href="{{ url('admin/checkTension') }}">
-                                    <i class="mdi mdi-view-list"></i>
-                                    <span class="hide-menu"> Nhập dữ liệu </span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                {{-- <a href="{{ route('admin.checkTension.index') }}" class="sidebar-link {{ (Route::is('admin.checkTension.index') || Route::is('admin.checkTension.edit')) ? 'active' : null }}"> --}}
-                                <a class="sidebar-link" href="{{ url('admin/checkTension/view') }}">
-                                    <i class="mdi mdi-view-list"></i>
-                                    <span class="hide-menu"> Xem dữ liệu </span>
-                                </a>
-                            </li>
-                        {{-- @endif --}}
-                    </ul>
-                </li>
-            {{-- @endif --}}
+{{-- @if ($user->can('checkTension.view')) --}}
+<li class="sidebar-item ">
+    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+        aria-expanded="false">
+        <i class="mdi mdi-view-list"></i>
+        <span class="hide-menu">Kiểm tra sức căng</span>
+    </a>
+    <ul aria-expanded="false"
+        class="collapse first-level {{ Route::is('admin.checkTension.index') || Route::is('admin.checkTension.create') || Route::is('admin.checkTension.edit') ? 'in' : null }}">
+        {{-- @if ($user->can('checkTension.view')) --}}
+        <li class="sidebar-item">
+            {{-- <a href="{{ route('admin.checkTension.index') }}" class="sidebar-link {{ (Route::is('admin.checkTension.index') || Route::is('admin.checkTension.edit')) ? 'active' : null }}"> --}}
+            <a class="sidebar-link" href="{{ url('admin/checkTension') }}">
+                <i class="mdi mdi-view-list"></i>
+                <span class="hide-menu"> Nhập dữ liệu </span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            {{-- <a href="{{ route('admin.checkTension.index') }}" class="sidebar-link {{ (Route::is('admin.checkTension.index') || Route::is('admin.checkTension.edit')) ? 'active' : null }}"> --}}
+            <a class="sidebar-link" href="{{ url('admin/checkTension/view') }}">
+                <i class="mdi mdi-view-list"></i>
+                <span class="hide-menu"> Xem dữ liệu </span>
+            </a>
+        </li>
+        {{-- @endif --}}
+    </ul>
+</li>
+{{-- @endif --}}
 
-                {{-- @if ($user->can('contact.view') || $user->can('contact.create'))
+{{-- @if ($user->can('contact.view') || $user->can('contact.create'))
                     <li class="sidebar-item ">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                             <i class="mdi mdi-email"></i>
@@ -302,42 +324,46 @@
                     </li>
                 @endif --}}
 
-                {{-- <li class="nav-small-cap">
+{{-- <li class="nav-small-cap">
                     <i class="mdi mdi-dots-horizontal"></i>
                     <span class="hide-menu">Extra</span>
                 </li> --}}
 
-                @if ($user->can('department.view') || $user->can('department.create'))
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Bộ phận</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.departments.index') || Route::is('admin.departments.create') || Route::is('admin.departments.edit')) ? 'in' : null }}">
-                            @if ($user->can('department.view'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.departments.index') }}" class="sidebar-link {{ (Route::is('admin.departments.index') || Route::is('admin.departments.edit')) ? 'active' : null }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            @endif
+@if ($user->can('department.view') || $user->can('department.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Bộ phận</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.departments.index') || Route::is('admin.departments.create') || Route::is('admin.departments.edit') ? 'in' : null }}">
+            @if ($user->can('department.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.departments.index') }}"
+                        class="sidebar-link {{ Route::is('admin.departments.index') || Route::is('admin.departments.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
 
-                            @if ($user->can('department.create'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.departments.create') }}" class="sidebar-link {{ Route::is('admin.departments.create') ? 'active' : null }}">
-                                        <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> Cấu hình </span>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
+            @if ($user->can('department.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.departments.create') }}"
+                        class="sidebar-link {{ Route::is('admin.departments.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
 
 
 
-                {{-- @if ($user->can('campaign.view') || $user->can('campaign.create'))
+{{-- @if ($user->can('campaign.view') || $user->can('campaign.create'))
                     <li class="sidebar-item ">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                             <i class="mdi mdi-view-list"></i>
@@ -393,7 +419,7 @@
                     </li>
                 @endif --}}
 
-                {{-- @if ($user->can('comment.view') || $user->can('comment.create'))
+{{-- @if ($user->can('comment.view') || $user->can('comment.create'))
                     <li class="sidebar-item ">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                             <i class="mdi mdi-view-list"></i>
@@ -421,179 +447,207 @@
                     </li>
                 @endif --}}
 
-                @if ($user->can('employee.view') || $user->can('employee.create'))
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Nhân viên</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.employees.index') || Route::is('admin.employees.create') || Route::is('admin.employees.edit')) ? 'in' : null }}">
-                            @if ($user->can('employee.view'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.employees.index') }}" class="sidebar-link {{ (Route::is('admin.employees.index') || Route::is('admin.employees.edit')) ? 'active' : null }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if ($user->can('employee.create'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.employees.create') }}" class="sidebar-link {{ Route::is('admin.employees.create') ? 'active' : null }}">
-                                        <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> Cấu hình </span>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
-
-                @if ($user->can('required.view') || $user->can('required.create'))
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Yêu cầu linh kiện</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.requireds.index') || Route::is('admin.requireds.create') || Route::is('admin.requireds.edit')) ? 'in' : null }}">
-                            @if ($user->can('required.view'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.requireds.index') }}" class="sidebar-link {{ (Route::is('admin.requireds.index') || Route::is('admin.requireds.edit')) ? 'active' : null }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if ($user->can('required.create'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.requireds.create') }}" class="sidebar-link {{ Route::is('admin.requireds.create') ? 'active' : null }}">
-                                        <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> Cấu hình </span>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
-
-                @if ($user->can('signature_submission.view') || $user->can('signature_submission.create'))
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Trình ký</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.signatureSubmissions.index') || Route::is('admin.signatureSubmissions.create') || Route::is('admin.signatureSubmissions.edit')) ? 'in' : null }}">
-                            @if ($user->can('signature_submission.view'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.signatureSubmissions.index') }}" class="sidebar-link {{ (Route::is('admin.signatureSubmissions.index') || Route::is('admin.signatureSubmissions.edit')) ? 'active' : null }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if ($user->can('signature_submission.create'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.signatureSubmissions.create') }}" class="sidebar-link {{ Route::is('admin.signatureSubmissions.create') ? 'active' : null }}">
-                                        <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> Cấu hình </span>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
-
-                @if ($user->can('activity.view') || $user->can('activity.create'))
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Lịch sử thao tác</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.activitys.index') || Route::is('admin.activitys.create') || Route::is('admin.activitys.edit')) ? 'in' : null }}">
-                            @if ($user->can('activity.view'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.activitys.index') }}" class="sidebar-link {{ (Route::is('admin.activitys.index') || Route::is('admin.activitys.edit')) ? 'active' : null }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if ($user->can('activity.create'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.activitys.create') }}" class="sidebar-link {{ Route::is('admin.activitys.create') ? 'active' : null }}">
-                                        <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> Cấu hình </span>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
-
-                @if ($user->can('log_import.view') || $user->can('log_import.create'))
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-view-list"></i>
-                            <span class="hide-menu">Lịch sử Import</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.logImports.index') || Route::is('admin.logImports.create') || Route::is('admin.logImports.edit')) ? 'in' : null }}">
-                            @if ($user->can('log_import.view'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.logImports.index') }}" class="sidebar-link {{ (Route::is('admin.logImports.index') || Route::is('admin.logImports.edit')) ? 'active' : null }}">
-                                        <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> Danh sách </span>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if ($user->can('log_import.create'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('admin.logImports.create') }}" class="sidebar-link {{ Route::is('admin.logImports.create') ? 'active' : null }}">
-                                        <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> Cấu hình </span>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
-                <li class="sidebar-item ">
-                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                        <i class="mdi mdi-settings"></i>
-                        <span class="hide-menu">Settings </span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse first-level {{ (Route::is('admin.languages.index') || Route::is('admin.languages.create') || Route::is('admin.languages.edit') || Route::is('admin.languages.connection.index')) ? 'in' : null }}">
-                        <li class="sidebar-item">
-                            <a href="{{ route('admin.languages.index') }}" class="sidebar-link {{ ( Route::is('admin.languages.index') || Route::is('admin.languages.create') || Route::is('admin.languages.edit')) ? 'active' : null }}">
-                                <i class="mdi mdi-plus-circle"></i>
-                                <span class="hide-menu"> Languages </span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('admin.settings.index') }}" class="sidebar-link {{ ( Route::is('admin.settings.index')) ? 'active' : null }}">
-                                <i class="mdi mdi-settings"></i>
-                                <span class="hide-menu"> Settings </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
+@if ($user->can('employee.view') || $user->can('employee.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Nhân viên</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.employees.index') || Route::is('admin.employees.create') || Route::is('admin.employees.edit') ? 'in' : null }}">
+            @if ($user->can('employee.view'))
                 <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.logout') }}"  onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();" aria-expanded="false">
-                        <i class="mdi mdi-directions"></i>
-                        <span class="hide-menu">Log Out</span>
+                    <a href="{{ route('admin.employees.index') }}"
+                        class="sidebar-link {{ Route::is('admin.employees.index') || Route::is('admin.employees.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
                     </a>
-                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
                 </li>
-            </ul>
-        </nav>
-        <!-- End Sidebar navigation -->
-    </div>
-    <!-- End Sidebar scroll-->
+            @endif
+
+            @if ($user->can('employee.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.employees.create') }}"
+                        class="sidebar-link {{ Route::is('admin.employees.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
+@if ($user->can('required.view') || $user->can('required.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Yêu cầu linh kiện</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.requireds.index') || Route::is('admin.requireds.create') || Route::is('admin.requireds.edit') ? 'in' : null }}">
+            @if ($user->can('required.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.requireds.index') }}"
+                        class="sidebar-link {{ Route::is('admin.requireds.index') || Route::is('admin.requireds.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($user->can('required.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.requireds.create') }}"
+                        class="sidebar-link {{ Route::is('admin.requireds.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
+@if ($user->can('signature_submission.view') || $user->can('signature_submission.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Trình ký</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.signatureSubmissions.index') || Route::is('admin.signatureSubmissions.create') || Route::is('admin.signatureSubmissions.edit') ? 'in' : null }}">
+            @if ($user->can('signature_submission.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.signatureSubmissions.index') }}"
+                        class="sidebar-link {{ Route::is('admin.signatureSubmissions.index') || Route::is('admin.signatureSubmissions.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($user->can('signature_submission.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.signatureSubmissions.create') }}"
+                        class="sidebar-link {{ Route::is('admin.signatureSubmissions.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
+@if ($user->can('activity.view') || $user->can('activity.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Lịch sử thao tác</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.activitys.index') || Route::is('admin.activitys.create') || Route::is('admin.activitys.edit') ? 'in' : null }}">
+            @if ($user->can('activity.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.activitys.index') }}"
+                        class="sidebar-link {{ Route::is('admin.activitys.index') || Route::is('admin.activitys.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($user->can('activity.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.activitys.create') }}"
+                        class="sidebar-link {{ Route::is('admin.activitys.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
+@if ($user->can('log_import.view') || $user->can('log_import.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Lịch sử Import</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.logImports.index') || Route::is('admin.logImports.create') || Route::is('admin.logImports.edit') ? 'in' : null }}">
+            @if ($user->can('log_import.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.logImports.index') }}"
+                        class="sidebar-link {{ Route::is('admin.logImports.index') || Route::is('admin.logImports.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($user->can('log_import.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.logImports.create') }}"
+                        class="sidebar-link {{ Route::is('admin.logImports.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+<li class="sidebar-item ">
+    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+        aria-expanded="false">
+        <i class="mdi mdi-settings"></i>
+        <span class="hide-menu">Settings </span>
+    </a>
+    <ul aria-expanded="false"
+        class="collapse first-level {{ Route::is('admin.languages.index') || Route::is('admin.languages.create') || Route::is('admin.languages.edit') || Route::is('admin.languages.connection.index') ? 'in' : null }}">
+        <li class="sidebar-item">
+            <a href="{{ route('admin.languages.index') }}"
+                class="sidebar-link {{ Route::is('admin.languages.index') || Route::is('admin.languages.create') || Route::is('admin.languages.edit') ? 'active' : null }}">
+                <i class="mdi mdi-plus-circle"></i>
+                <span class="hide-menu"> Languages </span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="{{ route('admin.settings.index') }}"
+                class="sidebar-link {{ Route::is('admin.settings.index') ? 'active' : null }}">
+                <i class="mdi mdi-settings"></i>
+                <span class="hide-menu"> Settings </span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="sidebar-item">
+    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+        href="{{ route('admin.logout') }}"
+        onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();"
+        aria-expanded="false">
+        <i class="mdi mdi-directions"></i>
+        <span class="hide-menu">Log Out</span>
+    </a>
+    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST"
+        style="display: none;">
+        @csrf
+    </form>
+</li>
+</ul>
+</nav>
+<!-- End Sidebar navigation -->
+</div>
+<!-- End Sidebar scroll-->
 </aside>

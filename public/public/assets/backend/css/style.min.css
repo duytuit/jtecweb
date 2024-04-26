@@ -18920,7 +18920,7 @@ body[data-theme="dark"] .ct-grid {
 }
 
 html {
-    /* font-family: sans-serif; */
+    font-family: sans-serif;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
 }
@@ -18928,7 +18928,7 @@ html {
 .popover,
 .tooltip,
 body {
-    /* font-family: Rubik, sans-serif; */
+    font-family: Rubik, sans-serif;
 }
 
 body {
@@ -30002,7 +30002,7 @@ html[dir="ltr"] body .p-l-0 {
 }
 
 .page-wrapper>.container-fluid {
-    padding: 20px;
+    padding: 15px 20px 20px;
     min-height: calc(100vh - 180px);
 }
 
@@ -31030,7 +31030,7 @@ label {
 }
 
 .page-breadcrumb {
-    padding: 20px 20px 0;
+    padding: 15px 20px 0;
 }
 
 .page-breadcrumb .page-title {
@@ -38656,6 +38656,11 @@ textarea.note {
     }
 }
 
+
 .fs-16 {
-    font-size: 16px;
+    font-size: 16px !important;
+}
+
+.font-times-new {
+    font-family: 'Times New Roman', Times, serif !important;
 }
