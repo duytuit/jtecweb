@@ -71,7 +71,7 @@ class FrontPagesController extends Controller
     // New exam
     public function examNew(Request $request)
     {
-        return view('frontend.pages.exam-new');
+        return view('frontend.pages.examNew');
     }
 
     public function test()
@@ -83,14 +83,14 @@ class FrontPagesController extends Controller
     public function test1()
     {
 
-
+        $this->updateType();
         // $this->updateMission();
         //$this->updateScoresAndStatus();
         // $dsgfg= Exam::all();
         // return (new ExamExport( $dsgfg))->download('exam.xlsx');
         //return Exam::query()->get()->downloadExcel('query-download.xlsx')->allFields();
 
-        //$this->addEmployee();
+        // $this->addEmployee();
         //dd($fruits);
         // mảng cần tìm
         //$key=array_search("R", array_column(json_decode(json_encode($fruits),TRUE), 'answer'));
@@ -168,19 +168,22 @@ class FrontPagesController extends Controller
             return $this->error(['error', $e->getMessage()]);
         }
     }
-
+    public function updateType()
+    {
+        Exam::where('type', 0)->update(['type' => 1]);
+        echo 'thanhf cong';
+    }
     public function storeNew(Request $request)
     {
         // dd($request->all());
-        $emp = Employee::where('code', $request->manhanvien)->first();
-
+        $emp = Employee::where(['code' => $request->manhanvien], ['type' => $request->type])->first();
         $groupQuestion = ArrayHelper::groupQuestion();
         $results = 0;
         $scores = 0;
         $totalQuestion = 0;
         foreach ($groupQuestion as $questionItem) {
             $arrayExam = $questionItem['question'];
-            $totalQuestion = $totalQuestion + count($arrayExam);
+            // $totalQuestion = $totalQuestion + count($arrayExam);
             foreach ($request->answer as $key => $item) {
                 $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
                 if (count($array_answer) > 0 && current($array_answer)['answer'] == $item) {

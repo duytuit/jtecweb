@@ -122,8 +122,15 @@
 @section('scripts')
     <script>
         $('.js_card_btn').click(function() {
+            type = $(this).data('type');
+            $('#confirmType').val(type);
+            if (type == 1) {
+                $('#confirmCode').attr('action', '{{ route('exam') }}');
+            } else if (type == 2) {
+                $('#confirmCode').attr('action', '{{ route('examNew') }}');
+            }
             $('#modalConfirmCode').modal('show');
-            $('#confirmType').val($(this).data('type'));
+
         })
     </script>
 @endsection
