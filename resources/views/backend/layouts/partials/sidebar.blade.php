@@ -232,7 +232,7 @@
                     <a href="{{ route('admin.exams.audit') }}"
                         class="sidebar-link {{ Route::is('admin.exams.audit') || Route::is('admin.exams.edit') ? 'active' : null }}">
                         <i class="mdi mdi-view-list"></i>
-                        <span class="hide-menu"> Đánh giá công nhân </span>
+                        <span class="hide-menu"> Kiểm tra công nhân mới</span>
                     </a>
                 </li>
             @endif

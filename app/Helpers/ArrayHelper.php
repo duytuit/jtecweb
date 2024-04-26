@@ -527,7 +527,7 @@ class ArrayHelper
     {
         return [
             [
-                'groupname' => 'I) Điền tên màu dây vào ô trống (20 điểm): (1 câu đúng 1 điểm) ',
+                'groupname' => 'I) Bạn hãy chọn đáp án đúng bằng cách tích vào ô có ký hiệu tương ứng với màu dây (20 điểm): (1 câu đúng 1 điểm)',
                 'point' => 1,
                 'quantity_question' => 20,
                 'question' => [
@@ -538,6 +538,7 @@ class ArrayHelper
                         'answer' => 'RW',
                         'answer_list' => ['RW', 'WR', 'WV', 'WG'],
                         'show_question' => 1,
+
                     ],
                     [
                         'id' => 2,
@@ -545,7 +546,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\doden.png',
                         'answer' => 'RB',
                         'answer_list' => ['RB', 'BR', 'RY', 'RG'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 3,
@@ -553,7 +554,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\dovang.png',
                         'answer' => 'RY',
                         'answer_list' => ['RB', 'YR', 'RY', 'RG'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 4,
@@ -561,7 +562,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\doxanhlacay.png',
                         'answer' => 'RG',
                         'answer_list' => ['RB', 'RL', 'RY', 'RG'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 5,
@@ -569,7 +570,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\doxanh.png',
                         'answer' => 'RL',
                         'answer_list' => ['RB', 'RL', 'RY', 'RG'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 6,
@@ -577,7 +578,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\vangdo.png',
                         'answer' => 'YR',
                         'answer_list' => ['YR', 'YG', 'RY', 'YL'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -586,7 +587,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\vangden.png',
                         'answer' => 'YB',
                         'answer_list' => ['YR', 'YB', 'RY', 'BY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 8,
@@ -594,7 +595,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\vangxanhlacay.png',
                         'answer' => 'YG',
                         'answer_list' => ['YR', 'YG', 'RY', 'BY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 9,
@@ -602,7 +603,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\vangxanh.png',
                         'answer' => 'YL',
                         'answer_list' => ['YL', 'YB', 'YG', 'YW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 10,
@@ -610,7 +611,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\vangtrang.png',
                         'answer' => 'YW',
                         'answer_list' => ['YL', 'WY', 'YG', 'YW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 11,
@@ -618,7 +619,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacaytrang.png',
                         'answer' => 'GW',
                         'answer_list' => ['GW', 'WR', 'GB', 'WG'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -627,7 +628,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacaydo.png',
                         'answer' => 'GR',
                         'answer_list' => ['GR', 'RG', 'GB', 'GL'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -636,7 +637,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayvang.png',
                         'answer' => 'GY',
                         'answer_list' => ['GY', 'GL', 'GB', 'GW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -645,7 +646,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayden.png',
                         'answer' => 'GB',
                         'answer_list' => ['GY', 'GL', 'GB', 'BG'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 15,
@@ -653,7 +654,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlacayxanh.png',
                         'answer' => 'GL',
                         'answer_list' => ['LG', 'GL', 'GB', 'GW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 16,
@@ -661,7 +662,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-trang.png',
                         'answer' => 'LW',
                         'answer_list' => ['LW', 'WL', 'LgW', 'GW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -670,7 +671,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-do.png',
                         'answer' => 'LR',
                         'answer_list' => ['LR', 'RL', 'LgR', 'GR'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -679,7 +680,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-vang.png',
                         'answer' => 'LY',
                         'answer_list' => ['LY', 'YL', 'GY', 'LB'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -688,7 +689,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-den.png',
                         'answer' => 'LB',
                         'answer_list' => ['LgB', 'BL', 'GB', 'LB'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -697,7 +698,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanh-xanhlacay.png',
                         'answer' => 'LG',
                         'answer_list' => ['LG', 'GL', 'LY', 'LB'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -706,7 +707,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-trang.png',
                         'answer' => 'BrW',
                         'answer_list' => ['BrW', 'GrW', 'BrR', 'BrY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 22,
@@ -714,7 +715,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-do.png',
                         'answer' => 'BrR',
                         'answer_list' => ['BrW', 'GrR', 'BrR', 'BrY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 23,
@@ -722,7 +723,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-vang.png',
                         'answer' => 'BrY',
                         'answer_list' => ['BrW', 'GrR', 'BrR', 'BrY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 24,
@@ -730,7 +731,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\nau-den.png',
                         'answer' => 'BrB',
                         'answer_list' => ['BrW', 'GrR', 'BrB', 'BrY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 25,
@@ -738,7 +739,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-do.png',
                         'answer' => 'LgR',
                         'answer_list' => ['LgW', 'LgR', 'LR', 'GR'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 26,
@@ -746,7 +747,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-vang.png',
                         'answer' => 'LgY',
                         'answer_list' => ['LgW', 'LgY', 'LY', 'GY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 27,
@@ -754,7 +755,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-den.png',
                         'answer' => 'LgB',
                         'answer_list' => ['LB', 'LgR', 'LgB', 'GB'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 28,
@@ -762,15 +763,15 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xanhlocnon-trang.png',
                         'answer' => 'LgW',
                         'answer_list' => ['LgW', 'GW', 'LW', 'GY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
-                        'id' => 28,
+                        'id' => 29,
                         'name' => 'Đen-Trắng',
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\den-trang.png',
                         'answer' => 'BW',
                         'answer_list' => ['BW', 'WB', 'PW', 'WG'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 30,
@@ -786,7 +787,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\den-vang.png',
                         'answer' => 'BY',
                         'answer_list' => ['BW', 'BR', 'YB', 'BY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -795,7 +796,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\den-xanh.png',
                         'answer' => 'BL',
                         'answer_list' => ['BL', 'LB', 'BY', 'BW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -804,7 +805,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\den-xanhlacay.png',
                         'answer' => 'BG',
                         'answer_list' => ['BL', 'BG', 'BY', 'GB'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 34,
@@ -812,7 +813,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-do.png',
                         'answer' => 'WR',
                         'answer_list' => ['WR', 'RW', 'WY', 'WV'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 35,
@@ -820,7 +821,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-xanh.png',
                         'answer' => 'WL',
                         'answer_list' => ['WY', 'LW', 'WL', 'WV'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 36,
@@ -828,7 +829,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-vang.png',
                         'answer' => 'WY',
                         'answer_list' => ['WY', 'YW', 'WL', 'WR'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 37,
@@ -839,12 +840,12 @@ class ArrayHelper
                         'show_question' => 1,
                     ],
                     [
-                        'id' => 37,
+                        'id' => 38,
                         'name' => 'Trắng-Xanh lá cây',
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\trang-xanhlacay.png',
                         'answer' => 'WG',
                         'answer_list' => ['WG', 'WV', 'WL', 'GW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -853,7 +854,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\cam-trang.png',
                         'answer' => 'OW',
                         'answer_list' => ['GW', 'OW', 'WY', 'GW'],
-                        'show_question' => 1,
+                        'show_question' => 0,
                     ],
                     [
                         'id' => 40,
@@ -861,7 +862,7 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\hong-den.png',
                         'answer' => 'PB',
                         'answer_list' => ['PB', 'BY', 'LgB', 'GB'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                     [
@@ -878,15 +879,15 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\anh-mau-day\xam-den.png',
                         'answer' => 'GrB',
                         'answer_list' => ['BrW', 'GrB', 'BrB', 'GrY'],
-                        'show_question' => 1,
+                        'show_question' => 0,
 
                     ],
                 ]
             ],
             [
-                'groupname' => 'II) Nhận dạng Tanshi (20 điểm): (1 câu đúng 10 điểm) ',
-                'point' => 10,
-                'quantity_question' => 2,
+                'groupname' => 'II) Bạn hãy chọn đáp án đúng bằng cách tích vào ô có hình ảnh tương ứng (20 điểm): (1 câu đúng 5 điểm) ',
+                'point' => 5,
+                'quantity_question' => 4,
                 'question' => [
                     [
                         'id' => 51,
@@ -943,7 +944,7 @@ class ArrayHelper
                 ],
             ],
             [
-                'groupname' => 'III) Khoanh tròn vào các câu trả lời đúng (20 điểm): (1 câu đúng 4 điểm) ',
+                'groupname' => 'III) Bạn hãy tích vào câu trả lời đúng (20 điểm): (1 câu đúng 4 điểm) ',
                 'point' => 4,
                 'quantity_question' => 5,
                 'question' => [
@@ -967,8 +968,8 @@ class ArrayHelper
                         'id' => 63,
                         'name' => 'Kiểm tra tụt chốt tại công đoạn cắm phương pháp nào là đúng',
                         'path_image' => null,
-                        'answer' => 'A & B',
-                        'answer_list' => ['Nhìn bằng mắt thường', 'Soi đèn pin', 'Kiểm tra bằng máy thông điện', 'A & B'],
+                        'answer' => 'Nhìn bằng mắt thường và Soi đèn pin',
+                        'answer_list' => ['Nhìn bằng mắt thường', 'Soi đèn pin', 'Kiểm tra bằng máy thông điện', 'Nhìn bằng mắt thường và Soi đèn pin'],
                         'show_question' => 1,
 
                     ],
@@ -992,7 +993,7 @@ class ArrayHelper
                 ]
             ],
             [
-                'groupname' => 'IV) Điền từ thích hợp vào ô trống (20 điểm): (1 câu đúng 5 điểm) ',
+                'groupname' => 'IV) Bạn hãy tích vào câu trả lời đúng (20 điểm): (1 câu đúng 5 điểm) ',
                 'point' => 5,
                 'quantity_question' => 4,
                 'question' => [
@@ -1016,7 +1017,7 @@ class ArrayHelper
                         'id' => 73,
                         'name' => ' Connector yazaky cắm dây dựa vào(  … )trên connector và cắm theo quy trình (  … ). ',
                         'path_image' => null,
-                        'answer' => 'hướng lẫy,Đếm tanshi từ bên gần nhất ',
+                        'answer' => 'hướng lẫy,Đếm tanshi từ bên gần nhất',
                         'answer_list' => ['hướng lẫy,Đếm tanshi từ phải sang trái', 'hướng lẫy,Đếm tanshi từ trái sang phải', 'hướng lẫy,Đếm tanshi từ bên gần nhất', 'Số,Đếm tanshi từ trái sang phải'],
                         'show_question' => 1,
                     ],
@@ -1024,7 +1025,7 @@ class ArrayHelper
                         'id' => 74,
                         'name' => 'Cách cầm dây để cắm áp dụng với : dây đơn ( …) ',
                         'path_image' => null,
-                        'answer' => '.Cầm cả bó dây để cắm',
+                        'answer' => 'Cầm cả bó dây để cắm',
                         'answer_list' => ['Nhặt từng dây để cắm', 'Cầm cả bó dây để cắm', 'Lọc theo màu dây rồi cắm',],
                         'show_question' => 1,
                     ],
@@ -1053,7 +1054,7 @@ class ArrayHelper
                 'question' => [
                     [
                         'id' => 81,
-                        'name' => 'Thao tác cắm conecter doitsu từ 2→12 chân: a. Tiến hành lắp USJ vào conecter b.Nhìn theo số để cắm dây điện vào connector đến khi có tiếng kêu cạch thì kéo lại với lực thẳng = 2kg c.Nhìn lại xem các tanshi có bằng mặt,điểm sáng có đều nhau không d.Check tanshi xem có bằng nhau không ',
+                        'name' => 'Thao tác cắm conecter doitsu từ 2→12 chân: </br> a. Tiến hành lắp USJ vào conecter </br>  b.Nhìn theo số để cắm dây điện vào connector đến khi có tiếng kêu cạch thì kéo lại với lực thẳng = 2kg </br> c.Nhìn lại xem các tanshi có bằng mặt,điểm sáng có đều nhau không </br> d.Check tanshi xem có bằng nhau không ',
                         'path_image' => null,
                         'answer' => 'b→d→a→c',
                         'answer_list' => ['b→d→a→c', 'c→a→d→b', 'b→d→c→a', 'c→d→a→b'],
@@ -1062,7 +1063,7 @@ class ArrayHelper
                     ],
                     [
                         'id' => 82,
-                        'name' => 'Thao tác cắm connector DRC&HD a.Xác nhận số lượng hạt umesen đã được cắm sau đó đếm tanshi xem đã đủ chân chưa. b.Cắm dây điện vào connector đến khi có tiếng kêu cạch thì kéo lại với lực = 2kg theo 5  hướng : trên,dưới,trái,phải,thẳng c.Kiểm tra xem tanshi có bằng mặt không,điểm sáng có đều nhau và đủ chân không',
+                        'name' => 'Thao tác cắm connector DRC&HD </br> a.Xác nhận số lượng hạt umesen đã được cắm sau đó đếm tanshi xem đã đủ chân chưa. </br> b.Cắm dây điện vào connector đến khi có tiếng kêu cạch thì kéo lại với lực = 2kg theo 5  hướng : trên,dưới,trái,phải,thẳng </br> c.Kiểm tra xem tanshi có bằng mặt không,điểm sáng có đều nhau và đủ chân không',
                         'path_image' => null,
                         'answer' => '.b→a→c',
                         'answer_list' => ['.b→a→c', 'c→a→b', 'c→b→a',],
@@ -1071,13 +1072,13 @@ class ArrayHelper
                 ],
             ],
             [
-                'groupname' => 'VI) Chọn câu trả lời đúng (10 điểm): (1 câu đúng 5 điểm) ',
-                'point' => 5,
-                'quantity_question' => 2,
+                'groupname' => 'VI) Chọn câu trả lời đúng (10 điểm): (1 câu đúng 2,5 điểm)  </br>   Hãy nêu ý nghĩa của việc phân loại Itemslip theo các màu ?',
+                'point' => 2.5,
+                'quantity_question' => 4,
                 'question' => [
                     [
                         'id' => 91,
-                        'name' => '.Hãy nêu ý nghĩa của việc phân loại Itemslip theo các màu ? Itemslip Màu trắng ',
+                        'name' => 'Itemslip Màu trắng ',
                         'path_image' => null,
                         'answer' => 'Hiển thị hàng ok',
                         'answer_list' => ['Hiển thị hàng ok', 'Hiển thị hàng bị thiếu nguyên vật liệu', 'Hiển thị là mã hàng bộ dây đầu'],
@@ -1085,7 +1086,7 @@ class ArrayHelper
                     ],
                     [
                         'id' => 92,
-                        'name' => '.Hãy nêu ý nghĩa của việc phân loại Itemslip theo các màu ? Itemslip  Màu xanh  ',
+                        'name' => 'Itemslip  Màu xanh  ',
                         'path_image' => null,
                         'answer' => 'Hiển thị hàng bị thiếu nguyên vật liệu',
                         'answer_list' => ['Hiển thị hàng ok', 'Hiển thị hàng bị thiếu nguyên vật liệu', 'Hiển thị là mã hàng bộ dây đầu'],
@@ -1093,7 +1094,7 @@ class ArrayHelper
                     ],
                     [
                         'id' => 93,
-                        'name' => '.Hãy nêu ý nghĩa của việc phân loại Itemslip theo các màu ? Itemslip Màu vàng  ',
+                        'name' => 'Itemslip Màu vàng  ',
                         'path_image' => null,
                         'answer' => 'Hiển thị là mã hàng bộ dây đầu',
                         'answer_list' => ['Hiển thị hàng ok', 'Hiển thị hàng bị thiếu nguyên vật liệu', 'Hiển thị là mã hàng bộ dây đầu'],

@@ -13,7 +13,7 @@
                 <input name="type" type="hidden" value="{{ Request::query('type') }}">
                 <div>
                     <div>
-                        <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
+                        <strong style=" text-transform: uppercase;">Bài kiểm tra kiến thức công nhân mới</strong>
                     </div>
                 </div>
                 <div>
@@ -96,8 +96,13 @@
                                 @endforeach
                             </div>
                             @foreach (array_slice($groupQuestion, 2) as $array_exam_index)
+                                @php
+                                    $array_quantity = $array_exam_index['quantity_question'];
+                                    $array_exam = $array_exam_index['question'];
+                                    $array_exam = array_slice($array_exam, 0, $array_quantity);
+                                @endphp
                                 <div class="d-flex flex-wrap">
-                                    @foreach ($array_exam_index['question'] as $index => $item)
+                                    @foreach ($array_exam as $index => $item)
                                         <a href="javascript:;" id="label_{{ $item['id'] }}" class="map_item"
                                             data-id="{{ $item['id'] }}" data-value="{{ $item['answer'] }}"
                                             onclick="getMapQuestion({{ $item['id'] }})">
@@ -111,7 +116,7 @@
                 </div>
 
                 {{-- start group question 1 --}}
-                <strong class="px-3">{{ $names1 }}</strong>
+                <strong class="px-3 d-inline-block">{{ $names1 }}</strong>
                 <div class="cards">
                     @foreach ($array_exam1 as $index => $item)
                         <div class="cards_item" id="{{ $item['id'] }}">
@@ -152,7 +157,7 @@
                 {{-- End group question 1 --}}
 
                 {{-- start group question 2 --}}
-                <strong class="px-3">{{ $names2 }}</strong>
+                <strong class="px-3 d-inline-block">{{ $names2 }}</strong>
                 <div class="cards d-block">
                     @foreach ($array_exam2 as $index => $item)
                         <div class="cards_item w-100" id="{{ $item['id'] }}">
@@ -166,7 +171,7 @@
                                     $array_Answer = $item['answer_list'];
                                     shuffle($array_Answer);
                                 @endphp
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between flex-wrap">
                                     @foreach ($array_Answer as $index1 => $item1)
                                         <div @if ($item['answer'] == $item1) class="right_answer" @endif>
                                             <label for="cau__{{ $item['id'] }}_answer_{{ $index1 }}">
@@ -196,14 +201,15 @@
                         $array_quantity = $questionItem['quantity_question'];
                         $array_exam = array_slice($array_exam, 0, $array_quantity); // Số lượng câu hỏi
                     @endphp
-                    <strong class="px-3">{{ $names }}</strong>
+                    <strong class="px-3 d-inline-block">{!! $names !!}</strong>
                     <div class="cards d-block">
                         @foreach ($array_exam as $index => $item)
                             <div class="cards_item w-100" id="{{ $item['id'] }}">
                                 <div class="card_question">
                                     <div class="form-group">
                                         <div><strong>Câu {{ $index + 1 }} :
-                                            </strong><strong>{{ $item['show_question'] == 1 ? $item['name'] : '' }}</strong>
+                                            </strong>
+                                            <strong>{!! $item['show_question'] == 1 ? $item['name'] : '' !!}</strong>
                                         </div>
                                     </div>
                                     @php
@@ -355,6 +361,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(5 * 60); // 4 minutes in seconds
+        startTimer(10 * 60); // 4 minutes in seconds
     </script>
 @endsection
