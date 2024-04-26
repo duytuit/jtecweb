@@ -186,4 +186,37 @@ $(document).ready(function () {
       });
   });
 
+  $('.change_status').on('click', '.onoffswitch-label', function (e) {
+    var div = $(this).parents('div.onoffswitch');
+    var input = div.find('input');
+
+    var id = input.attr('data-id');
+    if (input.attr('checked')) {
+        var checked = 0;
+    } else {
+        var checked = 1;
+    }
+    if (!requestSend) {
+        requestSend = true;
+        $.ajax({
+            url: input.attr('data-url'),
+            type: 'put',
+            data: {
+                id: id,
+                status: checked
+            },
+            success: function (response) {
+                if (response.success == true) {
+                    toastr.success(response.message);
+                } else {
+                    toastr.error(response.message);
+                }
+                requestSend = false;
+            }
+        });
+    } else {
+        e.preventDefault();
+    }
+})
+
 });

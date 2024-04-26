@@ -26,52 +26,22 @@
                                     <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}" placeholder="Enter short url (Keep blank to auto generate)" />
                                 </div>
                             </div>
-                        </div>
-
-
-                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="image">Department Featured Image <span class="optional">(optional)</span></label>
-                                    <input type="file" class="form-control dropify" data-height="70" data-allowed-file-extensions="png jpg jpeg webp" id="image" name="image" value="{{ old('image') }}"/>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group has-success">
-                                    <label class="control-label" for="status">Status <span class="required">*</span></label>
-                                    <select class="form-control custom-select" id="status" name="status" required>
-                                        <option value="1" {{ old('status') === 1 ? 'selected' : null }}>Hoạt động</option>
-                                        <option value="0" {{ old('status') === 0 ? 'selected' : null }}>Không hoạt động</option>
-                                    </select>
+                                    <input type="checkbox" id="_status"  data-id="" data-url="" checked />
+                                    <label for="_status" class="toggle">
+                                       <div class="slider"></div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row ">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="description">Department Description <span class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control tinymce_advance" id="description" name="description" value="{{ old('description') }}"></textarea>
-                                </div>
+                        <div class="row fixed-bottom">
+                            <div class="col-md-6 form-actions mx-auto">
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                                <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="meta_description">Department Meta Description <span class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control" id="meta_description" name="meta_description" value="{{ old('meta_description') }}" placeholder="Meta description for SEO"></textarea>
-                                </div>
-                                <div class="form-actions">
-                                    <div class="card-body">
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                                        <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
-
                     </div>
-
                 </div>
             </form>
         </div>
