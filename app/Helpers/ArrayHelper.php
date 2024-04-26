@@ -529,6 +529,7 @@ class ArrayHelper
             [
                 'groupname' => 'I) Điền tên màu dây vào ô trống (20 điểm): (1 câu đúng 1 điểm) ',
                 'point' => 1,
+                'quantity_question' => 20,
                 'question' => [
                     [
                         'id' => 1,
@@ -885,6 +886,7 @@ class ArrayHelper
             [
                 'groupname' => 'II) Nhận dạng Tanshi (20 điểm): (1 câu đúng 10 điểm) ',
                 'point' => 10,
+                'quantity_question' => 2,
                 'question' => [
                     [
                         'id' => 51,
@@ -943,6 +945,7 @@ class ArrayHelper
             [
                 'groupname' => 'III) Khoanh tròn vào các câu trả lời đúng (20 điểm): (1 câu đúng 4 điểm) ',
                 'point' => 4,
+                'quantity_question' => 5,
                 'question' => [
                     [
                         'id' => 61,
@@ -991,6 +994,7 @@ class ArrayHelper
             [
                 'groupname' => 'IV) Điền từ thích hợp vào ô trống (20 điểm): (1 câu đúng 5 điểm) ',
                 'point' => 5,
+                'quantity_question' => 4,
                 'question' => [
                     [
                         'id' => 71,
@@ -1045,6 +1049,7 @@ class ArrayHelper
             [
                 'groupname' => 'V) Hãy sắp xếp thứ tự thao tác ở dưới cho đúng quy trình (10 điểm): (1 câu đúng 5 điểm) ',
                 'point' => 5,
+                'quantity_question' => 2,
                 'question' => [
                     [
                         'id' => 81,
@@ -1068,6 +1073,7 @@ class ArrayHelper
             [
                 'groupname' => 'VI) Chọn câu trả lời đúng (10 điểm): (1 câu đúng 5 điểm) ',
                 'point' => 5,
+                'quantity_question' => 2,
                 'question' => [
                     [
                         'id' => 91,

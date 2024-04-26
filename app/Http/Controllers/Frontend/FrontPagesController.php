@@ -183,7 +183,7 @@ class FrontPagesController extends Controller
         $totalQuestion = 0;
         foreach ($groupQuestion as $questionItem) {
             $arrayExam = $questionItem['question'];
-            // $totalQuestion = $totalQuestion + count($arrayExam);
+            $totalQuestion += $questionItem['quantity_question'];
             foreach ($request->answer as $key => $item) {
                 $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
                 if (count($array_answer) > 0 && current($array_answer)['answer'] == $item) {
@@ -192,7 +192,7 @@ class FrontPagesController extends Controller
                 }
             }
         }
-        // dd($scores);
+        // dd($totalQuestion);
         $mytime = Carbon::now();
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
         // $scores = round(($results / count($arrayExam)) * 100);

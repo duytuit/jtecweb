@@ -76,6 +76,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('create', 'ExamController@create')->name('create');
         Route::get('show/{id}', 'ExamController@show')->name('show');
         Route::get('exportExcel', 'ExamController@exportExcel')->name('exportExcel');
+        Route::get('AuditExport', 'ExamController@exportExcelAudit')->name('exportExcelAudit');
         Route::post('action', 'ExamController@action')->name('action');
         Route::delete('trashed/destroy/{id}', 'ExamController@destroyTrash')->name('trashed.destroy');
         Route::get('trashed/view', 'ExamController@trashed')->name('trashed');

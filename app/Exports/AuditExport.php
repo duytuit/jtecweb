@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ExamExport implements FromView
+class AuditExport implements FromView
 {
     use Exportable;
 
@@ -23,6 +23,6 @@ class ExamExport implements FromView
     }
     public function view(): View
     {
-        return view('backend.pages.exams.export.examExport', ['lists' => $this->data]);
+        return view('backend.pages.exams.export.AuditExport', ['lists' => $this->data]);
     }
 }

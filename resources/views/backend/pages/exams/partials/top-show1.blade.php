@@ -5,7 +5,7 @@
     <!-- Column -->
     <div class="w-100">
         <div class="card col-md-6 bg-info col-lg-6 col-xlg-6 m-auto border border-light rounded">
-            <div class="box text-center">
+            <div class="text-center">
                 <div class="bg-yellow">
                     @php
                         $month = substr($cycleName, 0, 2);

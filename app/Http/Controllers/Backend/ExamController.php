@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Exports\ExamExport;
+use App\Exports\AuditExport;
 use App\Helpers\ArrayHelper;
 use App\Models\Exam;
 use Illuminate\Http\Request;
@@ -280,6 +281,28 @@ class ExamController extends Controller
             }
         })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
         return (new ExamExport($data))->download('exam.xlsx');
+    }
+
+    public function exportExcelAudit(Request $request)
+    {
+        $data = Exam::where('type', 2)->where(function ($query) use ($request) {
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+            if (isset($request->cycle_name) && $request->cycle_name != null) {
+                $query->where('cycle_name', $request->cycle_name);
+            }
+            if (isset($request->status) && $request->status != null) {
+                $query->where('status', $request->status);
+            }
+            if (isset($request->from_date) && isset($request->to_date)) {
+                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                $query->whereDate('create_date', '>=', $from_date);
+                $query->whereDate('create_date', '<=', $to_date);
+            }
+        })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
+        return (new AuditExport($data))->download('Audit_exam.xlsx');
     }
     /**
      * Remove the specified resource from storage.

@@ -7,9 +7,9 @@
 @section('admin-content')
     @include('backend.pages.exams.partials.header-breadcrumbs')
     <div class="container-fluid">
-        @include('backend.pages.exams.partials.top-show')
+        @include('backend.pages.exams.partials.top-show1')
         @include('backend.layouts.partials.messages')
-        <form id="form-search" action="{{ route('admin.exams.index') }}" method="get">
+        <form id="form-search" action="{{ route('admin.exams.audit') }}" method="get">
             <div class="row form-group">
                 <div class="col-sm-8">
                     <span class="btn-group">
@@ -25,7 +25,7 @@
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
-                    <a href="{{ route('admin.exams.exportExcel', Request::all()) }}" class="btn btn-success"><i
+                    <a href="{{ route('admin.exams.exportExcelAudit', Request::all()) }}" class="btn btn-success"><i
                             class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
                 <div class="col-sm-4 text-right">
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </form><!-- END #form-search -->
-        <form id="form-search-advance" action="{{ route('admin.exams.index') }}" method="get" class="hidden">
+        <form id="form-search-advance" action="{{ route('admin.exams.audit') }}" method="get" class="hidden">
             <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
                 <div class="row form-group space-5">
                     <div class="col-sm-2">
@@ -104,8 +104,6 @@
                             <th>Trả lời đúng</th>
                             <th>Điểm</th>
                             <th>Thời gian làm bài</th>
-                            <th>Đợt thi</th>
-                            <th>Lần thi</th>
                             <th>Kết quả</th>
                         </tr>
                     </thead>
@@ -160,8 +158,6 @@
                                 <td>{{ $item->results }}</td>
                                 <td>{{ $item->scores }}</td>
                                 <td>{{ $item->counting_time }}</td>
-                                <td>{{ 'Đợt ' . $item->examinations }}</td>
-                                <td>{{ 'Lần ' . $item->mission }}</td>
                                 <td>
                                     @if ($item->status)
                                         <span class="badge badge-success font-weight-100">Đạt</span>

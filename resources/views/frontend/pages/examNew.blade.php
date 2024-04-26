@@ -64,12 +64,14 @@
                     // Nhóm câu hỏi 1
                     $names1 = $groupQuestion[0]['groupname'];
                     $array_exam1 = $groupQuestion[0]['question'];
-                    $array_exam1 = array_slice($array_exam1, 0, 20); // Số lượng câu hỏi
+                    $array_quantity1 = $groupQuestion[0]['quantity_question'];
+                    $array_exam1 = array_slice($array_exam1, 0, $array_quantity1); // Số lượng câu hỏi
 
                     // Nhóm câu hỏi 2
                     $names2 = $groupQuestion[1]['groupname'];
                     $array_exam2 = $groupQuestion[1]['question'];
-                    $array_exam2 = array_slice($array_exam2, 0, 2); // Số lượng câu hỏi
+                    $array_quantity2 = $groupQuestion[1]['quantity_question'];
+                    $array_exam2 = array_slice($array_exam2, 0, $array_quantity2); // Số lượng câu hỏi
                 @endphp
 
                 <div class="cards map_question">
@@ -191,6 +193,8 @@
                     @php
                         $names = $questionItem['groupname'];
                         $array_exam = $questionItem['question'];
+                        $array_quantity = $questionItem['quantity_question'];
+                        $array_exam = array_slice($array_exam, 0, $array_quantity); // Số lượng câu hỏi
                     @endphp
                     <strong class="px-3">{{ $names }}</strong>
                     <div class="cards d-block">
