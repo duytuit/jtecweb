@@ -527,7 +527,7 @@ class ArrayHelper
     {
         return [
             [
-                'groupname' => 'I) Bạn hãy chọn đáp án đúng bằng cách tích vào ô có ký hiệu tương ứng với màu dây',
+                'groupname' => 'I) Bạn hãy chọn đáp án đúng bằng cách tích vào ô có ký hiệu tương ứng với màu dây (20 điểm): (1 câu đúng 1 điểm)',
                 'point' => 1,
                 'quantity_question' => 20,
                 'question' => [
@@ -968,8 +968,8 @@ class ArrayHelper
                         'id' => 63,
                         'name' => 'Kiểm tra tụt chốt tại công đoạn cắm phương pháp nào là đúng',
                         'path_image' => null,
-                        'answer' => 'A & B',
-                        'answer_list' => ['Nhìn bằng mắt thường', 'Soi đèn pin', 'Kiểm tra bằng máy thông điện', 'A & B'],
+                        'answer' => 'Kiểm tra bằng máy thông điện và Soi đèn pin',
+                        'answer_list' => ['Nhìn bằng mắt thường', 'Soi đèn pin', 'Kiểm tra bằng máy thông điện', 'Kiểm tra bằng máy thông điện và Soi đèn pin'],
                         'show_question' => 1,
 
                     ],
@@ -1072,8 +1072,8 @@ class ArrayHelper
                 ],
             ],
             [
-                'groupname' => 'VI) Chọn câu trả lời đúng (10 điểm): (1 câu đúng 5 điểm)  </br>   Hãy nêu ý nghĩa của việc phân loại Itemslip theo các màu ?',
-                'point' => 5,
+                'groupname' => 'VI) Chọn câu trả lời đúng (10 điểm): (1 câu đúng 2,5 điểm)  </br>   Hãy nêu ý nghĩa của việc phân loại Itemslip theo các màu ?',
+                'point' => 2.5,
                 'quantity_question' => 4,
                 'question' => [
                     [
