@@ -116,7 +116,7 @@
                 </div>
 
                 {{-- start group question 1 --}}
-                <strong class="px-3">{{ $names1 }}</strong>
+                <strong class="px-3 d-inline-block">{{ $names1 }}</strong>
                 <div class="cards">
                     @foreach ($array_exam1 as $index => $item)
                         <div class="cards_item" id="{{ $item['id'] }}">
@@ -157,7 +157,7 @@
                 {{-- End group question 1 --}}
 
                 {{-- start group question 2 --}}
-                <strong class="px-3">{{ $names2 }}</strong>
+                <strong class="px-3 d-inline-block">{{ $names2 }}</strong>
                 <div class="cards d-block">
                     @foreach ($array_exam2 as $index => $item)
                         <div class="cards_item w-100" id="{{ $item['id'] }}">
@@ -201,7 +201,7 @@
                         $array_quantity = $questionItem['quantity_question'];
                         $array_exam = array_slice($array_exam, 0, $array_quantity); // Số lượng câu hỏi
                     @endphp
-                    <strong class="px-3">{!! $names !!}</strong>
+                    <strong class="px-3 d-inline-block">{!! $names !!}</strong>
                     <div class="cards d-block">
                         @foreach ($array_exam as $index => $item)
                             <div class="cards_item w-100" id="{{ $item['id'] }}">
@@ -209,7 +209,6 @@
                                     <div class="form-group">
                                         <div><strong>Câu {{ $index + 1 }} :
                                             </strong>
-                                            {{-- <div>{!! $item['show_question'] == 1 ? $item['name'] : '' !!}</div> --}}
                                             <strong>{!! $item['show_question'] == 1 ? $item['name'] : '' !!}</strong>
                                         </div>
                                     </div>
