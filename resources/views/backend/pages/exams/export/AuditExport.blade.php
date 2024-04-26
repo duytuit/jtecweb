@@ -14,7 +14,7 @@
                 <th>Điểm</th>
                 <th>Thời gian làm bài</th>
                 <th>Trạng thái</th>
-                <th>Kết quả</th>
+                {{-- <th>Kết quả</th> --}}
                 <th>Người duyệt</th>
                 <th width="100">Action</th>
             </tr>
@@ -64,7 +64,7 @@
                             <span class="badge badge-warning">Chưa Đạt</span>
                         @endif
                     </td>
-                    @if ($cycle_name == $item->cycle_name && $check == 1)
+                    {{-- @if ($cycle_name == $item->cycle_name && $check == 1)
                         <td rowspan="{{ $lists->where('code', $code)->where('cycle_name', $cycle_name)->count() }}"
                             style="vertical-align: middle;">
                             @php
@@ -80,7 +80,7 @@
                                 <span class="badge badge-secondary">Thi lại</span>
                             @endif
                         </td>
-                    @endif
+                    @endif --}}
                     <td>
 
                     </td>
