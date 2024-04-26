@@ -12,16 +12,16 @@
 <!-- ============================================================== -->
 <div class="container-fluid">
     <h4>
-        Hello, <strong>{{ Auth::user()->first_name .' '. Auth::user()->last_name }}</strong> Welcome to Lara CMS.
+        THÔNG TIN NỘI BỘ JTEC HÀ NỘI
     </h4>
     <p>
-        Check at the left side or at the bottom to get your menus...
+        Chúc cán bộ công nhân viên có 1 ngày làm việc hiệu quả!!!
     </p>
 
-    @include('backend.pages.dashboard.partials.top-show')
+    {{-- @include('backend.pages.dashboard.partials.top-show') --}}
     {{-- @include('backend.pages.dashboard.partials.email-campaign') --}}
     {{-- @include('backend.pages.dashboard.partials.revinue-page-bounce') --}}
-    @include('backend.pages.dashboard.partials.recent-data')
+    {{-- @include('backend.pages.dashboard.partials.recent-data') --}}
 </div>
 <!-- ============================================================== -->
 <!-- End Container fluid  -->

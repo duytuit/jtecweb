@@ -130,6 +130,83 @@ class RolePermissionsTableSeeder extends Seeder
                 'exam.delete',
             ],
 
+            'department' => [
+                'department.view',
+                'department.create',
+                'department.edit',
+                'department.delete',
+            ],
+
+            'activity' => [
+                'activity.view',
+                'activity.create',
+                'activity.edit',
+                'activity.delete',
+            ],
+
+            'campaign' => [
+                'campaign.view',
+                'campaign.create',
+                'campaign.edit',
+                'campaign.delete',
+            ],
+
+            'campaign_detail' => [
+                'campaign_detail.view',
+                'campaign_detail.create',
+                'campaign_detail.edit',
+                'campaign_detail.delete',
+            ],
+
+            'comment' => [
+                'comment.view',
+                'comment.create',
+                'comment.edit',
+                'comment.delete',
+            ],
+
+            'cronjob' => [
+                'cronjob.view',
+                'cronjob.create',
+                'cronjob.edit',
+                'cronjob.delete',
+            ],
+
+            'employee' => [
+                'employee.view',
+                'employee.create',
+                'employee.edit',
+                'employee.delete',
+            ],
+
+            'employee_department' => [
+                'employee_department.view',
+                'employee_department.create',
+                'employee_department.edit',
+                'employee_department.delete',
+            ],
+
+            'log_import' => [
+                'log_import.view',
+                'log_import.create',
+                'log_import.edit',
+                'log_import.delete',
+            ],
+
+            'required' => [
+                'required.view',
+                'required.create',
+                'required.edit',
+                'required.delete',
+            ],
+
+            'signature_submission' => [
+                'signature_submission.view',
+                'signature_submission.create',
+                'signature_submission.edit',
+                'signature_submission.delete',
+            ],
+
             'tracking' => [
                 'tracking.view',
                 'tracking.delete',
