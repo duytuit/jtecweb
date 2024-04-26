@@ -3,13 +3,13 @@
         <div class="col-5 align-self-center">
             <h4 class="page-title">
                 @if (Route::is('admin.departments.index'))
-                    Departments List
+                    Danh sách bộ phận
                 @elseif(Route::is('admin.departments.create'))
-                    Create New Departments
+                    Thêm mới
                 @elseif(Route::is('admin.departments.edit'))
-                    Edit Departments <span class="badge badge-info">{{ $departments->title }}</span>
+                    Sửa <span class="badge badge-info">{{ $departments->title }}</span>
                 @elseif(Route::is('admin.departments.show'))
-                    View Departments <span class="badge badge-info">{{ $departments->title }}</span>
+                    Xem <span class="badge badge-info">{{ $departments->title }}</span>
                     <a  class="btn btn-outline-success btn-sm" href="{{ route('admin.departments.edit', $departments->id) }}"> <i class="fa fa-edit"></i></a>
                 @endif
             </h4>
@@ -20,16 +20,16 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
                         @if (Route::is('admin.departments.index'))
-                            <li class="breadcrumb-item active" aria-current="page">Departments List</li>
+                            <li class="breadcrumb-item active" aria-current="page">Danh sách</li>
                         @elseif(Route::is('admin.departments.create'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.departments.index') }}">Departments List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Create New Departments</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.departments.index') }}">Danh sách</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
                         @elseif(Route::is('admin.departments.edit'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.departments.index') }}">Departments List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Departments</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.departments.index') }}">Danh sách</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Sửa</li>
                         @elseif(Route::is('admin.departments.show'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.departments.index') }}">Departments List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Show Departments</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.departments.index') }}">Danh sách</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chi tiết</li>
                         @endif
 
                     </ol>

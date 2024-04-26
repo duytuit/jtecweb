@@ -1,11 +1,11 @@
 @if (Route::is('admin.departments.index'))
-Departments
+Danh sách
 @elseif(Route::is('admin.departments.create'))
-Create New Department
+Thêm mới
 @elseif(Route::is('admin.departments.edit'))
-Edit Department {{ $department->title }}
+Sửa {{ $department->title }}
 @elseif(Route::is('admin.departments.show'))
-View Department {{ $department->title }}
+Xem {{ $department->title }}
 @endif
 | Admin Panel -
 {{ config('app.name') }}

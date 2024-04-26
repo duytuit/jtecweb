@@ -25,6 +25,7 @@
         "yajra/laravel-oci8": "^9.5"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.20",
         "laravel/sail": "^1.15",
         "mockery/mockery": "^1.4.4",

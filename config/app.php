@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone'        => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -196,6 +196,7 @@ return [
          */
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\Oci8\Oci8ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -250,7 +251,7 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ],
 
 ];

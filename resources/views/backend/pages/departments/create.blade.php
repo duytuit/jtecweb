@@ -41,8 +41,8 @@
                                 <div class="form-group has-success">
                                     <label class="control-label" for="status">Status <span class="required">*</span></label>
                                     <select class="form-control custom-select" id="status" name="status" required>
-                                        <option value="1" {{ old('status') === 1 ? 'selected' : null }}>Active</option>
-                                        <option value="0" {{ old('status') === 0 ? 'selected' : null }}>Inactive</option>
+                                        <option value="1" {{ old('status') === 1 ? 'selected' : null }}>Hoạt động</option>
+                                        <option value="0" {{ old('status') === 0 ? 'selected' : null }}>Không hoạt động</option>
                                     </select>
                                 </div>
                             </div>

@@ -26,7 +26,7 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
-        if (is_null($this->user) || !$this->user->can('exam.view')) {
+        if (is_null($this->user) || !$this->user->can('department.view')) {
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
@@ -57,6 +57,7 @@ class DepartmentController extends Controller
                 $query->whereDate('create_date', '<=', $to_date);
             }
         })->paginate($data['per_page']);
+        //dd($data['lists']);
         return view('backend.pages.departments.index',$data);
     }
 
@@ -67,7 +68,11 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        if (is_null($this->user) || !$this->user->can('department.create')) {
+            return abort(403, 'You are not allowed to access this page !');
+        }
+
+        return view('backend.pages.departments.create');
     }
 
     /**
