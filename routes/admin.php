@@ -71,14 +71,15 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
      * Exam Management Routes
      */
     Route::prefix('exams')->name('exams.')->group(function () {
-        Route::get('','ExamController@index')->name('index');
-        Route::get('create','ExamController@create')->name('create');
-        Route::get('show/{id}','ExamController@show')->name('show');
+        Route::get('', 'ExamController@index')->name('index');
+        Route::get('/audit', 'ExamController@index1')->name('audit');
+        Route::get('create', 'ExamController@create')->name('create');
+        Route::get('show/{id}', 'ExamController@show')->name('show');
         Route::get('exportExcel', 'ExamController@exportExcel')->name('exportExcel');
-        Route::post('action','ExamController@action')->name('action');
-        Route::delete('trashed/destroy/{id}','ExamController@destroyTrash')->name('trashed.destroy');
+        Route::post('action', 'ExamController@action')->name('action');
+        Route::delete('trashed/destroy/{id}', 'ExamController@destroyTrash')->name('trashed.destroy');
         Route::get('trashed/view', 'ExamController@trashed')->name('trashed');
-        Route::put('trashed/revert/{id}','ExamController@revertFromTrash')->name('trashed.revert');
+        Route::put('trashed/revert/{id}', 'ExamController@revertFromTrash')->name('trashed.revert');
     });
     /**
      * Department Management Routes
@@ -270,8 +271,8 @@ Route::group(['prefix' => 'settings'], function () {
 Route::group(['prefix' => 'productvt'], function () {
     Route::get('', [ProductvtController::class, 'index'])->name('productvt.index');
     Route::get('/user-input', [ProductvtController::class, 'UserInput'])->name('productvt.user-input');
-    Route::get('/edit',[ProductvtController::class, 'ProductvtEdit'])->name('productvt.edit');
-    Route::post('',[ProductvtController::class, 'ProductvtData'])->name('productvt.view');
+    Route::get('/edit', [ProductvtController::class, 'ProductvtEdit'])->name('productvt.edit');
+    Route::post('', [ProductvtController::class, 'ProductvtData'])->name('productvt.view');
 });
 
 /**
@@ -279,9 +280,9 @@ Route::group(['prefix' => 'productvt'], function () {
  */
 
 Route::group(['prefix' => 'checkTension'], function () {
-    Route::get('/',[CheckTensionController::class, 'index'])->name('checkTension.index');
-    Route::post('/complete',[CheckTensionController::class, 'saveData'])->name('checkTension.complete');
-    Route::get('/view',[CheckTensionController::class, 'viewData'])->name('checkTension.view');
+    Route::get('/', [CheckTensionController::class, 'index'])->name('checkTension.index');
+    Route::post('/complete', [CheckTensionController::class, 'saveData'])->name('checkTension.complete');
+    Route::get('/view', [CheckTensionController::class, 'viewData'])->name('checkTension.view');
     Route::get('/exportExcel', [CheckTensionController::class, 'exportExcel'])->name('checkTension.exportExcel');
 });
 

@@ -229,10 +229,10 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="{{ route('admin.exams.index') }}"
-                        class="sidebar-link {{ Route::is('admin.exams.index') || Route::is('admin.exams.edit') ? 'active' : null }}">
+                    <a href="{{ route('admin.exams.audit') }}"
+                        class="sidebar-link {{ Route::is('admin.exams.audit') || Route::is('admin.exams.edit') ? 'active' : null }}">
                         <i class="mdi mdi-view-list"></i>
-                        <span class="hide-menu"> Thi trắc nghiệm </span>
+                        <span class="hide-menu"> Đánh giá công nhân </span>
                     </a>
                 </li>
             @endif
