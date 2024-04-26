@@ -315,33 +315,12 @@ class ExamController extends Controller
      */
     public function show($id)
     {
-<<<<<<< HEAD
-        $data = Exam::where(function ($query) use ($request) {
-            if (isset($request->keyword) && $request->keyword != null) {
-                $query->filter($request);
-            }
-            if (isset($request->cycle_name) && $request->cycle_name != null) {
-                $query->where('cycle_name', $request->cycle_name);
-            }
-            if (isset($request->status) && $request->status != null) {
-                $query->where('status', $request->status);
-            }
-            if (isset($request->from_date) && isset($request->to_date)) {
-                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
-                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
-                $query->whereDate('create_date', '>=', $from_date);
-                $query->whereDate('create_date', '<=', $to_date);
-            }
-        })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
-        return (new ExamExport($data))->download('exam.xlsx');
-=======
         if (is_null($this->user) || !$this->user->can('exam.view')) {
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
         $exam = Exam::find($id);
         return view('backend.pages.exam.show', compact('exam'));
->>>>>>> 7c3f617e955c2b09dba42bce7bcd641952c60162
     }
     /**
      * revertFromTrash
