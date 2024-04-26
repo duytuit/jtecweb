@@ -313,8 +313,9 @@ class ExamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
+<<<<<<< HEAD
         $data = Exam::where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
@@ -333,6 +334,14 @@ class ExamController extends Controller
             }
         })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
         return (new ExamExport($data))->download('exam.xlsx');
+=======
+        if (is_null($this->user) || !$this->user->can('exam.view')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+        $exam = Exam::find($id);
+        return view('backend.pages.exam.show', compact('exam'));
+>>>>>>> 7c3f617e955c2b09dba42bce7bcd641952c60162
     }
     /**
      * revertFromTrash

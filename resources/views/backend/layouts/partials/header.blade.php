@@ -67,7 +67,7 @@
                     <a class="nav-link sidebartoggler waves-effect waves-light" href="{{ route('index') }}"
                         target="_blank">
                         <i class="mdi mdi-eye font-16"></i>
-                        <span> View Site </span>
+                        <span> Trang chủ </span>
                     </a>
                 </li>
                 <!-- ============================================================== -->
@@ -78,12 +78,12 @@
                         <div class="d-flex align-items-center">
                             <i class="mdi mdi-magnify font-20 mr-1"></i>
                             <div class="ml-1 d-none d-sm-block">
-                                <span>Search</span>
+                                <span>Tìm kiếm</span>
                             </div>
                         </div>
                     </a>
                     <form class="app-search position-absolute">
-                        <input type="text" class="form-control" placeholder="Search &amp; enter">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm &amp; enter">
                         <a class="srh-btn">
                             <i class="ti-close"></i>
                         </a>
