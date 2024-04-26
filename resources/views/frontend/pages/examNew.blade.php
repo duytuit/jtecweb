@@ -13,7 +13,7 @@
                 <input name="type" type="hidden" value="{{ Request::query('type') }}">
                 <div>
                     <div>
-                        <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
+                        <strong style=" text-transform: uppercase;">Bài kiểm tra đánh giá công nhân</strong>
                     </div>
                 </div>
                 <div>
