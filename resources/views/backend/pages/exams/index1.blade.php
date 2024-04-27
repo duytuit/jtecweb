@@ -140,7 +140,8 @@
                                 @else
                                     <td colspan="3"></td>
                                 @endif
-                                <td></td>
+                                <td>{{ @$item->employee->begin_date_company ? date('d-m-Y', strtotime(@$item->employee->begin_date_company)) : '' }}
+                                </td>
                                 <td>{{ $item->total_questions }}</td>
                                 <td>{{ $item->results }}</td>
                                 <td>{{ $item->scores }}</td>
@@ -152,7 +153,7 @@
                                         <span class="badge badge-warning">Chưa Đạt</span>
                                     @endif
                                 </td>
-                                <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at)) }}</td>
+                                <td>{{ date('d-m-Y', strtotime(@$item->created_at)) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
