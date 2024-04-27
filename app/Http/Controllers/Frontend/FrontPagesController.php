@@ -82,7 +82,7 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        // $this->addEmployee();
+        $this->addEmployee();
         $this->updateBeginDate();
         // $this->updateType();
         // $this->updateMission();
