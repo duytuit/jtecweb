@@ -253,6 +253,7 @@
     </main>
 @endsection
 @section('scripts')
+    <script src="{{ asset('public/assets/frontend/js/confetti.browser.min.js') }}"></script>
     <script>
         $(".abc123").click(function() {
             swal("Chúc mừng bạn đã đạt: 100");
@@ -328,11 +329,55 @@
                     });
                     if (data.status == "success") {
                         $(".right_answer").css("color", "blue");
-                        // var results = Math.round((data.exam.results / data.exam.total_questions) * 100);
-                        // var results = data.exam.results;
                         var scores = data.exam.scores;
-                        if (scores > 79) {
-                            swal("Chúc mừng bạn đã đạt: " + scores);
+                        if (scores > 1) {
+                            swal("Bạn đã đạt: " + scores + "điểm");
+                            swal("Bạn đã đạt: " + scores + "điểm \n CHÚC MỪNG BẠN ĐÃ HOÀN THÀNH BÀI TEST");
+                            // confetti({
+                            //     particleCount: 150,
+                            //     spread: 60,
+                            //     zIndex: 999999
+                            // });
+
+                            var duration = 5 * 1000;
+                            var animationEnd = Date.now() + duration;
+                            var defaults = {
+                                startVelocity: 30,
+                                spread: 360,
+                                ticks: 60,
+                                zIndex: 999999
+                            };
+
+                            function randomInRange(min, max) {
+                                return Math.random() * (max - min) + min;
+                            }
+
+                            var interval = setInterval(function() {
+                                var timeLeft = animationEnd - Date.now();
+
+                                if (timeLeft <= 0) {
+                                    return clearInterval(interval);
+                                }
+
+                                var particleCount = 50 * (timeLeft / duration);
+                                // since particles fall down, start a bit higher than random
+                                confetti({
+                                    ...defaults,
+                                    particleCount,
+                                    origin: {
+                                        x: randomInRange(0.1, 0.3),
+                                        y: Math.random() - 0.2
+                                    }
+                                });
+                                confetti({
+                                    ...defaults,
+                                    particleCount,
+                                    origin: {
+                                        x: randomInRange(0.7, 0.9),
+                                        y: Math.random() - 0.2
+                                    }
+                                });
+                            }, 50);
                         } else {
                             swal("Số điểm của bạn là: " + scores + ". Bạn chưa đạt");
                         }
