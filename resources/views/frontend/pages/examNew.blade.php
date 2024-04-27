@@ -330,8 +330,7 @@
                     if (data.status == "success") {
                         $(".right_answer").css("color", "blue");
                         var scores = data.exam.scores;
-                        if (scores > 1) {
-                            swal("Bạn đã đạt: " + scores + "điểm");
+                        if (scores > 79) {
                             swal("Bạn đã đạt: " + scores + "điểm \n CHÚC MỪNG BẠN ĐÃ HOÀN THÀNH BÀI TEST");
 
                             var end = Date.now() + (2 * 1000);
