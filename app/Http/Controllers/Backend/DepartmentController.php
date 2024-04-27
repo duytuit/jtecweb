@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use Carbon\Carbon;
@@ -35,19 +36,19 @@ class DepartmentController extends Controller
         $data['keyword'] = $request->input('keyword', null);
         $data['advance'] = 0;
         if (count($request->except('keyword')) > 0) {
-           // Tìm kiếm nâng cao
-           $data['advance'] = 1;
-           $data['filter'] = $request->all();
+            // Tìm kiếm nâng cao
+            $data['advance'] = 1;
+            $data['filter'] = $request->all();
         }
 
-        $data['lists'] = Department::where( function($query) use($request){
+        $data['lists'] = Department::where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
             if (isset($request->cycle_name) && $request->cycle_name != null) {
                 $query->where('cycle_name', $request->cycle_name);
             }
-            if(isset($request->status) && $request->status != null){
+            if (isset($request->status) && $request->status != null) {
                 $query->where('status', $request->status);
             }
             if (isset($request->from_date) && isset($request->to_date)) {
@@ -58,7 +59,7 @@ class DepartmentController extends Controller
             }
         })->paginate($data['per_page']);
         //dd($data['lists']);
-        return view('backend.pages.departments.index',$data);
+        return view('backend.pages.departments.index', $data);
     }
 
     /**
@@ -83,16 +84,15 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Derpartment  $derpartment
+     * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $derpartment)
+    public function show(Department $department)
     {
         //
     }
@@ -100,10 +100,10 @@ class DepartmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Derpartment  $derpartment
+     * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $derpartment)
+    public function edit(Department $department)
     {
         //
     }
@@ -112,10 +112,10 @@ class DepartmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Derpartment  $derpartment
+     * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Department $derpartment)
+    public function update(Request $request, Department $department)
     {
         //
     }
@@ -123,10 +123,10 @@ class DepartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Derpartment  $derpartment
+     * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $derpartment)
+    public function destroy(Department $department)
     {
         //
     }

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
+use App\Models\Department;
 use App\Http\Controllers\Controller;
 
 use App\Models\EmployeeDepartment;
@@ -36,16 +38,27 @@ class EmployeeDepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $emp = EmployeeDepartment::where('code', $request->manhanvien)->first();
+
+        $mission = Department::where(['code' => $request->manhanvien])->count();
+        try {
+            $department = Department::create([
+                'name' => $request->name, //tên nhân viên
+                'code' => $request->manhanvien, // mã nhân viên
+            ]);
+            return $this->success(compact('department'));
+        } catch (\Exception $e) {
+            return $this->error(['error', $e->getMessage()]);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EmployeeDerpartment  $employeeDerpartment
+     * @param  \App\Models\EmployeeDepartment  $employeeDepartment
      * @return \Illuminate\Http\Response
      */
-    public function show(EmployeeDepartment $employeeDerpartment)
+    public function show(EmployeeDepartment $employeeDepartment)
     {
         //
     }
@@ -53,10 +66,10 @@ class EmployeeDepartmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\EmployeeDerpartment  $employeeDerpartment
+     * @param  \App\Models\EmployeeDepartment  $employeeDepartment
      * @return \Illuminate\Http\Response
      */
-    public function edit(EmployeeDepartment $employeeDerpartment)
+    public function edit(EmployeeDepartment $employeeDepartment)
     {
         //
     }
@@ -65,10 +78,10 @@ class EmployeeDepartmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EmployeeDerpartment  $employeeDerpartment
+     * @param  \App\Models\EmployeeDepartment  $employeeDepartment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EmployeeDepartment $employeeDerpartment)
+    public function update(Request $request, EmployeeDepartment $employeeDepartment)
     {
         //
     }
@@ -76,10 +89,10 @@ class EmployeeDepartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EmployeeDerpartment  $employeeDerpartment
+     * @param  \App\Models\EmployeeDepartment  $employeeDepartment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EmployeeDepartment $employeeDerpartment)
+    public function destroy(EmployeeDepartment $employeeDepartment)
     {
         //
     }

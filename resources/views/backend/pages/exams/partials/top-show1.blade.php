@@ -38,6 +38,9 @@
                                         <td style="padding: 0 10px">
                                             Đào tạo lại
                                         </td>
+                                        <td style="padding: 0 10px">
+                                            Chưa đạt
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="padding: 5px 0px">
@@ -49,6 +52,11 @@
                                             <div><a href="javascript:;" class="btn-sm btn-warning detailReport"
                                                     data-emp="{{ json_encode($emp_fail_1_60_79) }}" data-type="3"
                                                     style="color: white">{{ count($emp_fail_1_60_79) }}</a></div>
+                                        </td>
+                                        <td style="padding: 5px 0px">
+                                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport"
+                                                    data-emp="{{ json_encode($emp_fail_1_49) }}" data-type="3"
+                                                    style="color: white">{{ count($emp_fail_1_49) }}</a></div>
                                         </td>
                                     </tr>
                                 </table>
