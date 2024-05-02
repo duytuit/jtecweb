@@ -8,8 +8,8 @@
             <div class="box bg-info text-center">
                 <div class="bg-yellow">
                     @php
-                        $month = substr($cycleName, 0, 2);
-                        $year = substr($cycleName, 2);
+                        $month = substr($item, 0, strlen($item) - 4);
+                        $year = substr($item, -4);
                         $formattedDate = $month . '/' . $year;
                     @endphp
                     <div class="text-white">Kết quả lần <b>1</b> tháng <b>{{ $formattedDate }}</b></div>

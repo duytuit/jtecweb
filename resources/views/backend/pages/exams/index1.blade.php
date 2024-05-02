@@ -66,8 +66,13 @@
                         <select name="cycle_name" class="form-control" style="width: 100%;">
                             <option value="">Kỳ thi</option>
                             @foreach ($cycleNames as $item)
+                                @php
+                                    $month = substr($item, 0, strlen($item) - 4);
+                                    $year = substr($item, -4);
+                                    $formattedDate = $month . '/' . $year;
+                                @endphp
                                 <option value="{{ $item }}"
-                                    {{ @$filter['cycle_name'] === $item ? 'selected' : '' }}>{{ $item }}</option>
+                                    {{ @$filter['cycle_name'] === $item ? 'selected' : '' }}>{{ $formattedDate }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class FrontPagesController extends Controller
 {
@@ -107,7 +108,13 @@ class FrontPagesController extends Controller
     // New exam
     public function examNew(Request $request)
     {
-        return view('frontend.pages.examNew');
+        $getEmployeeBeginOneMonth = Employee::whereDate('begin_date_company', '>=', (Carbon::now()->subMonths(1))->format('Y-m-d'))->Where('code', $request->code)->first();
+
+        if (!$getEmployeeBeginOneMonth) {
+            return redirect()->back()->with('warning', 'Mã code không hợp lệ');
+        } else {
+            return view('frontend.pages.examNew');
+        }
     }
 
     public function test()

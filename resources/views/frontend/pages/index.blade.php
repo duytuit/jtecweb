@@ -98,6 +98,15 @@
     <div class="modal fade" id="modalConfirmCode" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận mã nhân viên</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -117,6 +126,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('scripts')
