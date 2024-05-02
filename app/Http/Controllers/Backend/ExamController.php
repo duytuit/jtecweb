@@ -89,11 +89,11 @@ class ExamController extends Controller
         $data['emp_pass_1'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
-            ->where(function ($query) use ($request) {
+            ->where(function ($query) use ($request,$current_cycleName) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->where('cycle_name', $request->cycle_name);
                 }else{
-                    $query->where('cycle_name', $current_cycleName)
+                    $query->where('cycle_name', $current_cycleName);
                 }
                 if (isset($request->from_date) && isset($request->to_date)) {
                     $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
@@ -111,11 +111,17 @@ class ExamController extends Controller
         $data['emp_fail_1_90_95'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
-            ->where(function ($query) use ($request) {
+            ->where(function ($query) use ($request,$current_cycleName) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->where('cycle_name', $request->cycle_name);
                 }else{
                     $query->where('cycle_name', $current_cycleName);
+                }
+                if (isset($request->from_date) && isset($request->to_date)) {
+                    $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                    $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                    $query->whereDate('create_date', '>=', $from_date);
+                    $query->whereDate('create_date', '<=', $to_date);
                 }
             })
             ->whereIn('code', $data['emp'])
@@ -130,11 +136,17 @@ class ExamController extends Controller
         $data['emp_fail_1_90'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
-            ->where(function ($query) use ($request) {
+            ->where(function ($query) use ($request,$current_cycleName) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->where('cycle_name', $request->cycle_name);
                 }else{
                     $query->where('cycle_name', $current_cycleName);
+                }
+                if (isset($request->from_date) && isset($request->to_date)) {
+                    $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                    $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                    $query->whereDate('create_date', '>=', $from_date);
+                    $query->whereDate('create_date', '<=', $to_date);
                 }
             })
             ->whereIn('code', $data['emp'])
@@ -155,11 +167,17 @@ class ExamController extends Controller
 
         $data['emp_pass_2'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission2)
-            ->where(function ($query) use ($request) {
+            ->where(function ($query) use ($request,$current_cycleName) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->where('cycle_name', $request->cycle_name);
                 }else{
                     $query->where('cycle_name', $current_cycleName);
+                }
+                if (isset($request->from_date) && isset($request->to_date)) {
+                    $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                    $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                    $query->whereDate('create_date', '>=', $from_date);
+                    $query->whereDate('create_date', '<=', $to_date);
                 }
             })
             ->where('status', 1)
@@ -172,11 +190,17 @@ class ExamController extends Controller
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_2'], 'code'))
-            ->where(function ($query) use ($request) {
+            ->where(function ($query) use ($request,$current_cycleName) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->where('cycle_name', $request->cycle_name);
                 }else{
                     $query->where('cycle_name', $current_cycleName);
+                }
+                if (isset($request->from_date) && isset($request->to_date)) {
+                    $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                    $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                    $query->whereDate('create_date', '>=', $from_date);
+                    $query->whereDate('create_date', '<=', $to_date);
                 }
             })
             ->where('examinations', 2)
@@ -189,11 +213,17 @@ class ExamController extends Controller
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_2'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_2_90_95'], 'code'))
-            ->where(function ($query) use ($request) {
+            ->where(function ($query) use ($request,$current_cycleName) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->where('cycle_name', $request->cycle_name);
                 }else{
                     $query->where('cycle_name', $current_cycleName);
+                }
+                if (isset($request->from_date) && isset($request->to_date)) {
+                    $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                    $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                    $query->whereDate('create_date', '>=', $from_date);
+                    $query->whereDate('create_date', '<=', $to_date);
                 }
             })
             ->where('examinations', 2)
