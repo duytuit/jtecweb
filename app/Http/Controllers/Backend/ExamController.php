@@ -121,7 +121,6 @@ class ExamController extends Controller
             ->get()->ToArray();
         $data['emp_yet_1'] = Employee::select('code')->where('status', 1)
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90'], 'code'))
