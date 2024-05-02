@@ -49,7 +49,7 @@ class ExamController extends Controller
             $data['advance'] = 1;
             $data['filter'] = $request->all();
         }
-        $current_cycleName = Carbon::now()->format('mY');
+        $current_cycleName = $request->cycle_name ? (int)$request->cycle_name : Carbon::now()->format('mY');
         $data['cycleName'] =$request->cycle_name ? (int)$request->cycle_name : $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
         $data['emp'] = Employee::select('code')->where('status', 1)->pluck('code');
