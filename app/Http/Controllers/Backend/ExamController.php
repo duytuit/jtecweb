@@ -88,7 +88,7 @@ class ExamController extends Controller
             })->pluck('code');
         $data['emp_pass_1'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginWorking1)
+            // ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where('cycle_name', $current_cycleName)
             ->where('status', 1)
             ->where('scores', '>', 95)
@@ -98,7 +98,7 @@ class ExamController extends Controller
 
         $data['emp_fail_1_90_95'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginWorking1)
+            // ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->where('cycle_name', $current_cycleName)
@@ -110,7 +110,7 @@ class ExamController extends Controller
 
         $data['emp_fail_1_90'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginWorking1)
+            // ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
