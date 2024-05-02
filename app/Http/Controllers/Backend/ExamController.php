@@ -83,13 +83,13 @@ class ExamController extends Controller
         $getEmployeeWorkingMission2 = Employee::select('code')->where('status', 1)
             ->where(function ($query) use ($request) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
-                    $query->whereDate('end_date_company', '<=', Carbon::parse(substr($request->cycle_name, 1, 4) . '-' . substr($request->cycle_name, 0, 1) . '-15'));
+                    $query->whereDate('end_date_company', '>=', Carbon::parse(substr($request->cycle_name, 1, 4) . '-' . substr($request->cycle_name, 0, 1) . '-15'));
                 }else{
-                    $query->whereDate('end_date_company', '<=', Carbon::now()->format('Y-m') . '-15');
+                    $query->whereDate('end_date_company', '>=', Carbon::now()->format('Y-m') . '-15');
                  }
                 if (isset($request->from_date)) {
                     $from_date   = Carbon::parse($request->from_date)->format('Y-m-d');
-                    $query->whereDate('end_date_company', '<=', $from_date);
+                    $query->whereDate('end_date_company', '>=', $from_date);
                 }
             })->pluck('code');
         $data['emp_pass_1'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
@@ -243,7 +243,6 @@ class ExamController extends Controller
             ->whereNotIn('code', array_column($data['emp_fail_2_90_95'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_2_90'], 'code'))
             ->get()->ToArray();
-
         $data['lists'] = Exam::where('type', 1)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
