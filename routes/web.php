@@ -40,6 +40,7 @@ Route::get('/exam', [FrontPagesController::class, 'exam'])->name('exam');
 Route::get('/examNew', [FrontPagesController::class, 'examNew'])->name('examNew');
 
 Route::post('/exam/detailReport', [FrontPagesController::class, 'detailReport'])->name('exam.detailReport');
+Route::post('/exam/detailReport1', [FrontPagesController::class, 'detailReport1'])->name('exam.detailReport1');
 Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
 Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
 Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');

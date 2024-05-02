@@ -9,26 +9,32 @@
     <div class="container-fluid">
         @include('backend.pages.departments.partials.top-show')
         @include('backend.layouts.partials.messages')
-        <form id="form-search" action="{{ route('admin.departments.index',) }}" method="get">
+        <form id="form-search" action="{{ route('admin.departments.index') }}" method="get">
             <div class="row form-group">
                 <div class="col-sm-8">
                     <span class="btn-group">
-                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span class="caret"></span></button>
+                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span
+                                class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i
+                                        class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
                         </ul>
                     </span>
-                    <a href="{{ route('admin.departments.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
-                    <a href="{{ route('admin.departments.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Xuất Excel</a>
+                    <a href="{{ route('admin.departments.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
+                        mới</a>
+                    <a href="{{ route('admin.departments.exportExcel', Request::all()) }}" class="btn btn-success"><i
+                            class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
                 <div class="col-sm-4 text-right">
-                        <div class="input-group">
-                            <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa" class="form-control" />
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-info"><span class="fa fa-search"></span></button>
-                                <button type="button" class="btn btn-warning btn-search-advance" data-toggle="show" data-target=".search-advance"><span class="fa fa-filter"></span></button>
-                            </div>
+                    <div class="input-group">
+                        <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa"
+                            class="form-control" />
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-info"><span class="fa fa-search"></span></button>
+                            <button type="button" class="btn btn-warning btn-search-advance" data-toggle="show"
+                                data-target=".search-advance"><span class="fa fa-filter"></span></button>
                         </div>
+                    </div>
                 </div>
             </div>
         </form><!-- END #form-search -->
@@ -39,7 +45,8 @@
                         <select name="status" class="form-control" style="width: 100%;">
                             <option value="">Trạng thái</option>
                             <option value="1" {{ @$filter['status'] === '1' ? 'selected' : '' }}>Hoạt động</option>
-                            <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Không hoạt động</option>
+                            <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Không hoạt động
+                            </option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -56,7 +63,8 @@
                 <table class="table table-bordered" id="departments_table">
                     <thead>
                         <tr>
-                            <th width="3%"><input type="checkbox" class="greyCheck checkAll" data-target=".checkSingle" /></th>
+                            <th width="3%"><input type="checkbox" class="greyCheck checkAll"
+                                    data-target=".checkSingle" /></th>
                             <th>TT</th>
                             <th>Mã bộ phận</th>
                             <th>Tên bộ phận</th>
@@ -65,20 +73,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($lists as $index=> $item)
-                        <tr>
-                            <td><input type="checkbox" name="ids[]" value="{{ $item->id }}" class="greyCheck checkSingle" /></td>
-                            <td>{{ $index+1 }}</td>
-                            <td>{{ $item->cycle_name }}</td>
-                            <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at))  }}</td>
-                            <td>{{ $item->total_questions }}</td>
+                        @foreach ($lists as $index => $item)
+                            <tr>
+                                <td><input type="checkbox" name="ids[]" value="{{ $item->id }}"
+                                        class="greyCheck checkSingle" /></td>
+                                <td>{{ $index + 1 }}</td>
+                                <td></td>
+                                {{-- <td>{{ $item->cycle_name }}</td> --}}
+                                {{-- <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at))  }}</td> --}}
+                                {{-- <td>{{ $item->total_questions }}</td>
                             <td>{{ $item->results }}</td>
                             <td>{{ $item->scores }}</td>
                             <td>{{ $item->counting_time }}</td>
                             <td>{{'Đợt '.$item->examinations }}</td>
-                            <td>{{'Lần '.$item->mission}}</td>
+                            <td>{{'Lần '.$item->mission}}</td> --}}
 
-                        </tr>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -95,10 +105,12 @@
                 <div class="col-sm-3 text-right">
                     <span>
                         Hiển thị
-                        <select name="per_page" class="form-control" style="display: inline;width: auto;" data-target="#form_lists">
+                        <select name="per_page" class="form-control" style="display: inline;width: auto;"
+                            data-target="#form_lists">
                             @php $list = [5, 10, 20, 50, 100, 200]; @endphp
                             @foreach ($list as $num)
-                                <option value="{{ $num }}" {{ $num == $per_page ? 'selected' : '' }}>{{ $num }}</option>
+                                <option value="{{ $num }}" {{ $num == $per_page ? 'selected' : '' }}>
+                                    {{ $num }}</option>
                             @endforeach
                         </select>
                     </span>
@@ -109,7 +121,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-
-    </script>
+    <script></script>
 @endsection

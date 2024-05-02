@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Exports\DetailReportExport;
+use App\Exports\DetailReportExport1;
 use App\Exports\ExamExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
@@ -62,6 +63,41 @@ class FrontPagesController extends Controller
         }
 
         return (new DetailReportExport($data))->download('detail-report.xlsx');
+    }
+    public function detailReport1(Request $request)
+    {
+
+        if ($request->type == 1) {
+            $data['title'] = 'Thi lần 1 đạt';
+        }
+        if ($request->type == 2) {
+            $data['title'] = 'Thi lần 1 chưa đạt( thi lại )';
+        }
+        if ($request->type == 3) {
+            $data['title'] = 'Thi lần 1 chưa đạt( đào tạo lại )';
+        }
+        if ($request->type == 4) {
+            $data['title'] = 'Chưa thi lần 1';
+        }
+        if ($request->type == 5) {
+            $data['title'] = 'Thi lần 2 đạt';
+        }
+        if ($request->type == 6) {
+            $data['title'] = 'Thi lần 2 chưa đạt( thi lại )';
+        }
+        if ($request->type == 7) {
+            $data['title'] = 'Thi lần 2 chưa đạt( đào tạo lại )';
+        }
+        if ($request->type == 8) {
+            $data['title'] = 'Chưa thi lần 2';
+        }
+        if ($request->type == 4 || $request->type == 8) {
+            $data['lists'] = Employee::whereIn('code', array_column($request->emp, 'code'))->get();
+        } else {
+            $data['lists'] = Exam::whereIn('id', array_column($request->emp, 'id'))->get();
+        }
+
+        return (new DetailReportExport1($data))->download('detail-report.xlsx');
     }
     public function exam(Request $request)
     {
