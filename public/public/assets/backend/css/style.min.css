@@ -20952,6 +20952,11 @@ textarea.form-control {
     margin-bottom: 1rem;
 }
 
+.form-group .btn-custom {
+    padding-top: 0.175rem !important;
+    padding-bottom: 0.175rem !important;
+}
+
 .form-text {
     display: block;
     margin-top: 0.25rem;
@@ -38227,32 +38232,37 @@ div.dataTables_wrapper div.dataTables_processing {
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-  }
-  .toggle-active {
-    background-color:  #c5c5c5;
+}
+
+.toggle-active {
+    background-color: #c5c5c5;
     width: 60px;
     height: 32px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-  }
-  input {
+}
+
+input {
     display: none;
-  }
-  .slider {
+}
+
+.slider {
     height: 24px;
     width: 24px;
     background-color: white;
     border-radius: 12px;
     margin: 4px;
-  }
-  input:checked + .toggle {
+}
+
+input:checked+.toggle {
     background-color: #137eff;
-  }
-  input:checked + .toggle > .slider {
+}
+
+input:checked+.toggle>.slider {
     align-self: flex-end;
-  }
+}
 
 /***************************************  Auth ******************************************/
 
@@ -38698,7 +38708,8 @@ textarea.note {
 .font-times-new {
     font-family: 'Times New Roman', Times, serif !important;
 }
-.form-actions{
+
+.form-actions {
     text-align: center;
     margin-bottom: 5px;
 }

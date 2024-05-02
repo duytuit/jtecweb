@@ -82,8 +82,9 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-
-        $this->updateType();
+        $this->addEmployee();
+        $this->updateBeginDate();
+        // $this->updateType();
         // $this->updateMission();
         //$this->updateScoresAndStatus();
         // $dsgfg= Exam::all();
@@ -171,7 +172,7 @@ class FrontPagesController extends Controller
     public function updateType()
     {
         Exam::where('type', 0)->update(['type' => 1]);
-        echo 'thanhf cong';
+        // echo 'thanhf cong';
     }
     public function storeNew(Request $request)
     {
@@ -314,8 +315,19 @@ class FrontPagesController extends Controller
             231166 =>    "Đỗ Thị Nhung",
             231218 =>    "Nguyễn Văn Quân",
             240317 =>    "Nguyễn Thị Thúy",
-            24031656 =>    "Nguyễn Thị Thúy 123",
-            240341656 =>    "Nguyễn Thị Thúy 1235"
+            // 24031656 =>    "Nguyễn Thị Thúy 123",
+            // 240341656 =>    "Nguyễn Thị Thúy 1235",
+            240405 =>    "Nguyễn Thị Ngọc Lan",
+            240406 =>    "Nguyễn Thị Thu",
+            240407 =>    "Lê Thị Thanh Thủy",
+            240408 =>    "Bùi Thị Lụa",
+            240410 =>    "Lê Thị Thu Huyền",
+            240411 =>    "Nguyễn Thị Trang",
+            240412 =>    "Trương Thị Ánh",
+            240415 =>    "Lê Ngọc Mai",
+            240416 =>    "Nguyễn Phạm Tường Vy",
+            240417 =>    "Đinh Thị Hằng",
+            240424 =>    "Nguyễn Thị Nhiên",
         ];
 
         foreach ($employee as $key => $value) {
@@ -338,6 +350,8 @@ class FrontPagesController extends Controller
             }
         }
     }
+
+
 
     public function updateScoresAndStatus()
     {
@@ -503,6 +517,34 @@ class FrontPagesController extends Controller
                 if ($value1 == $value->name) {
                     $value->update([
                         'code' => $key1
+                    ]);
+                }
+            }
+        }
+    }
+    public function updateBeginDate()
+    {
+        $fdgfdgf = Employee::all();
+        $employee = [
+            240317 =>    "11/3/2024",
+            240405 =>    "16/4/2024",
+            240406 =>    "16/4/2024",
+            240407 =>    "16/4/2024",
+            240408 =>    "16/4/2024",
+            240410 =>    "22/4/2024",
+            240411 =>    "22/4/2024",
+            240412 =>    "22/4/2024",
+            240415 =>    "22/4/2024",
+            240416 =>    "22/4/2024",
+            240417 =>    "22/4/2024",
+            240424 =>    "22/4/2024",
+        ];
+        foreach ($fdgfdgf as $key => $value) {
+            foreach ($employee as $key1 => $value1) {
+                if ($key1 == $value->code) {
+                    $beginDate = Carbon::createFromFormat('d/m/Y', $value1);
+                    $value->update([
+                        'begin_date_company' => $beginDate->format('Y-m-d')
                     ]);
                 }
             }
