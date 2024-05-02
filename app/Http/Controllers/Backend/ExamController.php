@@ -50,7 +50,7 @@ class ExamController extends Controller
             $data['filter'] = $request->all();
         }
         $current_cycleName = Carbon::now()->format('mY');
-        $data['cycleName'] = $current_cycleName;
+        $data['cycleName'] =$request->cycle_name ? $request->cycle_name : $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
         $data['emp'] = Employee::select('code')->where('status', 1)->pluck('code');
          // lấy ra nhân viên vào đợt 1 (nv vào lớn hơn ngày 15 thì không lấy)
