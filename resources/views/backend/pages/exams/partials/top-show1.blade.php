@@ -7,11 +7,6 @@
         <div class="card col-md-6 bg-info col-lg-6 col-xlg-6 m-auto border border-light rounded">
             <div class="text-center">
                 <div class="bg-yellow">
-                    @php
-                        $month = substr($cycleName, 0, 2);
-                        $year = substr($cycleName, 2);
-                        $formattedDate = $month . '/' . $year;
-                    @endphp
                     <div class="text-white text-uppercase">KẾT QUẢ BÀI KIỂM TRA KIẾN THỨC CÔNG NHÂN MỚI</div>
                     <div class="text-white" style="display: flex;
                         justify-content: space-around;">
