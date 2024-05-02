@@ -207,7 +207,7 @@
                 }
             })
         }
-        $('.detailReport').click(function(e) {
+        $('.detailReport1').click(function(e) {
             e.preventDefault();
             var emp = $(this).data('emp');
             var type = $(this).data('type');
@@ -217,7 +217,7 @@
                 type: type
             };
             $.ajax({
-                url: "{{ route('exam.detailReport') }}",
+                url: "{{ route('exam.detailReport1') }}",
                 method: 'POST',
                 data: values,
                 xhrFields: {
@@ -226,7 +226,7 @@
                 success: function(response) {
                     var link = document.createElement('a');
                     link.href = window.URL.createObjectURL(response);
-                    link.download = `Invoice_details_report.xlsx`;
+                    link.download = `Invoice_details_report1.xlsx`;
                     link.click();
                 }
             });

@@ -18,12 +18,12 @@
                         <div>
                             <div>Tổng</div>
                             <div>
-                                {{ count($emp_pass_1) + count($emp_fail_1_60_79) + count($emp_fail_1_50_59) + count($emp_fail_1_49) }}
+                                {{ count($emp_pass_1) + count($emp_fail_1_60_79) + count($emp_fail_1_50_59) + count($emp_fail_1_49) + count($emp_yet_1) }}
                             </div>
                         </div>
                         <div>
                             <div>Đạt</div>
-                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport"
+                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport1"
                                     data-emp="{{ json_encode($emp_pass_1) }}" data-type="1"
                                     style="color: white">{{ count($emp_pass_1) }}</a></div>
                         </div>
@@ -39,28 +39,34 @@
                                             Đào tạo lại
                                         </td>
                                         <td style="padding: 0 10px">
-                                            Chưa đạt
+                                            Không đạt
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="padding: 5px 0px">
-                                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport"
-                                                    data-emp="{{ json_encode($emp_fail_1_50_59) }}" data-type="2"
-                                                    style="color: white">{{ count($emp_fail_1_50_59) }}</a></div>
-                                        </td>
-                                        <td style="padding: 5px 0px">
-                                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport"
+                                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport1"
                                                     data-emp="{{ json_encode($emp_fail_1_60_79) }}" data-type="3"
                                                     style="color: white">{{ count($emp_fail_1_60_79) }}</a></div>
                                         </td>
                                         <td style="padding: 5px 0px">
-                                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport"
+                                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport1"
+                                                    data-emp="{{ json_encode($emp_fail_1_50_59) }}" data-type="2"
+                                                    style="color: white">{{ count($emp_fail_1_50_59) }}</a></div>
+                                        </td>
+                                        <td style="padding: 5px 0px">
+                                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport1"
                                                     data-emp="{{ json_encode($emp_fail_1_49) }}" data-type="3"
                                                     style="color: white">{{ count($emp_fail_1_49) }}</a></div>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
+                        </div>
+                        <div>
+                            <div>Chưa thi</div>
+                            <div><a href="javascript:;" class="btn-sm btn-warning detailReport1"
+                                    data-emp="{{ json_encode($emp_yet_1) }}" data-type="4"
+                                    style="color: white">{{ count($emp_yet_1) }}</a></div>
                         </div>
                     </div>
                 </div>

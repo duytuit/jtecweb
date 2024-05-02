@@ -57,14 +57,10 @@ class ExamController extends Controller
         // lấy ra nhân viên vào đợt thi 1
         $getEmployeeBeginCycle1 = Employee::select('code')
             ->where('status', 1)
-            ->whereDate('begin_date_company', '<=', Carbon::now()->format('Y-m') . '-15')->pluck('code');
-
-        // lấy ra nhân viên vào đợt thi 2
-        $getEmployeeBeginCycle2 = Employee::select('code')
-            ->where('status', 1)
-            ->whereDate('begin_date_company', '>',  Carbon::now()->format('Y-m') . '-15')
+            ->whereDate('begin_date_company', '<=', Carbon::now()->format('Y-m') . '-15')
+            // ->whereNotIn('begin_date_company', '>', Carbon::now()->format('Y-m') . '-15')
             ->pluck('code');
-        // dd($getEmployeeBeginCycle2);
+
 
         // lấy ra nhân viên nghỉ trước đợt thi 1
         $getEmployeeWorkingMission1 = Employee::select('code')->where('status', 1)->whereDate('end_date_company', '<=', Carbon::now()->format('Y-m') . '-1')
@@ -90,7 +86,6 @@ class ExamController extends Controller
             })->pluck('code');
         $data['emp_pass_1'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginCycle2)
             ->where('cycle_name', $current_cycleName)
             ->where('status', 1)
             ->where('scores', '>', 95)
@@ -100,7 +95,6 @@ class ExamController extends Controller
 
         $data['emp_fail_1_90_95'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginCycle2)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->where('cycle_name', $current_cycleName)
@@ -112,7 +106,6 @@ class ExamController extends Controller
 
         $data['emp_fail_1_90'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginCycle2)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
@@ -121,10 +114,8 @@ class ExamController extends Controller
             ->where('status', 0)->where('scores', '<', 90)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
-
         $data['emp_yet_1'] = Employee::select('code')->where('status', 1)
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereNotIn('code', $getEmployeeBeginCycle2)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90'], 'code'))
@@ -138,6 +129,7 @@ class ExamController extends Controller
             ->where('examinations', 2)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
+
         $data['emp_fail_2_90_95'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->whereIn('code', $data['emp'])
@@ -148,7 +140,6 @@ class ExamController extends Controller
             ->where('scores', '>=', 90)->where('scores', '<=', 95)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
-
         $data['emp_fail_2_90'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->whereIn('code', $data['emp'])
@@ -210,9 +201,9 @@ class ExamController extends Controller
         $data['emp'] = Employee::select('code')->where('status', 1)->pluck('code');
 
         // lấy ra nhân viên vào trong 1 tháng
-        // $getEmployeeBeginOneMonth = Employee::select('code')
-        // ->where('status', 1)
-        // ->whereDate('begin_date_company', '<=', Carbon::now()->format('Y-m') . '-15')->pluck('code');
+        $getEmployeeBeginOneMonth = Employee::select('code')
+            ->where('status', 1)
+            ->whereDate('begin_date_company', '>=', (Carbon::now()->subMonths(1))->format('Y-m-d'))->pluck('code');
 
         // lấy ra nhân viên nghỉ trước đợt thi 1
         $getEmployeeWorkingMission1 = Employee::select('code')->where('status', 1)->whereDate('end_date_company', '<=', Carbon::now()->format('Y-m-d'))
@@ -226,6 +217,7 @@ class ExamController extends Controller
                 }
             })->pluck('code');
 
+
         // $getEmployeeBegin = Employee::select('code')->where('status', 1)->whereDate('begin_date_company', '<=', Carbon::now()->format('Y-m-d'))
         // ->where(function ($query) use ($request) {
         //     if (isset($request->cycle_name) && $request->cycle_name != null) {
@@ -237,9 +229,10 @@ class ExamController extends Controller
         //     }
         // })->pluck('code');
 
+
         $data['emp_pass_1'] = Exam::where('type', 2)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            // ->where('cycle_name', $current_cycleName)
+            ->whereIn('code', $getEmployeeBeginOneMonth)
             ->where('status', 1)
             ->where('scores', '>', 79)
             ->groupBy('code')->orderBy('id', 'desc')
@@ -247,9 +240,8 @@ class ExamController extends Controller
 
         $data['emp_fail_1_60_79'] = Exam::where('type', 2)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereIn('code', $data['emp'])
+            ->whereIn('code', $getEmployeeBeginOneMonth)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
-            // ->where('cycle_name', $current_cycleName)
             ->where('status', 0)
             ->where('scores', '>=', 60)->where('scores', '<=', 79)
             ->groupBy('code')->orderBy('id', 'desc')
@@ -257,31 +249,35 @@ class ExamController extends Controller
 
         $data['emp_fail_1_50_59'] = Exam::where('type', 2)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereIn('code', $data['emp'])
+            ->whereIn('code', $getEmployeeBeginOneMonth)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_60_79'], 'code'))
-            // ->where('cycle_name', $current_cycleName)
             ->where('scores', '>=', 50)->where('scores', '<=', 59)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
         $data['emp_fail_1_49'] = Exam::where('type', 2)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
-            ->whereIn('code', $data['emp'])
+            ->whereIn('code', $getEmployeeBeginOneMonth)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_60_79'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_50_59'], 'code'))
-            ->where('cycle_name', $current_cycleName)
             ->where('scores', '<', 50)
             ->groupBy('code')
             ->orderBy('id', 'desc')
             ->get()->ToArray();
+        $data['emp_yet_1'] = Employee::select('code')->where('status', 1)
+            ->whereIn('code', $getEmployeeBeginOneMonth)
+            ->whereNotIn('code', $getEmployeeWorkingMission1)
+            ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
+            ->whereNotIn('code', array_column($data['emp_fail_1_60_79'], 'code'))
+            ->whereNotIn('code', array_column($data['emp_fail_1_50_59'], 'code'))
+            ->whereNotIn('code', array_column($data['emp_fail_1_49'], 'code'))
+            ->get()->ToArray();
+
         $data['lists'] = Exam::where('type', 2)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-            // if (isset($request->cycle_name) && $request->cycle_name != null) {
-            //     $query->where('cycle_name', $request->cycle_name);
-            // }
             if (isset($request->status) && $request->status != null) {
                 $query->where('status', $request->status);
             }
@@ -292,7 +288,6 @@ class ExamController extends Controller
                 $query->whereDate('create_date', '<=', $to_date);
             }
         })->orderBy('code')->orderBy('created_at')->paginate($data['per_page']);
-        // })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->paginate($data['per_page']);
         return view('backend.pages.exams.index1', $data);
     }
 
