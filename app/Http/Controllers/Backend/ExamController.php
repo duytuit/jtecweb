@@ -53,15 +53,17 @@ class ExamController extends Controller
         $data['cycleName'] = $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
         $data['emp'] = Employee::select('code')->where('status', 1)->pluck('code');
-
-        // lấy ra nhân viên vào đợt thi 1
-        $getEmployeeBeginCycle1 = Employee::select('code')
-            ->where('status', 1)
-            ->whereDate('begin_date_company', '<=', Carbon::now()->format('Y-m') . '-15')
-            // ->whereNotIn('begin_date_company', '>', Carbon::now()->format('Y-m') . '-15')
-            ->pluck('code');
-
-
+         // lấy ra nhân viên vào đợt 1 (nv vào lớn hơn ngày 15 thì không lấy)
+         $getEmployeeBeginWorking1 = Employee::select('code')->where('status', 1)->whereDate('begin_date_company', '>=', Carbon::now()->format('Y-m') . '-15')
+         ->where(function ($query) use ($request) {
+             if (isset($request->cycle_name) && $request->cycle_name != null) {
+                 $query->whereDate('begin_date_company', '>=', Carbon::parse(substr($request->cycle_name, 1, 4) . '-' . substr($request->cycle_name, 0, 1) . '-15'));
+             }
+             if (isset($request->from_date)) {
+                 $from_date   = Carbon::parse($request->from_date)->format('Y-m-d');
+                 $query->whereDate('begin_date_company', '>=', $from_date);
+             }
+         })->pluck('code');
         // lấy ra nhân viên nghỉ trước đợt thi 1
         $getEmployeeWorkingMission1 = Employee::select('code')->where('status', 1)->whereDate('end_date_company', '<=', Carbon::now()->format('Y-m') . '-1')
             ->where(function ($query) use ($request) {
@@ -86,6 +88,7 @@ class ExamController extends Controller
             })->pluck('code');
         $data['emp_pass_1'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission1)
+            ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where('cycle_name', $current_cycleName)
             ->where('status', 1)
             ->where('scores', '>', 95)
@@ -95,6 +98,7 @@ class ExamController extends Controller
 
         $data['emp_fail_1_90_95'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
+            ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->where('cycle_name', $current_cycleName)
@@ -106,6 +110,7 @@ class ExamController extends Controller
 
         $data['emp_fail_1_90'] = Exam::where('type', 1)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
+            ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
@@ -116,6 +121,7 @@ class ExamController extends Controller
             ->get()->ToArray();
         $data['emp_yet_1'] = Employee::select('code')->where('status', 1)
             ->whereNotIn('code', $getEmployeeWorkingMission1)
+            ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90'], 'code'))
