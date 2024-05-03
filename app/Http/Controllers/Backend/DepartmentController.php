@@ -53,7 +53,7 @@ class DepartmentController extends Controller
             }
             if (isset($request->from_date) && isset($request->to_date)) {
                 $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
-                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                $to_date = Carbon::parse($request->to_date)->format('Y-m-d');
                 $query->whereDate('create_date', '>=', $from_date);
                 $query->whereDate('create_date', '<=', $to_date);
             }
@@ -95,9 +95,9 @@ class DepartmentController extends Controller
             $department = Department::create([
                 'code' => $request->departments_code,
                 'name' => $request->departments_title,
-                'parent_id' =>  0,
-                'status' =>  @$request->status ? 1 : 0,
-                'created_by' => Auth::user()->id
+                'parent_id' => 0,
+                'status' => @$request->status ? 1 : 0,
+                'created_by' => Auth::user()->id,
             ]);
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.departments.index');
@@ -112,7 +112,7 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $id)
+    public function show($id)
     {
         if (is_null($this->user) || !$this->user->can('departments.view')) {
             $message = 'You are not allowed to access this page !';
@@ -128,7 +128,7 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $id)
+    public function edit($id)
     {
         if (is_null($this->user) || !$this->user->can('department.edit')) {
             $message = 'You are not allowed to access this page !';
@@ -145,11 +145,30 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Department $department)
-    {
-        //
-    }
 
+    public function update(Request $request, $id)
+    {
+        $department = Department::find($id);
+
+        if (empty($department)) {
+            session()->flash('error', "The page is not found.");
+            return redirect()->route('admin.departments.index');
+        }
+
+        // Update department
+        try {
+            $department->name = $request->input('departments_title');
+            $department->code = $request->input('departments_code');
+            $department->save();
+
+            session()->flash('success', "Department updated successfully.");
+            return redirect()->route('admin.departments.index');
+        } catch (\Exception $e) {
+            session()->flash('error', "Failed to update department: " . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+
+    }
     /**
      * Remove the specified resource from storage.
      *

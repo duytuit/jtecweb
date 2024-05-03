@@ -9,26 +9,28 @@
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
         <div class="create-page">
-            <form action="{{ route('admin.departments.update', $department->id) }}" method="POST"
+            <form action="{{ route('admin.departments.update', ['id' => $department->id]) }}" method="POST"
                 enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
+
                 @csrf
-                @method('put')
+                {{-- @method('put') --}}
                 <div class="form-body">
                     <div class="card-body">
                         <div class="row ">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="code">Tên bộ phận <span
+                                    <label class="control-label" for="departments_title">Tên bộ phận <span
                                             class="required">*</span></label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        value="{{ $department->name }}" placeholder="" required="" />
+                                    <input type="text" class="form-control" id="departments_title"
+                                        name="departments_title" value="{{ $department->name }}" placeholder=""
+                                        required="" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="code">department Title <span
+                                    <label class="control-label" for="departments_code">department Title <span
                                             class="required">*</span></label>
-                                    <input type="text" class="form-control" id="code" name="code"
+                                    <input type="text" class="form-control" id="departments_code" name="departments_code"
                                         value="{{ $department->code }}" placeholder="" required="" />
                                 </div>
                             </div>
@@ -85,7 +87,13 @@
                             </div>
 
                         </div> --}}
-
+                        <div class="form-actions">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
+                                    Save</button>
+                                <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
