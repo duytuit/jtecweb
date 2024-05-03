@@ -84,6 +84,26 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->status);
+        // dd($request->all());
+
+        $request->validate([
+            'departments_code' => 'required',
+            'departments_title' => 'required',
+        ]);
+        try {
+            $department = Department::create([
+                'code' => $request->departments_code,
+                'name' => $request->departments_title,
+                'parent_id' =>  0,
+                'status' =>  @$request->status ? 1 : 0,
+                'created_by' => Auth::user()->id
+            ]);
+            session()->flash('success', 'Thêm mới thành công');
+            return redirect()->route('admin.departments.index');
+        } catch (\Exception $e) {
+            return $this->error(['error', $e->getMessage()]);
+        }
     }
 
     /**
@@ -92,9 +112,14 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
+    public function show(Department $id)
     {
-        //
+        if (is_null($this->user) || !$this->user->can('departments.view')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+        $department = Department::find($id);
+        return view('backend.pages.departments.show', compact('department'));
     }
 
     /**
@@ -103,9 +128,14 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $department)
+    public function edit(Department $id)
     {
-        //
+        if (is_null($this->user) || !$this->user->can('department.edit')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+        $department = Department::find($id);
+        return view('backend.pages.departments.edit', compact('department'));
     }
 
     /**
@@ -126,8 +156,58 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department)
+    public function destroyTrash($id)
     {
-        //
+        $department = Department::find($id);
+        if (is_null($department)) {
+            session()->flash('error', "Nội dung đã được xóa hoặc không tồn tại !");
+            return redirect()->route('admin.department.index');
+        }
+        $department->deleted_at = Carbon::now();
+        $department->deleted_by = Auth::id();
+        $department->status = 0;
+        $department->save();
+        $department->delete();
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
+        return redirect()->route('admin.departments.index');
+    }
+    public function destroy($id)
+    {
+        if (is_null($this->user) || !$this->user->can('department.delete')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+
+        $department = Department::find($id);
+        if (is_null($department)) {
+            session()->flash('error', "Nội dung đã được xóa hoặc không tồn tại !");
+            return redirect()->route('admin.department.index');
+        }
+        $department->deleted_at = Carbon::now();
+        $department->deleted_by = Auth::id();
+        $department->status = 0;
+        $department->save();
+
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
+        return redirect()->route('admin.department.index');
+    }
+    public function action(Request $request)
+    {
+        $method = $request->input('method', '');
+        if ($method == 'per_page') {
+            $this->per_page($request);
+            return back();
+        } else if ($method == 'restore_apartment') {
+            return back()->with('success', 'thành công!');
+        } else if ($method == 'delete') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $count_record = Department::find($value)->delete();
+                }
+            }
+            return back()->with('success', 'đã xóa ' . count($request->ids) . ' bản ghi');
+        } else {
+            return back()->with('success', 'thành công!');
+        }
     }
 }

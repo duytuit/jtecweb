@@ -94,7 +94,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('update', 'DepartmentController@update')->name('update');
         Route::post('action', 'DepartmentController@action')->name('action');
         Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
-        Route::delete('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
+        Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
     });
 
 
