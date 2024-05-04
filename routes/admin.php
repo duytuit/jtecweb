@@ -89,11 +89,11 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('edit/{id}', 'DepartmentController@edit')->name('edit');
         Route::get('exportExcel', 'DepartmentController@exportExcel')->name('exportExcel');
         Route::post('store', 'DepartmentController@store')->name('store');
-        // Route::post('update', 'DepartmentController@update')->name('update');
         Route::post('update/{id}', 'DepartmentController@update')->name('update');
         Route::post('action', 'DepartmentController@action')->name('action');
         Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
         Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
+        Route::post('import', 'DepartmentController@importExcelData')->name('importExcelData');
     });
 
     /**
@@ -183,7 +183,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('update', 'EmployeeController@update')->name('update');
         Route::post('action', 'EmployeeController@action')->name('action');
         Route::put('trashed/revert/{id}', 'EmployeeController@revertFromTrash')->name('trashed.revert');
-        Route::delete('trashed/destroy/{id}', 'EmployeeController@destroyTrash')->name('trashed.destroy');
+        Route::get('trashed/destroy/{id}', 'EmployeeController@destroyTrash')->name('trashed.destroy');
     });
 
     /**

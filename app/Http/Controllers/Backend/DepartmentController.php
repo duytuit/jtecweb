@@ -8,6 +8,11 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\DepartmentImport;
+use App\Exports\DepartmentExport;
+
+
 
 class DepartmentController extends Controller
 {
@@ -32,36 +37,31 @@ class DepartmentController extends Controller
             return view('errors.403', compact('message'));
         }
         // Phân trang
-        $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
-        $data['keyword'] = $request->input('keyword', null);
-        $data['advance'] = 0;
+        $department['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $department['keyword'] = $request->input('keyword', null);
+        $department['advance'] = 0;
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
-            $data['advance'] = 1;
-            $data['filter'] = $request->all();
+            $department['advance'] = 1;
+            $department['filter'] = $request->all();
         }
 
-        $data['lists'] = Department::where(function ($query) use ($request) {
+        $department['lists'] = Department::where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
-            }
-            if (isset($request->cycle_name) && $request->cycle_name != null) {
-                $query->where('cycle_name', $request->cycle_name);
             }
             if (isset($request->status) && $request->status != null) {
                 $query->where('status', $request->status);
             }
-            if (isset($request->from_date) && isset($request->to_date)) {
-                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
-                $to_date = Carbon::parse($request->to_date)->format('Y-m-d');
-                $query->whereDate('create_date', '>=', $from_date);
-                $query->whereDate('create_date', '<=', $to_date);
-            }
-        })->paginate($data['per_page']);
-        //dd($data['lists']);
-        return view('backend.pages.departments.index', $data);
+        })->paginate($department['per_page']);
+        //dd($department['lists']);
+        return view('backend.pages.departments.index', $department);
     }
-
+    // public function importIndex()
+    // {
+    //     $department = Department::all();
+    //     return view('admin.departments.index', compact('department'));
+    // }
     /**
      * Show the form for creating a new resource.
      *
@@ -72,10 +72,36 @@ class DepartmentController extends Controller
         if (is_null($this->user) || !$this->user->can('department.create')) {
             return abort(403, 'You are not allowed to access this page !');
         }
-
         return view('backend.pages.departments.create');
     }
 
+    public function importExcelData(Request $request)
+    {
+        $request->validate([
+            'import_file' => [
+                'required',
+                'file',
+            ],
+        ]);
+        Excel::import(new DepartmentImport, $request->file('import_file'));
+        // return redirect('/')->with('success', 'All good!');
+        return redirect()->back()->with('status', 'Import thành công');
+        // return view('backend.pages.departments.import')->with('status', 'Import thành công');
+        // session()->flash('success', 'Thêm mới thành công');
+        // return redirect()->route('admin.departments.index');
+    }
+    public function exportExcel(Request $request)
+    {
+        $data = Department::where(function ($query) use ($request) {
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+            if (isset($request->status) && $request->status != null) {
+                $query->where('status', $request->status);
+            }
+        })->orderBy('code')->get();
+        return (new DepartmentExport($data))->download('Department-export.xlsx');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -84,9 +110,6 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->status);
-        // dd($request->all());
-
         $request->validate([
             'departments_code' => 'required',
             'departments_title' => 'required',
@@ -167,7 +190,6 @@ class DepartmentController extends Controller
             session()->flash('error', "Failed to update department: " . $e->getMessage());
             return redirect()->back()->withInput();
         }
-
     }
     /**
      * Remove the specified resource from storage.

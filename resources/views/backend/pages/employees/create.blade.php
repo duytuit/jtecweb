@@ -9,69 +9,107 @@
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
         <div class="create-page">
-            <form action="{{ route('admin.employees.store') }}" method="POST" enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
+            <form action="{{ route('admin.employees.store') }}" method="POST" enctype="multipart/form-data"
+                data-parsley-validate data-parsley-focus="first">
                 @csrf
                 <div class="form-body">
-                    <div class="card-body">
-                        <div class="row ">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label" for="title">employee Title <span class="required">*</span></label>
-                                    <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Enter Title" required=""/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label" for="slug">Short URL <span class="optional">(optional)</span></label>
-                                    <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}" placeholder="Enter short url (Keep blank to auto generate)" />
-                                </div>
-                            </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
-
-
-                        <div class="row">
-                            <div class="col-md-6">
+                    @endif
+                    <div class="card-body">
+                        <div class="col-6 align-items-center justify-content-center mx-auto">
+                            <div class="w-100">
                                 <div class="form-group">
-                                    <label class="control-label" for="image">employee Featured Image <span class="optional">(optional)</span></label>
-                                    <input type="file" class="form-control dropify" data-height="70" data-allowed-file-extensions="png jpg jpeg webp" id="image" name="image" value="{{ old('image') }}"/>
+                                    <label class="control-label" for="name">
+                                        Tên nhân viên<span class="required">*</span>
+                                    </label>
+                                    <input type="text" data-parsley-required-message="Tên nhân viên là bắt buộc"
+                                        class="form-control" id="name" name="name" value="{{ old('name') }}"
+                                        placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="w-100">
+                                <div class="form-group">
+                                    <label class="control-label" for="code">
+                                        Mã nhân viên <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        data-parsley-required-message="Mã nhân viên là bắt buộc" id="code"
+                                        name="code" value="{{ old('code') }}" placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="w-100">
+                                <div class="form-group">
+                                    <label class="control-label" for="departments">
+                                        Bộ phận <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        data-parsley-required-message="Bộ phận là bắt buộc" id="departments"
+                                        name="departments" value="{{ old('departments') }}" placeholder="">
                                 </div>
                             </div>
 
+                            <div class="w-100 btn-group">
+                                <button type="button" class="btn btn-outline-warning dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Bộ phận
+                                </button>
+                                <ul class="w-100 dropdown-menu">
+                                    <li>Kho </li>
+                                    <li>Cắt</li>
+                                    <li>Nối</li>
+                                </ul>
+                            </div>
+                            <hr>
+                            <div class="w-100 btn-group">
+                                <button type="button" class="btn btn-outline-info  dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Chức vụ
+                                </button>
+                                <ul class="w-100 dropdown-menu">
+                                    <li>Giám đốc </li>
+                                    <li>Quản đốc</li>
+                                    <li>Leader</li>
+                                </ul>
+                            </div>
+                            {{-- <div class="w-100">
+                                <div class="form-group">
+                                    <label class="control-label">Trạng thái</label>
+                                    <input type="checkbox" id="_status" data-id="" data-url="" name="status"
+                                        value="1" checked class="d-none" />
+                                    <label for="_status" class="toggle">
+                                        <div class="slider"></div>
+                                    </label>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group has-success">
-                                    <label class="control-label" for="status">Status <span class="required">*</span></label>
+                                    <label class="control-label" for="status">Status <span
+                                            class="required">*</span></label>
                                     <select class="form-control custom-select" id="status" name="status" required>
                                         <option value="1" {{ old('status') === 1 ? 'selected' : null }}>Active</option>
-                                        <option value="0" {{ old('status') === 0 ? 'selected' : null }}>Inactive</option>
+                                        <option value="0" {{ old('status') === 0 ? 'selected' : null }}>Inactive
+                                        </option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row ">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="description">employee Description <span class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control tinymce_advance" id="description" name="description" value="{{ old('description') }}"></textarea>
+                             --}}
+                            <div class="row fixed-bottom">
+                                <div class="col-md-6 form-actions mx-auto">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa fa-check"></i> Save
+                                    </button>
+                                    <a href="{{ route('admin.employees.index') }}" class="btn btn-dark">Cancel</a>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="meta_description">employee Meta Description <span class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control" id="meta_description" name="meta_description" value="{{ old('meta_description') }}" placeholder="Meta description for SEO"></textarea>
-                                </div>
-                                <div class="form-actions">
-                                    <div class="card-body">
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                                        <a href="{{ route('admin.employees.index') }}" class="btn btn-dark">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
-
                     </div>
-
                 </div>
             </form>
         </div>
@@ -79,7 +117,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-
-    </script>
+    <script></script>
 @endsection

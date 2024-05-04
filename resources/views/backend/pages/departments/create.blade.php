@@ -24,7 +24,7 @@
                     @endif
                     <div class="card-body">
                         <div class="col-6 align-items-center justify-content-center mx-auto">
-                            <div class="W-100">
+                            <div class="w-100">
                                 <div class="form-group">
                                     <label class="control-label" for="departments_title">Tên bộ phận <span
                                             class="required">*</span></label>
@@ -33,7 +33,7 @@
                                         value="{{ old('departments_title') }}" placeholder="" required="">
                                 </div>
                             </div>
-                            <div class="W-100">
+                            <div class="w-100">
                                 <div class="form-group">
                                     <label class="control-label" for="departments_code">Mã bộ phận <span
                                             class="required">*</span></label>
@@ -47,13 +47,12 @@
                                 <div class="form-group">
                                     <label class="control-label">Trạng thái</label>
                                     <input type="checkbox" id="_status" data-id="" data-url="" name="status"
-                                        value="1" checked />
+                                        value="1" checked class="d-none" />
                                     <label for="_status" class="toggle">
                                         <div class="slider"></div>
                                     </label>
                                 </div>
                             </div>
-
                             <div class="row fixed-bottom">
                                 <div class="col-md-6 form-actions mx-auto">
                                     <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>

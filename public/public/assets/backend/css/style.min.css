@@ -22227,6 +22227,15 @@ fieldset:disabled a.btn {
     border-radius: 2px;
 }
 
+.import-excel.dropdown-menu {
+    min-width: 12rem;
+
+}
+
+.import-excel.dropdown-menu .form-control {
+    color: transparent;
+}
+
 .dropdown-menu-right {
     right: 0;
     left: auto;
@@ -38242,10 +38251,6 @@ div.dataTables_wrapper div.dataTables_processing {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-}
-
-input {
-    display: none;
 }
 
 .slider {

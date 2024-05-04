@@ -3,14 +3,15 @@
         <div class="col-5 align-self-center">
             <h4 class="page-title">
                 @if (Route::is('admin.employees.index'))
-                    employees List
+                    Danh sách nhân viên
                 @elseif(Route::is('admin.employees.create'))
-                    Create New employees
+                    Thêm nhân viên mới
                 @elseif(Route::is('admin.employees.edit'))
                     Edit employees <span class="badge badge-info">{{ $employees->title }}</span>
                 @elseif(Route::is('admin.employees.show'))
                     View employees <span class="badge badge-info">{{ $employees->title }}</span>
-                    <a  class="btn btn-outline-success btn-sm" href="{{ route('admin.employees.edit', $employees->id) }}"> <i class="fa fa-edit"></i></a>
+                    <a class="btn btn-outline-success btn-sm" href="{{ route('admin.employees.edit', $employees->id) }}">
+                        <i class="fa fa-edit"></i></a>
                 @endif
             </h4>
         </div>
@@ -22,14 +23,20 @@
                         @if (Route::is('admin.employees.index'))
                             <li class="breadcrumb-item active" aria-current="page">employees List</li>
                         @elseif(Route::is('admin.employees.create'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.employees.index') }}">employees List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Create New employees</li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('admin.employees.index') }}">Danh sách nhân viên</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Thêm nhân viên mới</li>
                         @elseif(Route::is('admin.employees.edit'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.employees.index') }}">employees List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit employees</li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('admin.employees.index') }}">Danh sách nhân viên</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit employees</li>
                         @elseif(Route::is('admin.employees.show'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.employees.index') }}">employees List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Show employees</li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('admin.employees.index') }}">Danh sách nhân viên</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Show employees</li>
                         @endif
 
                     </ol>

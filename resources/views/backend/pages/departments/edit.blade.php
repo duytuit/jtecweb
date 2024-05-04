@@ -11,9 +11,7 @@
         <div class="create-page">
             <form action="{{ route('admin.departments.update', ['id' => $department->id]) }}" method="POST"
                 enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
-
                 @csrf
-                {{-- @method('put') --}}
                 <div class="form-body">
                     <div class="card-body">
                         <div class="row ">

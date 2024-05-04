@@ -22,6 +22,24 @@
                     </span>
                     <a href="{{ route('admin.departments.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
                         mới</a>
+                    <span class="btn-group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Thêm từ Excel
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu import-excel">
+                            <li>
+                                <form action="{{ route('admin.departments.importExcelData') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="input-group">
+                                        <input type="file" name="import_file" class="form-control" placeholder=" "
+                                            required>
+                                        <button type="submit" class="btn btn-primary" name="upload"><i
+                                                class="fa fa-import"></i>Nhập</button>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </span>
                     <a href="{{ route('admin.departments.exportExcel', Request::all()) }}" class="btn btn-success"><i
                             class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
@@ -82,9 +100,11 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->status }}</td>
                                 <td>
-                                    <a href="{{ route('admin.departments.edit', ['id' => $item->id]) }}"><i
+                                    <a class=" d-inline-block mx-1"
+                                        href="{{ route('admin.departments.edit', ['id' => $item->id]) }}"><i
                                             class="fa fa-edit" style="color: #0ecf48;"></i> Sửa</a>
-                                    <a href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}"><i
+                                    <a class=" d-inline-block"
+                                        href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}"><i
                                             class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a>
                                 </td>
                             </tr>
