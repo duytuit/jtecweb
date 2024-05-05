@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-
 
 class EmployeeController extends Controller
 {
@@ -116,7 +115,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        if (is_null($this->user) || !$this->user->can('employees.edit')) {
+        if (is_null($this->user) || !$this->user->can('employee.edit')) {
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
@@ -131,9 +130,27 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, $id)
     {
-        //
+        $employee = Employee::find($id);
+
+        if (empty($employee)) {
+            session()->flash('error', "The page is not found.");
+            return redirect()->route('admin.employees.index');
+        }
+
+        // Update employee
+        try {
+            $employee->name = $request->input('name');
+            $employee->code = $request->input('code');
+            $employee->save();
+
+            session()->flash('success', "Employee updated successfully.");
+            return redirect()->route('admin.employees.index');
+        } catch (\Exception $e) {
+            session()->flash('error', "Failed to update Employee: " . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
     /**

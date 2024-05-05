@@ -7,9 +7,11 @@
                 @elseif(Route::is('admin.employees.create'))
                     Thêm nhân viên mới
                 @elseif(Route::is('admin.employees.edit'))
-                    Edit employees <span class="badge badge-info">{{ $employees->title }}</span>
+                    Edit employees
+                    {{-- <span class="badge badge-info">{{ $employees->title }}</span> --}}
                 @elseif(Route::is('admin.employees.show'))
-                    View employees <span class="badge badge-info">{{ $employees->title }}</span>
+                    View employees
+                    {{-- <span class="badge badge-info">{{ $employees->title }}</span> --}}
                     <a class="btn btn-outline-success btn-sm" href="{{ route('admin.employees.edit', $employees->id) }}">
                         <i class="fa fa-edit"></i></a>
                 @endif

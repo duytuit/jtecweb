@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        // if (!Schema::hasTable('departments')) {
         Schema::create('departments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('code');
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+        // }
     }
 
     /**
