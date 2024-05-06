@@ -9,16 +9,84 @@
     <div class="container-fluid">
         @include('backend.pages.employees.partials.top-show')
         @include('backend.layouts.partials.messages')
+
+        <form id="form-search" action="{{ route('admin.employees.index') }}" method="get">
+            <div class="row form-group">
+                <div class="col-sm-8">
+                    <span class="btn-group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span
+                                class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i
+                                        class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
+                        </ul>
+                    </span>
+                    <a href="{{ route('admin.employees.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
+                        mới</a>
+                    {{-- <span class="btn-group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Thêm từ Excel
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu import-excel">
+                            <li>
+                                <form action="{{ route('admin.employees.importExcelData') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="input-group">
+                                        <input type="file" name="import_file" class="form-control" placeholder=" "
+                                            required>
+                                        <button type="submit" class="btn btn-primary" name="upload"><i
+                                                class="fa fa-import"></i>Nhập</button>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </span> --}}
+                    <a href="{{ route('admin.employees.exportExcel', Request::all()) }}" class="btn btn-success"><i
+                            class="fa fa-edit"></i> Xuất Excel</a>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <div class="input-group">
+                        <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa"
+                            class="form-control" />
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-info"><span class="fa fa-search"></span></button>
+                            <button type="button" class="btn btn-warning btn-search-advance" data-toggle="show"
+                                data-target=".search-advance"><span class="fa fa-filter"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form><!-- END #form-search -->
+
+        {{-- <form id="form-search-advance" action="{{ route('admin.employees.index') }}" method="get" class="hidden">
+            <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
+                <div class="row form-group space-5">
+                    <div class="col-sm-2">
+                        <select name="status" class="form-control" style="width: 100%;">
+                            <option value="">Trạng thái</option>
+                            <option value="1" {{ @$filter['status'] === '1' ? 'selected' : '' }}>Hoạt động</option>
+                            <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Không hoạt động
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-warning btn-block">Tìm kiếm</button>
+                    </div>
+                </div>
+            </div>
+        </form> --}}
+        <!-- END #form-search-advance -->
+
         <form id="form-search" action="{{ route('admin.employees.index') }}" method="get">
             <div class="table-responsive product-table">
-                <table class="table table-striped table-bordered display ajax_view" id="employees_table">
+                <table class="table table-bordered ajax_view" id="employees_table">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th width="3%"><input type="checkbox" class="greyCheck checkAll"
+                                    data-target=".checkSingle" /></th>
                             <th>STT</th>
                             <th>Mã Code</th>
                             <th>Tên nhân viên</th>
-                            <th>Chức vụ</th>
                             <th>Bộ phận</th>
                             <th>Thao tác</th>
                         </tr>
@@ -32,7 +100,6 @@
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->first_name . ' ' . $item->last_name }}</td>
                                 <td>{{ $item->positions }}</td>
-                                <td>Bộ phận</td>
                                 <td>
                                     <a class=" d-inline-block mx-1"
                                         href="{{ route('admin.employees.edit', ['id' => $item->id]) }}"><i
@@ -46,6 +113,30 @@
                     </tbody>
                 </table>
             </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <span class="record-total">Tổng: {{ $lists->total() }} bản ghi</span>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <div class="pagination-panel">
+                        {{ $lists->appends(Request::all())->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
+                    </div>
+                </div>
+                <div class="col-sm-3 text-right">
+                    <span>
+                        Hiển thị
+                        <select name="per_page" class="form-control" style="display: inline;width: auto;"
+                            data-target="#form_lists">
+                            @php $list = [5, 10, 20, 50, 100, 200]; @endphp
+                            @foreach ($list as $num)
+                                <option value="{{ $num }}" {{ $num == $per_page ? 'selected' : '' }}>
+                                    {{ $num }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+            </div>
+
         </form>
     </div>
 @endsection

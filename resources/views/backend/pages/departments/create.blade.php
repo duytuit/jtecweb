@@ -26,21 +26,20 @@
                         <div class="col-6 align-items-center justify-content-center mx-auto">
                             <div class="w-100">
                                 <div class="form-group">
-                                    <label class="control-label" for="departments_title">Tên bộ phận <span
+                                    <label class="control-label" for="name">Tên bộ phận <span
                                             class="required">*</span></label>
                                     <input type="text" data-parsley-required-message="Tên bộ phận là bắt buộc"
-                                        class="form-control" id="departments_title" name="departments_title"
-                                        value="{{ old('departments_title') }}" placeholder="" required="">
+                                        class="form-control" id="name" name="name" value="{{ old('name') }}"
+                                        placeholder="" required="">
                                 </div>
                             </div>
                             <div class="w-100">
                                 <div class="form-group">
-                                    <label class="control-label" for="departments_code">Mã bộ phận <span
+                                    <label class="control-label" for="code">Mã bộ phận <span
                                             class="required">*</span></label>
                                     <input type="text" class="form-control"
-                                        data-parsley-required-message="Mã bộ phận là bắt buộc" id="departments_code"
-                                        name="departments_code" value="{{ old('departments_code') }}" placeholder=""
-                                        required="">
+                                        data-parsley-required-message="Mã bộ phận là bắt buộc" id="code" name="code"
+                                        value="{{ old('code') }}" placeholder="" required="">
                                 </div>
                             </div>
                             <div class="w-100">

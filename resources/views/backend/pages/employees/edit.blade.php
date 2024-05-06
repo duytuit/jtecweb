@@ -12,83 +12,53 @@
             <form action="{{ route('admin.employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data"
                 data-parsley-validate data-parsley-focus="first">
                 @csrf
-                {{-- @method('put') --}}
                 <div class="form-body">
                     <div class="card-body">
                         <div class="row ">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label" for="title">employee Title <span
+                                    <label class="control-label" for="first_name">Họ và tên đệm<span
                                             class="required">*</span></label>
-                                    <input type="text" class="form-control" id="title" name="title"
-                                        value="{{ $employee->title }}" placeholder="Enter Title" required="sdfdsfd" />
+                                    <input type="text" class="form-control" id="first_name" name="first_name"
+                                        value="{{ $employee->first_name }}" placeholder="" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label" for="slug">Short URL <span
-                                            class="optional">(optional)</span></label>
-                                    <input type="text" class="form-control" id="slug" name="slug"
-                                        value="{{ $employee->slug }}"
-                                        placeholder="Enter short url (Keep blank to auto generate)" />
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label" for="image">employee Featured Image <span
-                                            class="optional">(optional)</span></label>
-                                    <input type="file" class="form-control dropify" data-height="70"
-                                        data-allowed-file-extensions="png jpg jpeg webp" id="image" name="image"
-                                        data-default-file="{{ $employee->image != null ? asset('public/assets/images/employees/' . $employee->image) : null }}" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group has-success">
-                                    <label class="control-label" for="status">Status <span
+                                    <label class="control-label" for="last_name">Tên nhân viên <span
                                             class="required">*</span></label>
-                                    <select class="form-control custom-select" id="status" name="status" required>
-                                        <option value="1" {{ $employee->status === 1 ? 'selected' : null }}>Active
-                                        </option>
-                                        <option value="0" {{ $employee->status === 0 ? 'selected' : null }}>Inactive
-                                        </option>
+                                    <input type="text" class="form-control" id="last_name" name="last_name"
+                                        value="{{ $employee->last_name }}" placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="code">Mã nhân viên <span
+                                            class="required">*</span></label>
+                                    <input type="text" class="form-control" id="code" name="code"
+                                        value="{{ $employee->code }}" placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 btn-group">
+                                <div class="form-group w-100">
+                                    <label class="control-label" for="">Bộ phận</label><br>
+                                    <select class="form-control" id="process_id" name="process_id">
+                                        <option value="{{ $employee->process_id }}">{{ $employee->process_id }}</option>
+                                        @foreach ($departments as $department)
+                                            <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row ">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="description">employee Description <span
-                                            class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control tinymce_advance" id="description" name="description">{!! $employee->description !!}</textarea>
-                                </div>
+                        <div class="form-actions">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
+                                    Save</button>
+                                <a href="{{ route('admin.employees.index') }}" class="btn btn-dark">Cancel</a>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="meta_description">employee Meta Description <span
-                                            class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control" id="meta_description" name="meta_description"
-                                        placeholder="Meta description for SEO">{!! $employee->meta_description !!}</textarea>
-                                </div>
-                                <div class="form-actions">
-                                    <div class="card-body">
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
-                                            Save</button>
-                                        <a href="{{ route('admin.employees.index') }}" class="btn btn-dark">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
-
                     </div>
-
                 </div>
             </form>
         </div>

@@ -20,11 +20,10 @@ class DepartmentImport implements ToCollection, WithHeadingRow
                 continue;
             }
 
-            $department = Department::where('code', $row['code'])->first();
+            $department = Department::where('name', $row['name'])->first();
             if ($department) {
                 $department->update([
-                    // 'code' => $row['code'],
-                    'name' => $row['name'],
+                    'code' => $row['code'],
                     'status' => $row['status'],
                 ]);
             } else {

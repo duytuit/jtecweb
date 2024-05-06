@@ -27,13 +27,13 @@
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu import-excel">
                             <li>
-                                <form action="{{ route('admin.departments.importExcelData') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                {{-- <form action="{{ route('admin.departments.importExcelData') }}" method="POST"
+                                    enctype="multipart/form-data"> --}}
+                                <form id="importForm" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="input-group">
-                                        <input type="file" name="import_file" class="form-control" placeholder=" "
-                                            required>
-                                        <button type="submit" class="btn btn-primary" name="upload"><i
+                                        <input type="file" name="import_file" class="form-control" placeholder=" ">
+                                        <button type="submit" class="btn btn-primary import-js" name="upload"><i
                                                 class="fa fa-import"></i>Nhập</button>
                                     </div>
                                 </form>
@@ -155,5 +155,33 @@
                 }
             })
         }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('.import-js').click(function(event) {
+            event.preventDefault();
+            let formData = new FormData($('#importForm')[0]);
+            formData.append("_token", "{{ csrf_token() }}");
+            formData.append("import_file", $('input[name=import_file]')[0].files[0]);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('admin.departments.importExcelData') }}",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: (response) => {
+                    console.log(response);
+                    if (response) {
+                        window.location.reload();
+                        // window.location.href = "{{ route('admin.departments.index') }}";
+                    }
+                },
+                error: function(response) {
+
+                }
+            });
+        });
     </script>
 @endsection

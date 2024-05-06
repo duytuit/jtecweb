@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cookie;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DepartmentImport;
 use App\Exports\DepartmentExport;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -54,14 +55,8 @@ class DepartmentController extends Controller
                 $query->where('status', $request->status);
             }
         })->paginate($department['per_page']);
-        //dd($department['lists']);
         return view('backend.pages.departments.index', $department);
     }
-    // public function importIndex()
-    // {
-    //     $department = Department::all();
-    //     return view('admin.departments.index', compact('department'));
-    // }
     /**
      * Show the form for creating a new resource.
      *
@@ -84,11 +79,8 @@ class DepartmentController extends Controller
             ],
         ]);
         Excel::import(new DepartmentImport, $request->file('import_file'));
-        // return redirect('/')->with('success', 'All good!');
-        return redirect()->back()->with('status', 'Import thành công');
-        // return view('backend.pages.departments.import')->with('status', 'Import thành công');
-        // session()->flash('success', 'Thêm mới thành công');
-        // return redirect()->route('admin.departments.index');
+        session()->flash('success', 'Thêm mới thành công');
+        return response()->json('uploaded successfully');
     }
     public function exportExcel(Request $request)
     {
@@ -111,21 +103,25 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'departments_code' => 'required',
-            'departments_title' => 'required',
+            'code' => 'required',
+            'name' => 'required',
         ]);
         try {
+            DB::beginTransaction();
             $department = Department::create([
-                'code' => $request->departments_code,
-                'name' => $request->departments_title,
+                'code' => $request->code,
+                'name' => $request->name,
                 'parent_id' => 0,
                 'status' => @$request->status ? 1 : 0,
                 'created_by' => Auth::user()->id,
             ]);
+            DB::commit();
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.departments.index');
         } catch (\Exception $e) {
             return $this->error(['error', $e->getMessage()]);
+            DB::rollBack();
+            return back();
         }
     }
 
@@ -180,10 +176,10 @@ class DepartmentController extends Controller
 
         // Update department
         try {
-            $department->name = $request->input('departments_title');
-            $department->code = $request->input('departments_code');
+            $department->name = $request->input('name');
+            $department->code = $request->input('code');
+            $department->status = $request->input('status');
             $department->save();
-
             session()->flash('success', "Department updated successfully.");
             return redirect()->route('admin.departments.index');
         } catch (\Exception $e) {
