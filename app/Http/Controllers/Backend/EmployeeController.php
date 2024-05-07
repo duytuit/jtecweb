@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Helpers\ArrayHelper;
+use App\Helpers\UploadHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\DepartmentImport;
-use App\Exports\DepartmentExport;
-use App\Models\Department;
 use Illuminate\Support\Facades\DB;
-use App\Models\Admin;
-use App\Helpers\ArrayHelper;
-use App\Helpers\UploadHelper;
-
+use App\Imports\EmployeeImport;
+use App\Exports\EmployeeExport;
 
 class EmployeeController extends Controller
 {
@@ -53,14 +50,24 @@ class EmployeeController extends Controller
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-        })->paginate($employees['per_page']);
-
-        $employees['workers'] = Employee::where(function ($query) use ($request) {
             if (isset($request->worker) && $request->worker != null) {
                 $query->where('worker', $request->worker);
             }
+            if (isset($request->positions) && $request->positions != null) {
+                $query->where('positions', $request->positions);
+            }
+            if (isset($request->from_date) && isset($request->to_date)) {
+                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                $to_date = Carbon::parse($request->to_date)->format('Y-m-d');
+                $query->whereDate('begin_date_company', '>=', $from_date);
+                $query->whereDate('begin_date_company', '<=', $to_date);
+            }
+
         })->paginate($employees['per_page']);
-        return view('backend.pages.employees.index', $employees);
+        $workers = ArrayHelper::worker();
+        $positions = ArrayHelper::positions();
+
+        return view('backend.pages.employees.index', compact('workers', 'positions'), $employees);
     }
 
     /**
@@ -81,7 +88,18 @@ class EmployeeController extends Controller
         $banksLists = ArrayHelper::banksList();
         return view('backend.pages.employees.create', compact('roles', 'positions', 'maritals', 'workers', 'banksLists'), $data);
     }
-
+public function exportExcel(Request $request)
+    {
+        $data = Employee::where(function ($query) use ($request) {
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+            if (isset($request->status) && $request->status != null) {
+                $query->where('status', $request->status);
+            }
+        })->orderBy('code')->get();
+        return (new EmployeeExport($data))->download('Employee-export.xlsx');
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -23,7 +23,7 @@
                     </span>
                     <a href="{{ route('admin.employees.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
                         mới</a>
-                    {{-- <span class="btn-group">
+                    <span class="btn-group">
                         <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Thêm từ Excel
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu import-excel">
@@ -40,7 +40,7 @@
                                 </form>
                             </li>
                         </ul>
-                    </span> --}}
+                    </span>
                     <a href="{{ route('admin.employees.exportExcel', Request::all()) }}" class="btn btn-success"><i
                             class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
@@ -66,8 +66,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
                             </div>
-                            <input type="text" class="form-control date_picker" name="from_date" id="from_date"
-                                value="{{ @$filter['from_date'] }}" placeholder="Từ..." autocomplete="off">
+                            <input type="text" class="form-control date_picker datepicker" name="from_date"
+                                id="from_date" value="{{ @$filter['from_date'] }}" placeholder="Từ..." autocomplete="off">
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -75,20 +75,26 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
                             </div>
-                            <input type="text" class="form-control date_picker" name="to_date" id="to_date"
+                            <input type="text" class="form-control date_picker datepicker" name="to_date" id="to_date"
                                 value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
                         </div>
                     </div>
                     <div class="col-sm-2">
-                        <select name="status" class="form-control" style="width: 100%;">
+                        <select class="form-control custom-select" name="worker">
                             <option value="">Tình trạng làm việc</option>
-                            <select class="form-control custom-select" name="worker">
-                                <option value="">Chọn tình trạng </option>
-                                @foreach ($workers as $worker)
-                                    <option value="{{ $worker['id'] }}">
-                                        {{ $worker['name'] }}</option>
-                                @endforeach
-                            </select>
+                            @foreach ($workers as $worker)
+                                <option value="{{ $worker['id'] }}">
+                                    {{ $worker['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control custom-select" name="positions">
+                            <option value="">Chức vụ</option>
+                            @foreach ($positions as $position)
+                                <option value="{{ $position['id'] }}">
+                                    {{ $position['name'] }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -165,43 +171,46 @@
 
 @section('scripts')
     <script>
-        const ajaxURL = "<?php echo Route::is('admin.employees.trashed' ? 'employees/trashed/view' : 'employees'); ?>";
-        $('table#employees_table').DataTable({
-            dom: 'Blfrtip',
-            language: {
-                processing: "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Loading Data..."
-            },
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: ajaxURL
-            },
-            aLengthMenu: [
-                [25, 50, 100, 1000, -1],
-                [25, 50, 100, 1000, "All"]
-            ],
-            buttons: ['excel', 'pdf', 'print'],
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'title',
-                    name: 'title'
-                },
-                {
-                    data: 'image',
-                    name: 'image'
-                },
-                {
-                    data: 'status',
-                    name: 'status'
-                },
-                {
-                    data: 'action',
-                    name: 'action'
-                }
-            ]
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy'
         });
+        // const ajaxURL = "<?php echo Route::is('admin.employees.trashed' ? 'employees/trashed/view' : 'employees'); ?>";
+        // $('table#employees_table').DataTable({
+        //     dom: 'Blfrtip',
+        //     language: {
+        //         processing: "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Loading Data..."
+        //     },
+        //     processing: true,
+        //     serverSide: true,
+        //     ajax: {
+        //         url: ajaxURL
+        //     },
+        //     aLengthMenu: [
+        //         [25, 50, 100, 1000, -1],
+        //         [25, 50, 100, 1000, "All"]
+        //     ],
+        //     buttons: ['excel', 'pdf', 'print'],
+        //     columns: [{
+        //             data: 'DT_RowIndex',
+        //             name: 'DT_RowIndex'
+        //         },
+        //         {
+        //             data: 'title',
+        //             name: 'title'
+        //         },
+        //         {
+        //             data: 'image',
+        //             name: 'image'
+        //         },
+        //         {
+        //             data: 'status',
+        //             name: 'status'
+        //         },
+        //         {
+        //             data: 'action',
+        //             name: 'action'
+        //         }
+        //     ]
+        // });
     </script>
 @endsection

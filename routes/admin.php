@@ -180,6 +180,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('create', 'EmployeeController@create')->name('create');
         Route::get('edit/{id}', 'EmployeeController@edit')->name('edit');
         Route::get('exportExcel', 'EmployeeController@exportExcel')->name('exportExcel');
+        Route::get('importExcelData', 'EmployeeController@importExcelData')->name('importExcelData');
         Route::post('store', 'EmployeeController@store')->name('store');
         Route::post('update', 'EmployeeController@update')->name('update');
         Route::post('action', 'EmployeeController@action')->name('action');
