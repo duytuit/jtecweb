@@ -57,16 +57,38 @@
                 </div>
             </div>
         </form><!-- END #form-search -->
-
-        {{-- <form id="form-search-advance" action="{{ route('admin.employees.index') }}" method="get" class="hidden">
+        <!-- START #form-search-advance -->
+        <form id="form-search-advance" action="{{ route('admin.employees.index') }}" method="get" class="hidden">
             <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
                 <div class="row form-group space-5">
                     <div class="col-sm-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="text" class="form-control date_picker" name="from_date" id="from_date"
+                                value="{{ @$filter['from_date'] }}" placeholder="Từ..." autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="text" class="form-control date_picker" name="to_date" id="to_date"
+                                value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
                         <select name="status" class="form-control" style="width: 100%;">
-                            <option value="">Trạng thái</option>
-                            <option value="1" {{ @$filter['status'] === '1' ? 'selected' : '' }}>Hoạt động</option>
-                            <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Không hoạt động
-                            </option>
+                            <option value="">Tình trạng làm việc</option>
+                            <select class="form-control custom-select" name="worker">
+                                <option value="">Chọn tình trạng </option>
+                                @foreach ($workers as $worker)
+                                    <option value="{{ $worker['id'] }}">
+                                        {{ $worker['name'] }}</option>
+                                @endforeach
+                            </select>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -74,7 +96,7 @@
                     </div>
                 </div>
             </div>
-        </form> --}}
+        </form>
         <!-- END #form-search-advance -->
 
         <form id="form-search" action="{{ route('admin.employees.index') }}" method="get">
@@ -99,7 +121,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->first_name . ' ' . $item->last_name }}</td>
-                                <td>{{ $item->positions }}</td>
+                                <td>{{ $item->process_id }}</td>
                                 <td>
                                     <a class=" d-inline-block mx-1"
                                         href="{{ route('admin.employees.edit', ['id' => $item->id]) }}"><i

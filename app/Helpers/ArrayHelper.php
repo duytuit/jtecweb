@@ -54,6 +54,342 @@ class ArrayHelper
             1 => 15,
         ];
     }
+    public static function positions()
+    {
+        return [
+            [
+                'id' => 1,
+                'name' => 'General Director'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Director'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Supper Manager'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Manager'
+            ],
+            [
+                'id' => 5,
+                'name' => 'Supper Chief'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Chief'
+            ],
+            [
+                'id' => 7,
+                'name' => 'Staff'
+            ],
+            [
+                'id' => 8,
+                'name' => 'Suppser Leader'
+            ],
+            [
+                'id' => 9,
+                'name' => 'Leader'
+            ],
+            [
+                'id' => 10,
+                'name' => 'Sub Leader'
+            ],
+            [
+                'id' => 11,
+                'name' => 'worker'
+            ]
+        ];
+    }
+    public static function marital()
+    {
+        return [
+            [
+                'id' => 0,
+                'name' => 'Chưa kết hôn'
+            ],
+
+            [
+                'id' => 1,
+                'name' => 'Đã kết hôn'
+
+            ],
+            [
+                'id' => 2,
+                'name' => 'Ly hôn'
+            ]
+        ];
+    }
+    public static function worker()
+    {
+        return [
+            [
+                'id' => 0,
+                'name' => 'Nghỉ việc'
+            ],
+            [
+                'id' => 1,
+                'name' => 'Nghỉ chế độ bảo hiểm'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Nghỉ không lương'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Đang làm việc'
+            ],
+        ];
+    }
+    public static function banksList()
+    {
+        return [
+            [
+                'id' => 1,
+                'name' => 'TMCP Đầu tư và Phát triển Việt Nam	',
+                'code' => 'BIDV'
+            ],
+            [
+                'id' => 2,
+                'name' => 'TMCP Ngoại Thương Việt Nam	',
+                'code' => 'Vietcombank'
+            ],
+            [
+                'id' => 3,
+                'name' => 'TMCP Công thương Việt Nam	',
+                'code' => 'VietinBank'
+            ],
+            [
+                'id' => 4,
+                'name' => 'TMCP Quân Đội	',
+                'code' => 'MBBANK'
+            ],
+            [
+                'id' => 5,
+                'name' => 'TMCP Á Châu	',
+                'code' => 'ACB'
+            ],
+            [
+                'id' => 6,
+                'name' => 'TMCP Sài Gòn – Hà Nội	',
+                'code' => 'SHB'
+            ],
+            [
+                'id' => 7,
+                'name' => 'TMCP Kỹ Thương	',
+                'code' => 'Techcombank'
+            ],
+            [
+                'id' => 8,
+                'name' => 'NN&PT Nông thôn Việt Nam	',
+                'code' => 'Agribank'
+            ],
+            [
+                'id' => 9,
+                'name' => 'TMCP Phát triển Thành phố Hồ Chí Minh	',
+                'code' => 'HDBank'
+            ],
+            [
+                'id' => 10,
+                'name' => 'TMCP Bưu điện Liên Việt	',
+                'code' => 'LienVietPostBank'
+            ],
+            [
+                'id' => 11,
+                'name' => 'TMCP Quốc Tế 	',
+                'code' => 'VIB'
+            ],
+            [
+                'id' => 12,
+                'name' => 'TMCP Đông Nam Á	',
+                'code' => 'SeABank'
+            ],
+            [
+                'id' => 13,
+                'name' => 'Chính sách xã hội Việt Nam	',
+                'code' => 'VBSP'
+            ],
+            [
+                'id' => 14,
+                'name' => 'TMCP Tiên Phong	',
+                'code' => 'TPBank'
+            ],
+            [
+                'id' => 15,
+                'name' => 'TMCP Phương Đông	',
+                'code' => 'OCB'
+            ],
+            [
+                'id' => 16,
+                'name' => 'TMCP Hàng Hải	',
+                'code' => 'MSB'
+            ],
+            [
+                'id' => 17,
+                'name' => 'TMCP Sài Gòn Thương Tín	',
+                'code' => 'Sacombank'
+            ],
+            [
+                'id' => 18,
+                'name' => 'TMCP Xuất Nhập Khẩu	',
+                'code' => 'Eximbank'
+            ],
+            [
+                'id' => 19,
+                'name' => 'TMCP Sài Gòn	',
+                'code' => 'SCB'
+            ],
+            [
+                'id' => 20,
+                'name' => 'Phát triển Việt Nam	',
+                'code' => 'VDB'
+            ],
+            [
+                'id' => 21,
+                'name' => 'TMCP Nam Á	Nam A ',
+                'code' => 'Bank'
+            ],
+            [
+                'id' => 22,
+                'name' => 'TMCP An Bình	',
+                'code' => 'ABBANK'
+            ],
+            [
+                'id' => 23,
+                'name' => 'TMCP Đại Chúng Việt Nam	',
+                'code' => 'PVcomBank'
+            ],
+            [
+                'id' => 24,
+                'name' => 'TMCP Bắc Á	Bac A ',
+                'code' => 'Bank'
+            ],
+            [
+                'id' => 25,
+                'name' => 'TNHH MTV UOB Việt Nam	',
+                'code' => 'UOB'
+            ],
+            [
+                'id' => 26,
+                'name' => 'TNHH MTV Woori Việt Nam	',
+                'code' => 'Woori'
+            ],
+            [
+                'id' => 27,
+                'name' => 'TNHH MTV HSBC Việt Nam	',
+                'code' => 'HSBC'
+            ],
+            [
+                'id' => 28,
+                'name' => 'TNHH MTV Standard Chartered Việt Nam	',
+                'code' => 'SCBVL'
+            ],
+            [
+                'id' => 29,
+                'name' => 'TNHH MTV Public Bank Việt Nam	',
+                'code' => 'PBVN'
+            ],
+            [
+                'id' => 30,
+                'name' => 'TNHH MTV Shinhan Việt Nam	',
+                'code' => 'SHBVN'
+            ],
+            [
+                'id' => 31,
+                'name' => 'TMCP Quốc dân	',
+                'code' => 'NCB'
+            ],
+            [
+                'id' => 32,
+                'name' => 'TMCP Việt Á	',
+                'code' => 'VietABank'
+            ],
+            [
+                'id' => 33,
+                'name' => 'TMCP Bản Việt	 ',
+                'code' => 'Viet Capital Bank'
+            ],
+            [
+                'id' => 34,
+                'name' => 'TMCP Đông Á',
+                'code' => 'DongABank'
+            ],
+            [
+                'id' => 35,
+                'name' => 'TMCP Việt Nam Thương Tín	',
+                'code' => 'Vietbank'
+            ],
+            [
+                'id' => 36,
+                'name' => 'TNHH MTV ANZ Việt Nam',
+                'code' => 'ANZVL'
+            ],
+            [
+                'id' => 37,
+                'name' => 'TNHH MTV Đại Dương	',
+                'code' => 'OceanBank'
+            ],
+            [
+                'id' => 38,
+                'name' => 'TNHH MTV CIMB Việt Nam',
+                'code' => 'CIMB'
+            ],
+            [
+                'id' => 39,
+                'name' => 'TMCP Kiên Long',
+                'code' => 'Kienlongbank'
+            ],
+            [
+                'id' => 40,
+                'name' => 'TNHH Indovina',
+                'code' => 'IVB'
+            ],
+            [
+                'id' => 41,
+                'name' => 'TMCP Bảo Việt',
+                'code' => 'BAOVIETBank'
+            ],
+            [
+                'id' => 42,
+                'name' => 'TMCP Sài Gòn Công Thương	',
+                'code' => 'SAIGONBANK'
+            ],
+            [
+                'id' => 43,
+                'name' => 'Hợp tác xã Việt Nam',
+                'code' => 'Co-opBank'
+            ],
+            [
+                'id' => 44,
+                'name' => 'TNHH MTV Dầu khí toàn cầu',
+                'code' => 'GPBank'
+            ],
+            [
+                'id' => 45,
+                'name' => 'Liên doanh Việt Nga',
+                'code' => 'VRB'
+            ],
+            [
+                'id' => 46,
+                'name' => 'TNHH MTV Xây dựng',
+                'code' => 'CB'
+            ],
+            [
+                'id' => 47,
+                'name' => 'TNHH MTV Hong Leong Việt Nam	',
+                'code' => 'HLBVN'
+            ],
+            [
+                'id' => 48,
+                'name' => 'TMCP Xăng dầu ',
+                'code' => 'Petrolimex'
+            ],
+
+        ];
+    }
+
     public static function arrayExamPd()
     {
         return [

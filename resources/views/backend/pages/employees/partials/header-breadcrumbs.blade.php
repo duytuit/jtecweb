@@ -23,7 +23,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
                         @if (Route::is('admin.employees.index'))
-                            <li class="breadcrumb-item active" aria-current="page">employees List</li>
+                            <li class="breadcrumb-item active" aria-current="page">Danh sách nhân viên</li>
                         @elseif(Route::is('admin.employees.create'))
                             <li class="breadcrumb-item">
                                 <a href="{{ route('admin.employees.index') }}">Danh sách nhân viên</a>
@@ -33,7 +33,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('admin.employees.index') }}">Danh sách nhân viên</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit employees</li>
+                            <li class="breadcrumb-item active" aria-current="page">Sửa nhân viên</li>
                         @elseif(Route::is('admin.employees.show'))
                             <li class="breadcrumb-item">
                                 <a href="{{ route('admin.employees.index') }}">Danh sách nhân viên</a>

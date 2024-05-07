@@ -79,7 +79,8 @@
                                     <label class="control-label" for="status">Status <span
                                             class="required">*</span></label>
                                     <select class="form-control custom-select" id="status" name="status" required>
-                                        <option value="1" {{ $admin->status == '1' ? 'selected' : null }}>Active</option>
+                                        <option value="1" {{ $admin->status == '1' ? 'selected' : null }}>Active
+                                        </option>
                                         <option value="0" {{ $admin->status == '0' ? 'selected' : null }}>Inactive
                                         </option>
                                     </select>
@@ -91,9 +92,10 @@
                                             class="required">*</span></label>
                                     <select class="form-control custom-select" id="visible_in_team" name="visible_in_team"
                                         required>
-                                        <option value="1" {{  $admin->visible_in_team == '1' ? 'selected' : null }}>Visible
+                                        <option value="1" {{ $admin->visible_in_team == '1' ? 'selected' : null }}>
+                                            Visible
                                         </option>
-                                        <option value="0" {{  $admin->visible_in_team == '0' ? 'selected' : null }}>
+                                        <option value="0" {{ $admin->visible_in_team == '0' ? 'selected' : null }}>
                                             Invisible</option>
                                     </select>
                                 </div>
@@ -113,7 +115,8 @@
                                             class="optional">(optional)</span></label>
                                     <input type="password" class="form-control" id="password_confirmation"
                                         name="password_confirmation" value="{{ old('password') }}"
-                                        placeholder="Enter Confirm Password" data-parsley-equalto="#password" autocomplete="off" />
+                                        placeholder="Enter Confirm Password" data-parsley-equalto="#password"
+                                        autocomplete="off" />
                                 </div>
                             </div>
                             @if (!Route::is('admin.admins.profile.edit'))
@@ -122,8 +125,8 @@
                                         <label class="control-label" for="roles">Assign Roles <span
                                                 class="optional">(optional)</span></label>
                                         <br>
-                                        <select class="roles_select form-control custom-select " id="roles" name="roles[]"
-                                            multiple style="width: 100%;">
+                                        <select class="roles_select form-control custom-select " id="roles"
+                                            name="roles[]" multiple style="width: 100%;">
                                             @foreach ($roles as $role)
                                                 <option value="{{ $role->name }}"
                                                     {{ $admin->hasrole($role->name) ? 'selected' : null }}>
@@ -137,8 +140,8 @@
                                 <label class="control-label" for="languages">Set Language <span
                                         class="optional">(optional)</span></label>
                                 <br>
-                                <select class="roles_select form-control custom-select " id="languages" name="language_id"
-                                    style="width: 100%;">
+                                <select class="roles_select form-control custom-select " id="languages"
+                                    name="language_id" style="width: 100%;">
                                     @foreach ($languages as $language)
                                         <option value="{{ $language->id }}"
                                             {{ $admin->language_id == $language->id ? 'selected' : '' }}>
@@ -163,11 +166,12 @@
                                     @php $user_social_links = json_decode(empty($admin->social_links) ? '' : $admin->social_links); @endphp
 
                                     @foreach ($social_links as $social => $socialName)
-                                    @php $social_link = empty($user_social_links->$social) ? '' : $user_social_links->$social; @endphp
+                                        @php $social_link = empty($user_social_links->$social) ? '' : $user_social_links->$social; @endphp
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 {{ $socialName }}
-                                                <input type="url" name="social_links[{{ $social }}]" value="{{ $social_link }}" class="form-control" />
+                                                <input type="url" name="social_links[{{ $social }}]"
+                                                    value="{{ $social_link }}" class="form-control" />
                                             </div>
                                         </div>
                                     @endforeach
@@ -190,6 +194,9 @@
 
 @section('scripts')
     <script>
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy'
+        });
         $(".roles_select").select2({
             placeholder: "Select Roles to Assign for Access Pages"
         });

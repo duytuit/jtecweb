@@ -90,6 +90,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('exportExcel', 'DepartmentController@exportExcel')->name('exportExcel');
         Route::post('store', 'DepartmentController@store')->name('store');
         Route::post('update/{id}', 'DepartmentController@update')->name('update');
+        // Route::put('update/{id}', 'DepartmentController@update')->name('update');
         Route::post('action', 'DepartmentController@action')->name('action');
         Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
         Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');

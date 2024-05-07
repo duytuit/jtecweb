@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class FrontPagesController extends Controller
 {
@@ -125,8 +127,9 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        $this->addEmployee();
-        $this->updateBeginDate();
+        // $this->remaneTable();
+        // $this->addEmployee();
+        // $this->updateBeginDate();
         // $this->updateType();
         // $this->updateMission();
         //$this->updateScoresAndStatus();
@@ -152,6 +155,12 @@ class FrontPagesController extends Controller
         // array_push($firstThreeElements, "R");
         // shuffle($firstThreeElements);
         // dd(count($arrayFiltered));
+    }
+    public function remaneTable()
+    {
+        Schema::table('employees', function (Blueprint $table) {
+            $table->renameColumn('image', 'avatar');
+        });
     }
     public function store(Request $request)
     {

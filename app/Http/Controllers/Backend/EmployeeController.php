@@ -13,6 +13,9 @@ use App\Imports\DepartmentImport;
 use App\Exports\DepartmentExport;
 use App\Models\Department;
 use Illuminate\Support\Facades\DB;
+use App\Models\Admin;
+use App\Helpers\ArrayHelper;
+use App\Helpers\UploadHelper;
 
 
 class EmployeeController extends Controller
@@ -51,6 +54,12 @@ class EmployeeController extends Controller
                 $query->filter($request);
             }
         })->paginate($employees['per_page']);
+
+        $employees['workers'] = Employee::where(function ($query) use ($request) {
+            if (isset($request->worker) && $request->worker != null) {
+                $query->where('worker', $request->worker);
+            }
+        })->paginate($employees['per_page']);
         return view('backend.pages.employees.index', $employees);
     }
 
@@ -65,7 +74,12 @@ class EmployeeController extends Controller
             return abort(403, 'You are not allowed to access this page !');
         }
         $data['departments'] = Department::all();
-        return view('backend.pages.employees.create', $data);
+        $roles = DB::table('roles')->get();
+        $positions = ArrayHelper::positions();
+        $maritals = ArrayHelper::marital();
+        $workers = ArrayHelper::worker();
+        $banksLists = ArrayHelper::banksList();
+        return view('backend.pages.employees.create', compact('roles', 'positions', 'maritals', 'workers', 'banksLists'), $data);
     }
 
     /**
@@ -83,29 +97,37 @@ class EmployeeController extends Controller
         ]);
         try {
             DB::beginTransaction();
-            $employees = Employee::create([
-                'code' => $request->code,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'begin_date_company' => Carbon::parse($request->begin_date_company)->format('Y-m-d'),
-                'status' => @$request->status ? 1 : 0,
-                'created_by' => Auth::user()->id,
-                'identity_card' => $request->identity_card,
-                'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
-                'addresss' => $request->addresss,
-                'process_id' => $request->process_id,
-                'marital' => $request->marital,
-                'worker' => $request->worker,
-                'positions' => $request->positions,
-                'end_date_company' => $request->end_date_company,
-            ]);
+
+            $employee = new Employee(); // Tạo một đối tượng Employee mới
+            $employee->code = $request->code;
+            $employee->first_name = $request->first_name;
+            $employee->last_name = $request->last_name;
+            $employee->begin_date_company = Carbon::parse($request->begin_date_company)->format('Y-m-d');
+            $employee->status = @$request->status ? 1 : 0;
+            $employee->created_by = Auth::user()->id;
+            $employee->identity_card = $request->identity_card;
+            $employee->birthday = Carbon::parse($request->birthday)->format('Y-m-d');
+            $employee->addresss = $request->addresss;
+            $employee->process_id = $request->process_id;
+            $employee->marital = $request->marital;
+            $employee->worker = $request->worker;
+            $employee->positions = $request->positions;
+            $employee->phone = $request->phone;
+            $employee->email = $request->email;
+            $employee->bank_number = $request->bank_number;
+            $employee->bank_name = $request->bank_name;
+            $employee->end_date_company = Carbon::parse($request->end_date_company)->format('Y-m-d');
+
+            if (!is_null($request->avatar)) {
+                $employee->avatar = UploadHelper::upload('avatar', $request->avatar, $request->last_name . '-' . time(), 'public/assets/images/avatar');
+            }
+            $employee->save();
             DB::commit();
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.employees.index');
         } catch (\Exception $e) {
-            return $this->error(['error', $e->getMessage()]);
             DB::rollBack();
-            return back();
+            return back()->withError($e->getMessage());
         }
     }
 
@@ -139,8 +161,12 @@ class EmployeeController extends Controller
         }
         $employee = Employee::find($id);
         $data['departments'] = Department::all();
-        // return view('backend.pages.employees.edit')->with('employee', $employee)->with('departments', $data);
-        return view('backend.pages.employees.edit', compact('employee', 'data'));
+        $roles = DB::table('roles')->get();
+        $positions = ArrayHelper::positions();
+        $maritals = ArrayHelper::marital();
+        $workers = ArrayHelper::worker();
+        $banksLists = ArrayHelper::banksList();
+        return view('backend.pages.employees.edit', compact('employee', 'roles', 'positions', 'maritals', 'workers', 'banksLists'), $data);
     }
 
     /**
@@ -151,31 +177,58 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
+    // public function update(Request $request, $id, $isProfileUpdate = false)
     {
         $employee = Employee::find($id);
+        $data['departments'] = Department::all();
         if (empty($employee)) {
             session()->flash('error', "The page is not found.");
             return redirect()->route('admin.employees.index');
         }
+        // $admin = Admin::find($id);
 
+        // if (is_null($admin)) {
+        //     session()->flash('error', "The page is not found !");
+        //     return redirect()->route('admin.admins.index');
+        // }
         // Update employee
         try {
+            $employee->code = $request->input('code');
             $employee->first_name = $request->input('first_name');
             $employee->last_name = $request->input('last_name');
-            $employee->code = $request->input('code');
-            $employee->begin_date_company = $request->input('begin_date_company');
+            $employee->begin_date_company = Carbon::parse($request->input('begin_date_company'))->format('Y-m-d');
             $employee->status = $request->input('status');
             $employee->created_by = $request->input('created_by');
             $employee->identity_card = $request->input('identity_card');
-            $employee->birthday = $request->input('birthday');
+            $employee->birthday = Carbon::parse($request->input('birthday'))->format('Y-m-d');
             $employee->addresss = $request->input('addresss');
             $employee->process_id = $request->input('process_id');
             $employee->marital = $request->input('marital');
             $employee->worker = $request->input('worker');
             $employee->positions = $request->input('positions');
-            $employee->end_date_company = $request->input('end_date_company');
-            $employee->save();
+            $employee->end_date_company = Carbon::parse($request->input('end_date_company'))->format('Y-m-d');
+            $employee->avatar = $request->input('avatar');
+            $employee->phone = $request->input('phone');
+            $employee->email = $request->input('email');
+            $employee->bank_number = $request->input('bank_number');
+            $employee->bank_name = $request->input('bank_name');
+            $employee->roles = $request->input('roles');
 
+            if (!is_null($request->avatar)) {
+                $employee->avatar = UploadHelper::upload('avatar', $request->avatar, $request->last_name . '-' . time(), 'public/assets/images/avatar');
+            }
+            // if (!$isProfileUpdate) {
+            //     // Detach roles and Assign Roles
+            //     $admin->roles()->detach();
+
+            //     if (!is_null($request->roles)) {
+            //         foreach ($request->roles as $role) {
+            //             $admin->assignRole($role);
+            //         }
+            //     }
+            // }
+            $employee->save();
+            // if ($isProfileUpdate)    return back();
             session()->flash('success', "Employee updated successfully.");
             return redirect()->route('admin.employees.index');
         } catch (\Exception $e) {

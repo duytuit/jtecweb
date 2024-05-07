@@ -24,7 +24,7 @@
                     @endif
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="first_name">
                                         Họ và tên đệm<span class="required">*</span>
@@ -34,7 +34,7 @@
                                         value="{{ old('first_name') }}" placeholder="" required>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="last_name">
                                         Tên nhân viên<span class="required">*</span>
@@ -44,7 +44,7 @@
                                         placeholder="" required>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="code">
                                         Mã nhân viên <span class="required">*</span>
@@ -54,7 +54,48 @@
                                         name="code" value="{{ old('code') }}" placeholder="" required>
                                 </div>
                             </div>
-                            <div class="col-md-4 btn-group">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="phone">
+                                        Số điện thoại
+                                    </label>
+                                    <input type="text" class="form-control" id="phone" name="phone"
+                                        value="{{ old('phone') }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="email">
+                                        Địa chỉ mail
+                                    </label>
+                                    <input type="text" class="form-control" id="email" name="email"
+                                        value="{{ old('email') }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="bank_number">
+                                        Số tài khoản ngân hàng
+                                    </label>
+                                    <input type="text" class="form-control" id="bank_number" name="bank_number"
+                                        value="{{ old('bank_number') }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="bank_name">
+                                        Tên ngân hàng
+                                    </label>
+                                    <select class="form-control" id="bank_name" name="bank_name">
+                                        <option value="">Chọn ngân hàng</option>
+                                        @foreach ($banksLists as $banksList)
+                                            <option value="{{ $banksList['id'] }}">
+                                                {{ $banksList['code'] . ' - ' . $banksList['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 btn-group">
                                 <div class="form-group w-100">
                                     <label class="control-label" for="">Bộ phận</label><br>
                                     <select class="form-control" id="process_id" name="process_id">
@@ -65,41 +106,32 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4 btn-group">
+                            <div class="col-md-3 btn-group">
                                 <div class="form-group w-100">
                                     <label class="control-label" for="">Chức vụ</label><br>
                                     <select class="form-control" id="positions" name="positions">
                                         <option value="">Chọn chức vụ</option>
-                                        <option value="11" {{ old('positions') === 11 ? 'selected' : null }}>Worker
-                                        </option>
-                                        <option value="10" {{ old('positions') === 10 ? 'selected' : null }}>Sub Leader
-                                        </option>
-                                        <option value="9" {{ old('positions') === 9 ? 'selected' : null }}>Leader
-                                        </option>
-                                        <option value="8" {{ old('positions') === 8 ? 'selected' : null }}>Suppser
-                                            Leader
-                                        </option>
-                                        <option value="7" {{ old('positions') === 7 ? 'selected' : null }}>Staff
-                                        </option>
-                                        <option value="6" {{ old('positions') === 6 ? 'selected' : null }}>Chief
-                                        </option>
-                                        <option value="5" {{ old('positions') === 5 ? 'selected' : null }}>Supper
-                                            Chief
-                                        </option>
-                                        <option value="4" {{ old('positions') === 4 ? 'selected' : null }}>Manager
-                                        </option>
-                                        <option value="3" {{ old('positions') === 3 ? 'selected' : null }}>Supper
-                                            Manager
-                                        </option>
-                                        <option value="2" {{ old('positions') === 2 ? 'selected' : null }}>Director
-                                        </option>
-                                        <option value="1" {{ old('positions') === 1 ? 'selected' : null }}>General
-                                            Director
-                                        </option>
+                                        @foreach ($positions as $position)
+                                            <option value="{{ $position['id'] }}">
+                                                {{ $position['name'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="roles">Quyền hạn<span
+                                            class="optional">(optional)</span></label>
+                                    <br>
+                                    <select class="roles_select form-control custom-select " id="roles"
+                                        name="roles[]" multiple style="width: 100%;">
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="identity_card">
                                         Số CCCD
@@ -108,7 +140,7 @@
                                         value="{{ old('identity_card') }}" placeholder="">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="begin_date_company">
                                         Ngày vào công ty
@@ -118,7 +150,7 @@
                                         data-date-format="dd/mm/yyyy">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="end_date_company">
                                         Ngày nghỉ việc
@@ -128,7 +160,7 @@
                                         data-date-format="dd/mm/yyyy">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="birthday">
                                         Ngày tháng năm sinh
@@ -138,7 +170,7 @@
                                         data-date-format="dd/mm/yyyy">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group has-success">
                                     <label class="control-label" for="status">Status</label>
                                     <select class="form-control custom-select" id="status" name="status">
@@ -149,43 +181,44 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group has-success">
                                     <label class="control-label" for="worker">Tình trạng làm việc</label>
                                     <select class="form-control custom-select" id="worker" name="worker">
-                                        <option value="3" {{ old('worker') === 3 ? 'selected' : null }}>Đang làm việc
-                                        </option>
-                                        <option value="2" {{ old('worker') === 2 ? 'selected' : null }}>Nghỉ không
-                                            lương
-                                        </option>
-                                        <option value="1" {{ old('worker') === 1 ? 'selected' : null }}>Nghỉ chế độ
-                                            bảo hiểm
-                                        </option>
-                                        <option value="0" {{ old('worker') === 0 ? 'selected' : null }}>Nghỉ việc
-                                        </option>
+                                        <option value="">Chọn tình trạng </option>
+                                        @foreach ($workers as $worker)
+                                            <option value="{{ $worker['id'] }}">
+                                                {{ $worker['name'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group has-success">
                                     <label class="control-label" for="marital">Tình trạng hôn nhân</label>
                                     <select class="form-control custom-select" id="marital" name="marital">
-                                        <option value="0" {{ old('marital') === 3 ? 'selected' : null }}>Chưa kết hôn
-                                        </option>
-                                        <option value="1" {{ old('marital') === 2 ? 'selected' : null }}>Đã kết hôn
-                                        </option>
-                                        <option value="2" {{ old('marital') === 1 ? 'selected' : null }}>Ly hôn
-                                        </option>
+                                        @foreach ($maritals as $marital)
+                                            <option value="{{ $marital['id'] }}">
+                                                {{ $marital['name'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="addresss">
                                         Địa chỉ
                                     </label>
                                     <input type="text" class="form-control" id="addresss" name="addresss"
                                         value="{{ old('addresss') }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="avatar">Ảnh nhân viên 4x6<span
+                                            class="optional">(optional)</span></label>
+                                    <input type="file" class="form-control dropify" data-height="70"
+                                        data-allowed-file-extensions="png jpg jpeg webp" id="avatar" name="avatar" />
                                 </div>
                             </div>
                             <div class="row fixed-bottom">
@@ -208,6 +241,9 @@
     <script>
         $('.datepicker').datepicker({
             format: 'dd/mm/yyyy'
+        });
+        $(".roles_select").select2({
+            placeholder: "Thiết lập quyền"
         });
     </script>
 @endsection
