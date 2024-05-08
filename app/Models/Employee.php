@@ -11,7 +11,7 @@ class Employee extends Model
 {
     use HasFactory, SoftDeletes, ActivityLogger;
     protected $table = 'employees';
-    protected $fillable = [
+    protected $seachable = [
         'id',
         'code',
         'first_name',
@@ -38,4 +38,41 @@ class Employee extends Model
     // {
     //     return $this->belongsTo(Department::class, 'name', '');
     // }
+    public function scopeFilter($query, $input)
+    {
+        foreach ($this->seachable as $value) {
+            if (isset($input[$value])) {
+                $query->where($value, $input[$value]);
+            }
+        }
+        if (isset($input['keyword'])) {
+            $search = $input['keyword'];
+            $query->where(function ($q) use ($search) {
+                foreach ($this->seachable as $value) {
+                    $q->orWhere($value, 'LIKE', '%' . $search . '%');
+                }
+            });
+        }
+        return $query;
+    }
+
+    public static function searchByAll(array $options = [])
+    {
+        $default = [
+            'select'   => '*',
+            'where'    => [],
+            'order_by' => 'id DESC',
+            'per_page' => 20,
+        ];
+
+        $options = array_merge($default, $options);
+        extract($options);
+
+        $model = self::select($options['select']);
+        if ($options['where']) {
+            $model = $model->where($options['where']);
+        }
+
+        return $model->orderByRaw($options['order_by'])->paginate($options['per_page']);
+    }
 }

@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use App\Imports\EmployeeImport;
 use App\Exports\EmployeeExport;
+use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
+use App\Helpers\StringHelper;
+
+
 
 class EmployeeController extends Controller
 {
@@ -62,7 +67,6 @@ class EmployeeController extends Controller
                 $query->whereDate('begin_date_company', '>=', $from_date);
                 $query->whereDate('begin_date_company', '<=', $to_date);
             }
-
         })->paginate($employees['per_page']);
         $workers = ArrayHelper::worker();
         $positions = ArrayHelper::positions();
@@ -88,11 +92,17 @@ class EmployeeController extends Controller
         $banksLists = ArrayHelper::banksList();
         return view('backend.pages.employees.create', compact('roles', 'positions', 'maritals', 'workers', 'banksLists'), $data);
     }
-public function exportExcel(Request $request)
+    public function exportExcel(Request $request)
     {
         $data = Employee::where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
+            }
+            if (isset($request->worker) && $request->worker != null) {
+                $query->where('worker', $request->worker);
+            }
+            if (isset($request->positions) && $request->positions != null) {
+                $query->where('positions', $request->positions);
             }
             if (isset($request->status) && $request->status != null) {
                 $query->where('status', $request->status);
@@ -113,10 +123,17 @@ public function exportExcel(Request $request)
             'first_name' => 'required',
             'last_name' => 'required',
         ]);
+        $employeeExist = Employee::Where('code', $request->code)->first();
+        if ($employeeExist) {
+            session()->flash('error', 'Mã code đã tồn tại');
+            return redirect()->back();
+        }
         try {
             DB::beginTransaction();
 
+            // Tạo nhân viên
             $employee = new Employee(); // Tạo một đối tượng Employee mới
+
             $employee->code = $request->code;
             $employee->first_name = $request->first_name;
             $employee->last_name = $request->last_name;
@@ -135,11 +152,42 @@ public function exportExcel(Request $request)
             $employee->bank_number = $request->bank_number;
             $employee->bank_name = $request->bank_name;
             $employee->end_date_company = Carbon::parse($request->end_date_company)->format('Y-m-d');
-
             if (!is_null($request->avatar)) {
                 $employee->avatar = UploadHelper::upload('avatar', $request->avatar, $request->last_name . '-' . time(), 'public/assets/images/avatar');
             }
+
             $employee->save();
+            //Tạo tài khoản
+            $admin = new Admin();
+            $admin->first_name = $request->first_name;
+            $admin->last_name = $request->last_name;
+            if ($request->username) {
+                $admin->username = $request->username;
+            } else {
+                // $admin->username = StringHelper::createSlug($request->first_name . $request->last_name, 'Admin', 'username', '');
+                $admin->username = $request->code;
+            }
+
+            // if (!is_null($request->avatar)) {
+            //     $admin->avatar = $employee->avatar;
+            // }
+
+            $admin->email = $request->email;
+            $admin->password = Hash::make($request->code);
+            // $admin->password = $request->code;
+
+            $admin->status = $request->status;
+            $admin->created_at = Carbon::now();
+            $admin->created_by = Auth::id();
+            $admin->updated_at = Carbon::now();
+            $admin->save();
+
+            // Assign Roles
+            if ($request->roles != null) {
+                foreach ($request->roles as $role) {
+                    $admin->assignRole($role);
+                }
+            }
             DB::commit();
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.employees.index');
@@ -179,11 +227,13 @@ public function exportExcel(Request $request)
         }
         $employee = Employee::find($id);
         $data['departments'] = Department::all();
+        $data['admin'] = Admin::Where('username', $employee->code)->first();
         $roles = DB::table('roles')->get();
         $positions = ArrayHelper::positions();
         $maritals = ArrayHelper::marital();
         $workers = ArrayHelper::worker();
         $banksLists = ArrayHelper::banksList();
+
         return view('backend.pages.employees.edit', compact('employee', 'roles', 'positions', 'maritals', 'workers', 'banksLists'), $data);
     }
 
@@ -194,22 +244,24 @@ public function exportExcel(Request $request)
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    // public function update(Request $request, $id, $isProfileUpdate = false)
+    public function update(Request $request, $id, $isProfileUpdate = false)
     {
+        $employeeExist = Employee::Where('code', $request->code)->first();
+        if ($employeeExist) {
+            session()->flash('error', 'Mã code đã tồn tại');
+            return redirect()->back();
+        }
         $employee = Employee::find($id);
         $data['departments'] = Department::all();
         if (empty($employee)) {
             session()->flash('error', "The page is not found.");
             return redirect()->route('admin.employees.index');
         }
-        // $admin = Admin::find($id);
-
-        // if (is_null($admin)) {
-        //     session()->flash('error', "The page is not found !");
-        //     return redirect()->route('admin.admins.index');
-        // }
-        // Update employee
+        $admin = Admin::find($request->adminId);
+        if (is_null($admin)) {
+            session()->flash('error', "The page is not found !");
+            return redirect()->route('admin.admins.index');
+        }
         try {
             $employee->code = $request->input('code');
             $employee->first_name = $request->input('first_name');
@@ -225,29 +277,34 @@ public function exportExcel(Request $request)
             $employee->worker = $request->input('worker');
             $employee->positions = $request->input('positions');
             $employee->end_date_company = Carbon::parse($request->input('end_date_company'))->format('Y-m-d');
-            $employee->avatar = $request->input('avatar');
+            // $employee->avatar = $request->input('avatar');
             $employee->phone = $request->input('phone');
             $employee->email = $request->input('email');
             $employee->bank_number = $request->input('bank_number');
             $employee->bank_name = $request->input('bank_name');
-            $employee->roles = $request->input('roles');
 
             if (!is_null($request->avatar)) {
                 $employee->avatar = UploadHelper::upload('avatar', $request->avatar, $request->last_name . '-' . time(), 'public/assets/images/avatar');
             }
-            // if (!$isProfileUpdate) {
-            //     // Detach roles and Assign Roles
-            //     $admin->roles()->detach();
-
-            //     if (!is_null($request->roles)) {
-            //         foreach ($request->roles as $role) {
-            //             $admin->assignRole($role);
-            //         }
-            //     }
-            // }
             $employee->save();
-            // if ($isProfileUpdate)    return back();
+
+            if (!$isProfileUpdate) {
+                if (!is_null($request->input('password'))) {
+                    $admin->password = Hash::make($request->input('password'));
+                }
+                $admin->username = $request->input('code');
+                $admin->save();
+                // Detach roles and Assign Roles
+                $admin->roles()->detach();
+
+                if (!is_null($request->roles)) {
+                    foreach ($request->roles as $role) {
+                        $admin->assignRole($role);
+                    }
+                }
+            }
             session()->flash('success', "Employee updated successfully.");
+            if ($isProfileUpdate)    return back();
             return redirect()->route('admin.employees.index');
         } catch (\Exception $e) {
             session()->flash('error', "Failed to update Employee: " . $e->getMessage());

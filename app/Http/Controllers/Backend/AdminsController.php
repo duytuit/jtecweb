@@ -354,7 +354,6 @@ class AdminsController extends Controller
             if (!$isProfileUpdate) {
                 // Detach roles and Assign Roles
                 $admin->roles()->detach();
-
                 if (!is_null($request->roles)) {
                     foreach ($request->roles as $role) {
                         $admin->assignRole($role);

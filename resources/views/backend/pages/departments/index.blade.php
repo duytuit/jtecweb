@@ -27,8 +27,6 @@
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu import-excel">
                             <li>
-                                {{-- <form action="{{ route('admin.departments.importExcelData') }}" method="POST"
-                                    enctype="multipart/form-data"> --}}
                                 <form id="importForm" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="input-group">

@@ -122,6 +122,27 @@ class ArrayHelper
             ]
         ];
     }
+    public static function positionTitle()
+    {
+        return [
+            [
+                'id' => 0,
+                'name' => 'Nhân viên'
+            ],
+            [
+                'id' => 1,
+                'name' => 'Trưởng phòng'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Phó phòng'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Trợ lý'
+            ],
+        ];
+    }
     public static function worker()
     {
         return [

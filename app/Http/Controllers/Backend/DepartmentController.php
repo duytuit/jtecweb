@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Department;
+use App\Models\Employee;
+use App\Models\EmployeeDepartment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Cookie;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DepartmentImport;
 use App\Exports\DepartmentExport;
+use App\Helpers\ArrayHelper;
 use Illuminate\Support\Facades\DB;
 
 
@@ -147,14 +150,23 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         if (is_null($this->user) || !$this->user->can('department.edit')) {
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
+
         $department = Department::find($id);
-        return view('backend.pages.departments.edit', compact('department'));
+        $employeeDepartments = EmployeeDepartment::Where('department_id', $id)->get();
+        $positionTitles = ArrayHelper::positionTitle();
+        $employee['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $employee['lists'] = Employee::where(function ($query) use ($request) {
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+        })->paginate($employee['per_page']);
+        return view('backend.pages.departments.edit', compact('department', 'employeeDepartments', 'employee', 'positionTitles'));
     }
 
     /**
@@ -246,5 +258,32 @@ class DepartmentController extends Controller
         } else {
             return back()->with('success', 'thành công!');
         }
+    }
+    public function ajaxGetSelectCode(Request $request)
+    {
+
+        if ($request->search) {
+            $where[] = ['code', 'like', '%' . $request->search . '%'];
+            return response()->json(Employee::searchByAll(['where' => $where]));
+        }
+        return response()->json(Employee::searchByAll(['select' => ['id', 'code', 'first_name', 'last_name']]));
+    }
+    public function addEmployeeIntoDepartment(Request $request)
+    {
+        $ids = json_decode($request->ids);
+        foreach ($ids as $key => $id) {
+            EmployeeDepartment::create([
+                'employee_id' => $id,
+                'department_id' => $request->departmentId,
+                'created_by' => Auth::user()->id,
+            ]);
+        }
+    }
+    public function changePositionTitle(Request $request)
+    {
+        $employeeDepartment = new EmployeeDepartment();
+        $employeeDepartment->position = $request->input('positionTitle');
+        $employeeDepartment->save();
+        return response()->json(['message' => 'Đã lưu giá trị thành công!']);
     }
 }

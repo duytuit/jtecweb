@@ -32,8 +32,7 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="input-group">
-                                        <input type="file" name="import_file" class="form-control" placeholder=" "
-                                            required>
+                                        <input type="file" name="import_file" class="form-control" placeholder=" ">
                                         <button type="submit" class="btn btn-primary" name="upload"><i
                                                 class="fa fa-import"></i>Nhập</button>
                                     </div>
@@ -171,9 +170,13 @@
 
 @section('scripts')
     <script>
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy'
-        });
+        // $('.datepicker').datepicker({
+        //     format: 'dd/mm/yyyy'
+        // });
+        $('input.date_picker').datepicker({
+            autoclose: true,
+            dateFormat: "dd-mm-yy"
+        }).val();
         // const ajaxURL = "<?php echo Route::is('admin.employees.trashed' ? 'employees/trashed/view' : 'employees'); ?>";
         // $('table#employees_table').DataTable({
         //     dom: 'Blfrtip',

@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label" for="roles">Quyền hạn<span
+                                    <label class="control-label" for="roles">Nhóm quyền<span
                                             class="optional">(optional)</span></label>
                                     <br>
                                     <select class="roles_select form-control custom-select " id="roles"
@@ -145,7 +145,7 @@
                                     <label class="control-label" for="begin_date_company">
                                         Ngày vào công ty
                                     </label>
-                                    <input type="text" class="form-control datepicker" name="begin_date_company"
+                                    <input type="text" class="form-control date_picker" name="begin_date_company"
                                         id="begin_date_company" value="" placeholder="" autocomplete="off"
                                         data-date-format="dd/mm/yyyy">
                                 </div>
@@ -155,7 +155,7 @@
                                     <label class="control-label" for="end_date_company">
                                         Ngày nghỉ việc
                                     </label>
-                                    <input type="text" class="form-control datepicker" name="end_date_company"
+                                    <input type="text" class="form-control date_picker" name="end_date_company"
                                         id="end_date_company" value="" placeholder="" autocomplete="off"
                                         data-date-format="dd/mm/yyyy">
                                 </div>
@@ -165,8 +165,8 @@
                                     <label class="control-label" for="birthday">
                                         Ngày tháng năm sinh
                                     </label>
-                                    <input type="text" class="form-control datepicker" name="birthday" id="birthday"
-                                        value="{{ old('birthday') }}" placeholder="" autocomplete="off"
+                                    <input type="text" class="form-control date_picker" name="birthday"
+                                        id="birthday" value="{{ old('birthday') }}" placeholder="" autocomplete="off"
                                         data-date-format="dd/mm/yyyy">
                                 </div>
                             </div>
@@ -239,9 +239,10 @@
 
 @section('scripts')
     <script>
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy'
-        });
+        $('input.date_picker').datepicker({
+            autoclose: true,
+            dateFormat: "dd-mm-yy"
+        }).val();
         $(".roles_select").select2({
             placeholder: "Thiết lập quyền"
         });

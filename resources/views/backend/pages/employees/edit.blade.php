@@ -9,12 +9,11 @@
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
         <div class="create-page">
-            {{-- <form action="{{ route('admin.employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data"
-                data-parsley-validate data-parsley-focus="first"> --}}
-            <form action="{{ route('admin.employees.update', ['id' => $employee->id]) }}" method="POST"
-                enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
+            <form action="{{ route('admin.employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data"
+                data-parsley-validate data-parsley-focus="first">
                 @csrf
                 {{-- @method('PUT') --}}
+                <input type="hidden" name="adminId" value="{{ $admin->id }}">
                 <div class="form-body">
                     <div class="card-body">
                         <div class="row ">
@@ -40,6 +39,14 @@
                                             class="required">*</span></label>
                                     <input type="text" class="form-control" id="code" name="code"
                                         value="{{ $employee->code }}" placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="password">Password <span
+                                            class="optional">(optional)</span></label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        value="" placeholder="Nhập Password" autocomplete="off" />
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -116,10 +123,12 @@
                             <div class="col-md-3 btn-group">
                                 <div class="form-group w-100">
                                     <label class="control-label" for="">Quyền hạn</label><br>
-                                    <select class="form-control" id="roles" name="roles">
-                                        <option value="{{ $employee->positions }}">{{ $employee->positions }}</option>
+                                    <select class="roles_select form-control custom-select " id="roles"
+                                        name="roles[]" multiple style="width: 100%;">
                                         @foreach ($roles as $role)
-                                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                            <option value="{{ $role->name }}"
+                                                {{ $admin->hasrole($role->name) ? 'selected' : null }}>
+                                                {{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -134,7 +143,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="begin_date_company">Ngày vào công ty</label>
-                                    <input type="text" class="form-control datepicker" name="begin_date_company"
+                                    <input type="text" class="form-control date_picker" name="begin_date_company"
                                         id="begin_date_company" value="{{ $employee->begin_date_company }}"
                                         placeholder="" autocomplete="off" data-date-format="dd/mm/yyyy">
                                 </div>
@@ -142,7 +151,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="end_date_company">Ngày nghỉ việc</label>
-                                    <input type="text" class="form-control datepicker" name="end_date_company"
+                                    <input type="text" class="form-control date_picker" name="end_date_company"
                                         id="end_date_company" value="{{ $employee->end_date_company }}" placeholder=""
                                         autocomplete="off" data-date-format="dd/mm/yyyy">
                                 </div>
@@ -150,9 +159,9 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="birthday">Ngày tháng năm sinh</label>
-                                    <input type="text" class="form-control datepicker" name="birthday" id="birthday"
-                                        value="{{ $employee->birthday }}" placeholder="" autocomplete="off"
-                                        data-date-format="dd/mm/yyyy">
+                                    <input type="text" class="form-control date_picker" name="birthday"
+                                        id="birthday" value="{{ $employee->birthday }}" placeholder=""
+                                        autocomplete="off" data-date-format="dd/mm/yyyy">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -211,7 +220,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="avatar">Ảnh nhân viên 4x6<span
                                             class="optional">(optional)</span></label>
-                                    <input type="file" class="form-control dropify" data-height="70"
+                                    <input type="file" class="form-control dropify" data-height="270"
                                         data-allowed-file-extensions="png jpg jpeg webp" id="avatar" name="avatar"
                                         data-default-file="{{ $employee->avatar != null ? asset('public/assets/images/avatar/' . $employee->avatar) : null }}" />
                                 </div>
@@ -233,11 +242,15 @@
 
 @section('scripts')
     <script>
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy'
-        });
+        $('input.date_picker').datepicker({
+            autoclose: true,
+            dateFormat: "dd-mm-yy"
+        }).val();
         $(".categories_select").select2({
             placeholder: "Select a Category"
+        });
+        $(".roles_select").select2({
+            placeholder: "Select Roles to Assign for Access Pages"
         });
     </script>
 @endsection
