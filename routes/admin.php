@@ -234,6 +234,26 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
     });
 
     /**
+     * Warehouses Management Routes
+     */
+    Route::prefix('warehouses')->name('warehouses.')->group(function () {
+        Route::get('', 'RequiredController@index')->name('index');
+        Route::get('create', 'RequiredController@create')->name('create');
+        Route::get('edit/{id}', 'RequiredController@edit')->name('edit');
+        Route::get('exportExcel', 'RequiredController@exportExcel')->name('exportExcel');
+    });
+
+     /**
+     * Accessory Management Routes
+     */
+    Route::prefix('accessorys')->name('accessorys.')->group(function () {
+        Route::get('', 'AccessoryController@index')->name('index');
+        Route::get('create', 'AccessoryController@create')->name('create');
+        Route::get('edit/{id}', 'AccessoryController@edit')->name('edit');
+        Route::get('exportExcel', 'AccessoryController@exportExcel')->name('exportExcel');
+    });
+
+    /**
      * Signature Submission Management Routes
      */
     Route::prefix('signatureSubmissions')->name('signatureSubmissions.')->group(function () {

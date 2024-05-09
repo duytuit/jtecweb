@@ -200,6 +200,20 @@ class RolePermissionsTableSeeder extends Seeder
                 'required.delete',
             ],
 
+            'warehouse' => [
+                'warehouse.view',
+                'warehouse.create',
+                'warehouse.edit',
+                'warehouse.delete',
+            ],
+
+            'accessory' => [
+                'accessory.view',
+                'accessory.create',
+                'accessory.edit',
+                'accessory.delete',
+            ],
+
             'signature_submission' => [
                 'signature_submission.view',
                 'signature_submission.create',

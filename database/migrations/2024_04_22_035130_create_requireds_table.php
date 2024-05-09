@@ -28,8 +28,8 @@ return new class extends Migration
             $table->integer('from_type')->comment('Loại công việc');
             $table->dateTime('date_completed')->nullable()->comment('Ngày hoàn thành công việc');
             $table->integer('order');
-            $table->integer('created_by')->nullable();
-            $table->integer('completed_by')->nullable();
+            $table->integer('created_by')->nullable()->comment('Người yêu cầu');
+            $table->integer('completed_by')->nullable()->comment('Người thực hiện');
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();
             $table->softDeletes();

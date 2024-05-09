@@ -10,11 +10,30 @@ class Accessory extends Model
     use HasFactory;
     protected $guarded = [];
 
-    // protected $fillable = [
-    //     'X31',
-    //     '品目K',
-    //     '品目C',
-    //     '場所C',
-    //     '棚番'
-    // ];
+    protected $fillable = [
+        'code',
+        'location_k',
+        'location_c',
+        'location',
+        'material_norms',
+        'image',
+        'status'
+    ];
+    public function scopeFilter($query, $input)
+    {
+        foreach ($this->seachable as $value) {
+            if (isset($input[$value])) {
+                $query->where($value, $input[$value]);
+            }
+        }
+        if (isset($input['keyword'])) {
+            $search = $input['keyword'];
+            $query->where(function ($q) use ($search) {
+                foreach ($this->seachable as $value) {
+                    $q->orWhere($value, 'LIKE', '%' . $search . '%');
+                }
+            });
+        }
+        return $query;
+    }
 }

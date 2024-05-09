@@ -478,7 +478,27 @@
         </ul>
     </li>
 @endif
-
+@if ($user->can('accessory.view') || $user->can('accessory.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Linh kiện</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.accessorys.index') || Route::is('admin.accessorys.create') || Route::is('admin.accessorys.edit') ? 'in' : null }}">
+            @if ($user->can('required.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.accessorys.index') }}"
+                        class="sidebar-link {{ Route::is('admin.accessorys.index') || Route::is('admin.accessorys.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
 @if ($user->can('required.view') || $user->can('required.create'))
     <li class="sidebar-item ">
         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
@@ -504,6 +524,28 @@
                         class="sidebar-link {{ Route::is('admin.requireds.create') ? 'active' : null }}">
                         <i class="mdi mdi-plus-circle"></i>
                         <span class="hide-menu"> Cấu hình </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
+@if ($user->can('warehouse.view') || $user->can('warehouse.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Xuất linh kiện</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.warehouses.index') || Route::is('admin.warehouses.create') || Route::is('admin.warehouses.edit') ? 'in' : null }}">
+            @if ($user->can('warehouse.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.warehouses.index') }}"
+                        class="sidebar-link {{ Route::is('admin.warehouses.index') || Route::is('admin.warehouses.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
                     </a>
                 </li>
             @endif

@@ -5,9 +5,19 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Required;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RequiredController extends Controller
 {
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +35,10 @@ class RequiredController extends Controller
      */
     public function create()
     {
-        //
+        if (is_null($this->user) || !$this->user->can('required.create')) {
+            return abort(403, 'You are not allowed to access this page !');
+        }
+        return view('backend.pages.requireds.create');
     }
 
     /**
