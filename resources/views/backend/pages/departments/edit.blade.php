@@ -83,8 +83,10 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <a class=" d-inline-block" href=""><i class="fa fa-trash"
-                                                    style="color: #cb3030;"></i> Xóa</a>
+                                            <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white delete_js"
+                                                href=""
+                                                onclick="deletefromED(this,{{ $employeeDepartment->id }})"><i
+                                                    class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -183,6 +185,30 @@
             })
         })
 
+        function deletefromED(event, employeeDepartmentId) {
+            // e.preventDefault();
+            values = {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                id: employeeDepartmentId,
+            }
+            $.ajax({
+                url: "{{ route('admin.departments.destroyEmployeeDepartments') }}",
+                method: 'POST',
+                data: values,
+                success: function(data) {
+                    toastr.success("Thành công", 'Success', {
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        timeOut: 2000
+                    });
+                    window.location.reload();
+                },
+                errors: function(data) {
+
+                }
+            });
+        };
+
         function changePosition(event, employeeDepartmentId) {
             // event.preventDefault();
             values = {
@@ -195,7 +221,6 @@
                 method: 'POST',
                 data: values,
                 success: function(data) {
-                    console.log('Đã lưu giá trị thành công!');
                     toastr.success("Thành công", 'Success', {
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut",

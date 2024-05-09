@@ -98,6 +98,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('addEmployeeIntoDepartment', 'DepartmentController@addEmployeeIntoDepartment')->name('addEmployeeIntoDepartment');
         Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
         Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
+
+        Route::post('destroyEmployeeDepartments', 'DepartmentController@destroyEmployeeDepartments')->name('destroyEmployeeDepartments');
+
         Route::post('import', 'DepartmentController@importExcelData')->name('importExcelData');
     });
 
@@ -245,10 +248,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('create', 'RequiredController@create')->name('create');
         Route::get('edit/{id}', 'RequiredController@edit')->name('edit');
         Route::get('exportExcel', 'RequiredController@exportExcel')->name('exportExcel');
-
     });
 
-     /**
+    /**
      * Accessory Management Routes
      */
     Route::prefix('accessorys')->name('accessorys.')->group(function () {
