@@ -9,7 +9,7 @@
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
         <div class="create-page">
-            <form action="{{ route('admin.accessorys.update') }}" method="POST" enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
+            <form action="{{ route('admin.accessorys.update',['id' => $accessory->id]) }}" method="POST" enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
                 @csrf
                 <div class="form-body">
                   <div class="card-body">
@@ -17,38 +17,34 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="code">Mã linh kiện<span class="required">*</span></label>
-                                    <input type="text" class="form-control" id="code" name="code" value="{{ old('code') }}"
+                                    <input type="text" class="form-control" id="code" name="code" value="{{ $accessory->code }}"
                                         placeholder="Mã linh kiện" required
                                         data-parsley-required-message="Trường mã lịnh kiện là bắt buộc"  readonly/>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="location_c">Vi trí (location_c)<span class="required">*</span></label>
-                                    <input type="number" class="form-control" id="location_c" name="location_c" value="{{ old('location_c') }}"
+                                    <input type="text" class="form-control" id="location_c" name="location_c" value="{{ $accessory->location_c }}"
                                         required data-parsley-required-message="Trường vitri c là bắt buộc" readonly/>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="location">Vi trí (location)<span class="required">*</span></label>
-                                    <input type="number" class="form-control" id="location" name="location" value="{{ old('location') }}"
+                                    <input type="text" class="form-control" id="location" name="location" value="{{ $accessory->location }}"
                                         required data-parsley-required-message="Trường vị trí là bắt buộc" readonly/>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="unit">Đơn vị</label>
-                                    <input type="text" class="form-control" id="code" name="code" value="{{ old('code') }}" readonly />
+                                    <input type="text" class="form-control" id="code" name="code" value="{{ $accessory->unit }}" />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="material_norms">Định mức</label>
-                                    <input type="text" class="form-control" id="material_norms" name="material_norms"
-                                        value="{{ old('material_norms') }}" />
+                                    <input type="number" class="form-control" id="material_norms" name="material_norms"
+                                        value="{{ $accessory->material_norms }}" />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="image">Ảnh linh kiện</label>
                                 <input type="file" class="form-control dropify" data-height="270"
                                     data-allowed-file-extensions="png jpg jpeg webp" id="image" name="image"
-                                    data-default-file="{{  old('image') != null ? asset('public/assets/images/accessory/' . old('image')) : null }}" />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label" for="content">Ghi chú</label>
-                                    <input type="text" class="form-control" id="content" name="content" value="{{ old('content') }}" />
+                                    data-default-file="{{  $accessory->image != null ? asset('public/assets/images/accessory/' .  $accessory->image) : null }}" />
                                 </div>
                             </div>
                         </div>

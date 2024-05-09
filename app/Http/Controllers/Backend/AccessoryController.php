@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
+use App\Helpers\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Accessory;
 use App\Models\Exam;
@@ -114,9 +116,31 @@ class AccessoryController extends Controller
      * @param  \App\Models\Accessory  $accessory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Accessory $accessory)
+    public function update(Request $request, $id)
     {
-        //
+        if (is_null($this->user) || !$this->user->can('accessory.edit')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+
+        $accessory = Accessory::find($id);
+        if (is_null($accessory)) {
+            session()->flash('error', "The page is not found !");
+            return redirect()->route('admin.blogs.index');
+        }
+        try {
+            $accessory->material_norms=$request->material_norms;
+            if (!is_null($request->image)) {
+                $accessory->image = UploadHelper::upload('image', $request->image, $accessory->code . '-' . time(), 'public/assets/images/accessory');
+            }
+            $accessory->save();
+            session()->flash('success', 'Sửa thành công !!');
+            return redirect()->route('admin.accessorys.index');
+        } catch (\Exception $e) {
+            session()->flash('sticky_error', $e->getMessage());
+            return back();
+        }
+
     }
 
     /**

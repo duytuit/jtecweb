@@ -259,7 +259,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('edit/{id}', 'AccessoryController@edit')->name('edit');
         Route::get('exportExcel', 'AccessoryController@exportExcel')->name('exportExcel');
         Route::post('action', 'AccessoryController@action')->name('action');
-        Route::post('update', 'AccessoryController@update')->name('update');
+        Route::post('update/{id}', 'AccessoryController@update')->name('update');
     });
 
     /**
