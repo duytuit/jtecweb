@@ -287,7 +287,6 @@ class DepartmentController extends Controller
         EmployeeDepartment::where('id',$employeeDepartmentId)->update([
             'positions'=>$positions
         ]);
-        dd( $employeeDepartments->count().' '.$positions);
         foreach ($employeeDepartments as $employeeDepartment) {
             if ($employeeDepartment->positions == $positions) {
                 $employeeDepartment->positions = 0;
