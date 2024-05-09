@@ -65,6 +65,8 @@ Route::group(['prefix' => ''], function () {
 });
 
 Route::namespace('App\Http\Controllers\Backend')->group(function () {
+
+    Route::post('/upload', 'HomeController@upload');
     /**
      * Exam Management Routes
      */
