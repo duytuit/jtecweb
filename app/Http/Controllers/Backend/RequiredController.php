@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Employee;
 use App\Models\Accessory;
 use App\Models\Required;
 use Illuminate\Http\Request;
@@ -101,20 +100,9 @@ class RequiredController extends Controller
     public function showDataAccessorys(Request $request)
     {
         $accessorysCode = $request->input('selectedValue');
-        $accessorys = Accessory::where('code', $accessorysCode)->first();
-        if (empty($accessorys)) {
-            session()->flash('error', "The page is not found.");
-            return redirect()->back();
-        }
-        try {
-            $accessorys->material_norms = $request->input('material_norms');
-            $accessorys->unit = $request->input('unit');
-            $accessorys->save();
-            session()->flash('success', " successfully.");
-            return redirect()->back();
-        } catch (\Exception $e) {
-            session()->flash('error', "Failed " . $e->getMessage());
-            return redirect()->back()->withInput();
-        }
+        // $design = design::select(`design_no`, `design_name`, `weight_length`, `quantity`, `design_image`, `des2`, `des3`, `des4`, `des5`, `des6`, `des7`)->where('id', $id)->get();
+        $data = Accessory::where('code', $accessorysCode)->first();
+
+        return response()->json($data);
     }
 }

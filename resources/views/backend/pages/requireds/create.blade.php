@@ -96,39 +96,57 @@
 
 @section('scripts')
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $(document).ready(function() {
-
             $('input[name="code"]').on('change', function() {
                 var selectedValue = $(this).val();
-                values = {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    selectedValue: selectedValue,
-                }
                 $.ajax({
-                    type: 'POST',
                     url: "{{ route('admin.requireds.showDataAccessorys') }}",
-                    data: values,
-                    // data: JSON.stringify(values),
-                    contentType: 'application/json',
-                    success: (response) => {
-                        console.log(response);
-                        if (response) {
-                            toastr.success("Thành công", 'Success', {
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut",
-                                timeOut: 2000
-                            });
-                            window.location.reload();
-                        }
-                    },
-                    error: function(response) {
-                        toastr.success("Có lỗi xảy ra", 'Error', {
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut",
-                            timeOut: 2000
+                    type: "POST",
+                    dataType: "json",
+                    success: function(data) {
+                        alert(data);
+                        console.log(data);
+                        var html = '';
+                        $.each(data, function(index, item) {
+                            html += '<p>' + item.name + '</p>';
                         });
+                        $('#cf-data-container').html(html);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors, if any
+                        console.log(error);
                     }
                 });
+                // $.ajax({
+                //     type: 'POST',
+                //     url: "{{ route('admin.requireds.showDataAccessorys') }}",
+                //     data: values,
+                //     // data: JSON.stringify(values),
+                //     contentType: 'application/json',
+                //     success: (response) => {
+                //         console.log(response);
+                //         if (response) {
+                //             toastr.success("Thành công", 'Success', {
+                //                 "showMethod": "fadeIn",
+                //                 "hideMethod": "fadeOut",
+                //                 timeOut: 2000
+                //             });
+                //             window.location.reload();
+                //         }
+                //     },
+                //     error: function(response) {
+                //         toastr.success("Có lỗi xảy ra", 'Error', {
+                //             "showMethod": "fadeIn",
+                //             "hideMethod": "fadeOut",
+                //             timeOut: 2000
+                //         });
+                //     }
+                // });
             });
         })
     </script>
