@@ -283,15 +283,15 @@ class DepartmentController extends Controller
     {
         $employeeDepartmentId = $request->input('employeeDepartmentId');
         $positions = $request->input('positionTitle');
-        $employeeDepartments = EmployeeDepartment::whereNotIn('id',[ $employeeDepartmentId])->get();
+        $employeeDepartments = EmployeeDepartment::where('id','<>',$employeeDepartmentId)->get();
         EmployeeDepartment::where('id',$employeeDepartmentId)->update([
             'positions'=>$positions
         ]);
         foreach ($employeeDepartments as $employeeDepartment) {
             if ($employeeDepartment->positions == $positions) {
                 $employeeDepartment->positions = 0;
+                $employeeDepartment->save();
             }
-            $employeeDepartment->save();
         }
         return response()->json(['message' => 'Đã lưu giá trị thành công!']);
     }

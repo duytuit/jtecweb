@@ -73,7 +73,7 @@
                                         <td>
                                             <select class="form-control custom-select" id="positionTitle"
                                                 name="positionTitle"
-                                                onchange="changePosition(this,{{ $employeeDepartment->employee->id }})">
+                                                onchange="changePosition(this,{{ $employeeDepartment->id }})">
                                                 @foreach ($positionTitles as $positionTitle)
                                                     <option value="{{ $positionTitle['id'] }}"
                                                         {{ $positionTitle['id'] === $employeeDepartment->positions ? 'selected' : '' }}>
