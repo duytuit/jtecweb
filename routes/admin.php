@@ -236,6 +236,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('store', 'RequiredController@store')->name('store');
         Route::post('update', 'RequiredController@update')->name('update');
         Route::post('action', 'RequiredController@action')->name('action');
+
+        Route::post('showDataAccessorys', 'RequiredController@showDataAccessorys')->name('showDataAccessorys');
+
         Route::put('trashed/revert/{id}', 'RequiredController@revertFromTrash')->name('trashed.revert');
         Route::delete('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');
     });

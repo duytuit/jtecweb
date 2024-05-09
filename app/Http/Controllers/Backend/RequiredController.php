@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
+use App\Models\Employee;
+use App\Models\Accessory;
 use App\Models\Required;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,5 +97,24 @@ class RequiredController extends Controller
     public function destroy(Required $required)
     {
         //
+    }
+    public function showDataAccessorys(Request $request)
+    {
+        $accessorysCode = $request->input('selectedValue');
+        $accessorys = Accessory::where('code', $accessorysCode)->first();
+        if (empty($accessorys)) {
+            session()->flash('error', "The page is not found.");
+            return redirect()->back();
+        }
+        try {
+            $accessorys->material_norms = $request->input('material_norms');
+            $accessorys->unit = $request->input('unit');
+            $accessorys->save();
+            session()->flash('success', " successfully.");
+            return redirect()->back();
+        } catch (\Exception $e) {
+            session()->flash('error', "Failed " . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 }

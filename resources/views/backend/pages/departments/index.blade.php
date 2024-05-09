@@ -98,10 +98,10 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->status }}</td>
                                 <td>
-                                    <a title="Sửa" class=" d-inline-block mx-1"
+                                    <a title="Sửa" class=" d-inline-block mx-1 btn-purple btn-sm text-white"
                                         href="{{ route('admin.departments.edit', ['id' => $item->id]) }}"><i
                                             class="fa fa-edit"></i> </a>
-                                    <a title="Xóa" class=" d-inline-block"
+                                    <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
                                         href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}"><i
                                             class="fa fa-trash"></i> </a>
                                 </td>
