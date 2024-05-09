@@ -187,7 +187,7 @@
             // event.preventDefault();
             values = {
                 _token: $('meta[name="csrf-token"]').attr('content'),
-                positionTitle: $('#positionTitle').val(),
+                positionTitle: $(event).val(),
                 employeeDepartmentId: employeeDepartmentId,
             }
             $.ajax({
@@ -201,9 +201,10 @@
                         "hideMethod": "fadeOut",
                         timeOut: 2000
                     });
+                    window.location.reload();
                 },
                 error: function(data) {
-                    console.error('Lỗi khi lưu giá trị:', error);
+                    console.error('Lỗi khi lưu giá trị:', data);
                 }
             });
         };
