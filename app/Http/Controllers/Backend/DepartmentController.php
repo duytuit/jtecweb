@@ -284,7 +284,7 @@ class DepartmentController extends Controller
         $employeeDepartmentId = $request->input('employeeDepartmentId');
         $positions = $request->input('positionTitle');
         $employeeDepartments = EmployeeDepartment::whereNotIn('id',[ $employeeDepartmentId])->get();
-        EmployeeDepartment::find($employeeDepartmentId)->update([
+        EmployeeDepartment::where('id',$employeeDepartmentId)->update([
             'positions'=>$positions
         ]);
         foreach ($employeeDepartments as $employeeDepartment) {
