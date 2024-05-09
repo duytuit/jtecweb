@@ -98,12 +98,12 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->status }}</td>
                                 <td>
-                                    <a class=" d-inline-block mx-1"
+                                    <a title="Sửa" class=" d-inline-block mx-1"
                                         href="{{ route('admin.departments.edit', ['id' => $item->id]) }}"><i
-                                            class="fa fa-edit" style="color: #0ecf48;"></i> Sửa</a>
-                                    <a class=" d-inline-block"
+                                            class="fa fa-edit"></i> </a>
+                                    <a title="Xóa" class=" d-inline-block"
                                         href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}"><i
-                                            class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a>
+                                            class="fa fa-trash"></i> </a>
                                 </td>
                             </tr>
                         @endforeach
