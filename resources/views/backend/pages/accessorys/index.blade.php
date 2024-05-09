@@ -94,7 +94,9 @@
                                 <td>{{$item->code }}</td>
                                 <td>{{$item->location_c }}</td>
                                 <td>{{$item->location }}</td>
-                                <td>{{$item->image }}</td>
+                                <td>
+                                    {!! $item->image != null ? '<img src="' . asset('public/assets/images/accessory/' . $item->image) . '"  width=150>':'' !!}
+                                </td>
                                 <td>{{$item->material_norms }}</td>
                                 <td>{{$item->unit }}</td>
                                 <td>
