@@ -272,11 +272,14 @@ class DepartmentController extends Controller
     {
         $ids = json_decode($request->ids);
         foreach ($ids as $key => $id) {
-            EmployeeDepartment::create([
-                'employee_id' => $id,
-                'department_id' => $request->departmentId,
-                'created_by' => Auth::user()->id,
-            ]);
+           $_employeeDepartment = EmployeeDepartment::where('employee_id',$id)->first();
+            if(!$_employeeDepartment){
+                EmployeeDepartment::create([
+                    'employee_id' => $id,
+                    'department_id' => $request->departmentId,
+                    'created_by' => Auth::user()->id,
+                ]);
+            }
         }
     }
     public function changePositionTitle(Request $request)

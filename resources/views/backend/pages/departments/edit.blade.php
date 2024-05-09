@@ -177,6 +177,7 @@
                 method: 'POST',
                 data: values,
                 success: function(data) {
+                    toastr.success("Thành công", 'Success');
                     window.location.reload();
                 },
                 errors: function(data) {}
