@@ -1,33 +1,62 @@
 // Simple Tiny MCE
 tinymce.init({
-  selector: ".tinymce_simple",
-  theme: "modern",
-  height: 80,
-  menubar: false,
-  statusbar: false,
-  plugins: [
-    "autolink link image lists hr anchor pagebreak spellchecker",
-    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-    "save table contextmenu directionality template paste textcolor",
-  ],
-  valid_elements : '*[*]',
-  toolbar:
-    "undo redo styleselect bold italic  alignleft aligncenter alignright alignjustify bullist numlist link  preview fullpage forecolor",
-});
-
-// Advance Tiny MCE
+    selector: ".tinymce_simple",
+    theme: "modern",
+    height: 80,
+    menubar: false,
+    statusbar: false,
+    plugins: [
+      "autolink link image lists hr anchor pagebreak spellchecker",
+      "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+      "save table contextmenu directionality template paste textcolor",
+    ],
+    valid_elements : '*[*]',
+    toolbar:
+      "undo redo styleselect bold italic  alignleft aligncenter alignright alignjustify bullist numlist link  preview fullpage forecolor",
+  });
+  // Advance Tiny MCE
 tinymce.init({
   selector: ".tinymce_advance",
-  theme: "modern",
-  height: 150,
-  plugins: [
-    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-    "save table contextmenu directionality emoticons template paste textcolor code",
-  ],
-  valid_elements : '*[*]',
-  toolbar:
-    "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print media fullpage | forecolor backcolor emoticons | code preview",
+  image_class_list: [
+    {title: 'img-responsive', value: 'img-responsive'},
+    ],
+    height: 500,
+    setup: function (editor) {
+        editor.on('init change', function () {
+            editor.save();
+        });
+    },
+    plugins: [
+        "advlist autolink lists link image charmap print preview anchor",
+        "searchreplace visualblocks code fullscreen",
+        "insertdatetime media table contextmenu paste imagetools"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image ",
+
+    image_title: true,
+    automatic_uploads: true,
+    images_upload_url: '/admin/upload',
+    file_picker_types: 'image',
+    file_picker_callback: function(cb, value, meta) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.onchange = function() {
+            var file = this.files[0];
+
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                var id = 'blobid' + (new Date()).getTime();
+                var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                var base64 = reader.result.split(',')[1];
+                var blobInfo = blobCache.create(id, file, base64);
+                blobCache.add(blobInfo);
+                cb(blobInfo.blobUri(), { title: file.name });
+            };
+        };
+        input.click();
+    }
 });
 $(document).ready(function () {
     //Icheck
