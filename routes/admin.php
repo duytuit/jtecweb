@@ -245,6 +245,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('create', 'RequiredController@create')->name('create');
         Route::get('edit/{id}', 'RequiredController@edit')->name('edit');
         Route::get('exportExcel', 'RequiredController@exportExcel')->name('exportExcel');
+
     });
 
      /**
@@ -255,6 +256,8 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('create', 'AccessoryController@create')->name('create');
         Route::get('edit/{id}', 'AccessoryController@edit')->name('edit');
         Route::get('exportExcel', 'AccessoryController@exportExcel')->name('exportExcel');
+        Route::post('action', 'AccessoryController@action')->name('action');
+        Route::post('update', 'AccessoryController@update')->name('update');
     });
 
     /**

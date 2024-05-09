@@ -96,9 +96,15 @@ class AccessoryController extends Controller
      * @param  \App\Models\Accessory  $accessory
      * @return \Illuminate\Http\Response
      */
-    public function edit(Accessory $accessory)
+    public function edit($id)
     {
-        //
+        if (is_null($this->user) || !$this->user->can('accessory.edit')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+
+        $accessory = Accessory::find($id);
+        return view('backend.pages.accessorys.edit', compact('accessory'));
     }
 
     /**

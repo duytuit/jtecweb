@@ -9,7 +9,7 @@
     <div class="container-fluid">
         @include('backend.pages.requireds.partials.top-show')
         @include('backend.layouts.partials.messages')
-        <form id="form-search" action="{{ route('admin.exams.index',) }}" method="get">
+        <form id="form-search" action="{{ route('admin.accessorys.index',) }}" method="get">
             <div class="row form-group">
                 <div class="col-sm-8">
                     <span class="btn-group">
@@ -21,7 +21,7 @@
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
-                    <a href="{{ route('admin.exams.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Xuất Excel</a>
+                    <a href="{{ route('admin.accessorys.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
                 <div class="col-sm-4 text-right">
                         <div class="input-group">
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </form><!-- END #form-search -->
-        <form id="form-search-advance" action="{{ route('admin.exams.index') }}" method="get" class="hidden">
+        <form id="form-search-advance" action="{{ route('admin.accessorys.index') }}" method="get" class="hidden">
             <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
                 <div class="row form-group space-5">
                     <div class="col-sm-2">
@@ -68,7 +68,7 @@
                 </div>
             </div>
         </form><!-- END #form-search-advance -->
-        <form id="form_lists" action="{{ route('admin.exams.action') }}" method="post">
+        <form id="form_lists" action="{{ route('admin.accessorys.action') }}" method="post">
             @csrf
             <input type="hidden" name="method" value="" />
             <input type="hidden" name="status" value="" />
@@ -76,34 +76,38 @@
                 <table class="table table-bordered" id="exams_table">
                     <thead>
                         <tr>
-                            <th width="3%"><input type="checkbox" class="greyCheck checkAll" data-target=".checkSingle" /></th>
                             <th>TT</th>
-                            <th>Mã NV</th>
-                            <th>Tên NV</th>
-                            <th>Công đoạn</th>
-                            <th>Kỳ thi</th>
-                            <th>Ngày thi</th>
-                            <th>Tổng câu</th>
-                            <th>Trả lời đúng</th>
-                            <th>Điểm</th>
-                            <th>Thời gian làm bài</th>
-                            <th>Đợt thi</th>
-                            <th>Lần thi</th>
-                            <th>Kết quả</th>
+                            <th>Mã linh kiện</th>
+                            <th>vị trí (location_c)</th>
+                            <th>vị trí (location)</th>
+                            <th>Ảnh</th>
+                            <th>Định mức</th>
+                            <th>Đơn vị</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($lists as $index=> $item)
                             <tr>
                                 <td>{{ $index+1 }}</td>
+                                <td>{{$item->code }}</td>
+                                <td>{{$item->location_c }}</td>
+                                <td>{{$item->location }}</td>
+                                <td>{{$item->image }}</td>
+                                <td>{{$item->material_norms }}</td>
+                                <td>{{$item->unit }}</td>
                                 <td>
                                     @if ( $item->status)
-                                        <span class="badge badge-success font-weight-100">Đạt</span>
+                                        <span class="badge badge-success font-weight-100">Hoạt động</span>
                                     @else
-                                        <span class="badge badge-warning">Chưa Đạt</span>
+                                        <span class="badge badge-warning">Ngừng hoạt động</span>
                                     @endif
                                 </td>
-
+                                <td>
+                                    <a href="{{ route('admin.accessorys.edit', ['id' => $item->id]) }}" class="btn btn-primary"><span class="fa fa-edit"></span></a>
+                                    {{-- <a href="{{ route('admin.accessorys.trashed.destroy', ['id' => $item->id]) }}" class="btn btn-danger"><span class="fa fa-trash"></span></a> --}}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('code_required');
             $table->string('code');
             $table->float('quantity')->comment('số lượng sản phẩm');
-            $table->float('unit_price')->comment('đơn vị');
+            $table->string('unit_price',20)->comment('đơn vị');
             $table->longText('content')->comment('Nội dung yêu cầu');
             $table->integer('size')->comment('kích thước');
             $table->string('image',600)->comment('hình ảnh');
