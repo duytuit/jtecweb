@@ -72,10 +72,13 @@
                                         </td>
                                         <td>
                                             <select class="form-control custom-select" id="positionTitle"
-                                                name="positionTitle">
+                                                name="positionTitle"
+                                                onchange="changePosition(this,{{ $employeeDepartment->employee->id }})">
                                                 @foreach ($positionTitles as $positionTitle)
-                                                    <option value="{{ $positionTitle['id'] }}">
-                                                        {{ $positionTitle['name'] }}</option>
+                                                    <option value="{{ $positionTitle['id'] }}"
+                                                        {{ $positionTitle['id'] === $employeeDepartment->positions ? 'selected' : '' }}>
+                                                        {{ $positionTitle['name'] }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </td>
@@ -176,31 +179,33 @@
                 success: function(data) {
                     window.location.reload();
                 },
-                errors: function(data) {
-
-                }
+                errors: function(data) {}
             })
         })
 
-        $('#positionTitle').on('change', function() {
-            var selectedValue = $(this).val();
+        function changePosition(event, employeeDepartmentId) {
+            // event.preventDefault();
+            values = {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                positionTitle: $('#positionTitle').val(),
+                employeeDepartmentId: employeeDepartmentId,
+            }
             $.ajax({
                 url: "{{ route('admin.departments.changePositionTitle') }}",
                 method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
-                },
-                data: {
-                    position: selectedValue
-                },
-                success: function(response) {
+                data: values,
+                success: function(data) {
                     console.log('Đã lưu giá trị thành công!');
+                    toastr.success("Thành công", 'Success', {
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        timeOut: 2000
+                    });
                 },
-                error: function(xhr, status, error) {
+                error: function(data) {
                     console.error('Lỗi khi lưu giá trị:', error);
                 }
             });
-        });
+        };
     </script>
 @endsection
