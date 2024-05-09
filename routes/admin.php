@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\AdminsController;
+use App\Http\Controllers\Backend\Auth\ForgotPasswordController;
 use App\Http\Controllers\Backend\Auth\LoginController;
 use App\Http\Controllers\Backend\Auth\ResetPasswordController;
-use App\Http\Controllers\Backend\Auth\ForgotPasswordController;
-use App\Http\Controllers\Backend\DashboardsController;
-use App\Http\Controllers\Backend\AdminsController;
-use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\BlogsController;
-use App\Http\Controllers\Backend\ContactsController;
 use App\Http\Controllers\Backend\CacheController;
-use App\Http\Controllers\Backend\ExamController;
-use App\Http\Controllers\Backend\ProductvtController;
 use App\Http\Controllers\Backend\CheckTensionController;
+use App\Http\Controllers\Backend\ContactsController;
+use App\Http\Controllers\Backend\DashboardsController;
 use App\Http\Controllers\Backend\LanguagesController;
+use App\Http\Controllers\Backend\ProductvtController;
+use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SettingsController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +22,7 @@ use App\Http\Controllers\Backend\SettingsController;
 |
 | Admin Panel Route List
 |
-*/
+ */
 
 Route::get('/', [DashboardsController::class, 'index'])->name('index');
 
@@ -65,7 +64,6 @@ Route::group(['prefix' => ''], function () {
     Route::put('blogs/trashed/revert/{id}', [BlogsController::class, 'revertFromTrash'])->name('blogs.trashed.revert');
 });
 
-
 Route::namespace('App\Http\Controllers\Backend')->group(function () {
     /**
      * Exam Management Routes
@@ -89,14 +87,19 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('', 'DepartmentController@index')->name('index');
         Route::get('create', 'DepartmentController@create')->name('create');
         Route::get('edit/{id}', 'DepartmentController@edit')->name('edit');
+
+        Route::get('ajaxGetSelectCode', 'DepartmentController@ajaxGetSelectCode')->name('ajaxGetSelectCode');
+        Route::post('changePositionTitle', 'DepartmentController@changePositionTitle')->name('changePositionTitle');
+
         Route::get('exportExcel', 'DepartmentController@exportExcel')->name('exportExcel');
         Route::post('store', 'DepartmentController@store')->name('store');
-        Route::post('update', 'DepartmentController@update')->name('update');
+        Route::post('update/{id}', 'DepartmentController@update')->name('update');
         Route::post('action', 'DepartmentController@action')->name('action');
+        Route::post('addEmployeeIntoDepartment', 'DepartmentController@addEmployeeIntoDepartment')->name('addEmployeeIntoDepartment');
         Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
-        Route::delete('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
+        Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
+        Route::post('import', 'DepartmentController@importExcelData')->name('importExcelData');
     });
-
 
     /**
      * Acivity Management Routes
@@ -181,11 +184,12 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('create', 'EmployeeController@create')->name('create');
         Route::get('edit/{id}', 'EmployeeController@edit')->name('edit');
         Route::get('exportExcel', 'EmployeeController@exportExcel')->name('exportExcel');
+        Route::get('importExcelData', 'EmployeeController@importExcelData')->name('importExcelData');
         Route::post('store', 'EmployeeController@store')->name('store');
-        Route::post('update', 'EmployeeController@update')->name('update');
+        Route::post('update/{id}', 'EmployeeController@update')->name('update');
         Route::post('action', 'EmployeeController@action')->name('action');
         Route::put('trashed/revert/{id}', 'EmployeeController@revertFromTrash')->name('trashed.revert');
-        Route::delete('trashed/destroy/{id}', 'EmployeeController@destroyTrash')->name('trashed.destroy');
+        Route::get('trashed/destroy/{id}', 'EmployeeController@destroyTrash')->name('trashed.destroy');
     });
 
     /**
@@ -268,7 +272,6 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::delete('trashed/destroy/{id}', 'SignatureSubmissionController@destroyTrash')->name('trashed.destroy');
     });
 });
-
 
 /**
  * Contact Routes

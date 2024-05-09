@@ -22,6 +22,22 @@
                     </span>
                     <a href="{{ route('admin.departments.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
                         mới</a>
+                    <span class="btn-group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Thêm từ Excel
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu import-excel">
+                            <li>
+                                <form id="importForm" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="input-group">
+                                        <input type="file" name="import_file" class="form-control" placeholder=" ">
+                                        <button type="submit" class="btn btn-primary import-js" name="upload"><i
+                                                class="fa fa-import"></i>Nhập</button>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </span>
                     <a href="{{ route('admin.departments.exportExcel', Request::all()) }}" class="btn btn-success"><i
                             class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
@@ -78,16 +94,17 @@
                                 <td><input type="checkbox" name="ids[]" value="{{ $item->id }}"
                                         class="greyCheck checkSingle" /></td>
                                 <td>{{ $index + 1 }}</td>
-                                <td></td>
-                                {{-- <td>{{ $item->cycle_name }}</td> --}}
-                                {{-- <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at))  }}</td> --}}
-                                {{-- <td>{{ $item->total_questions }}</td>
-                            <td>{{ $item->results }}</td>
-                            <td>{{ $item->scores }}</td>
-                            <td>{{ $item->counting_time }}</td>
-                            <td>{{'Đợt '.$item->examinations }}</td>
-                            <td>{{'Lần '.$item->mission}}</td> --}}
-
+                                <td>{{ $item->code }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->status }}</td>
+                                <td>
+                                    <a class=" d-inline-block mx-1"
+                                        href="{{ route('admin.departments.edit', ['id' => $item->id]) }}"><i
+                                            class="fa fa-edit" style="color: #0ecf48;"></i> Sửa</a>
+                                    <a class=" d-inline-block"
+                                        href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}"><i
+                                            class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -121,5 +138,48 @@
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+        function deleteItem(params) {
+            swal.fire({
+                title: "Bạn có chắc chắn?",
+                text: "bản ghi này sẽ được chuyển vào thùng rác!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Vâng, Xóa nó!"
+            }).then((result) => {
+                if (result.value) {
+                    $("#deleteForm" + params).submit();
+                }
+            })
+        }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('.import-js').click(function(event) {
+            event.preventDefault();
+            let formData = new FormData($('#importForm')[0]);
+            formData.append("_token", "{{ csrf_token() }}");
+            formData.append("import_file", $('input[name=import_file]')[0].files[0]);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('admin.departments.importExcelData') }}",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: (response) => {
+                    console.log(response);
+                    if (response) {
+                        window.location.reload();
+                        // window.location.href = "{{ route('admin.departments.index') }}";
+                    }
+                },
+                error: function(response) {
+
+                }
+            });
+        });
+    </script>
 @endsection

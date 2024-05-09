@@ -353,7 +353,7 @@
                     <a href="{{ route('admin.departments.create') }}"
                         class="sidebar-link {{ Route::is('admin.departments.create') ? 'active' : null }}">
                         <i class="mdi mdi-plus-circle"></i>
-                        <span class="hide-menu"> Cấu hình </span>
+                        <span class="hide-menu"> Thêm mới </span>
                     </a>
                 </li>
             @endif
@@ -461,7 +461,7 @@
                     <a href="{{ route('admin.employees.index') }}"
                         class="sidebar-link {{ Route::is('admin.employees.index') || Route::is('admin.employees.edit') ? 'active' : null }}">
                         <i class="mdi mdi-view-list"></i>
-                        <span class="hide-menu"> Danh sách </span>
+                        <span class="hide-menu"> Danh sách nhân viên </span>
                     </a>
                 </li>
             @endif
@@ -471,7 +471,7 @@
                     <a href="{{ route('admin.employees.create') }}"
                         class="sidebar-link {{ Route::is('admin.employees.create') ? 'active' : null }}">
                         <i class="mdi mdi-plus-circle"></i>
-                        <span class="hide-menu"> Cấu hình </span>
+                        <span class="hide-menu"> Thêm nhân viên </span>
                     </a>
                 </li>
             @endif

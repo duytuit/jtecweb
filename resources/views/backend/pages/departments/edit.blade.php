@@ -9,70 +9,92 @@
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
         <div class="create-page">
-            <form action="{{ route('admin.departments.update', $department->id) }}" method="POST" enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
+            <form action="{{ route('admin.departments.update', ['id' => $department->id]) }}" method="POST"
+                enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
                 @csrf
-                @method('put')
+                <input type="hidden" name="departmentId" id="departmentId" value="{{ $department->id }}">
                 <div class="form-body">
                     <div class="card-body">
                         <div class="row ">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label" for="title">department Title <span class="required">*</span></label>
-                                    <input type="text" class="form-control" id="title" name="title" value="{{ $department->title }}" placeholder="Enter Title" required="sdfdsfd"/>
+                                    <label class="control-label" for="name">Tên bộ phận <span
+                                            class="required">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ $department->name }}" placeholder="" required="" />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label" for="slug">Short URL <span class="optional">(optional)</span></label>
-                                    <input type="text" class="form-control" id="slug" name="slug" value="{{ $department->slug }}" placeholder="Enter short url (Keep blank to auto generate)" />
+                                    <label class="control-label" for="code">Mã bộ phận <span
+                                            class="required">*</span></label>
+                                    <input type="text" class="form-control" id="code" name="code"
+                                        value="{{ $department->code }}" placeholder="" required="" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Trạng thái</label>
+                                    <input type="checkbox" id="_status" data-id="" data-url="" name="status"
+                                        value="{{ $department->status }}" checked class="d-none" />
+                                    <label for="_status" class="toggle">
+                                        <div class="slider"></div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label" for="image">department Featured Image <span class="optional">(optional)</span></label>
-                                    <input type="file" class="form-control dropify" data-height="70" data-allowed-file-extensions="png jpg jpeg webp" id="image" name="image" data-default-file="{{ $department->image != null ? asset('public/assets/images/departments/'.$department->image) : null }}"/>
-                                </div>
+                        <div class="mb-3 row">
+                            <div class="col-md-9">
+                                <select name="ids[]" multiple id="codecode" class="form-control" style="width:100%">
+                                    <option value="">Chọn mã nhân viên</option>
+                                </select>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group has-success">
-                                    <label class="control-label" for="status">Status <span class="required">*</span></label>
-                                    <select class="form-control custom-select" id="status" name="status" required>
-                                        <option value="1" {{ $department->status === 1 ? 'selected' : null }}>Active</option>
-                                        <option value="0" {{ $department->status === 0 ? 'selected' : null }}>Inactive</option>
-                                    </select>
-                                </div>
+                            <div class="col-md-3 flex-fill">
+                                <button class="btn btn-light w-100 add_btn_js">Thêm</button>
                             </div>
                         </div>
+                        <div class="row w-100 mx-auto ">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Tên nhân viên</th>
+                                        <th>Chức vụ</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
 
-                        <div class="row ">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="description">department Description <span class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control tinymce_advance" id="description" name="description">{!! $department->description !!}</textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label" for="meta_description">department Meta Description <span class="optional">(optional)</span></label>
-                                    <textarea type="text" class="form-control" id="meta_description" name="meta_description" placeholder="Meta description for SEO">{!! $department->meta_description !!}</textarea>
-                                </div>
-                                <div class="form-actions">
-                                    <div class="card-body">
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                                        <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
 
+                                @foreach ($employeeDepartments as $employeeDepartment)
+                                    <tr>
+                                        <td>{{ @$employeeDepartment->employee->code }}</td>
+                                        <td>{{ @$employeeDepartment->employee->first_name . ' ' . @$employeeDepartment->employee->last_name }}
+                                        </td>
+                                        <td>
+                                            <select class="form-control custom-select" id="positionTitle"
+                                                name="positionTitle">
+                                                @foreach ($positionTitles as $positionTitle)
+                                                    <option value="{{ $positionTitle['id'] }}">
+                                                        {{ $positionTitle['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <a class=" d-inline-block" href=""><i class="fa fa-trash"
+                                                    style="color: #cb3030;"></i> Xóa</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
                         </div>
-
+                        <div class="form-actions">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
+                                    Save</button>
+                                <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </form>
         </div>
@@ -81,8 +103,104 @@
 
 @section('scripts')
     <script>
-    $(".categories_select").select2({
-        placeholder: "Select a Category"
-    });
+        function deleteItem(params) {
+            swal.fire({
+                title: "Bạn có chắc chắn?",
+                text: "bản ghi này sẽ được chuyển vào thùng rác!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Vâng, Xóa nó!"
+            }).then((result) => {
+                if (result.value) {
+                    $("#deleteForm" + params).submit();
+                }
+            })
+        }
+        get_data_select_code({
+            object: '#codecode',
+            url: '{{ url('admin/departments/ajaxGetSelectCode') }}',
+            data_id: 'id',
+            data_code: 'code',
+            data_first_name: 'first_name',
+            data_last_name: 'last_name',
+            title_default: 'Chọn mã nhân viên',
+
+        });
+
+        function get_data_select_code(options) {
+            $(options.object).select2({
+                ajax: {
+                    url: options.url,
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        }
+                        return query;
+                    },
+                    processResults: function(json, params) {
+                        var results = [{
+                            id: '',
+                            text: options.title_default
+                        }];
+
+                        for (i in json.data) {
+                            var item = json.data[i];
+                            results.push({
+                                id: item[options.data_id],
+                                text: item[options.data_code] + ' - ' + item[options.data_first_name] +
+                                    ' ' +
+                                    item[options.data_last_name]
+                            });
+                        }
+                        return {
+                            results: results,
+                        };
+                    },
+                    minimumInputLength: 3,
+                }
+            });
+        }
+        $('.add_btn_js').click(function(e) {
+            e.preventDefault();
+            values = {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                ids: JSON.stringify($('#codecode').val()),
+                departmentId: $('#departmentId').val()
+            }
+            $.ajax({
+                url: "{{ route('admin.departments.addEmployeeIntoDepartment') }}",
+                method: 'POST',
+                data: values,
+                success: function(data) {
+                    window.location.reload();
+                },
+                errors: function(data) {
+
+                }
+            })
+        })
+
+        $('#positionTitle').on('change', function() {
+            var selectedValue = $(this).val();
+            $.ajax({
+                url: "{{ route('admin.departments.changePositionTitle') }}",
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content')
+                },
+                data: {
+                    position: selectedValue
+                },
+                success: function(response) {
+                    console.log('Đã lưu giá trị thành công!');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Lỗi khi lưu giá trị:', error);
+                }
+            });
+        });
     </script>
 @endsection

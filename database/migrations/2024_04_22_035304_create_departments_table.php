@@ -13,18 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('departments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('code');
-            $table->string('name')->comment('tên');
-            $table->integer('parent_id')->comment('bộ phận cha');
-            $table->integer('status');
-            $table->integer('created_by')->nullable();
-            $table->integer('updated_by')->nullable();
-            $table->integer('deleted_by')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('departments')) {
+            Schema::create('departments', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('code');
+                $table->string('name')->comment('tên');
+                $table->integer('parent_id')->comment('bộ phận cha');
+                $table->integer('status');
+                $table->integer('created_by')->nullable();
+                $table->integer('updated_by')->nullable();
+                $table->integer('deleted_by')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
