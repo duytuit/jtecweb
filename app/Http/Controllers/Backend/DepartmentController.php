@@ -281,9 +281,14 @@ class DepartmentController extends Controller
     }
     public function changePositionTitle(Request $request)
     {
-        $employeeDepartment = new EmployeeDepartment();
-        $employeeDepartment->position = $request->input('positionTitle');
-        $employeeDepartment->save();
+        $employeeDepartments = EmployeeDepartment::Where('');
+        foreach ($employeeDepartments as $employeeDepartment) {
+            if ($employeeDepartment->employee_id == $request->input('employeeDepartmentId')) {
+                $employeeDepartment->positions = $request->input('positionTitle');
+            }
+
+            $employeeDepartment->save();
+        }
         return response()->json(['message' => 'Đã lưu giá trị thành công!']);
     }
 }
