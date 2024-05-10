@@ -103,6 +103,20 @@ class ArrayHelper
             ]
         ];
     }
+    public static function formTypeJobs()
+    {
+        return [
+            [
+                'id' => 1,
+                'from_dept' =>  [33], // id bộ phận yêu cầu
+                'to_dept' => [
+                    22, 27 // id bộ phận tiếp nhận
+                ],
+                'confirm' => 1
+            ],
+        ];
+    }
+
     public static function marital()
     {
         return [

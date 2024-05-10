@@ -33,4 +33,12 @@ class Required extends Model
         'created_at',
         'updated_at',
     ];
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'code', 'code');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'code_required', 'code');
+    }
 }
