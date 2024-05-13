@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\Auth\LoginController;
 use App\Http\Controllers\Backend\Auth\ResetPasswordController;
 use App\Http\Controllers\Backend\BlogsController;
 use App\Http\Controllers\Backend\CacheController;
+use App\Http\Controllers\Backend\CheckCutMachineController;
 use App\Http\Controllers\Backend\CheckTensionController;
 use App\Http\Controllers\Backend\ContactsController;
 use App\Http\Controllers\Backend\DashboardsController;
@@ -320,9 +321,9 @@ Route::group(['prefix' => 'checkTension'], function () {
     Route::get('/exportExcel', [CheckTensionController::class, 'exportExcel'])->name('checkTension.exportExcel');
 });
 
-Route::get('reset-cache', [CacheController::class, 'reset_cache']);
-
-
-
 // Check cutting machine every day
-Route::get('/checkChutMachine', [CheckCutMachineController::class, 'index']);
+Route::group(['prefix' => 'checkCutMachine'], function () {
+    Route::get('/', [CheckCutMachineController::class, 'index'])->name('checkCutMachine.index');
+});
+
+Route::get('reset-cache', [CacheController::class, 'reset_cache']);

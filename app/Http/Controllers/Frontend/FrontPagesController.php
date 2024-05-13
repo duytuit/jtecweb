@@ -2,26 +2,22 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Exports\DetailReportExport;
 use App\Exports\DetailReportExport1;
-use App\Exports\ExamExport;
+use App\Exports\DetailReportExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Accessory;
 use App\Models\Admin;
-use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\Exam;
-use App\Models\InventoryAccessory;
 use Carbon\Carbon;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Hash;
 
 class FrontPagesController extends Controller
 {
@@ -131,8 +127,8 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        $this->add_employee_to_department();
-        $this->add_user_and_pass();
+        // $this->add_employee_to_department();
+        // $this->add_user_and_pass();
         // $this->remaneTable();
         // $this->addEmployee();
         // $this->updateBeginDate();
@@ -180,14 +176,13 @@ class FrontPagesController extends Controller
         $employees = Employee::all();
 
         foreach ($employees as $employee) {
-            $admin = Admin::Where('username',$employee->code)->first();
-            if(!$admin)
-            {
+            $admin = Admin::Where('username', $employee->code)->first();
+            if (!$admin) {
                 $admin = new Admin();
                 $admin->first_name = $employee->first_name;
                 $admin->last_name = $employee->last_name;
                 $admin->username = $employee->code;
-                $admin->email = @$employee->email?@$employee->email: $employee->code.'exam@exam.com';
+                $admin->email = @$employee->email ? @$employee->email : $employee->code . 'exam@exam.com';
                 $admin->password = Hash::make($employee->code);
                 $admin->status = 1;
                 $admin->created_at = Carbon::now();
@@ -210,7 +205,7 @@ class FrontPagesController extends Controller
     {
         //dd($request->exists('answer'));
         $emp = Employee::where('code', $request->manhanvien)->first();
-        $emp_dept = EmployeeDepartment::where('employee_id',$emp->id)->first();
+        $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
         // if(!$emp){
         //     return $this->success(['warning'=>'Nhân viên không có trên hệ thống!']);
         // }
@@ -220,7 +215,7 @@ class FrontPagesController extends Controller
         }
         $results = 0;
         foreach ($request->answer as $key => $value) {
-            $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
+            $array_answer = array_filter($arrayExam, fn($element) => $element['id'] == $key);
             if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
                 $results++;
             }
@@ -246,7 +241,7 @@ class FrontPagesController extends Controller
             $exam = Exam::create([
                 'name' => $emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien, //tên nhân viên
                 'code' => $request->manhanvien, // mã nhân viên
-                'sub_dept' => @$emp_dept? @$emp_dept->department_id : 0, // công đoạn
+                'sub_dept' => @$emp_dept ? @$emp_dept->department_id : 0, // công đoạn
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng
@@ -254,8 +249,8 @@ class FrontPagesController extends Controller
                 'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
                 'limit_time' => '05:00', // tổng số câu hỏi
                 'data' => json_encode($request->answer), // tổng số câu hỏi
-                'status' => $scores > 95 ?  1 : 0, // 0:chưa duyệt,1:đã duyệt
-                'mission' =>  $mission + 1, // số lần thi
+                'status' => $scores > 95 ? 1 : 0, // 0:chưa duyệt,1:đã duyệt
+                'mission' => $mission + 1, // số lần thi
                 'scores' => $scores, // điểm thi
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
@@ -275,7 +270,7 @@ class FrontPagesController extends Controller
     {
         // dd($request->all());
         $emp = Employee::where(['code' => $request->manhanvien], ['type' => $request->type])->first();
-        $emp_dept = EmployeeDepartment::where('employee_id',$emp->id)->first();
+        $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
         $groupQuestion = ArrayHelper::groupQuestion();
         $results = 0;
         $scores = 0;
@@ -284,10 +279,10 @@ class FrontPagesController extends Controller
             $arrayExam = $questionItem['question'];
             $totalQuestion += $questionItem['quantity_question'];
             foreach ($request->answer as $key => $item) {
-                $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
+                $array_answer = array_filter($arrayExam, fn($element) => $element['id'] == $key);
                 if (count($array_answer) > 0 && current($array_answer)['answer'] == $item) {
                     $results++;
-                    $scores =  $scores + $questionItem['point'];
+                    $scores = $scores + $questionItem['point'];
                 }
             }
         }
@@ -313,7 +308,7 @@ class FrontPagesController extends Controller
             $exam = Exam::create([
                 'name' => $emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien, //tên nhân viên
                 'code' => $request->manhanvien, // mã nhân viên
-                'sub_dept' => @$emp_dept? @$emp_dept->department_id : 0, // công đoạn
+                'sub_dept' => @$emp_dept ? @$emp_dept->department_id : 0, // công đoạn
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng
@@ -321,8 +316,8 @@ class FrontPagesController extends Controller
                 'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
                 'limit_time' => '05:00', // tổng số câu hỏi
                 'data' => json_encode($request->answer), // tổng số câu hỏi
-                'status' => $scores > 79 ?  1 : 0, // 0:chưa duyệt,1:đã duyệt
-                'mission' =>  $mission + 1, // số lần thi
+                'status' => $scores > 79 ? 1 : 0, // 0:chưa duyệt,1:đã duyệt
+                'mission' => $mission + 1, // số lần thi
                 'scores' => $scores, // điểm thi
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
@@ -337,95 +332,95 @@ class FrontPagesController extends Controller
     public function addEmployee()
     {
         $employee = [
-            10142 =>    "Đàm Thị Hương",
-            10352 =>    "Nguyễn Thị Kim Hoa",
-            130206 =>    "Thịnh Thị Thái",
-            130207 =>    "Ngô Thị Đậu",
-            130323 =>    "Hoàng Thị Tình",
-            130907 =>    "Nguyễn Thị Mỹ Hưởng",
-            130947 =>    "Vũ Thị Yến",
-            130976 =>    "Hoàng Thị Quyết",
-            131102 =>    "Nguyễn Thị Anh",
-            131107 =>    "Ngô Thị Hồng Nhung",
-            131108 =>    "Phan Thị Loan",
-            140204 =>    "Đinh Thị Trì",
-            140303 =>    "Nguyễn Thị Lan",
-            140322 =>    "Nguyễn Thị Lâm",
-            140326 =>    "Trần Thị Thùy",
-            140328 =>    "Lê Thị Hoa",
-            140416 =>    "Dương Thị Dung",
-            140519 =>    "Lâm Thị Thu Hằng",
-            140787 =>    "Thân Thị Mai",
-            1407100 =>    "Nguyễn Thị Minh Ngọc",
-            1410119 =>    "Trần Thị Thu Thảo",
-            141182 =>    "Phan Thị Loan",
-            141197 =>    "Bùi Thị Nhâm",
-            151106 =>    "Lưu Thị Phương",
-            160417 =>    "Đoàn Thị Hạnh",
-            160711 =>    "Hồ Thị Lê",
-            160886 =>    "Nguyễn Minh Hòa",
-            160933 =>    "Đặng Thị Hồng",
-            1609182 =>    "Ngô Thị Huyền Trang",
-            161125 =>    "Phùng Thị Thương",
-            161176 =>    "Đinh Thị Nhã",
-            1702134 =>    "Vũ Thị Như Quỳnh",
-            170320 =>    "Nguyễn Thị Lý",
-            170485 =>    "Vũ Thị Hương",
-            170494 =>    "Lê Thị Kiền",
-            170495 =>    "Ngô Thị Hiểu",
-            170560 =>    "Bùi Trọng Doanh",
-            170610 =>    "Đàm Văn Ninh",
-            170648 =>    "Phùng Thị Phượng",
-            170665 =>    "Lê Thị Yến",
-            170751 =>    "Cao Thị Ánh Nguyệt",
-            1707127 =>    "Trịnh Thị Thuần",
-            170866 =>    "Đặng Khánh Linh",
-            171002 =>    "Đinh Thị Hương",
-            171050 =>    "Nguyễn Thị Tính",
-            180371 =>    "Nguyễn Thị Hằng Nga",
-            180393 =>    "Vi Thanh Sơn",
-            1803145 =>    "Bùi Văn Anh",
-            180817 =>    "Đinh Hoàng Giang",
-            180823 =>    "Nguyễn Ngọc Ánh",
-            180906 =>    "Võ Thị Hồng Nhung",
-            181044 =>    "Nguyễn Văn Việt",
-            181091 =>    "Nguyễn Thị Hợp",
-            190457 =>    "Lê Thị Thúy Hồng",
-            190529 =>    "Hoàng Thế Đạt",
-            210301 =>    "Trần Thị Như Quỳnh",
-            2103129 =>    "Nguyễn Văn Thanh",
-            2103229 =>    "Vũ Thị Hằng",
-            211059 =>    "Nguyễn Văn Tuấn",
-            211068 =>    "Nguyễn Văn Tuân",
-            220440 =>    "Lê Văn Chương",
-            220454 =>    "Đoàn Đức Võ",
-            2209109 =>    "Nguyễn Văn Tuyền",
-            2211158 =>    "Nguyễn Thị Thuỳ",
-            230209 =>    "Nguyễn Văn Nam",
-            2302221 =>    "Lục Văn Châu",
-            230317 =>    "Võ Văn Thật",
-            230322 =>    "Đoàn Ngọc Oanh",
-            230394 =>    "Phạm Văn Nam",
-            2303152 =>    "Lê Đình Văn",
-            230573 =>    "Lưu Thị Hương Ly",
-            230867 =>    "Trần Thị Thảo",
-            231164 =>    "Hoàng Thị Yên",
-            231166 =>    "Đỗ Thị Nhung",
-            231218 =>    "Nguyễn Văn Quân",
-            240317 =>    "Nguyễn Thị Thúy",
+            10142 => "Đàm Thị Hương",
+            10352 => "Nguyễn Thị Kim Hoa",
+            130206 => "Thịnh Thị Thái",
+            130207 => "Ngô Thị Đậu",
+            130323 => "Hoàng Thị Tình",
+            130907 => "Nguyễn Thị Mỹ Hưởng",
+            130947 => "Vũ Thị Yến",
+            130976 => "Hoàng Thị Quyết",
+            131102 => "Nguyễn Thị Anh",
+            131107 => "Ngô Thị Hồng Nhung",
+            131108 => "Phan Thị Loan",
+            140204 => "Đinh Thị Trì",
+            140303 => "Nguyễn Thị Lan",
+            140322 => "Nguyễn Thị Lâm",
+            140326 => "Trần Thị Thùy",
+            140328 => "Lê Thị Hoa",
+            140416 => "Dương Thị Dung",
+            140519 => "Lâm Thị Thu Hằng",
+            140787 => "Thân Thị Mai",
+            1407100 => "Nguyễn Thị Minh Ngọc",
+            1410119 => "Trần Thị Thu Thảo",
+            141182 => "Phan Thị Loan",
+            141197 => "Bùi Thị Nhâm",
+            151106 => "Lưu Thị Phương",
+            160417 => "Đoàn Thị Hạnh",
+            160711 => "Hồ Thị Lê",
+            160886 => "Nguyễn Minh Hòa",
+            160933 => "Đặng Thị Hồng",
+            1609182 => "Ngô Thị Huyền Trang",
+            161125 => "Phùng Thị Thương",
+            161176 => "Đinh Thị Nhã",
+            1702134 => "Vũ Thị Như Quỳnh",
+            170320 => "Nguyễn Thị Lý",
+            170485 => "Vũ Thị Hương",
+            170494 => "Lê Thị Kiền",
+            170495 => "Ngô Thị Hiểu",
+            170560 => "Bùi Trọng Doanh",
+            170610 => "Đàm Văn Ninh",
+            170648 => "Phùng Thị Phượng",
+            170665 => "Lê Thị Yến",
+            170751 => "Cao Thị Ánh Nguyệt",
+            1707127 => "Trịnh Thị Thuần",
+            170866 => "Đặng Khánh Linh",
+            171002 => "Đinh Thị Hương",
+            171050 => "Nguyễn Thị Tính",
+            180371 => "Nguyễn Thị Hằng Nga",
+            180393 => "Vi Thanh Sơn",
+            1803145 => "Bùi Văn Anh",
+            180817 => "Đinh Hoàng Giang",
+            180823 => "Nguyễn Ngọc Ánh",
+            180906 => "Võ Thị Hồng Nhung",
+            181044 => "Nguyễn Văn Việt",
+            181091 => "Nguyễn Thị Hợp",
+            190457 => "Lê Thị Thúy Hồng",
+            190529 => "Hoàng Thế Đạt",
+            210301 => "Trần Thị Như Quỳnh",
+            2103129 => "Nguyễn Văn Thanh",
+            2103229 => "Vũ Thị Hằng",
+            211059 => "Nguyễn Văn Tuấn",
+            211068 => "Nguyễn Văn Tuân",
+            220440 => "Lê Văn Chương",
+            220454 => "Đoàn Đức Võ",
+            2209109 => "Nguyễn Văn Tuyền",
+            2211158 => "Nguyễn Thị Thuỳ",
+            230209 => "Nguyễn Văn Nam",
+            2302221 => "Lục Văn Châu",
+            230317 => "Võ Văn Thật",
+            230322 => "Đoàn Ngọc Oanh",
+            230394 => "Phạm Văn Nam",
+            2303152 => "Lê Đình Văn",
+            230573 => "Lưu Thị Hương Ly",
+            230867 => "Trần Thị Thảo",
+            231164 => "Hoàng Thị Yên",
+            231166 => "Đỗ Thị Nhung",
+            231218 => "Nguyễn Văn Quân",
+            240317 => "Nguyễn Thị Thúy",
             // 24031656 =>    "Nguyễn Thị Thúy 123",
             // 240341656 =>    "Nguyễn Thị Thúy 1235",
-            240405 =>    "Nguyễn Thị Ngọc Lan",
-            240406 =>    "Nguyễn Thị Thu",
-            240407 =>    "Lê Thị Thanh Thủy",
-            240408 =>    "Bùi Thị Lụa",
-            240410 =>    "Lê Thị Thu Huyền",
-            240411 =>    "Nguyễn Thị Trang",
-            240412 =>    "Trương Thị Ánh",
-            240415 =>    "Lê Ngọc Mai",
-            240416 =>    "Nguyễn Phạm Tường Vy",
-            240417 =>    "Đinh Thị Hằng",
-            240424 =>    "Nguyễn Thị Nhiên",
+            240405 => "Nguyễn Thị Ngọc Lan",
+            240406 => "Nguyễn Thị Thu",
+            240407 => "Lê Thị Thanh Thủy",
+            240408 => "Bùi Thị Lụa",
+            240410 => "Lê Thị Thu Huyền",
+            240411 => "Nguyễn Thị Trang",
+            240412 => "Trương Thị Ánh",
+            240415 => "Lê Ngọc Mai",
+            240416 => "Nguyễn Phạm Tường Vy",
+            240417 => "Đinh Thị Hằng",
+            240424 => "Nguyễn Thị Nhiên",
         ];
 
         foreach ($employee as $key => $value) {
@@ -443,13 +438,11 @@ class FrontPagesController extends Controller
                     'code' => $key,
                     'first_name' => $firstname,
                     'last_name' => $lastname,
-                    'created_by' => 1
+                    'created_by' => 1,
                 ]);
             }
         }
     }
-
-
 
     public function updateScoresAndStatus()
     {
@@ -458,7 +451,7 @@ class FrontPagesController extends Controller
             $scores = round(($value->results / $value->total_questions) * 100);
             $value->update([
                 'scores' => $scores + 1,
-                'status' => $scores > 80 ?  1 : 0
+                'status' => $scores > 80 ? 1 : 0,
             ]);
         }
     }
@@ -468,14 +461,14 @@ class FrontPagesController extends Controller
         $fdgfdgf = Employee::all();
         foreach ($fdgfdgf as $key => $value) {
 
-            $fdgf =  Exam::select('id')->where('code', $value->code)
+            $fdgf = Exam::select('id')->where('code', $value->code)
                 ->where('cycle_name', 42024)
                 ->where('examinations', 1)
                 ->where('status', 1)
                 ->groupBy('code')->count();
             echo $fdgf . '============</br>';
             if ($fdgf > 1) {
-                $fdgf345 =  Exam::select('code', DB::raw('MAX(id) as _id'))->where('code', $value->code)
+                $fdgf345 = Exam::select('code', DB::raw('MAX(id) as _id'))->where('code', $value->code)
                     ->where('cycle_name', 42024)
                     ->where('examinations', 1)
                     ->where('status', 1)
@@ -485,7 +478,7 @@ class FrontPagesController extends Controller
                 $fdgdfg->update([
                     'examinations' => 2,
                     'create_date' => '2024-04-19',
-                    'mission' =>  1 // số lần thi
+                    'mission' => 1, // số lần thi
                 ]);
                 echo $fdgdfg->id . ' code ' . $fdgdfg->code . '</br>';
             }
@@ -525,7 +518,7 @@ class FrontPagesController extends Controller
                 $mission++;
             }
             $value->update([
-                'mission' => $mission
+                'mission' => $mission,
             ]);
         }
     }
@@ -533,88 +526,88 @@ class FrontPagesController extends Controller
     {
         $fdgfdgf = Exam::all();
         $employee = [
-            10142 =>    "Đàm Thị Hương",
-            10352 =>    "Nguyễn Thị Kim Hoa",
-            130206 =>    "Thịnh Thị Thái",
-            130207 =>    "Ngô Thị Đậu",
-            130323 =>    "Hoàng Thị Tình",
-            130907 =>    "Nguyễn Thị Mỹ Hưởng",
-            130947 =>    "Vũ Thị Yến",
-            130976 =>    "Hoàng Thị Quyết",
-            131102 =>    "Nguyễn Thị Anh",
-            131107 =>    "Ngô Thị Hồng Nhung",
-            131108 =>    "Phan Thị Loan",
-            140204 =>    "Đinh Thị Trì",
-            140303 =>    "Nguyễn Thị Lan",
-            140322 =>    "Nguyễn Thị Lâm",
-            140326 =>    "Trần Thị Thùy",
-            140328 =>    "Lê Thị Hoa",
-            140416 =>    "Dương Thị Dung",
-            140519 =>    "Lâm Thị Thu Hằng",
-            140787 =>    "Thân Thị Mai",
-            1407100 =>    "Nguyễn Thị Minh Ngọc",
-            1410119 =>    "Trần Thị Thu Thảo",
-            141182 =>    "Phan Thị Loan",
-            141197 =>    "Bùi Thị Nhâm",
-            151106 =>    "Lưu Thị Phương",
-            160417 =>    "Đoàn Thị Hạnh",
-            160711 =>    "Hồ Thị Lê",
-            160886 =>    "Nguyễn Minh Hòa",
-            160933 =>    "Đặng Thị Hồng",
-            1609182 =>    "Ngô Thị Huyền Trang",
-            161125 =>    "Phùng Thị Thương",
-            161176 =>    "Đinh Thị Nhã",
-            1702134 =>    "Vũ Thị Như Quỳnh",
-            170320 =>    "Nguyễn Thị Lý",
-            170485 =>    "Vũ Thị Hương",
-            170494 =>    "Lê Thị Kiền",
-            170495 =>    "Ngô Thị Hiểu",
-            170560 =>    "Bùi Trọng Doanh",
-            170610 =>    "Đàm Văn Ninh",
-            170648 =>    "Phùng Thị Phượng",
-            170665 =>    "Lê Thị Yến",
-            170751 =>    "Cao Thị Ánh Nguyệt",
-            1707127 =>    "Trịnh Thị Thuần",
-            170866 =>    "Đặng Khánh Linh",
-            171002 =>    "Đinh Thị Hương",
-            171050 =>    "Nguyễn Thị Tính",
-            180371 =>    "Nguyễn Thị Hằng Nga",
-            180393 =>    "Vi Thanh Sơn",
-            1803145 =>    "Bùi Văn Anh",
-            180817 =>    "Đinh Hoàng Giang",
-            180823 =>    "Nguyễn Ngọc Ánh",
-            180906 =>    "Võ Thị Hồng Nhung",
-            181044 =>    "Nguyễn Văn Việt",
-            181091 =>    "Nguyễn Thị Hợp",
-            190457 =>    "Lê Thị Thúy Hồng",
-            190529 =>    "Hoàng Thế Đạt",
-            210301 =>    "Trần Thị Như Quỳnh",
-            2103129 =>    "Nguyễn Văn Thanh",
-            2103229 =>    "Vũ Thị Hằng",
-            211059 =>    "Nguyễn Văn Tuấn",
-            211068 =>    "Nguyễn Văn Tuân",
-            220440 =>    "Lê Văn Chương",
-            220454 =>    "Đoàn Đức Võ",
-            2209109 =>    "Nguyễn Văn Tuyền",
-            2211158 =>    "Nguyễn Thị Thuỳ",
-            230209 =>    "Nguyễn Văn Nam",
-            2302221 =>    "Lục Văn Châu",
-            230317 =>    "Võ Văn Thật",
-            230322 =>    "Đoàn Ngọc Oanh",
-            230394 =>    "Phạm Văn Nam",
-            2303152 =>    "Lê Đình Văn",
-            230573 =>    "Lưu Thị Hương Ly",
-            230867 =>    "Trần Thị Thảo",
-            231164 =>    "Hoàng Thị Yên",
-            231166 =>    "Đỗ Thị Nhung",
-            231218 =>    "Nguyễn Văn Quân",
-            240317 =>    "Nguyễn Thị Thúy"
+            10142 => "Đàm Thị Hương",
+            10352 => "Nguyễn Thị Kim Hoa",
+            130206 => "Thịnh Thị Thái",
+            130207 => "Ngô Thị Đậu",
+            130323 => "Hoàng Thị Tình",
+            130907 => "Nguyễn Thị Mỹ Hưởng",
+            130947 => "Vũ Thị Yến",
+            130976 => "Hoàng Thị Quyết",
+            131102 => "Nguyễn Thị Anh",
+            131107 => "Ngô Thị Hồng Nhung",
+            131108 => "Phan Thị Loan",
+            140204 => "Đinh Thị Trì",
+            140303 => "Nguyễn Thị Lan",
+            140322 => "Nguyễn Thị Lâm",
+            140326 => "Trần Thị Thùy",
+            140328 => "Lê Thị Hoa",
+            140416 => "Dương Thị Dung",
+            140519 => "Lâm Thị Thu Hằng",
+            140787 => "Thân Thị Mai",
+            1407100 => "Nguyễn Thị Minh Ngọc",
+            1410119 => "Trần Thị Thu Thảo",
+            141182 => "Phan Thị Loan",
+            141197 => "Bùi Thị Nhâm",
+            151106 => "Lưu Thị Phương",
+            160417 => "Đoàn Thị Hạnh",
+            160711 => "Hồ Thị Lê",
+            160886 => "Nguyễn Minh Hòa",
+            160933 => "Đặng Thị Hồng",
+            1609182 => "Ngô Thị Huyền Trang",
+            161125 => "Phùng Thị Thương",
+            161176 => "Đinh Thị Nhã",
+            1702134 => "Vũ Thị Như Quỳnh",
+            170320 => "Nguyễn Thị Lý",
+            170485 => "Vũ Thị Hương",
+            170494 => "Lê Thị Kiền",
+            170495 => "Ngô Thị Hiểu",
+            170560 => "Bùi Trọng Doanh",
+            170610 => "Đàm Văn Ninh",
+            170648 => "Phùng Thị Phượng",
+            170665 => "Lê Thị Yến",
+            170751 => "Cao Thị Ánh Nguyệt",
+            1707127 => "Trịnh Thị Thuần",
+            170866 => "Đặng Khánh Linh",
+            171002 => "Đinh Thị Hương",
+            171050 => "Nguyễn Thị Tính",
+            180371 => "Nguyễn Thị Hằng Nga",
+            180393 => "Vi Thanh Sơn",
+            1803145 => "Bùi Văn Anh",
+            180817 => "Đinh Hoàng Giang",
+            180823 => "Nguyễn Ngọc Ánh",
+            180906 => "Võ Thị Hồng Nhung",
+            181044 => "Nguyễn Văn Việt",
+            181091 => "Nguyễn Thị Hợp",
+            190457 => "Lê Thị Thúy Hồng",
+            190529 => "Hoàng Thế Đạt",
+            210301 => "Trần Thị Như Quỳnh",
+            2103129 => "Nguyễn Văn Thanh",
+            2103229 => "Vũ Thị Hằng",
+            211059 => "Nguyễn Văn Tuấn",
+            211068 => "Nguyễn Văn Tuân",
+            220440 => "Lê Văn Chương",
+            220454 => "Đoàn Đức Võ",
+            2209109 => "Nguyễn Văn Tuyền",
+            2211158 => "Nguyễn Thị Thuỳ",
+            230209 => "Nguyễn Văn Nam",
+            2302221 => "Lục Văn Châu",
+            230317 => "Võ Văn Thật",
+            230322 => "Đoàn Ngọc Oanh",
+            230394 => "Phạm Văn Nam",
+            2303152 => "Lê Đình Văn",
+            230573 => "Lưu Thị Hương Ly",
+            230867 => "Trần Thị Thảo",
+            231164 => "Hoàng Thị Yên",
+            231166 => "Đỗ Thị Nhung",
+            231218 => "Nguyễn Văn Quân",
+            240317 => "Nguyễn Thị Thúy",
         ];
         foreach ($fdgfdgf as $key => $value) {
             foreach ($employee as $key1 => $value1) {
                 if ($value1 == $value->name) {
                     $value->update([
-                        'code' => $key1
+                        'code' => $key1,
                     ]);
                 }
             }
@@ -624,25 +617,25 @@ class FrontPagesController extends Controller
     {
         $fdgfdgf = Employee::all();
         $employee = [
-            240317 =>    "11/3/2024",
-            240405 =>    "16/4/2024",
-            240406 =>    "16/4/2024",
-            240407 =>    "16/4/2024",
-            240408 =>    "16/4/2024",
-            240410 =>    "22/4/2024",
-            240411 =>    "22/4/2024",
-            240412 =>    "22/4/2024",
-            240415 =>    "22/4/2024",
-            240416 =>    "22/4/2024",
-            240417 =>    "22/4/2024",
-            240424 =>    "22/4/2024",
+            240317 => "11/3/2024",
+            240405 => "16/4/2024",
+            240406 => "16/4/2024",
+            240407 => "16/4/2024",
+            240408 => "16/4/2024",
+            240410 => "22/4/2024",
+            240411 => "22/4/2024",
+            240412 => "22/4/2024",
+            240415 => "22/4/2024",
+            240416 => "22/4/2024",
+            240417 => "22/4/2024",
+            240424 => "22/4/2024",
         ];
         foreach ($fdgfdgf as $key => $value) {
             foreach ($employee as $key1 => $value1) {
                 if ($key1 == $value->code) {
                     $beginDate = Carbon::createFromFormat('d/m/Y', $value1);
                     $value->update([
-                        'begin_date_company' => $beginDate->format('Y-m-d')
+                        'begin_date_company' => $beginDate->format('Y-m-d'),
                     ]);
                 }
             }
