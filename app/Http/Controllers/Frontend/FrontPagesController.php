@@ -9,6 +9,7 @@ use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Accessory;
 use App\Models\Employee;
+use App\Models\EmployeeDepartment;
 use App\Models\Exam;
 use App\Models\InventoryAccessory;
 use Carbon\Carbon;
@@ -166,6 +167,7 @@ class FrontPagesController extends Controller
     {
         //dd($request->exists('answer'));
         $emp = Employee::where('code', $request->manhanvien)->first();
+        $emp_dept = EmployeeDepartment::where('employee_id',$emp->id)->first();
         // if(!$emp){
         //     return $this->success(['warning'=>'Nhân viên không có trên hệ thống!']);
         // }
@@ -201,7 +203,7 @@ class FrontPagesController extends Controller
             $exam = Exam::create([
                 'name' => $emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien, //tên nhân viên
                 'code' => $request->manhanvien, // mã nhân viên
-                'sub_dept' => $request->congdoan, // công đoạn
+                'sub_dept' => @$emp_dept? @$emp_dept->department_id : 0, // công đoạn
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng
@@ -230,6 +232,7 @@ class FrontPagesController extends Controller
     {
         // dd($request->all());
         $emp = Employee::where(['code' => $request->manhanvien], ['type' => $request->type])->first();
+        $emp_dept = EmployeeDepartment::where('employee_id',$emp->id)->first();
         $groupQuestion = ArrayHelper::groupQuestion();
         $results = 0;
         $scores = 0;
@@ -267,7 +270,7 @@ class FrontPagesController extends Controller
             $exam = Exam::create([
                 'name' => $emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien, //tên nhân viên
                 'code' => $request->manhanvien, // mã nhân viên
-                'sub_dept' => $request->congdoan, // công đoạn
+                'sub_dept' => @$emp_dept? @$emp_dept->department_id : 0, // công đoạn
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng

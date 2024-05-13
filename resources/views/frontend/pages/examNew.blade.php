@@ -28,14 +28,14 @@
                     <i>Thời gian làm bài <strong>05:00</strong></i><br>
                 </div>
                 <div>
-                    <div>
+                    {{-- <div>
                         Công đoạn:
                     </div>
                     <div>
                         <select class="form-control" name="congdoan">
                             <option value="1" selected>Cắm</option>
                         </select>
-                    </div>
+                    </div> --}}
                     <div>
                         Mã nhân viên:
                     </div>
