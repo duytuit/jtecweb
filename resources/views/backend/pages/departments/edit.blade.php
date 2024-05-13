@@ -24,7 +24,7 @@
                                         value="{{ $department->name }}" placeholder="" required="" />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="code">Mã bộ phận <span
                                             class="required">*</span></label>
@@ -32,7 +32,7 @@
                                         value="{{ $department->code }}" placeholder="" required="" />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="control-label">Trạng thái</label>
                                     <input type="checkbox" id="_status" data-id="" data-url="" name="status"
@@ -40,6 +40,15 @@
                                     <label for="_status" class="toggle">
                                         <div class="slider"></div>
                                     </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-actions ">
+                                    <div class="card-body d-flex justify-content-between">
+                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
+                                            Save</button>
+                                        <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +59,7 @@
                                 </select>
                             </div>
                             <div class="col-md-3 flex-fill">
-                                <button class="btn btn-light w-100 add_btn_js">Thêm</button>
+                                <button class="btn btn-primary w-100 add_btn_js">Thêm</button>
                             </div>
                         </div>
                         <div class="row w-100 mx-auto ">
@@ -83,20 +92,16 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <a class=" d-inline-block" href=""><i class="fa fa-trash"
-                                                    style="color: #cb3030;"></i> Xóa</a>
+                                            <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white delete_js"
+                                                href=""
+                                                onclick="deletefromED(this,{{ $employeeDepartment->id }})"><i
+                                                    class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </table>
                         </div>
-                        <div class="form-actions">
-                            <div class="card-body">
-                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
-                                    Save</button>
-                                <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </form>
@@ -184,6 +189,30 @@
             })
         })
 
+        function deletefromED(event, employeeDepartmentId) {
+            // e.preventDefault();
+            values = {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                id: employeeDepartmentId,
+            }
+            $.ajax({
+                url: "{{ route('admin.departments.destroyEmployeeDepartments') }}",
+                method: 'POST',
+                data: values,
+                success: function(data) {
+                    toastr.success("Thành công", 'Success', {
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        timeOut: 2000
+                    });
+                    window.location.reload();
+                },
+                errors: function(data) {
+
+                }
+            });
+        };
+
         function changePosition(event, employeeDepartmentId) {
             // event.preventDefault();
             values = {
@@ -196,7 +225,6 @@
                 method: 'POST',
                 data: values,
                 success: function(data) {
-                    console.log('Đã lưu giá trị thành công!');
                     toastr.success("Thành công", 'Success', {
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut",

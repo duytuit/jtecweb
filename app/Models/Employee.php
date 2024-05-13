@@ -75,4 +75,12 @@ class Employee extends Model
 
         return $model->orderByRaw($options['order_by'])->paginate($options['per_page']);
     }
+    public function required()
+    {
+        return $this->belongsTo(Required::class, 'code_required', 'code');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'code', 'code');
+    }
 }

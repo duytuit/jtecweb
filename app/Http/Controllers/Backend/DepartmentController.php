@@ -286,9 +286,9 @@ class DepartmentController extends Controller
     {
         $employeeDepartmentId = $request->input('employeeDepartmentId');
         $positions = $request->input('positionTitle');
-        $employeeDepartments = EmployeeDepartment::where('id','<>',$employeeDepartmentId)->get();
-        EmployeeDepartment::where('id',$employeeDepartmentId)->update([
-            'positions'=>$positions
+        $employeeDepartments = EmployeeDepartment::where('id', '<>', $employeeDepartmentId)->get();
+        EmployeeDepartment::where('id', $employeeDepartmentId)->update([
+            'positions' => $positions
         ]);
         foreach ($employeeDepartments as $employeeDepartment) {
             if ($employeeDepartment->positions == $positions) {
@@ -297,5 +297,26 @@ class DepartmentController extends Controller
             }
         }
         return response()->json(['message' => 'Đã lưu giá trị thành công!']);
+    }
+
+    public function destroyEmployeeDepartments(Request $request)
+    {
+        $id = $request->input('id');
+        if (is_null($this->user) || !$this->user->can('department.delete')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+
+        $employeeDepartments = EmployeeDepartment::find($id);
+        if (is_null($employeeDepartments)) {
+            session()->flash('error', "Nội dung đã được xóa hoặc không tồn tại !");
+            return redirect()->route('admin.employeeDepartments.index');
+        }
+        $employeeDepartments->deleted_at = Carbon::now();
+        $employeeDepartments->deleted_by = Auth::id();
+        $employeeDepartments->save();
+
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
+        return redirect()->route('admin.departments.edit');
     }
 }

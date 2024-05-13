@@ -100,6 +100,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('addEmployeeIntoDepartment', 'DepartmentController@addEmployeeIntoDepartment')->name('addEmployeeIntoDepartment');
         Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
         Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
+
+        Route::post('destroyEmployeeDepartments', 'DepartmentController@destroyEmployeeDepartments')->name('destroyEmployeeDepartments');
+
         Route::post('import', 'DepartmentController@importExcelData')->name('importExcelData');
     });
 
@@ -235,6 +238,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('store', 'RequiredController@store')->name('store');
         Route::post('update', 'RequiredController@update')->name('update');
         Route::post('action', 'RequiredController@action')->name('action');
+
+        Route::post('showDataAccessorys', 'RequiredController@showDataAccessorys')->name('showDataAccessorys');
+
         Route::put('trashed/revert/{id}', 'RequiredController@revertFromTrash')->name('trashed.revert');
         Route::delete('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');
     });
@@ -247,10 +253,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('create', 'RequiredController@create')->name('create');
         Route::get('edit/{id}', 'RequiredController@edit')->name('edit');
         Route::get('exportExcel', 'RequiredController@exportExcel')->name('exportExcel');
-
     });
 
-     /**
+    /**
      * Accessory Management Routes
      */
     Route::prefix('accessorys')->name('accessorys.')->group(function () {
@@ -316,3 +321,8 @@ Route::group(['prefix' => 'checkTension'], function () {
 });
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);
+
+
+
+// Check cutting machine every day
+Route::get('/checkChutMachine', [CheckCutMachineController::class, 'index']);
