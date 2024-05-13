@@ -8,6 +8,8 @@ use App\Exports\ExamExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Accessory;
+use App\Models\Admin;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\Exam;
@@ -128,6 +130,7 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
+        $this->add_employee_to_department();
         // $this->remaneTable();
         // $this->addEmployee();
         // $this->updateBeginDate();
@@ -156,6 +159,35 @@ class FrontPagesController extends Controller
         // array_push($firstThreeElements, "R");
         // shuffle($firstThreeElements);
         // dd(count($arrayFiltered));
+    }
+    public function add_employee_to_department()
+    {
+        $employees = Employee::all();
+        foreach ($employees as $employee) {
+            $department = EmployeeDepartment::create([
+                'employee_id' => $employee->id,
+                'department_id' => 1,
+                'positions' => 0,
+                'created_by' => 1,
+            ]);
+            // return $this->success(compact('department'));
+        }
+    }
+    public function add_user_and_pass()
+    {
+        $employees = Employee::all();
+       
+        foreach ($employees as $employee) {
+            $admin = Admin::Where('username',)
+            if($employee->code == )
+            $ = EmployeeDepartment::create([
+                'employee_id' => $employee->id,
+                'department_id' => 1,
+                'positions' => 0,
+                'created_by' => 1,
+            ]);
+            // return $this->success(compact('department'));
+        }
     }
     public function remaneTable()
     {
