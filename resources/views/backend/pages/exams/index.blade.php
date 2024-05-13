@@ -1,9 +1,10 @@
 @extends('backend.layouts.master')
-
 @section('title')
     @include('backend.pages.exams.partials.title')
 @endsection
-
+@php
+use App\Models\Department;
+@endphp
 @section('admin-content')
     @include('backend.pages.exams.partials.header-breadcrumbs')
     <div class="container-fluid">
@@ -131,7 +132,7 @@
                                 <td>
                                     @php
                                         if($item->sub_dept){
-                                           $dept =/App/Models/Department::find($item->sub_dept);
+                                           $dept = Department::find($item->sub_dept);
                                         }
                                     @endphp
                                     {{  @$dept ? $dept->name : '----'}}
