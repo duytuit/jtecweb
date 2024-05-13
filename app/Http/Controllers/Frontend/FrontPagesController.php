@@ -187,7 +187,7 @@ class FrontPagesController extends Controller
                 $admin->first_name = $employee->first_name;
                 $admin->last_name = $employee->last_name;
                 $admin->username = $employee->code;
-                $admin->email = @$employee->email?@$employee->email: 'exam@exam.com';
+                $admin->email = @$employee->email?@$employee->email: $employee->code.'exam@exam.com';
                 $admin->password = Hash::make($employee->code);
                 $admin->status = 1;
                 $admin->created_at = Carbon::now();
