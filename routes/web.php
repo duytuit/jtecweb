@@ -45,23 +45,3 @@ Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
 Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
 Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');
 Route::post('/exam/storeNew', [FrontPagesController::class, 'storeNew'])->name('exam.storeNew');
-
-
-
-// Route::get('sanluong', function () {
-//     return view('workforce-prd.index');
-// });
-
-// Route::get('productvt', [App\Http\Controllers\Backend\ProductvtController::class, 'index']);
-// Route::get('productvt/edit',[App\Http\Controllers\Backend\ProductvtController::class, 'ProductvtEdit']);
-// Route::post('productvt',[App\Http\Controllers\Backend\ProductvtController::class, 'ProductvtData']);
-
-
-Route::post('upload', function (Request $request) {
-    if (!$request->hasFile('image')) {
-        return "Mời chọn file cần upload";
-    }
-    $image = $request->file('image');
-    $storedPath = $image->move('images', $image->getClientOriginalName());
-    return "Lưu trữ thành công";
-})->name('upload.handle');

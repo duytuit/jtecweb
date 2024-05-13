@@ -321,3 +321,8 @@ Route::group(['prefix' => 'checkTension'], function () {
 });
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);
+
+
+
+// Check cutting machine every day
+Route::get('/checkChutMachine', [CheckCutMachineController::class, 'index']);
