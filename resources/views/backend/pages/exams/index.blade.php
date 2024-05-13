@@ -131,7 +131,7 @@
                                 <td>
                                     @php
                                         if($item->sub_dept){
-                                           $dept =App/Models/Department::find($item->sub_dept);
+                                           $dept =/App/Models/Department::find($item->sub_dept);
                                         }
                                     @endphp
                                     {{  @$dept ? $dept->name : '----'}}
