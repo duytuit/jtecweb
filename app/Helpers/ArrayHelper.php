@@ -117,85 +117,84 @@ class ArrayHelper
             ],
             [
                 'id' => 2,
-                'from_dept' =>  [33], // id bộ phận yêu cầu
-                'to_dept' => [
-                    22, 27 // id bộ phận tiếp nhận
-                ],
-                'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
-                'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
+                'from_dept' =>  [33], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
+                'to_dept' => [], // id bộ phận tiếp nhận
+                'confirm_from_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
                 'data_table' => [
                     'team' => 'CẮT',
                     'name' => 'máy cắt thường',
+                    'name_machine' => '',
                     'check_list' => [
                         [
-                            'id' => 1,
+                            'id' => 0,
                             'position' => 'Toàn bộ t.bị: máy, bàn…',
                             'method' => 'K có bụi bẩn, bật máy k có tiếng kêu lạ',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\1.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine/1.png',
+                            'answer' => '',
+                            'answer_list' => [0, 1], //1: bình thường , 0: bất thường
+                        ],
+                        [
+                            'id' => 1,
+                            'position' => 'Màn hình máy cắt',
+                            'method' => 'Hiển thị rõ ràng',
+                            'handle' => 'Liên lạc cấp trên',
+                            'image' => 'public/assets/images/pages/check_cut_machine/2.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 2,
-                            'position' => 'Màn hình máy cắt',
-                            'method' => 'Hiển thị rõ ràng',
+                            'position' => 'Nút bấm điều khiển',
+                            'method' => 'K bị kẹt, rách',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\2.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine/3.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 3,
-                            'position' => 'Nút bấm điều khiển',
-                            'method' => 'K bị kẹt, rách',
+                            'position' => 'Con lăn v.chuyển',
+                            'method' => 'K bị mòn, sứt, biến dạng',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\3.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine/4.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 4,
-                            'position' => 'Con lăn v.chuyển',
-                            'method' => 'K bị mòn, sứt, biến dạng',
+                            'position' => 'Ống dẫn dây',
+                            'method' => 'K bị biến dạng',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\4.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine/5.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 5,
-                            'position' => 'Ống dẫn dây',
-                            'method' => 'K bị biến dạng',
+                            'position' => 'Áp lực khí',
+                            'method' => '0.6±0.05 Mpa',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\5.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine/6.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 6,
-                            'position' => 'Áp lực khí',
-                            'method' => '0.6±0.05 Mpa',
+                            'position' => 'Máy tính',
+                            'method' => 'Màn hình h.thị rõ ràng, bàn phím và chuột k bị kẹt nút, mất nút',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\6.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine/7.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 7,
-                            'position' => 'Máy tính',
-                            'method' => 'Màn hình h.thị rõ ràng, bàn phím và chuột k bị kẹt nút, mất nút',
-                            'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\7.png',
-                            'answer' => '',
-                            'answer_list' => [0, 1], //1: bình thường , 0: bất thường
-                        ],
-                        [
-                            'id' => 8,
                             'position' => 'Súng scan',
                             'method' => 'Hoạt động bình thường',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine\8.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine/8.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
@@ -215,65 +214,65 @@ class ArrayHelper
                     'name' => 'máy tự động',
                     'check_list' => [
                         [
-                            'id' => 1,
+                            'id' => 0,
                             'position' => 'Toàn bộ t.bị: máy, bàn…',
                             'method' => 'K có bụi bẩn, bật máy k có tiếng kêu lạ',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine_auto\1.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine_auto/1.png',
+                            'answer' => '',
+                            'answer_list' => [0, 1], //1: bình thường , 0: bất thường
+                        ],
+                        [
+                            'id' => 1,
+                            'position' => 'Màn hình máy cắt',
+                            'method' => 'Hiển thị rõ ràng',
+                            'handle' => 'Liên lạc cấp trên',
+                            'image' => 'public/assets/images/pages/check_cut_machine_auto/2.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 2,
-                            'position' => 'Màn hình máy cắt',
-                            'method' => 'Hiển thị rõ ràng',
+                            'position' => 'Con lăn v.chuyển',
+                            'method' => 'K bị mòn, sứt, biến dạng',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine_auto\2.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine_auto/3.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 3,
-                            'position' => 'Con lăn v.chuyển',
-                            'method' => 'K bị mòn, sứt, biến dạng',
+                            'position' => 'Ống dẫn dây',
+                            'method' => 'K bị biến dạng',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine_auto\3.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine_auto/4.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 4,
-                            'position' => 'Ống dẫn dây',
-                            'method' => 'K bị biến dạng',
+                            'position' => 'Áp lực khí chính',
+                            'method' => '0.5±0.05 Mpa',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine_auto\4.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine_auto/5.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 5,
-                            'position' => 'Áp lực khí chính',
-                            'method' => '0.5±0.05 Mpa',
+                            'position' => 'Máy tính',
+                            'method' => 'Màn hình h.thị rõ ràng, bàn phím k bị kẹt nút, mất nút',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine_auto\5.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine_auto/6.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
                         [
                             'id' => 6,
-                            'position' => 'Máy tính',
-                            'method' => 'Màn hình h.thị rõ ràng, bàn phím k bị kẹt nút, mất nút',
-                            'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine_auto\6.png',
-                            'answer' => '',
-                            'answer_list' => [0, 1], //1: bình thường , 0: bất thường
-                        ],
-                        [
-                            'id' => 7,
                             'position' => 'Súng scan(2 súng)',
                             'method' => 'Hoạt động bình thường',
                             'handle' => 'Liên lạc cấp trên',
-                            'image' => 'public\assets\frontend\images\check_cut_machine_auto\7.png',
+                            'image' => 'public/assets/images/pages/check_cut_machine_auto/7.png',
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
@@ -282,7 +281,12 @@ class ArrayHelper
             ],
         ];
     }
-
+    public static function machineList()
+    {
+        return [
+            'C371A', 'dfhgdkh',
+        ];
+    }
     public static function marital()
     {
         return [
@@ -320,6 +324,18 @@ class ArrayHelper
             [
                 'id' => 3,
                 'name' => 'Trợ lý'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Leader'
+            ],
+            [
+                'id' => 5,
+                'name' => 'Sub Leader'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Chief'
             ],
         ];
     }

@@ -28,8 +28,6 @@ class EmployeesController extends Controller
      */
     public function index($isTrashed = false)
     {
-
-
         return view('backend.pages.exams.index', compact('count_exams', 'count_active_exams', 'count_trashed_exams'));
     }
 

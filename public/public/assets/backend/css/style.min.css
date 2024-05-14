@@ -38718,3 +38718,11 @@ textarea.note {
     text-align: center;
     margin-bottom: 5px;
 }
+
+.font-20 {
+    font-size: 1.5rem;
+}
+
+.check-cut-machine .parsley-required {
+    font-size: 16px !important;
+}

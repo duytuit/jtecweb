@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('code_required');
             $table->string('code');
             $table->float('quantity')->comment('số lượng sản phẩm');
-            $table->string('unit_price',20)->comment('đơn vị');
-            $table->longText('content')->comment('Nội dung yêu cầu');
+            $table->string('unit_price', 20)->comment('đơn vị');
+            $table->longText('content')->nullable()->comment('Nội dung yêu cầu');
             $table->integer('size')->comment('kích thước');
-            $table->string('image',600)->comment('hình ảnh');
+            $table->string('image', 600)->comment('hình ảnh');
             $table->string('required_department_id')->comment('bộ phận yêu cầu');
             $table->string('receiving_department_ids')->comment('bộ phận tiếp nhận');
             $table->integer('status');
