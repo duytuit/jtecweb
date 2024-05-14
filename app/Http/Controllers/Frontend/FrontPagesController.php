@@ -7,6 +7,7 @@ use App\Exports\DetailReportExport1;
 use App\Exports\ExamExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
+use App\Imports\EmpImport;
 use App\Models\Accessory;
 use App\Models\Admin;
 use App\Models\Department;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FrontPagesController extends Controller
 {
@@ -131,8 +133,10 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        $this->add_employee_to_department();
-        $this->add_user_and_pass();
+        $date =explode("/",'20/09/1985');
+        dd(  'R_'.now()->format('Ymdhis'));
+        // $this->add_employee_to_department();
+        // $this->add_user_and_pass();
         // $this->remaneTable();
         // $this->addEmployee();
         // $this->updateBeginDate();
@@ -460,6 +464,80 @@ class FrontPagesController extends Controller
                 'scores' => $scores + 1,
                 'status' => $scores > 80 ?  1 : 0
             ]);
+        }
+    }
+
+    public function ImportEmpPost(Request $request)
+    {
+        set_time_limit(0);
+        $data = Excel::toCollection(new EmpImport,  request()->file('import_file'));
+        foreach ($data[0] as $key => $value) {
+            if ($key > 0) {
+                try {
+                    $emp = Employee::where('code',  (int)trim( $value[0]))->first();
+                    $dept = Department::where('name',  $value[2])->first();
+                    if(!$dept){
+                        $dept = Department::create([
+                            'code'=>time(),
+                            'name'=>$value[2],
+                            'parent_id' => 0,
+                            'status' =>1,
+                            'created_by' => 1,
+                        ]);
+                    }
+                    if (!$emp) {
+
+                        $parts = explode(" ", $value[1]);
+                        if (count($parts) > 1) {
+                            $lastname = array_pop($parts);
+                            $firstname = implode(" ", $parts);
+                        } else {
+                            $firstname = $value;
+                            $lastname = " ";
+                        }
+                        // Tạo nhân viên
+                        $begin_date_company=explode("/",$value[5]);
+                        $birthday=explode("/",$value[3]);
+                        $employee = Employee::create([
+                            'code' => (int)trim( $value[0]),
+                            'first_name' => $firstname,
+                            'last_name' => $lastname,
+                            'begin_date_company' => $begin_date_company[2].'-'.$begin_date_company[1].'-'.$begin_date_company[0],
+                            'status' => 1,
+                            'created_by' => 1,
+                            'birthday' => $birthday[2].'-'.$birthday[1].'-'.$birthday[0],
+                            'worker' => 3
+
+                        ]); // Tạo một đối tượng Employee mới
+
+                        EmployeeDepartment::create([
+                            'employee_id' => $employee->id,
+                            'department_id' => $dept->id,
+                            'created_by' => 1,
+                        ]);
+
+                        //Tạo tài khoản
+                        $admin = Admin::create([
+                            'first_name' => $firstname,
+                            'last_name' => $lastname,
+                            'username' =>  $value[0],
+                            'email' => $value[0] . 'exam@exam.com',
+                            'password' => Hash::make($value[0]),
+                            'status' => 1,
+                            'created_at' => Carbon::now(),
+                            'created_by' => 1,
+                            'updated_at' => Carbon::now()
+                        ]);
+                        // Assign Roles
+                        $admin->assignRole('Worker');
+                    }
+                    echo 'Thành công!';
+                } catch (\Exception $e) {
+
+                    echo $e->getTraceAsString();
+                    dd(1);
+                }
+            }
         }
     }
 

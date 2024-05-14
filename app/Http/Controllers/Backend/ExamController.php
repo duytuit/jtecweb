@@ -8,6 +8,7 @@ use App\Helpers\ArrayHelper;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,7 @@ class ExamController extends Controller
         $current_cycleName = $request->cycle_name ? (int)$request->cycle_name : Carbon::now()->format('mY');
         $data['cycleName'] =$request->cycle_name ? (int)$request->cycle_name : $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
+        $data['depts'] = Department::where('status',1)->get();
         $data['emp'] = Employee::select('code')->where('status', 1)->pluck('code');
          // lấy ra nhân viên vào đợt 1 (nv vào lớn hơn ngày 15 thì không lấy)
          $getEmployeeBeginWorking1 = Employee::select('code')->where('status', 1)
@@ -107,6 +109,9 @@ class ExamController extends Controller
                     $query->whereDate('create_date', '>=', $from_date);
                     $query->whereDate('create_date', '<=', $to_date);
                 }
+                if (isset($request->dept) && $request->dept != null) {
+                    $query->where('sub_dept', $request->dept);
+                }
             })
             ->where('status', 1)
             ->where('scores', '>', 95)
@@ -128,6 +133,9 @@ class ExamController extends Controller
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
                     $query->whereDate('create_date', '>=', $from_date);
                     $query->whereDate('create_date', '<=', $to_date);
+                }
+                if (isset($request->dept) && $request->dept != null) {
+                    $query->where('sub_dept', $request->dept);
                 }
             })
             ->whereIn('code', $data['emp'])
@@ -153,6 +161,9 @@ class ExamController extends Controller
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
                     $query->whereDate('create_date', '>=', $from_date);
                     $query->whereDate('create_date', '<=', $to_date);
+                }
+                if (isset($request->dept) && $request->dept != null) {
+                    $query->where('sub_dept', $request->dept);
                 }
             })
             ->whereIn('code', $data['emp'])
@@ -184,6 +195,9 @@ class ExamController extends Controller
                     $query->whereDate('create_date', '>=', $from_date);
                     $query->whereDate('create_date', '<=', $to_date);
                 }
+                if (isset($request->dept) && $request->dept != null) {
+                    $query->where('sub_dept', $request->dept);
+                }
             })
             ->where('status', 1)
             ->where('scores', '>', 95)
@@ -206,6 +220,9 @@ class ExamController extends Controller
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
                     $query->whereDate('create_date', '>=', $from_date);
                     $query->whereDate('create_date', '<=', $to_date);
+                }
+                if (isset($request->dept) && $request->dept != null) {
+                    $query->where('sub_dept', $request->dept);
                 }
             })
             ->where('examinations', 2)
@@ -230,6 +247,9 @@ class ExamController extends Controller
                     $query->whereDate('create_date', '>=', $from_date);
                     $query->whereDate('create_date', '<=', $to_date);
                 }
+                if (isset($request->dept) && $request->dept != null) {
+                    $query->where('sub_dept', $request->dept);
+                }
             })
             ->where('examinations', 2)
             ->where('status', 0)
@@ -246,6 +266,9 @@ class ExamController extends Controller
         $data['lists'] = Exam::where('type', 1)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
+            }
+            if (isset($request->dept) && $request->dept != null) {
+                $query->where('sub_dept', $request->dept);
             }
             if (isset($request->cycle_name) && $request->cycle_name != null) {
                 $query->where('cycle_name', $request->cycle_name);

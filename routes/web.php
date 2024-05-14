@@ -45,3 +45,7 @@ Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
 Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
 Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');
 Route::post('/exam/storeNew', [FrontPagesController::class, 'storeNew'])->name('exam.storeNew');
+Route::get('/ImportEmp',function () {
+    return view('frontend.pages.import_emp');
+});
+Route::post('/ImportEmpPost', [FrontPagesController::class, 'ImportEmpPost'])->name('exam.ImportEmpPost');
