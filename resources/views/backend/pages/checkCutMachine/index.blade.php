@@ -66,7 +66,8 @@
 
                             <div class="col-md-4 p-2 ">
                                 <div class="h-100 p-2 shadow-lg">
-                                    <span class="p-md-2 d-block bg-primary text-light">Lý lịch sửa chữa</span><br>
+                                    <span class="p-md-2 d-block bg-secondary text-light">Lý lịch sửa chữa</span><br>
+
                                     <span class="p-md-2 d-block bg-primary text-light">Thêm sửa chữa</span>
                                     <div class="pt-2 ">
                                         <textarea name="repair_history" id="" class="w-100">

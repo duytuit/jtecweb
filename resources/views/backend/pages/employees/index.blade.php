@@ -170,9 +170,6 @@
 
 @section('scripts')
     <script>
-        // $('.datepicker').datepicker({
-        //     format: 'dd/mm/yyyy'
-        // });
         $('input.date_picker').datepicker({
             autoclose: true,
             dateFormat: "dd-mm-yy"

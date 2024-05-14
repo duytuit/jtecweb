@@ -264,7 +264,7 @@
             </a>
         </li>
         <li class="sidebar-item">
-            <a class="sidebar-link" href="{{ url('admin/checkCutMachine/view') }}">
+            <a class="sidebar-link" href="{{ url('admin/checkCutMachine/show') }}">
                 <i class="mdi mdi-view-list"></i>
                 <span class="hide-menu"> Xem dữ liệu </span>
             </a>

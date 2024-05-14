@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Accessory;
-use App\Models\Required;
-use App\Models\Employee;
 use App\Models\Department;
+use App\Models\Employee;
 use App\Models\EmployeeDepartment;
+use App\Models\Required;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Helpers\ArrayHelper;
 
 class RequiredController extends Controller
 {
@@ -54,11 +54,10 @@ class RequiredController extends Controller
         // $department = Department::where('id', $employee->process_id)->firstOrFail();
         // $employeeDepartments = EmployeeDepartment::where('department_id', $department->id,)->firstOrFail();
 
-
         $employees = Employee::all();
         $employeeDepartments = EmployeeDepartment::all();
         $departments = Department::all();
-        return view('backend.pages.requireds.create',  compact('employees', 'departments', 'formTypeJobs', 'positionTitles', 'employeeDepartments'));
+        return view('backend.pages.requireds.create', compact('employees', 'departments', 'formTypeJobs', 'positionTitles', 'employeeDepartments'));
     }
 
     /**
@@ -118,7 +117,6 @@ class RequiredController extends Controller
         //
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -149,9 +147,39 @@ class RequiredController extends Controller
 
     public function requireCheckListMachineCut(Request $request)
     {
-        // if (is_null($this->user) || !$this->user->can('checkCutMachine.index')) {
-        //     return abort(403, 'You are not allowed to access this page !');
-        // }
+        $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
+        $dataTablesType = ArrayHelper::formTypeJobs()[1];
+        $dataTables['name_machine'] = $request->selecMachine;
+        $answers = $request->answer;
+        foreach ($answers as $key => $value) {
+            if (!is_null($value) && $value !== '') {
+                $dataTables['check_list'][$key]['answer'] = $value;
+            } else {
+                session()->flash('error', "Bạn phải kiểm tra hết tất cả nội dụng trước khi lưu");
+            }
+        }
+        $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
+        try {
+            $requireCode = 'R_' . now()->format('Ymdhis');
+            $required = Required::create([
+                'code_required' => Auth::user()->username,
+                'created_by' => Auth::user()->id,
+                'content_form' => $json_data,
+                'required_department_id' => $request->selecDepartment,
+                'code' => $requireCode,
+                'content' => $request->repair_history,
+                'from_type' => $dataTablesType['id'],
+            ]);
+
+            session()->flash('success', "successfully.");
+            return redirect()->route('admin.requireds.show');
+        } catch (\Exception $e) {
+            session()->flash('error', "Failed to update: " . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }
+    public function showCheckCutMachine(Request $request)
+    {
         $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
         $dataTablesType = ArrayHelper::formTypeJobs()[1];
         $dataTables['name_machine'] = $request->selecMachine;

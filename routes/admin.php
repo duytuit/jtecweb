@@ -242,6 +242,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
 
         Route::post('showDataAccessorys', 'RequiredController@showDataAccessorys')->name('showDataAccessorys');
         Route::post('requireCheckListMachineCut', 'RequiredController@requireCheckListMachineCut')->name('requireCheckListMachineCut');
+        Route::get('showCheckCutMachine', 'RequiredController@showCheckCutMachine')->name('showCheckCutMachine');
 
         Route::put('trashed/revert/{id}', 'RequiredController@revertFromTrash')->name('trashed.revert');
         Route::delete('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');
@@ -326,6 +327,7 @@ Route::group(['prefix' => 'checkTension'], function () {
 Route::group(['prefix' => 'checkCutMachine'], function () {
     Route::get('/', [CheckCutMachineController::class, 'index'])->name('checkCutMachine.index');
     Route::get('/show', [CheckCutMachineController::class, 'show'])->name('checkCutMachine.show');
+
 });
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);
