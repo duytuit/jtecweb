@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FrontPagesController extends Controller
 {
@@ -215,7 +218,7 @@ class FrontPagesController extends Controller
         }
         $results = 0;
         foreach ($request->answer as $key => $value) {
-            $array_answer = array_filter($arrayExam, fn($element) => $element['id'] == $key);
+            $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
             if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
                 $results++;
             }
@@ -279,7 +282,7 @@ class FrontPagesController extends Controller
             $arrayExam = $questionItem['question'];
             $totalQuestion += $questionItem['quantity_question'];
             foreach ($request->answer as $key => $item) {
-                $array_answer = array_filter($arrayExam, fn($element) => $element['id'] == $key);
+                $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
                 if (count($array_answer) > 0 && current($array_answer)['answer'] == $item) {
                     $results++;
                     $scores = $scores + $questionItem['point'];
