@@ -32,6 +32,7 @@ class Required extends Model
         'deleted_at',
         'created_at',
         'updated_at',
+        'content_form',
     ];
     public function employee()
     {

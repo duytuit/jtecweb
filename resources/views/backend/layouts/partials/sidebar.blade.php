@@ -249,7 +249,28 @@
         </ul>
     </li>
 @endif
-
+<li class="sidebar-item ">
+    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+        aria-expanded="false">
+        <i class="mdi mdi-view-list"></i>
+        <span class="hide-menu">Kiểm tra hàng ngày máy cắt</span>
+    </a>
+    <ul aria-expanded="false"
+        class="collapse first-level {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.create') || Route::is('admin.checkCutMachine.edit') ? 'in' : null }}">
+        <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ url('admin/checkCutMachine') }}">
+                <i class="mdi mdi-view-list"></i>
+                <span class="hide-menu"> Kiểm tra </span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ url('admin/checkCutMachine/view') }}">
+                <i class="mdi mdi-view-list"></i>
+                <span class="hide-menu"> Xem dữ liệu </span>
+            </a>
+        </li>
+    </ul>
+</li>
 {{-- @if ($user->can('productvt.view')) --}}
 <li class="sidebar-item ">
     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"

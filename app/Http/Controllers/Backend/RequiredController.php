@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\ArrayHelper;
 
-
 class RequiredController extends Controller
 {
     public $user;
@@ -148,7 +147,42 @@ class RequiredController extends Controller
         }
     }
 
+    public function requireCheckListMachineCut(Request $request)
+    {
+        // if (is_null($this->user) || !$this->user->can('checkCutMachine.index')) {
+        //     return abort(403, 'You are not allowed to access this page !');
+        // }
+        $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
+        $dataTablesType = ArrayHelper::formTypeJobs()[1];
+        $dataTables['name_machine'] = $request->selecMachine;
+        $answers = $request->answer;
+        foreach ($answers as $key => $value) {
+            if (!is_null($value) && $value !== '') {
+                $dataTables['check_list'][$key]['answer'] = $value;
+            } else {
+                session()->flash('error', "Bạn phải kiểm tra hết tất cả nội dụng trước khi lưu");
+            }
+        }
+        $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
+        try {
+            $requireCode = 'R_' . now()->format('Ymdhis');
+            $required = Required::create([
+                'code_required' => Auth::user()->username,
+                'created_by' => Auth::user()->id,
+                'content_form' => $json_data,
+                'required_department_id' => $request->selecDepartment,
+                'code' => $requireCode,
+                'content' => $request->repair_history,
+                'from_type' => $dataTablesType['id'],
+            ]);
 
+            session()->flash('success', "successfully.");
+            return redirect()->route('admin.requireds.show');
+        } catch (\Exception $e) {
+            session()->flash('error', "Failed to update: " . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

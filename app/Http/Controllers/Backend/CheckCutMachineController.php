@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Employee;
+use App\Models\Department;
 
 class CheckCutMachineController extends Controller
 {
@@ -19,6 +22,13 @@ class CheckCutMachineController extends Controller
     //index
     public function index()
     {
-        return view('backend.pages.checkCutMachine.index');
+        $formTypeJobs = ArrayHelper::formTypeJobs()[1]['data_table']['check_list'];
+        $machineLists = ArrayHelper::machineList();
+        $username = Auth::user()->username;
+        $employee = Employee::where('code', $username)->firstOrFail();
+        $departmentId = $employee->process_id;
+        $departments = Department::all();
+
+        return view('backend.pages.checkCutMachine.index', compact('formTypeJobs', 'machineLists', 'departments', 'employee', 'departmentId'));
     }
 }
