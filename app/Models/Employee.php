@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Employee extends Model
 {
     use HasFactory, SoftDeletes, ActivityLogger;
-    protected $table = 'employees';
+    // protected $table = 'employees';
+    protected $guarded = [];
+
     protected $seachable = [
         'id',
         'code',

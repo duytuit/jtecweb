@@ -60,15 +60,23 @@ use App\Models\Department;
                         <select name="cycle_name" class="form-control" style="width: 100%;">
                             <option value="">Kỳ thi</option>
                              @foreach ($cycleNames as $item)
-                                <option value="{{$item}}" {{ @$filter['cycle_name'] === $item ? 'selected' : '' }}>{{$item}}</option>
+                                <option value="{{$item}}" {{ @$filter['cycle_name'] == $item ? 'selected' : '' }}>{{$item}}</option>
+                             @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select name="dept" class="form-control" style="width: 100%;">
+                            <option value="">Bộ phận</option>
+                             @foreach ($depts as $item)
+                                <option value="{{$item->id}}" {{ @$filter['dept'] == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
                              @endforeach
                         </select>
                     </div>
                     <div class="col-sm-2">
                         <select name="status" class="form-control" style="width: 100%;">
                             <option value="">Trạng thái</option>
-                            <option value="1" {{ @$filter['status'] === '1' ? 'selected' : '' }}>Đạt</option>
-                            <option value="0" {{ @$filter['status'] === '0' ? 'selected' : '' }}>Chưa đạt</option>
+                            <option value="1" {{ @$filter['status'] == '1' ? 'selected' : '' }}>Đạt</option>
+                            <option value="0" {{ @$filter['status'] == '0' ? 'selected' : '' }}>Chưa đạt</option>
                         </select>
                     </div>
                     <div class="col-sm-2">
