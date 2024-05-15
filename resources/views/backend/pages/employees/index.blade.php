@@ -19,6 +19,10 @@
                         <ul class="dropdown-menu">
                             <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i
                                         class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="report" href="javascript:;"><i
+                                class="fa fa-save"></i> Có thống kê</a></li>
+                                <li><a class="btn-action" data-target="#form_lists" data-method="unreport" href="javascript:;"><i
+                                    class="fa fa-save"></i> Không thống kê</a></li>
                         </ul>
                     </span>
                     <a href="{{ route('admin.employees.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
@@ -59,7 +63,12 @@
         <!-- START #form-search-advance -->
         <form id="form-search-advance" action="{{ route('admin.employees.index') }}" method="get" class="hidden">
             <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
-                <div class="row form-group space-5">
+                <div class="row form-group">
+                    <div class="col-md-2">
+                        <select name="ids[]" multiple id="codecode" class="form-control" style="width:100%">
+                            <option value="">Chọn mã nhân viên</option>
+                        </select>
+                    </div>
                     <div class="col-sm-2">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -104,7 +113,9 @@
         </form>
         <!-- END #form-search-advance -->
 
-        <form id="form-search" action="{{ route('admin.employees.index') }}" method="get">
+        <form id="form_lists" action="{{ route('admin.employees.action') }}" method="post">
+            @csrf
+            <input type="hidden" name="method" value="" />
             <div class="table-responsive product-table">
                 <table class="table table-bordered ajax_view" id="employees_table">
                     <thead>
@@ -114,6 +125,7 @@
                             <th>STT</th>
                             <th>Mã Code</th>
                             <th>Tên nhân viên</th>
+                            <th>Thống kê làm bài kiểm tra</th>
                             <th>Bộ phận</th>
                             <th>Thao tác</th>
                         </tr>
@@ -126,6 +138,11 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->first_name . ' ' . $item->last_name }}</td>
+                                <td>  @if ( $item->status_exam == 1)
+                                    <span class="badge badge-success font-weight-100">Có</span>
+                                @else
+                                    <span class="badge badge-warning">Không</span>
+                                @endif</td>
                                 <td>{{ $item->process_id }}</td>
                                 <td>
                                     <a title="Sửa" class=" d-inline-block mx-1 btn-purple btn-sm text-white"
@@ -177,6 +194,51 @@
             autoclose: true,
             dateFormat: "dd-mm-yy"
         }).val();
+        get_data_select_code({
+            object: '#codecode',
+            url: '{{ url('admin/departments/ajaxGetSelectCode') }}',
+            data_id: 'id',
+            data_code: 'code',
+            data_first_name: 'first_name',
+            data_last_name: 'last_name',
+            title_default: 'Chọn mã nhân viên',
+
+        });
+
+        function get_data_select_code(options) {
+            $(options.object).select2({
+                ajax: {
+                    url: options.url,
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        }
+                        return query;
+                    },
+                    processResults: function(json, params) {
+                        var results = [{
+                            id: '',
+                            text: options.title_default
+                        }];
+
+                        for (i in json.data) {
+                            var item = json.data[i];
+                            results.push({
+                                id: item[options.data_id],
+                                text: item[options.data_code] + ' - ' + item[options.data_first_name] +
+                                    ' ' +
+                                    item[options.data_last_name]
+                            });
+                        }
+                        return {
+                            results: results,
+                        };
+                    },
+                    minimumInputLength: 3,
+                }
+            });
+        }
         // const ajaxURL = "<?php echo Route::is('admin.employees.trashed' ? 'employees/trashed/view' : 'employees'); ?>";
         // $('table#employees_table').DataTable({
         //     dom: 'Blfrtip',

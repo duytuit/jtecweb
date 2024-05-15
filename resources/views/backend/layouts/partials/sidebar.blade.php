@@ -625,7 +625,7 @@
                 </li>
             @endif
 
-            @if ($user->can('activity.create'))
+            {{-- @if ($user->can('activity.create'))
                 <li class="sidebar-item">
                     <a href="{{ route('admin.activitys.create') }}"
                         class="sidebar-link {{ Route::is('admin.activitys.create') ? 'active' : null }}">
@@ -633,7 +633,7 @@
                         <span class="hide-menu"> Cấu hình </span>
                     </a>
                 </li>
-            @endif
+            @endif --}}
         </ul>
     </li>
 @endif
