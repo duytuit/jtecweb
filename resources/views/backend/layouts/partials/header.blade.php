@@ -150,11 +150,11 @@
                         </div>
                         <div class="profile-dis scrollable">
                             <a class="dropdown-item" href="{{ route('admin.admins.profile.edit') }}">
-                                <i class="ti-user m-r-5 m-l-5"></i> Edit My Profile</a>
+                                <i class="ti-user m-r-5 m-l-5"></i> Sửa thông tin</a>
                             <a class="dropdown-item" href="javascript:void(0)"
                                 onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
-                                <i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                                <i class="fa fa-power-off m-r-5 m-l-5"></i> Đăng xuất</a>
                             {{-- <div class="dropdown-divider"></div> --}}
                         </div>
                     </div>

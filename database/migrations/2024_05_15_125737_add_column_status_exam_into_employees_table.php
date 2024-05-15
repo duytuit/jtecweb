@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('requireds', function (Blueprint $table) {
-            $table->longText('content')->nullable()->change();
+        Schema::table('employees', function (Blueprint $table) {
+            $table->integer('status_exam')->comment('0: không thống kê,1: thống kê công nhân theo tùy chọn');
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('requireds', function (Blueprint $table) {
+        Schema::table('employees', function (Blueprint $table) {
             //
         });
     }

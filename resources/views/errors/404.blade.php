@@ -9,9 +9,9 @@
         <div class="error-box">
             <div class="error-body text-center">
                 <h1 class="error-title">404</h1>
-                <h3 class="text-uppercase error-subtitle">PAGE NOT FOUND ERROR !</h3>
-                <p class="text-muted m-t-30 m-b-30">THE PAGE YOU'RE LOOKING ARE NOT AVAILABLE !</p>
-                <a href="{{ route('admin.index') }}" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Back to home</a> </div>
+                <h3 class="text-uppercase error-subtitle">Không tìm thấy trang !</h3>
+                <p class="text-muted m-t-30 m-b-30">Trang của bạn cần tìm không có !</p>
+                <a href="{{ route('admin.index') }}" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Quay lại</a> </div>
         </div>
     </div>
 @endsection

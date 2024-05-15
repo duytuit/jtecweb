@@ -26,104 +26,104 @@
                         <div class="row ">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="first_name">First Name <span
+                                    <label class="control-label" for="first_name">Họ<span
                                             class="required">*</span></label>
                                     <input type="text" class="form-control" id="first_name" name="first_name"
-                                        value="{{ $admin->first_name }}" placeholder="Enter First Name" required="" />
+                                        value="{{ $admin->first_name }}" placeholder="Nhập họ tên" required="" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label" for="last_name">Last Name <span
-                                            class="optional">(optional)</span></label>
+                                    <label class="control-label" for="last_name">Tên<span
+                                            class="optional">(không bắt buộc)</span></label>
                                     <input type="text" class="form-control" id="last_name" name="last_name"
-                                        value="{{ $admin->last_name }}" placeholder="Enter Last Name" />
+                                        value="{{ $admin->last_name }}" placeholder="Nhập tên" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label" for="designation">Designation <span
-                                            class="optional">(optional)</span></label>
+                                    <label class="control-label" for="designation">Giới thiệu bản thân<span
+                                            class="optional">(không bắt buộc)</span></label>
                                     <input type="text" class="form-control" id="designation" name="designation"
-                                        value="{{ $admin->designation }}" placeholder="Enter Designation" required="" />
+                                        value="{{ $admin->designation }}" placeholder="Hãy giới thiệu về bản thân của bạn" required="" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="phone_no">Phone Number <span
+                                    <label class="control-label" for="phone_no">Số điện thoại <span
                                             class="required">*</span></label>
                                     <input type="text" class="form-control" id="phone_no" name="phone_no"
-                                        value="{{ $admin->phone_no }}" placeholder="Enter Phone Number" required="" />
+                                        value="{{ $admin->phone_no }}" placeholder="Nhập số điện thoại" required="" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="email">Email Address <span
+                                    <label class="control-label" for="email">Email<span
                                             class="required">*</span></label>
                                     <input type="email" class="form-control" id="email" name="email"
-                                        value="{{ $admin->email }}" placeholder="Enter Email Address" required="" />
+                                        value="{{ $admin->email }}" placeholder="Email" required="" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="username">Username <span
+                                    <label class="control-label" for="username">Tài Khoản<span
                                             class="required">*</span></label>
                                     <input type="text" class="form-control" id="username" name="username"
-                                        value="{{ $admin->username }}" placeholder="Enter Username"
-                                        data-parsley-type="alphanum" required />
+                                        value="{{ $admin->username }}" placeholder="Nhập tài khoản"
+                                        data-parsley-type="alphanum" required readonly/>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group has-success">
-                                    <label class="control-label" for="status">Status <span
+                                    <label class="control-label" for="status">Trạng thái<span
                                             class="required">*</span></label>
                                     <select class="form-control custom-select" id="status" name="status" required>
-                                        <option value="1" {{ $admin->status == '1' ? 'selected' : null }}>Active
+                                        <option value="1" {{ $admin->status == '1' ? 'selected' : null }}>Hoạt động
                                         </option>
-                                        <option value="0" {{ $admin->status == '0' ? 'selected' : null }}>Inactive
+                                        <option value="0" {{ $admin->status == '0' ? 'selected' : null }}>Không hoạt động
                                         </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group has-success">
-                                    <label class="control-label" for="visible_in_team">Visible in Team <span
+                                    <label class="control-label" for="visible_in_team">Hiển thị nhóm nhóm<span
                                             class="required">*</span></label>
                                     <select class="form-control custom-select" id="visible_in_team" name="visible_in_team"
                                         required>
                                         <option value="1" {{ $admin->visible_in_team == '1' ? 'selected' : null }}>
-                                            Visible
+                                            Hoạt động
                                         </option>
                                         <option value="0" {{ $admin->visible_in_team == '0' ? 'selected' : null }}>
-                                            Invisible</option>
+                                            Không hoạt động</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="password">Password <span
-                                            class="optional">(optional)</span></label>
+                                    <label class="control-label" for="password">Mật khẩu <span
+                                            class="optional">(không bắt buộc)</span></label>
                                     <input type="password" class="form-control" id="password" name="password"
-                                        value="{{ old('password') }}" placeholder="Enter Password"
+                                        value="{{ old('password') }}" placeholder="Nhập mật khẩu"
                                         data-parsley-equalto="#password_confirmation" autocomplete="off" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="password_confirmation">Confirm Password <span
-                                            class="optional">(optional)</span></label>
+                                    <label class="control-label" for="password_confirmation">Xác nhận mật khẩu<span
+                                            class="optional">(không bắt buộc)</span></label>
                                     <input type="password" class="form-control" id="password_confirmation"
                                         name="password_confirmation" value="{{ old('password') }}"
-                                        placeholder="Enter Confirm Password" data-parsley-equalto="#password"
+                                        placeholder="Nhập xác nhận mật khẩu" data-parsley-equalto="#password"
                                         autocomplete="off" />
                                 </div>
                             </div>
                             @if (!Route::is('admin.admins.profile.edit'))
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label" for="roles">Assign Roles <span
-                                                class="optional">(optional)</span></label>
+                                        <label class="control-label" for="roles">Nhóm Quyền<span
+                                                class="optional">(không bắt buộc)</span></label>
                                         <br>
                                         <select class="roles_select form-control custom-select " id="roles"
                                             name="roles[]" multiple style="width: 100%;">
@@ -137,8 +137,8 @@
                                 </div>
                             @endif
                             <div class="form-group">
-                                <label class="control-label" for="languages">Set Language <span
-                                        class="optional">(optional)</span></label>
+                                <label class="control-label" for="languages">Ngôn ngữ<span
+                                        class="optional">(không bắt buộc)</span></label>
                                 <br>
                                 <select class="roles_select form-control custom-select " id="languages"
                                     name="language_id" style="width: 100%;">
@@ -152,15 +152,15 @@
 
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label" for="avatar">Avatar <span
-                                            class="optional">(optional)</span></label>
+                                    <label class="control-label" for="avatar">Ảnh đại diện <span
+                                            class="optional">(không bắt buộc)</span></label>
                                     <input type="file" class="form-control dropify" data-height="70"
                                         data-allowed-file-extensions="png jpg jpeg webp" id="avatar" name="avatar"
                                         data-default-file="{{ $admin->avatar != null ? asset('public/assets/images/admins/' . $admin->avatar) : null }}" />
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <label class="control-label">Social Links <span class="optional">(optional)</span></label>
+                            {{-- <div class="col-md-12">
+                                <label class="control-label">Social Links <span class="optional">(không bắt buộc)</span></label>
 
                                 <div class="row">
                                     @php $user_social_links = json_decode(empty($admin->social_links) ? '' : $admin->social_links); @endphp
@@ -176,7 +176,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="form-actions">
