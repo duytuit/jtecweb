@@ -110,6 +110,35 @@ class EmployeeController extends Controller
         })->orderBy('code')->get();
         return (new EmployeeExport($data))->download('Employee-export.xlsx');
     }
+    public function action(Request $request)
+    {
+        $method = $request->input('method', '');
+        if ($method == 'per_page') {
+            $this->per_page($request);
+            return back();
+        } else if ($method == 'report') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $employee = Employee::find($value);
+                    $employee->status_exam =1;
+                    $employee->save();
+                }
+            }
+            return back()->with('success', 'Thay đổi trạng thái thành công');
+        }
+        else if ($method == 'unreport') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $employee = Employee::find($value);
+                    $employee->status_exam =0;
+                    $employee->save();
+                }
+            }
+            return back()->with('success', 'Thay đổi trạng thái thành công');
+        } else {
+            return back()->with('success', 'thành công!');
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -54,9 +54,9 @@ class ExamController extends Controller
         $data['cycleName'] =$request->cycle_name ? (int)$request->cycle_name : $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
         $data['depts'] = Department::where('status',1)->get();
-        $data['emp'] = Employee::select('code')->where('status', 1)->pluck('code');
+        $data['emp'] = Employee::select('code')->where('status', 1)->where('status_exam', 1)->pluck('code');
          // lấy ra nhân viên vào đợt 1 (nv vào lớn hơn ngày 15 thì không lấy)
-         $getEmployeeBeginWorking1 = Employee::select('code')->where('status', 1)
+         $getEmployeeBeginWorking1 = Employee::select('code')->where('status', 1)->where('status_exam', 1)
          ->where(function ($query) use ($request) {
              if (isset($request->cycle_name) && $request->cycle_name != null) {
                  $query->whereDate('begin_date_company', '>=', Carbon::parse(substr($request->cycle_name, 1, 4) . '-' . substr($request->cycle_name, 0, 1) . '-15'));
@@ -69,7 +69,7 @@ class ExamController extends Controller
              }
          })->pluck('code');
         // lấy ra nhân viên nghỉ trước đợt thi 1
-        $getEmployeeWorkingMission1 = Employee::select('code')->where('status', 1)
+        $getEmployeeWorkingMission1 = Employee::select('code')->where('status', 1)->where('status_exam', 1)
             ->where(function ($query) use ($request) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->whereDate('end_date_company', '<=', Carbon::parse(substr($request->cycle_name, 1, 4) . '-' . substr($request->cycle_name, 0, 1) . '-1'));
@@ -82,7 +82,7 @@ class ExamController extends Controller
                 }
             })->pluck('code');
         // lấy ra nhân viên nghỉ trước đợt thi 2
-        $getEmployeeWorkingMission2 = Employee::select('code')->where('status', 1)
+        $getEmployeeWorkingMission2 = Employee::select('code')->where('status', 1)->where('status_exam', 1)
             ->where(function ($query) use ($request) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->whereDate('end_date_company', '>=', Carbon::parse(substr($request->cycle_name, 1, 4) . '-' . substr($request->cycle_name, 0, 1) . '-15'));
@@ -174,7 +174,7 @@ class ExamController extends Controller
             ->where('status', 0)->where('scores', '<', 90)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
-        $data['emp_yet_1'] = Employee::select('code')->where('status', 1)
+        $data['emp_yet_1'] = Employee::select('code')->where('status', 1)->where('status_exam', 1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
@@ -257,7 +257,7 @@ class ExamController extends Controller
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
 
-        $data['emp_yet_2'] = Employee::select('code')->where('status', 1)
+        $data['emp_yet_2'] = Employee::select('code')->where('status', 1)->where('status_exam', 1)
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->whereNotIn('code', array_column($data['emp_pass_2'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_2_90_95'], 'code'))
@@ -305,15 +305,15 @@ class ExamController extends Controller
         $current_cycleName = Carbon::now()->format('mY');
         $data['cycleName'] = $current_cycleName;
         $data['cycleNames'] = ArrayHelper::cycleName();
-        $data['emp'] = Employee::select('code')->where('status', 1)->pluck('code');
+        $data['emp'] = Employee::select('code')->where('status', 1)->where('status_exam', 1)->pluck('code');
 
         // lấy ra nhân viên vào trong 1 tháng
-        $getEmployeeBeginOneMonth = Employee::select('code')
+        $getEmployeeBeginOneMonth = Employee::select('code')->where('status_exam', 1)
             ->where('status', 1)
             ->whereDate('begin_date_company', '>=', (Carbon::now()->subMonths(1))->format('Y-m-d'))->pluck('code');
 
         // lấy ra nhân viên nghỉ trước đợt thi 1
-        $getEmployeeWorkingMission1 = Employee::select('code')->where('status', 1)->whereDate('end_date_company', '<=', Carbon::now()->format('Y-m-d'))
+        $getEmployeeWorkingMission1 = Employee::select('code')->where('status', 1)->where('status_exam', 1)->whereDate('end_date_company', '<=', Carbon::now()->format('Y-m-d'))
             ->where(function ($query) use ($request) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
                     $query->whereDate('end_date_company', '<=', Carbon::parse(substr($request->cycle_name, 1, 4) . '-' . substr($request->cycle_name, 0, 1) . '-1'));
@@ -372,7 +372,7 @@ class ExamController extends Controller
             ->groupBy('code')
             ->orderBy('id', 'desc')
             ->get()->ToArray();
-        $data['emp_yet_1'] = Employee::select('code')->where('status', 1)
+        $data['emp_yet_1'] = Employee::select('code')->where('status', 1)->where('status_exam', 1)
             ->whereIn('code', $getEmployeeBeginOneMonth)
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))

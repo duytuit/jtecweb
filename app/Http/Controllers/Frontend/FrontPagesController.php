@@ -131,12 +131,12 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        // $date = explode("/", '20/09/1985');
-        // dd('R_' . now()->format('Ymdhis'));
+        // $date =explode("/",'20/09/1985');
+        // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
-        $this->remaneTable();
-        // $this->addEmployee();
+        // $this->remaneTable();
+        $this->addEmployee();
         // $this->updateBeginDate();
         // $this->updateType();
         // $this->updateMission();
@@ -436,25 +436,162 @@ class FrontPagesController extends Controller
             240416 => "Nguyễn Phạm Tường Vy",
             240417 => "Đinh Thị Hằng",
             240424 => "Nguyễn Thị Nhiên",
+            10006 =>    'Lê Thị Lý',
+            10068 =>    'Nguyễn Thị Loan',
+            10243 =>    'Hoàng Thị Quý',
+            10269 =>    'Lê Thị Phương',
+            10426 =>    'Vũ Thị Thảo',
+            10444 =>    'Bùi Thị Duyên',
+            130429 =>    'Đào Thị Tân ',
+            130749 =>    'Lê Thị Lương',
+            140361 =>    'Lê Thị Thoan',
+            140507 =>    'Lý Thị Mai ',
+            140526 =>    'Nguyễn Thị Lan',
+            140612 =>    'Lê Thị Hồng Thu',
+            140730 =>    'Nguyễn Thị Minh Luyến',
+            140773 =>    'Nguyễn Thu Hoài',
+            140932 =>    'Trần Thị Thu Thủy',
+            1409102 =>    'Nguyễn Thị Phương',
+            141069 =>    'Phạm Thị Mai',
+            151237 =>    'Nguyễn Thị Kim Oanh',
+            1606142 =>    'Đoàn Thị Thu Hà',
+            160761 =>    'Nguyễn Thị Quỳnh',
+            160902 =>    'Lê Thị Lan',
+            160905 =>    'Đỗ Thị Thủy',
+            160975 =>    'Lê Đức Hạnh',
+            160979 =>    'Nguyễn Tuấn Dương',
+            1609113 =>    'Lê Thị Phượng',
+            1609122 =>    'Trần Thị Yến',
+            1609160 =>    'Trương Thị Miền',
+            161002 =>    'Ngô Thúy Hường',
+            1703178 =>    'Nguyễn Thị Huyên',
+            170644 =>    'Nguyễn Thị Phương',
+            170714 =>    'Lưu Thị Thu Trang',
+            170872 =>    'Nguyễn Thị Xuân',
+            170916 =>    'Lại Thị Xuân',
+            170933 =>    'Nguyễn Thị Vân',
+            170953 =>    'Nguyễn Văn Hương',
+            170955 =>    'Nguyễn Anh Sơn',
+            171027 =>    'Đặng Thị Tâm',
+            171215 =>    'Phạm Thị Hoa',
+            180315 =>    'Hoàng Nhật Tuấn',
+            180330 =>    'Hoàng Thị Hồng',
+            180341 =>    'Đặng Thị Duyên',
+            180377 =>    'Trần Thị Hòa',
+            1803148 =>    'Lê Công Tý',
+            180409 =>    'Bùi Thị Hoa',
+            180429 =>    'Đinh Thị Vân Anh',
+            180502 =>    'Ngô Thị Hương',
+            180526 =>    'Nguyễn Thị Nga',
+            180529 =>    'Ngô Thị Hồng Duyên',
+            180573 =>    'Nguyễn Thu Vân',
+            180602 =>    'Trịnh Thị Hà',
+            180711 =>    'Lê Thị Luyến',
+            181231 =>    'Nguyễn Thị Duyên',
+            190320 =>    'Hà Thị Hằng',
+            190354 =>    'Lê Như Đức',
+            190364 =>    'Trương Mai Phương',
+            190366 =>    'Ngô Thị Loan',
+            190451 =>    'Nguyễn Thị Việt Trinh',
+            191101 =>    'Trần Thanh Hương',
+            191223 =>    'Trần Thị Hằng',
+            200205 =>    'Phạm Thị Lan Anh',
+            200906 =>    'Nguyễn Vân Anh',
+            200910 =>    'Nguyễn Thị Thúy',
+            200915 =>    'Nguyễn Thị Hường',
+            200918 =>    'Nguyễn Thị Yến',
+            200920 =>    'Phạm Thị Trang',
+            201201 =>    'Kiều Thị Thúy Oanh',
+            210317 =>    'Nguyễn Thị Thảo',
+            210366 =>    'Ngô Thị Hoa',
+            210369 =>    'Lỗ Thị Dư',
+            2103133 =>    'Nguyễn Xuân Hòa',
+            210431 =>    'Mào Thị Nhung',
+            210432 =>    'Lò Thị Điểm',
+            210444 =>    'Bùi Văn Hòe',
+            210468 =>    'Dương Bích Nguyên',
+            210480 =>    'Nguyễn Thị Hà',
+            220226 =>    'Nguyễn Thị Nga',
+            220306 =>    'Bùi Văn Hải',
+            220339 =>    'Nguyễn Thị Hiền',
+            220341 =>    'Hoàng Thị Huyền',
+            220560 =>    'Nguyễn Trí Đăng',
+            220626 =>    'Nguyễn Minh Tuyến',
+            220634 =>    'Nguyễn Thị Tuyết',
+            220637 =>    'Nguyễn Đình Phong',
+            220715 =>    'Hà Thị Thùy',
+            220753 =>    'Nguyễn Thị Thu Phương',
+            220765 =>    'Nguyễn Thị Hương',
+            220881 =>    'Nguyễn Thuỳ Dung',
+            220988 =>    'Đặng Thị Chăng',
+            220990 =>    'Trương Thị Mơ',
+            221063 =>    'Bùi Văn Phương',
+            221065 =>    'Nguyễn Thị Vân',
+            221140 =>    'Vàng Thị Bích Thu',
+            2211159 =>    'Nguyễn Văn Tiến',
+            230201 =>    'Lò Thị Thinh',
+            230231 =>    'Vương Thị Hồng Thanh',
+            230290 =>    'Đặng Minh Tiến',
+            230294 =>    'Hoàng Văn Nhất',
+            2302112 =>    'Nguyễn Văn Thuyên',
+            2302326 =>    'Bùi Thị Thành',
+            230410 =>    'NguyễnThị Hằng',
+            230411 =>    'Lê Thị Nhàn',
+            230502 =>    'Phạm Thị Thu Hương',
+            230503 =>    'Nguyễn Thu Thảo',
+            230662 =>    'Lê Việt Anh',
+            230865 =>    'Đỗ Thị Thu Hiền',
+            230918 =>    'Trần Thị Trà My',
+            231007 =>    'Nguyễn Quốc Trường Sơn',
+            231016 =>    'Nguyễn Mạnh Hưng',
+            231056 =>    'Hoàng Thị Biên',
+            231057 =>    'Hoàng Thị Mỹ Lệ',
+            231215 =>    'Trần Thị Ánh Ngọc',
+            240207 =>    'Nguyễn Thị Hiển',
+            240301 =>    'Hoàng Ngọc Ánh',
+            240307 =>    'Hà Thị Kim Cúc',
+            240409 =>    'Nguyễn Ngọc Lan',
+            240414 =>    'Trần Thị An',
+            240421 =>    'Bùi Thị Hương'
         ];
 
         foreach ($employee as $key => $value) {
             $emp = Employee::where('code', $key)->first();
+            $parts = explode(" ", $value);
+            if (count($parts) > 1) {
+                $lastname = array_pop($parts);
+                $firstname = implode(" ", $parts);
+            } else {
+                $firstname = $value;
+                $lastname = " ";
+            }
             if (!$emp) {
-                $parts = explode(" ", $value);
-                if (count($parts) > 1) {
-                    $lastname = array_pop($parts);
-                    $firstname = implode(" ", $parts);
-                } else {
-                    $firstname = $value;
-                    $lastname = " ";
-                }
-                Employee::create([
+
+                $emp = Employee::create([
                     'code' => $key,
                     'first_name' => $firstname,
                     'last_name' => $lastname,
-                    'created_by' => 1,
+                    'created_by' => 1
                 ]);
+            }
+            $emp->status_exam = 1;
+            $emp->save();
+            $admin =  Admin::where('username', $key)->first();
+            if (!$admin) {
+                //Tạo tài khoản
+                $admin = Admin::create([
+                    'first_name' => $firstname,
+                    'last_name' => $lastname,
+                    'username' =>  $key,
+                    'email' => $key . 'exam@exam.com',
+                    'password' => Hash::make($key),
+                    'status' => 1,
+                    'created_at' => Carbon::now(),
+                    'created_by' => 1,
+                    'updated_at' => Carbon::now()
+                ]);
+                // Assign Roles
+                $admin->assignRole('Worker');
             }
         }
     }
@@ -480,6 +617,7 @@ class FrontPagesController extends Controller
                 try {
                     $emp = Employee::where('code',  (int)trim($value[0]))->first();
                     $dept = Department::where('name',  $value[2])->first();
+                    $emp_dept = EmployeeDepartment::where('employee_id',   $emp->id)->first();
                     if (!$dept) {
                         $dept = Department::create([
                             'code' => time(),
@@ -535,10 +673,17 @@ class FrontPagesController extends Controller
                         // Assign Roles
                         $admin->assignRole('Worker');
                     }
+                    if (!$emp_dept) {
+                        EmployeeDepartment::create([
+                            'employee_id' => $emp->id,
+                            'department_id' => $dept->id,
+                            'created_by' => 1,
+                        ]);
+                    }
                     echo 'Thành công!';
                 } catch (\Exception $e) {
 
-                    echo $e->getTraceAsString();
+                    echo $e->getMessage();
                     dd(1);
                 }
             }

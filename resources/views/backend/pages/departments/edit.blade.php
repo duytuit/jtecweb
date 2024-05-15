@@ -9,7 +9,7 @@
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
         <div class="create-page">
-            <form action="{{ route('admin.departments.update', ['id' => $department->id]) }}" method="POST"
+          <form action="{{ route('admin.departments.update', ['id' => $department->id]) }}" method="POST"
                 enctype="multipart/form-data" data-parsley-validate data-parsley-focus="first">
                 @csrf
                 <input type="hidden" name="departmentId" id="departmentId" value="{{ $department->id }}">
@@ -18,18 +18,16 @@
                         <div class="row ">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label" for="name">Tên bộ phận <span
-                                            class="required">*</span></label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        value="{{ $department->name }}" placeholder="" required="" />
+                                    <label class="control-label" for="name">Tên bộ phận <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ $department->name }}"
+                                        placeholder="" required="" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label" for="code">Mã bộ phận <span
-                                            class="required">*</span></label>
-                                    <input type="text" class="form-control" id="code" name="code"
-                                        value="{{ $department->code }}" placeholder="" required="" />
+                                    <label class="control-label" for="code">Mã bộ phận <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="code" name="code" value="{{ $department->code }}"
+                                        placeholder="" required="" />
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -52,14 +50,18 @@
                                 </div>
                             </div>
                         </div>
+            </form>
+            <form action="{{ route('admin.departments.edit', ['id' => $department->id]) }}" method="Get">
+                @csrf
                         <div class="mb-3 row">
                             <div class="col-md-9">
                                 <select name="ids[]" multiple id="codecode" class="form-control" style="width:100%">
                                     <option value="">Chọn mã nhân viên</option>
                                 </select>
                             </div>
-                            <div class="col-md-3 flex-fill">
-                                <button class="btn btn-primary w-100 add_btn_js">Thêm</button>
+                            <div class="col-md-3 flex-fill" style="display: flex">
+                                <div class="col-md-6">  <button type="submit" class="btn btn-warning w-100 ">Lọc</button></div>
+                                <div class="col-md-6">  <button class="btn btn-primary w-100 add_btn_js">Thêm</button></div>
                             </div>
                         </div>
                         <div class="row w-100 mx-auto ">
@@ -75,36 +77,54 @@
 
 
                                 @foreach ($employeeDepartments as $employeeDepartment)
-                                    <tr>
-                                        <td>{{ @$employeeDepartment->employee->code }}</td>
-                                        <td>{{ @$employeeDepartment->employee->first_name . ' ' . @$employeeDepartment->employee->last_name }}
-                                        </td>
-                                        <td>
-                                            <select class="form-control custom-select" id="positionTitle"
-                                                name="positionTitle"
-                                                onchange="changePosition(this,{{ $employeeDepartment->id }})">
-                                                @foreach ($positionTitles as $positionTitle)
-                                                    <option value="{{ $positionTitle['id'] }}"
-                                                        {{ $positionTitle['id'] === $employeeDepartment->positions ? 'selected' : '' }}>
-                                                        {{ $positionTitle['name'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white delete_js"
-                                                href=""
-                                                onclick="deletefromED(this,{{ $employeeDepartment->id }})"><i
-                                                    class="fa fa-trash"></i></a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ @$employeeDepartment->employee->code }}</td>
+                                    <td>{{ @$employeeDepartment->employee->first_name . ' ' . @$employeeDepartment->employee->last_name }}
+                                    </td>
+                                    <td>
+                                        <select class="form-control custom-select" id="positionTitle"
+                                            onchange="changePosition(this,{{ $employeeDepartment->id }})">
+                                            @foreach ($positionTitles as $positionTitle)
+                                            <option value="{{ $positionTitle['id'] }}" {{ $positionTitle['id']===$employeeDepartment->positions
+                                                ? 'selected' : '' }}>
+                                                {{ $positionTitle['name'] }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white delete_js" href=""
+                                            onclick="deletefromED(this,{{ $employeeDepartment->id }})"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </table>
                         </div>
-
-                    </div>
+                        {{-- <div class="row">
+                            <div class="col-sm-3">
+                                <span class="record-total">Tổng: {{ $employeeDepartments->total() }} bản ghi</span>
+                            </div>
+                            <div class="col-sm-6 text-center">
+                                <div class="pagination-panel">
+                                    {{ $employeeDepartments->appends(Request::all())->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-right">
+                                <span>
+                                    Hiển thị
+                                    <select name="per_page" class="form-control" style="display: inline;width: auto;" data-target="#form_lists">
+                                        @php $list = [5, 10, 20, 50, 100, 200]; @endphp
+                                        @foreach ($list as $num)
+                                        <option value="{{ $num }}" {{ $num==$per_page ? 'selected' : '' }}>
+                                            {{ $num }}</option>
+                                        @endforeach
+                                    </select>
+                                </span>
+                            </div>
+                        </div> --}}
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 @endsection

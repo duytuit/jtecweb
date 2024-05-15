@@ -156,9 +156,12 @@ class DepartmentController extends Controller
             $message = 'You are not allowed to access this page !';
             return view('errors.403', compact('message'));
         }
-
         $department = Department::find($id);
-        $employeeDepartments = EmployeeDepartment::Where('department_id', $id)->get();
+        $employeeDepartments = EmployeeDepartment::Where('department_id', $id)->where(function ($query) use ($request) {
+            if (isset($request->ids) && $request->ids != null && count($request->ids) > 0) {
+                $query->whereIn('employee_id',$request->ids);
+            }
+        })->get();
         $positionTitles = ArrayHelper::positionTitle();
         $employee['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $employee['lists'] = Employee::where(function ($query) use ($request) {
@@ -291,7 +294,7 @@ class DepartmentController extends Controller
             'positions' => $positions
         ]);
         foreach ($employeeDepartments as $employeeDepartment) {
-            if ($employeeDepartment->positions == $positions) {
+            if ($employeeDepartment->positions == $positions && !in_array($employeeDepartment->positions,[4,5])) { // trừ sub leader và leader
                 $employeeDepartment->positions = 0;
                 $employeeDepartment->save();
             }
