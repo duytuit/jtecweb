@@ -18,7 +18,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="ti-user"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-lg @error('username') is-invalid @enderror" name="username" placeholder="Username or Email Address" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" class="form-control form-control-lg @error('username') is-invalid @enderror" name="username" placeholder="Tài khoản hoặc Email" aria-label="Username" aria-describedby="basic-addon1">
                             @error('username')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -29,7 +29,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon2"><i class="ti-pencil"></i></span>
                             </div>
-                            <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                            <input type="password" class="form-control form-control-lg" name="password" placeholder="Mật khẩu" aria-label="Password" aria-describedby="basic-addon1">
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
