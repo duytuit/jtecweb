@@ -46,4 +46,8 @@ class Required extends Model
     {
         return $this->belongsTo(EmployeeDepartment::class, 'required_department_id', 'department_id');
     }
+    public function signatureSubmission()
+    {
+        return $this->hasMany(SignatureSubmission::class, 'required_id');
+    }
 }

@@ -1,10 +1,13 @@
 @extends('backend.layouts.master')
-
+@php
+    use App\Models\Employee;
+@endphp
 @section('admin-content')
     @include('backend.pages.checkCutMachine.partials.header-breadcrumbs')
     <div class="container-fluid ">
         <form id="form-search" action="{{ route('admin.checkCutMachine.index') }}" method="get">
             @csrf
+
             <div class="row form-group">
                 <div class="col-sm-8">
                     <span class="btn-group">
@@ -13,8 +16,11 @@
                         <ul class="dropdown-menu">
                             <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i
                                         class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
-                            <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i
+                            <li><a class="btn-action" data-target="#form_lists" data-method="active" href="javascript:;"><i
                                         class="fa fa-check-circle" style="color: #3800df;"></i> Duyệt</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="inactive"
+                                    href="javascript:;"><i class="fa fa-check-circle" style="color: #3800df;"></i> Bỏ
+                                    duyệt</a></li>
                         </ul>
                     </span>
                     {{-- <a href="{{ route('admin.requireds.index') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
@@ -100,10 +106,9 @@
             </div>
         </form>
         <!-- END #form-search-advance -->
-        <form id="form_lists" action="{{ route('admin.checkCutMachine.index') }}" method="post">
+        <form id="form_lists" action="{{ route('admin.checkCutMachine.action') }}" method="post">
             @csrf
             <input type="hidden" name="method" value="" />
-            <input type="hidden" name="status" value="" />
             <div class="table-responsive product-table overflow-x-scroll ">
                 <table class="table table-bordered" id="checkCutMachine_table" style="min-width: 1280px; ">
                     <thead>
@@ -168,8 +173,17 @@
                                 </td>
                                 <td>{{ $item->content }}</td>
                                 <td class="p-1">
-                                    <div>Leader: đã duyệt <i class="fa fa-check" style="color: green;"></i></div>
-                                    <div>SubLeader: đã duyệt <i class="fa fa-check" style="color: green;"></i></div>
+                                    @if ($item->signatureSubmission)
+                                        @foreach ($item->signatureSubmission as $index2 => $item2)
+                                            @if ($item2->positions == 4)
+                                                <div>SubLeader: {{ $item2->status == 0 ? 'chưa duyệt' : 'đã duyệt' }} <i
+                                                        class="fa fa-check" style="color: green;"></i></div>
+                                            @else
+                                                <div>Leader: {{ $item2->status == 0 ? 'chưa duyệt' : 'đã duyệt' }} <i
+                                                        class="fa fa-check" style="color: green;"></i></div>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </td>
                                 <td>
                                     <a title="Xem lý do sửa chữa"

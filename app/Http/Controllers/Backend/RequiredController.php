@@ -9,7 +9,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\Required;
-use App\Models\SignatureSubmissions;
+use App\Models\SignatureSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -157,8 +157,6 @@ class RequiredController extends Controller
         $answers = $request->answer;
         $status = 1;
         $departmentId = $dataTablesType['from_dept'];
-        $employeeDepartments = EmployeeDepartment::where('department_id', $departmentId);
-        // dd($employeeDepartments);
         foreach ($answers as $key => $value) {
             if ($value == 0) {
                 $status = 0;
@@ -171,6 +169,7 @@ class RequiredController extends Controller
         }
         $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
         try {
+            DB::beginTransaction();
             $requireCode = 'R_' . now()->format('Ymdhis');
             $required = Required::create([
                 'code_required' => Auth::user()->username,
@@ -182,31 +181,37 @@ class RequiredController extends Controller
                 'from_type' => $dataTablesType['id'],
                 'status' => $status,
             ]);
+
+
+            foreach ($dataTablesIds as $dataTablesId) {
+                $emp_dept = EmployeeDepartment::where('department_id', $departmentId)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
+                if (count($emp_dept) == 0) {
+                    DB::rollBack();
+                    return redirect()->back()->withInput();
+                }
+                $signature = SignatureSubmission::create([
+                    'required_id' => $required->id,
+                    'department_id' => $request->selecDepartment,
+                    // 'content',
+                    'positions' => $dataTablesId,
+                    'approve_id' => json_encode($emp_dept),
+                    // 'sign_instead',
+                    // 'status',
+                ]);
+            }
+            DB::commit();
             session()->flash('success', "successfully.");
-            return redirect()->route('admin.requireds.index');
+            return redirect()->route('admin.checkCutMachine.index');
         } catch (\Exception $e) {
             session()->flash('error', "Failed to update: " . $e->getMessage());
+            DB::rollBack();
             return redirect()->back()->withInput();
         }
         //lưu dữ liệu vào signature_submissions table database
 
 
 
-        foreach ($employeeDepartments as $departmentItems) {
-            foreach ($dataTablesIds as $dataTablesId) {
-                if ($departmentItems->positions == $dataTablesId) {
-                    $signature = SignatureSubmissions::create([
-                        'required_id' => Auth::user()->id,
-                        'department_id' => $request->selecDepartment,
-                        // 'content',
-                        // 'positions',
-                        // 'approve_id',
-                        // 'sign_instead',
-                        // 'status',
-                    ]);
-                }
-            }
-        }
+
     }
     public function showCheckCutMachine(Request $request)
     {

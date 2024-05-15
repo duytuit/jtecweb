@@ -328,7 +328,7 @@ Route::group(['prefix' => 'checkCutMachine'], function () {
     // Route::get('/show', [CheckCutMachineController::class, 'show'])->name('checkCutMachine.show');
     Route::post('import', 'CheckCutMachineController@importExcelData')->name('importExcelData');
     Route::get('exportExcel', 'CheckCutMachineController@exportExcel')->name('exportExcel');
-    Route::post('action', [CheckCutMachineController::class, 'action'])->name('action');
+    Route::post('action', [CheckCutMachineController::class, 'action'])->name('checkCutMachine.action');
 });
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);

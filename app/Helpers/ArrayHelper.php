@@ -117,7 +117,7 @@ class ArrayHelper
             ],
             [
                 'id' => 2,
-                'from_dept' =>  [1], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
+                'from_dept' =>  [6], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
                 'to_dept' => [], // id bộ phận tiếp nhận
                 'confirm_from_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
@@ -329,11 +329,11 @@ class ArrayHelper
             ],
             [
                 'id' => 4,
-                'name' => 'Leader'
+                'name' => 'Sub Leader'
             ],
             [
                 'id' => 5,
-                'name' => 'Sub Leader'
+                'name' => 'Leader'
             ],
         ];
     }

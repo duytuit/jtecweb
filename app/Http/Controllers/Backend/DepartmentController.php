@@ -122,7 +122,6 @@ class DepartmentController extends Controller
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.departments.index');
         } catch (\Exception $e) {
-            return $this->error(['error', $e->getMessage()]);
             DB::rollBack();
             return back();
         }
@@ -159,7 +158,7 @@ class DepartmentController extends Controller
         $department = Department::find($id);
         $employeeDepartments = EmployeeDepartment::Where('department_id', $id)->where(function ($query) use ($request) {
             if (isset($request->ids) && $request->ids != null && count($request->ids) > 0) {
-                $query->whereIn('employee_id',$request->ids);
+                $query->whereIn('employee_id', $request->ids);
             }
         })->get();
         $positionTitles = ArrayHelper::positionTitle();
@@ -275,8 +274,8 @@ class DepartmentController extends Controller
     {
         $ids = json_decode($request->ids);
         foreach ($ids as $key => $id) {
-           $_employeeDepartment = EmployeeDepartment::where('employee_id',$id)->first();
-            if(!$_employeeDepartment){
+            $_employeeDepartment = EmployeeDepartment::where('employee_id', $id)->first();
+            if (!$_employeeDepartment) {
                 EmployeeDepartment::create([
                     'employee_id' => $id,
                     'department_id' => $request->departmentId,
@@ -294,7 +293,7 @@ class DepartmentController extends Controller
             'positions' => $positions
         ]);
         foreach ($employeeDepartments as $employeeDepartment) {
-            if ($employeeDepartment->positions == $positions && !in_array($employeeDepartment->positions,[4,5])) { // trừ sub leader và leader
+            if ($employeeDepartment->positions == $positions && !in_array($employeeDepartment->positions, [4, 5])) { // trừ sub leader và leader
                 $employeeDepartment->positions = 0;
                 $employeeDepartment->save();
             }

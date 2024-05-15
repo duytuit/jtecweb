@@ -6,6 +6,7 @@ use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Required;
+use App\Models\SignatureSubmission;
 use App\Exports\CheckCutMachineExport;
 use App\Imports\CheckCutMachineImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,7 +44,7 @@ class CheckCutMachineController extends Controller
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-        })->paginate($requireds['per_page']);
+        })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
         // dd($requireds['lists']);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
@@ -77,11 +78,36 @@ class CheckCutMachineController extends Controller
 
     public function action(Request $request)
     {
+        $userId = Auth::user()->id;
         $method = $request->input('method', '');
         if ($method == 'per_page') {
             $this->per_page($request);
             return back();
-        } else if ($method == 'restore_apartment') {
+        } else if ($method == 'active') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
+                    if ($signature_submissions && !in_array($userId, json_decode($signature_submissions->approve_id))) {
+                        return back()->with('error', 'Bạn không có quyền duyệt yêu cầu này!');
+                    }
+                    $signature_submissions->status = 1;
+                    $signature_submissions->signature_id = $userId;
+                    $signature_submissions->save();
+                }
+            }
+            return back()->with('success', 'thành công!');
+        } else if ($method == 'inactive') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
+                    if ($signature_submissions && !in_array($userId, json_decode($signature_submissions->approve_id))) {
+                        return back()->with('error', 'Bạn không có quyền duyệt yêu cầu này!');
+                    }
+                    $signature_submissions->status = 0;
+                    $signature_submissions->signature_id = 0;
+                    $signature_submissions->save();
+                }
+            }
             return back()->with('success', 'thành công!');
         } else if ($method == 'delete') {
             if (isset($request->ids)) {
