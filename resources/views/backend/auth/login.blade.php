@@ -6,7 +6,7 @@
         <div id="loginform">
             <div class="logo">
                 <span class="db"><img src="{{ asset('public/assets/frontend/images/logos/logo-jtec.png') }}" width="250" alt="logo" /></span>
-                <h5 class="font-medium m-b-20">Sign In to Admin</h5>
+                <h5 class="font-medium m-b-20">Đăng nhập trang quản trị</h5>
             </div>
             <!-- Form -->
             <div class="row">
@@ -40,14 +40,14 @@
                             <div class="col-md-12">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="remember" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                    <label class="custom-control-label" for="remember">Remember me</label>
-                                    <a href="{{ route('admin.password.request') }}" class="text-dark float-right"><i class="fa fa-lock m-r-5"></i> Forgot password?</a>
+                                    <label class="custom-control-label" for="remember">Ghi nhớ mật khẩu</label>
+                                    {{-- <a href="{{ route('admin.password.request') }}" class="text-dark float-right"><i class="fa fa-lock m-r-5"></i> Quên mật khẩu?</a> --}}
                                 </div>
                             </div>
                         </div>
                         <div class="form-group text-center">
                             <div class="col-xs-12 pb-2">
-                                <button class="btn btn-block btn-lg btn-info" type="submit">Log In</button>
+                                <button class="btn btn-block btn-lg btn-info" type="submit">Đăng nhập</button>
                             </div>
                         </div>
                     </form>

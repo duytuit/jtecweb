@@ -29,7 +29,7 @@
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
                             aria-expanded="false">
                             <i class="mdi mdi-account"></i>
-                            <span class="hide-menu">Users & Roles </span>
+                            <span class="hide-menu">Tài khoản & Quyền </span>
                         </a>
                         <ul aria-expanded="false"
                             class="collapse first-level {{ Route::is('admin.admins.index') || Route::is('admin.admins.create') || Route::is('admin.admins.edit') ? 'in' : null }}">
@@ -38,7 +38,7 @@
                                     <a href="{{ route('admin.admins.index') }}"
                                         class="sidebar-link {{ Route::is('admin.admins.index') || Route::is('admin.admins.edit') ? 'active' : null }}">
                                         <i class="mdi mdi-view-list"></i>
-                                        <span class="hide-menu"> User List </span>
+                                        <span class="hide-menu"> Danh sách tài khoản </span>
                                     </a>
                                 </li>
                             @endcan
@@ -48,7 +48,7 @@
                                     <a href="{{ route('admin.admins.create') }}"
                                         class="sidebar-link {{ Route::is('admin.admins.create') ? 'active' : null }}">
                                         <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> New User </span>
+                                        <span class="hide-menu"> Thêm tài khoản </span>
                                     </a>
                                 </li>
                             @endcan
@@ -58,7 +58,7 @@
                                     <a href="{{ route('admin.roles.index') }}"
                                         class="sidebar-link {{ Route::is('admin.roles.index') ? 'active' : null }}">
                                         <i class="mdi mdi-view-quilt"></i>
-                                        <span class="hide-menu"> Roles </span>
+                                        <span class="hide-menu"> Quyền </span>
                                     </a>
                                 </li>
                             @endcan
@@ -68,7 +68,7 @@
                                     <a href="{{ route('admin.roles.create') }}"
                                         class="sidebar-link {{ Route::is('admin.roles.create') ? 'active' : null }}">
                                         <i class="mdi mdi-plus-circle"></i>
-                                        <span class="hide-menu"> New Role </span>
+                                        <span class="hide-menu"> Thêm quyền </span>
                                     </a>
                                 </li>
                             @endcan
@@ -673,7 +673,7 @@
     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
         aria-expanded="false">
         <i class="mdi mdi-settings"></i>
-        <span class="hide-menu">Settings </span>
+        <span class="hide-menu">Cấu hình hệ thống</span>
     </a>
     <ul aria-expanded="false"
         class="collapse first-level {{ Route::is('admin.languages.index') || Route::is('admin.languages.create') || Route::is('admin.languages.edit') || Route::is('admin.languages.connection.index') ? 'in' : null }}">
@@ -681,14 +681,14 @@
             <a href="{{ route('admin.languages.index') }}"
                 class="sidebar-link {{ Route::is('admin.languages.index') || Route::is('admin.languages.create') || Route::is('admin.languages.edit') ? 'active' : null }}">
                 <i class="mdi mdi-plus-circle"></i>
-                <span class="hide-menu"> Languages </span>
+                <span class="hide-menu"> Ngôn ngữ </span>
             </a>
         </li>
         <li class="sidebar-item">
             <a href="{{ route('admin.settings.index') }}"
                 class="sidebar-link {{ Route::is('admin.settings.index') ? 'active' : null }}">
                 <i class="mdi mdi-settings"></i>
-                <span class="hide-menu"> Settings </span>
+                <span class="hide-menu"> Cài đặt </span>
             </a>
         </li>
     </ul>
@@ -701,7 +701,7 @@
                     document.getElementById('logout-form').submit();"
         aria-expanded="false">
         <i class="mdi mdi-directions"></i>
-        <span class="hide-menu">Log Out</span>
+        <span class="hide-menu">Đăng xuất</span>
     </a>
     <form id="logout-form" action="{{ route('admin.logout') }}" method="POST"
         style="display: none;">

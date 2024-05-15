@@ -9,9 +9,9 @@
         <div class="error-box">
             <div class="error-body text-center">
                 <h1 class="error-title">403</h1>
-                <h3 class="text-uppercase error-subtitle">FORBIDDON ERROR!</h3>
-                <p class="text-muted m-t-30 m-b-30">YOU DON'T HAVE PERMISSION TO DO THIS ACTION.</p>
-                <a href="{{ route('admin.index') }}" class="btn btn-primary btn-rounded waves-effect waves-light m-b-40"><i class="fa fa-arrow-left"></i> Back to home</a>
+                <h3 class="text-uppercase error-subtitle">Thông báo!</h3>
+                <p class="text-muted m-t-30 m-b-30">Bạn không có quyền cho hành động này.</p>
+                <a href="{{ route('admin.index') }}" class="btn btn-primary btn-rounded waves-effect waves-light m-b-40"><i class="fa fa-arrow-left"></i> Quay lại</a>
 
 
                 @if (Auth::check())
@@ -20,7 +20,7 @@
                         @csrf
                     </form>
                 @else
-                    <a href="{{ route('admin.login') }}" class="btn btn-info btn-rounded waves-effect waves-light m-b-40"> Login Again <i class="fa fa-arrow-right"></i></a>
+                    <a href="{{ route('admin.login') }}" class="btn btn-info btn-rounded waves-effect waves-light m-b-40"> Đăng nhập <i class="fa fa-arrow-right"></i></a>
                 @endif
             </div>
         </div>
