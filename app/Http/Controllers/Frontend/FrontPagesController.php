@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Schema\Blueprint;
 
 class FrontPagesController extends Controller
 {
@@ -130,11 +131,11 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
-        $date =explode("/",'20/09/1985');
-        dd(  'R_'.now()->format('Ymdhis'));
+        // $date = explode("/", '20/09/1985');
+        // dd('R_' . now()->format('Ymdhis'));
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
-        // $this->remaneTable();
+        $this->remaneTable();
         // $this->addEmployee();
         // $this->updateBeginDate();
         // $this->updateType();
@@ -200,11 +201,20 @@ class FrontPagesController extends Controller
             }
         }
     }
+
     public function remaneTable()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->renameColumn('image', 'avatar');
-        });
+        if (Schema::hasColumn('signature_submissions', 'sign_instead')) {
+            Schema::table('signature_submissions', function (Blueprint $table) {
+                $table->renameColumn('sign_instead', 'signature_id');
+            });
+        }
+
+        if (Schema::hasColumn('employees', 'image')) {
+            Schema::table('employees', function (Blueprint $table) {
+                $table->renameColumn('image', 'avatar');
+            });
+        }
     }
     public function store(Request $request)
     {
@@ -468,14 +478,14 @@ class FrontPagesController extends Controller
         foreach ($data[0] as $key => $value) {
             if ($key > 0) {
                 try {
-                    $emp = Employee::where('code',  (int)trim( $value[0]))->first();
+                    $emp = Employee::where('code',  (int)trim($value[0]))->first();
                     $dept = Department::where('name',  $value[2])->first();
-                    if(!$dept){
+                    if (!$dept) {
                         $dept = Department::create([
-                            'code'=>time(),
-                            'name'=>$value[2],
+                            'code' => time(),
+                            'name' => $value[2],
                             'parent_id' => 0,
-                            'status' =>1,
+                            'status' => 1,
                             'created_by' => 1,
                         ]);
                     }
@@ -490,16 +500,16 @@ class FrontPagesController extends Controller
                             $lastname = " ";
                         }
                         // Tạo nhân viên
-                        $begin_date_company=explode("/",$value[5]);
-                        $birthday=explode("/",$value[3]);
+                        $begin_date_company = explode("/", $value[5]);
+                        $birthday = explode("/", $value[3]);
                         $employee = Employee::create([
-                            'code' => (int)trim( $value[0]),
+                            'code' => (int)trim($value[0]),
                             'first_name' => $firstname,
                             'last_name' => $lastname,
-                            'begin_date_company' => $begin_date_company[2].'-'.$begin_date_company[1].'-'.$begin_date_company[0],
+                            'begin_date_company' => $begin_date_company[2] . '-' . $begin_date_company[1] . '-' . $begin_date_company[0],
                             'status' => 1,
                             'created_by' => 1,
-                            'birthday' => $birthday[2].'-'.$birthday[1].'-'.$birthday[0],
+                            'birthday' => $birthday[2] . '-' . $birthday[1] . '-' . $birthday[0],
                             'worker' => 3
 
                         ]); // Tạo một đối tượng Employee mới

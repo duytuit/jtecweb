@@ -126,7 +126,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->first_name . ' ' . $item->last_name }}</td>
-                                <td>{{ $item->process_id }}</td>
+                                <td>{{ @$item->employeeDepartment->department->name }}</td>
                                 <td>
                                     <a title="Sửa" class=" d-inline-block mx-1 btn-purple btn-sm text-white"
                                         href="{{ route('admin.employees.edit', ['id' => $item->id]) }}"><i

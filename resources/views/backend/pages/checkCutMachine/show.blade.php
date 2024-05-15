@@ -2,9 +2,9 @@
 
 @section('admin-content')
     <div class="container-fluid ">
-        <form id="form-search" action="{{ route('admin.requireds.showCheckCutMachine') }}" method="get">
+        <form id="form-search" action="{{ route('admin.checkCutMachine.show') }}" method="get">
             @csrf
-            {{-- <div class="row form-group">
+            <div class="row form-group">
                 <div class="col-sm-8">
                     <span class="btn-group">
                         <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span
@@ -16,12 +16,12 @@
                     </span>
                     <a href="{{ route('admin.requireds.index') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
                         mới</a>
-                    <span class="btn-group">
+                    {{-- <span class="btn-group">
                         <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Thêm từ Excel
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu import-excel">
                             <li>
-                                <form action="{{ route('admin.requireds.importExcelData') }}" method="POST"
+                                <form action="{{ route('admin.checkCutMachine.importExcelData') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="input-group">
@@ -33,8 +33,8 @@
                             </li>
                         </ul>
                     </span>
-                    <a href="{{ route('admin.requireds.exportExcel', Request::all()) }}" class="btn btn-success"><i
-                            class="fa fa-edit"></i> Xuất Excel</a>
+                    <a href="{{ route('admin.checkCutMachine.exportExcel', Request::all()) }}" class="btn btn-success"><i
+                            class="fa fa-edit"></i> Xuất Excel</a> --}}
                 </div>
                 <div class="col-sm-4 text-right">
                     <div class="input-group">
@@ -47,12 +47,11 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </form>
         <!-- END #form-search -->
         <!-- START #form-search-advance -->
-        <form id="form-search-advance" action="{{ route('admin.requireds.showCheckCutMachine') }}" method="get"
-            class="hidden">
+        <form id="form-search-advance" action="{{ route('admin.checkCutMachine.show') }}" method="get" class="hidden">
             <div id="search-advance" class="search-advance">
                 <div class="row form-group space-5">
                     <div class="col-sm-2">
@@ -103,5 +102,48 @@
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+        function deleteItem(params) {
+            swal.fire({
+                title: "Bạn có chắc chắn?",
+                text: "bản ghi này sẽ được chuyển vào thùng rác!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Vâng, Xóa nó!"
+            }).then((result) => {
+                if (result.value) {
+                    $("#deleteForm" + params).submit();
+                }
+            })
+        }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('.import-js').click(function(event) {
+            event.preventDefault();
+            let formData = new FormData($('#importForm')[0]);
+            formData.append("_token", "{{ csrf_token() }}");
+            formData.append("import_file", $('input[name=import_file]')[0].files[0]);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('admin.checkCutMachine.importExcelData') }}",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: (response) => {
+                    console.log(response);
+                    if (response) {
+                        window.location.reload();
+                        // window.location.href = "{{ route('admin.departments.index') }}";
+                    }
+                },
+                error: function(response) {
+
+                }
+            });
+        });
+    </script>
 @endsection

@@ -93,7 +93,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
 
         Route::get('ajaxGetSelectCode', 'DepartmentController@ajaxGetSelectCode')->name('ajaxGetSelectCode');
         Route::post('changePositionTitle', 'DepartmentController@changePositionTitle')->name('changePositionTitle');
-
+        Route::post('import', 'DepartmentController@importExcelData')->name('importExcelData');
         Route::get('exportExcel', 'DepartmentController@exportExcel')->name('exportExcel');
         Route::post('store', 'DepartmentController@store')->name('store');
         Route::post('update/{id}', 'DepartmentController@update')->name('update');
@@ -103,8 +103,6 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
 
         Route::post('destroyEmployeeDepartments', 'DepartmentController@destroyEmployeeDepartments')->name('destroyEmployeeDepartments');
-
-        Route::post('import', 'DepartmentController@importExcelData')->name('importExcelData');
     });
 
     /**
@@ -326,8 +324,11 @@ Route::group(['prefix' => 'checkTension'], function () {
 // Check cutting machine every day
 Route::group(['prefix' => 'checkCutMachine'], function () {
     Route::get('/', [CheckCutMachineController::class, 'index'])->name('checkCutMachine.index');
-    Route::get('/show', [CheckCutMachineController::class, 'show'])->name('checkCutMachine.show');
-
+    Route::get('/create', [CheckCutMachineController::class, 'create'])->name('checkCutMachine.create');
+    // Route::get('/show', [CheckCutMachineController::class, 'show'])->name('checkCutMachine.show');
+    Route::post('import', 'CheckCutMachineController@importExcelData')->name('importExcelData');
+    Route::get('exportExcel', 'CheckCutMachineController@exportExcel')->name('exportExcel');
+    Route::post('action', [CheckCutMachineController::class, 'action'])->name('action');
 });
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);

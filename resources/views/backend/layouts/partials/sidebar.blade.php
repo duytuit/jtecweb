@@ -260,13 +260,13 @@
         <li class="sidebar-item">
             <a class="sidebar-link" href="{{ url('admin/checkCutMachine') }}">
                 <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Kiểm tra </span>
+                <span class="hide-menu"> Danh sách kiểm tra máy cắt</span>
             </a>
         </li>
         <li class="sidebar-item">
-            <a class="sidebar-link" href="{{ url('admin/checkCutMachine/show') }}">
+            <a class="sidebar-link" href="{{ url('admin/checkCutMachine/create') }}">
                 <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Xem dữ liệu </span>
+                <span class="hide-menu"> Kiểm tra máy cắt nhỏ</span>
             </a>
         </li>
     </ul>

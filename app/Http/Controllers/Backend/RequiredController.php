@@ -9,9 +9,12 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\Required;
+use App\Models\SignatureSubmissions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 class RequiredController extends Controller
 {
@@ -148,10 +151,18 @@ class RequiredController extends Controller
     public function requireCheckListMachineCut(Request $request)
     {
         $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
+        $dataTablesIds = ArrayHelper::formTypeJobs()[1]['confirm_by_from_dept'];
         $dataTablesType = ArrayHelper::formTypeJobs()[1];
         $dataTables['name_machine'] = $request->selecMachine;
         $answers = $request->answer;
+        $status = 1;
+        $departmentId = $dataTablesType['from_dept'];
+        $employeeDepartments = EmployeeDepartment::where('department_id', $departmentId);
+        // dd($employeeDepartments);
         foreach ($answers as $key => $value) {
+            if ($value == 0) {
+                $status = 0;
+            }
             if (!is_null($value) && $value !== '') {
                 $dataTables['check_list'][$key]['answer'] = $value;
             } else {
@@ -169,13 +180,32 @@ class RequiredController extends Controller
                 'code' => $requireCode,
                 'content' => $request->repair_history,
                 'from_type' => $dataTablesType['id'],
+                'status' => $status,
             ]);
-
             session()->flash('success', "successfully.");
-            return redirect()->route('admin.requireds.show');
+            return redirect()->route('admin.requireds.index');
         } catch (\Exception $e) {
             session()->flash('error', "Failed to update: " . $e->getMessage());
             return redirect()->back()->withInput();
+        }
+        //lưu dữ liệu vào signature_submissions table database
+
+
+
+        foreach ($employeeDepartments as $departmentItems) {
+            foreach ($dataTablesIds as $dataTablesId) {
+                if ($departmentItems->positions == $dataTablesId) {
+                    $signature = SignatureSubmissions::create([
+                        'required_id' => Auth::user()->id,
+                        'department_id' => $request->selecDepartment,
+                        // 'content',
+                        // 'positions',
+                        // 'approve_id',
+                        // 'sign_instead',
+                        // 'status',
+                    ]);
+                }
+            }
         }
     }
     public function showCheckCutMachine(Request $request)
@@ -205,7 +235,7 @@ class RequiredController extends Controller
             ]);
 
             session()->flash('success', "successfully.");
-            return redirect()->route('admin.requireds.show');
+            return redirect()->route('admin.checkCutMachine.index');
         } catch (\Exception $e) {
             session()->flash('error', "Failed to update: " . $e->getMessage());
             return redirect()->back()->withInput();
@@ -226,5 +256,25 @@ class RequiredController extends Controller
         $accessorysCode = $request->input('selectedValue');
         $data = Accessory::where('code', $accessorysCode)->first();
         return response()->json($data);
+    }
+    public function destroyCheckCutMachine(Request $request)
+    {
+        $id = $request->input('id');
+        if (is_null($this->user) || !$this->user->can('required.delete')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+
+        $requireds = Required::find($id);
+        if (is_null($requireds)) {
+            session()->flash('error', "Nội dung đã được xóa hoặc không tồn tại !");
+            return redirect()->route('admin.checkCutMachine.index');
+        }
+        $requireds->deleted_at = Carbon::now();
+        $requireds->deleted_by = Auth::id();
+        $requireds->save();
+
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
+        return redirect()->route('admin.checkCutMachine.edit');
     }
 }
