@@ -6,6 +6,18 @@ use Carbon\Carbon;
 
 class ArrayHelper
 {
+    public static function getModels()
+    {
+        return collect(get_declared_classes())->filter(function ($item) {
+            return (substr($item, 0, 11) === 'App\Models\\');
+        });
+    }
+    public static function decode_string($value)
+    {
+        return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+            return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+        },$value);
+    }
     public static function objArraySearch($array, $key, $value)
     {
         foreach ($array as $arraySingle) {

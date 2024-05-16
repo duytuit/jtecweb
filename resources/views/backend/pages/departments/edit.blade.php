@@ -93,6 +93,9 @@
                                         </select>
                                     </td>
                                     <td>
+                                        <a title="Lịch sử thao tác" target="_blank" class="d-inline-block btn-info btn-sm text-white"
+                                        href="{{ route('admin.activitys.index', ['modelId' => $item->id,'content_type' =>get_class($item)]) }}"><i
+                                            class="fa fa-history"></i> </a>
                                         <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white delete_js" href=""
                                             onclick="deletefromED(this,{{ $employeeDepartment->id }})"><i class="fa fa-trash"></i></a>
                                     </td>

@@ -118,8 +118,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('store', 'ActivityController@store')->name('store');
         Route::post('update', 'ActivityController@update')->name('update');
         Route::post('action', 'ActivityController@action')->name('action');
+        Route::get('trashed/destroy/{id}', 'ActivityController@destroyTrash')->name('trashed.destroy');
+        Route::get('trashed/view', 'ActivityController@trashed')->name('trashed');
         Route::put('trashed/revert/{id}', 'ActivityController@revertFromTrash')->name('trashed.revert');
-        Route::delete('trashed/destroy/{id}', 'ActivityController@destroyTrash')->name('trashed.destroy');
     });
 
     /**
