@@ -50,13 +50,6 @@ class RequiredController extends Controller
         $formTypeJobs = ArrayHelper::formTypeJobs();
         $positionTitles = ArrayHelper::positionTitle();
         $required = new Required();
-        // $username = Auth::user()->username;
-        // $employee['employeeCode'] = Employee::where('code', $username)->firstOrFail();
-        // $employees = Employee::where('code',$employeeDepartment->employee_id,)->firstOrFail();
-        // $employeeDepartment = EmployeeDepartment::where('employee_id', $employee->id)->firstOrFail();
-        // $department = Department::where('id', $employee->process_id)->firstOrFail();
-        // $employeeDepartments = EmployeeDepartment::where('department_id', $department->id,)->firstOrFail();
-
         $employees = Employee::all();
         $employeeDepartments = EmployeeDepartment::all();
         $departments = Department::all();
@@ -172,11 +165,11 @@ class RequiredController extends Controller
             DB::beginTransaction();
             $requireCode = 'R_' . now()->format('Ymdhis');
             $required = Required::create([
-                'code_required' => Auth::user()->username,
-                'created_by' => Auth::user()->id,
+                'code_required' => $requireCode,
+                'created_by' => Auth::user()->employee_id,
                 'content_form' => $json_data,
                 'required_department_id' => $request->departmentId,
-                'code' => $requireCode,
+                'code' => '',
                 'content' => $request->repair_history,
                 'from_type' => $dataTablesType['id'],
                 'status' => $status,
@@ -225,11 +218,11 @@ class RequiredController extends Controller
         try {
             $requireCode = 'R_' . now()->format('Ymdhis');
             $required = Required::create([
-                'code_required' => Auth::user()->username,
-                'created_by' => Auth::user()->id,
+                'code_required' => $requireCode,
+                'created_by' => Auth::user()->employee_id,
                 'content_form' => $json_data,
                 'required_department_id' => $request->selecDepartment,
-                'code' => $requireCode,
+                'code' => '',
                 'content' => $request->repair_history,
                 'from_type' => $dataTablesType['id'],
             ]);

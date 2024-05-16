@@ -292,6 +292,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('import', 'CheckCutMachineController@importExcelData')->name('importExcelData');
         Route::get('exportExcel', 'CheckCutMachineController@exportExcel')->name('exportExcel');
         Route::post('action', 'CheckCutMachineController@action')->name('action');
+        Route::get('trashed/destroy/{id}', 'CheckCutMachineController@destroyTrash')->name('trashed.destroy');
     });
 
     /**

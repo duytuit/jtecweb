@@ -11,10 +11,11 @@ use App\Exports\CheckCutMachineExport;
 use App\Imports\CheckCutMachineImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cookie;
-
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -32,6 +33,7 @@ class CheckCutMachineController extends Controller
 
     public function index(Request $request)
     {
+        // dd(@Auth::user()->employee->code);
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
@@ -49,10 +51,12 @@ class CheckCutMachineController extends Controller
     }
     public function create()
     {
+
         $formTypeJobs = ArrayHelper::formTypeJobs()[1]['data_table']['check_list'];
         $machineLists = ArrayHelper::machineList();
-        $username = Auth::user()->username;
-        $employee = Employee::where('code', $username)->first();
+        $employee_id = Auth::user()->employee_id;
+        // dd($employee_id);
+        $employee = Employee::where('id', $employee_id)->first();
         // dd($employee);
         if (is_null($employee)) {
             session()->flash('error', "Bạn không có quyền vào mục này");
@@ -78,8 +82,7 @@ class CheckCutMachineController extends Controller
     public function action(Request $request)
     {
         $userId = Auth::user()->username;
-        $employeeId_get = Employee::where('code', $userId)->first()->id;
-        // dd($employeeId_get);
+        $employee_id = Auth::user()->employee_id;
         $method = $request->input('method', '');
         // dd($method);
         if ($method == 'per_page') {
@@ -91,25 +94,25 @@ class CheckCutMachineController extends Controller
                     // dd($value);
                     $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
                     // dd($signature_submissions);
-                    if ($signature_submissions && !in_array($employeeId_get, json_decode($signature_submissions->approve_id))) {
-                        // dd($value . $userId . $signature_submissions->approve_id);
+                    if ($signature_submissions && !in_array($employee_id, json_decode($signature_submissions->approve_id))) {
                         return back()->with('error', 'Bạn không có quyền duyệt yêu cầu này!---');
                     }
                     // if ($signature_submissions->status = 1) {
                     //     return back()->with('error', 'Yêu cầu này đã được duyệt');
                     // }
                     $signature_submissions->status = 1;
-                    $signature_submissions->signature_id = $userId;
+                    $signature_submissions->signature_id = $employee_id;
                     $signature_submissions->save();
                 }
             }
             return back()->with('success', 'thành công!');
         } else if ($method == 'inactive_check') {
             if (isset($request->ids)) {
+                // dd($request->ids);
                 foreach ($request->ids as $key => $value) {
-                    $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
-                    if ($signature_submissions && !in_array($userId, json_decode($signature_submissions->approve_id))) {
-                        return back()->with('error', 'Bạn không có quyền duyệt yêu cầu này!');
+                    $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 1)->first();
+                    if ($signature_submissions && !in_array($employee_id, json_decode($signature_submissions->approve_id))) {
+                        return back()->with('error', 'Bạn không có quyền bỏ duyệt yêu cầu này!');
                     }
                     $signature_submissions->status = 0;
                     $signature_submissions->signature_id = 0;
@@ -140,5 +143,20 @@ class CheckCutMachineController extends Controller
             }
         })->orderBy('code')->get();
         return (new CheckCutMachineExport($data))->download('Required-export.xlsx');
+    }
+    public function destroyTrash($id)
+    {
+        $required = Required::find($id);
+        if (is_null($required)) {
+            session()->flash('error', "Nội dung đã được xóa hoặc không tồn tại !");
+            return redirect()->route('admin.required.index');
+        }
+        $required->deleted_at = Carbon::now();
+        $required->deleted_by = Auth::id();
+        $required->status = 0;
+        $required->save();
+        $required->delete();
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
+        return redirect()->route('admin.checkCutMachine.index');
     }
 }
