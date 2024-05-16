@@ -606,7 +606,7 @@
     </li>
 @endif
 
-@if ($user->can('activity.view') || $user->can('activity.create'))
+@if ($user->can('activity.create'))
     <li class="sidebar-item ">
         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
             aria-expanded="false">
@@ -615,7 +615,6 @@
         </a>
         <ul aria-expanded="false"
             class="collapse first-level {{ Route::is('admin.activitys.index') || Route::is('admin.activitys.create') || Route::is('admin.activitys.edit') ? 'in' : null }}">
-            @if ($user->can('activity.view'))
                 <li class="sidebar-item">
                     <a href="{{ route('admin.activitys.index') }}"
                         class="sidebar-link {{ Route::is('admin.activitys.index') || Route::is('admin.activitys.edit') ? 'active' : null }}">
@@ -623,17 +622,6 @@
                         <span class="hide-menu"> Danh sách </span>
                     </a>
                 </li>
-            @endif
-
-            {{-- @if ($user->can('activity.create'))
-                <li class="sidebar-item">
-                    <a href="{{ route('admin.activitys.create') }}"
-                        class="sidebar-link {{ Route::is('admin.activitys.create') ? 'active' : null }}">
-                        <i class="mdi mdi-plus-circle"></i>
-                        <span class="hide-menu"> Cấu hình </span>
-                    </a>
-                </li>
-            @endif --}}
         </ul>
     </li>
 @endif

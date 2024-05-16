@@ -107,6 +107,7 @@ use App\Models\Department;
                             <th>Đợt thi</th>
                             <th>Lần thi</th>
                             <th>Kết quả</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -175,7 +176,11 @@ use App\Models\Department;
                                     <span class="badge badge-warning">Chưa Đạt</span>
                                 @endif
                             </td>
-
+                            <td>
+                                <a title="Lịch sử thao tác" target="_blank" class="d-inline-block btn-info btn-sm text-white"
+                                href="{{ route('admin.activitys.index', ['modelId' => $item->id,'content_type' =>get_class($item)]) }}"><i
+                                    class="fa fa-history"></i> </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

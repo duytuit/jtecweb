@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->increments('activity_id');
+            $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('content_id');
             $table->string('content_type', 255);

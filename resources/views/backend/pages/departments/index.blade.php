@@ -98,6 +98,9 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->status }}</td>
                                 <td>
+                                    <a title="Lịch sử thao tác" target="_blank" class="d-inline-block btn-info btn-sm text-white"
+                                    href="{{ route('admin.activitys.index', ['modelId' => $item->id,'content_type' =>get_class($item)]) }}"><i
+                                        class="fa fa-history"></i> </a>
                                     <a title="Sửa" class=" d-inline-block mx-1 btn-purple btn-sm text-white"
                                         href="{{ route('admin.departments.edit', ['id' => $item->id]) }}"><i
                                             class="fa fa-edit"></i> </a>
