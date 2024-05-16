@@ -23,4 +23,8 @@ class SignatureSubmission extends Model
         'updated_at',
 
     ];
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'signature_id', 'code');
+    }
 }

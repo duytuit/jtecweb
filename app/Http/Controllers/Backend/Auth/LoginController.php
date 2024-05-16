@@ -39,7 +39,7 @@ class LoginController extends Controller
         //Validate the form data
         $request->validate([
             'username'         => 'required',
-            'password'         => 'required|min:6'
+            'password'         => 'required|min:4'
         ]);
 
         //Attempt to log the employee in

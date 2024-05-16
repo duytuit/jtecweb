@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cookie;
 
 use App\Models\Employee;
+use App\Models\EmployeeDepartment;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -31,12 +32,6 @@ class CheckCutMachineController extends Controller
 
     public function index(Request $request)
     {
-        $formTypeJobs = ArrayHelper::formTypeJobs()[1]['data_table']['check_list'];
-        $machineLists = ArrayHelper::machineList();
-        $username = Auth::user()->username;
-        $employee = Employee::where('code', $username)->first();
-        $departmentId = $employee->process_id;
-        $departments = Department::all();
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
@@ -45,24 +40,27 @@ class CheckCutMachineController extends Controller
                 $query->filter($request);
             }
         })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
-        // dd($requireds['lists']);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
             $requireds['advance'] = 1;
             $requireds['filter'] = $request->all();
         }
-
-        return view('backend.pages.checkCutMachine.index', compact('formTypeJobs', 'machineLists', 'departments', 'employee', 'departmentId'), $requireds);
+        return view('backend.pages.checkCutMachine.index', $requireds);
     }
     public function create()
     {
         $formTypeJobs = ArrayHelper::formTypeJobs()[1]['data_table']['check_list'];
         $machineLists = ArrayHelper::machineList();
         $username = Auth::user()->username;
-        $employee = Employee::where('code', $username)->firstOrFail();
-        $departmentId = $employee->process_id;
-        $departments = Department::all();
-        return view('backend.pages.checkCutMachine.create', compact('formTypeJobs', 'machineLists', 'departments', 'employee', 'departmentId'));
+        $employee = Employee::where('code', $username)->first();
+        // dd($employee);
+        if (is_null($employee)) {
+            session()->flash('error', "Bạn không có quyền vào mục này");
+            return redirect()->route('admin.checkCutMachine.index');
+        }
+        $employee_department = EmployeeDepartment::where('employee_id', $employee->id)->first();
+        // dd($departmentId);
+        return view('backend.pages.checkCutMachine.create', compact('formTypeJobs', 'machineLists', 'employee', 'employee_department'));
     }
     public function importExcelData(Request $request)
     {
@@ -79,7 +77,9 @@ class CheckCutMachineController extends Controller
 
     public function action(Request $request)
     {
-        $userId = Auth::user()->id;
+        $userId = Auth::user()->username;
+        $employeeId_get = Employee::where('code', $userId)->first()->id;
+        // dd($employeeId_get);
         $method = $request->input('method', '');
         // dd($method);
         if ($method == 'per_page') {
@@ -88,10 +88,16 @@ class CheckCutMachineController extends Controller
         } else if ($method == 'active_check') {
             if (isset($request->ids)) {
                 foreach ($request->ids as $key => $value) {
+                    // dd($value);
                     $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
-                    if ($signature_submissions && !in_array($userId, json_decode($signature_submissions->approve_id))) {
-                        return back()->with('error', 'Bạn không có quyền duyệt yêu cầu này!');
+                    // dd($signature_submissions);
+                    if ($signature_submissions && !in_array($employeeId_get, json_decode($signature_submissions->approve_id))) {
+                        // dd($value . $userId . $signature_submissions->approve_id);
+                        return back()->with('error', 'Bạn không có quyền duyệt yêu cầu này!---');
                     }
+                    // if ($signature_submissions->status = 1) {
+                    //     return back()->with('error', 'Yêu cầu này đã được duyệt');
+                    // }
                     $signature_submissions->status = 1;
                     $signature_submissions->signature_id = $userId;
                     $signature_submissions->save();

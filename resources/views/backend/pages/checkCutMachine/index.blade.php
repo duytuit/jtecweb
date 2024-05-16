@@ -177,11 +177,48 @@
                                     @if ($item->signatureSubmission)
                                         @foreach ($item->signatureSubmission as $index2 => $item2)
                                             @if ($item2->positions == 4)
-                                                <div>SubLeader: {{ $item2->status == 0 ? 'chưa duyệt' : 'đã duyệt' }} <i
-                                                        class="fa fa-check" style="color: green;"></i></div>
+                                                <div>SubLeader:
+                                                    @if ($item2->status == 0)
+                                                        <span> chưa duyệt </span>
+                                                        <span class="btn btn-outline-danger"
+                                                            style="padding: 0.15rem 0.5rem;">
+                                                            <i class="fa fa-times" style="color: red;"></i>
+                                                        </span>
+                                                    @else
+                                                        <button type="button" class="border-0 bg-transparent "
+                                                            data-toggle="tooltip" data-html="true"
+                                                            data-placement="bottom"
+                                                            title="{{ 'Leader: ' . $item2->employee->first_name . $item2->employee->last_name }} <br>
+                                                    {{ 'Duyệt lúc: ' . $item2->updated_at }} ">
+                                                            <span> Đã duyệt </span>
+                                                            <span style="padding: 0.15rem 0.5rem;"
+                                                                class="btn btn-outline-success"><i class="fa fa-check"
+                                                                    style="color: green;"></i></span>
+                                                        </button>
+                                                    @endif
+                                                </div>
                                             @else
-                                                <div>Leader: {{ $item2->status == 0 ? 'chưa duyệt' : 'đã duyệt' }} <i
-                                                        class="fa fa-check" style="color: green;"></i></div>
+                                                <div>
+                                                    Leader:
+                                                    @if ($item2->status == 0)
+                                                        <span>chưa duyệt</span>
+                                                        <span class="btn btn-outline-danger"
+                                                            style="padding: 0.15rem 0.5rem;">
+                                                            <i class="fa fa-times" style="color: red;"></i>
+                                                        </span>
+                                                    @else
+                                                        <button type="button" class="border-0 bg-transparent "
+                                                            data-toggle="tooltip" data-html="true"
+                                                            data-placement="bottom"
+                                                            title="{{ 'Leader: ' . $item2->employee->first_name . $item2->employee->last_name }} <br>
+                                                            {{ 'Duyệt lúc: ' . $item2->updated_at }} ">
+                                                            <span> Đã duyệt </span>
+                                                            <span style="padding: 0.15rem 0.5rem;"
+                                                                class="btn btn-outline-success"><i class="fa fa-check"
+                                                                    style="color: green;"></i></span>
+                                                        </button>
+                                                    @endif
+                                                </div>
                                             @endif
                                         @endforeach
                                     @endif
@@ -230,6 +267,10 @@
 
 @section('scripts')
     <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+
         $('input.date_picker').datepicker({
             autoclose: true,
             dateFormat: "dd-mm-yy"

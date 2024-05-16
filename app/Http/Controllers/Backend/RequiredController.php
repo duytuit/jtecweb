@@ -175,7 +175,7 @@ class RequiredController extends Controller
                 'code_required' => Auth::user()->username,
                 'created_by' => Auth::user()->id,
                 'content_form' => $json_data,
-                'required_department_id' => $request->selecDepartment,
+                'required_department_id' => $request->departmentId,
                 'code' => $requireCode,
                 'content' => $request->repair_history,
                 'from_type' => $dataTablesType['id'],
@@ -184,14 +184,14 @@ class RequiredController extends Controller
 
             //lưu dữ liệu vào signature_submissions table database
             foreach ($dataTablesIds as $dataTablesId) {
-                $emp_dept = EmployeeDepartment::where('department_id', $departmentId)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
+                $emp_dept = EmployeeDepartment::whereIn('department_id', $departmentId)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
                 if (count($emp_dept) == 0) {
                     DB::rollBack();
                     return redirect()->back()->withInput();
                 }
                 $signature = SignatureSubmission::create([
                     'required_id' => $required->id,
-                    'department_id' => $request->selecDepartment,
+                    'department_id' => $request->departmentId,
                     // 'content',
                     'positions' => $dataTablesId,
                     'approve_id' => json_encode($emp_dept),

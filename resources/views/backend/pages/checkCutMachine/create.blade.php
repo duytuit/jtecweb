@@ -5,17 +5,11 @@
         <form action="{{ route('admin.requireds.requireCheckListMachineCut') }}" method="POST" data-parsley-validate
             data-parsley-focus="first">
             @csrf
+            <input type="hidden" name="departmentId" value="{{ $employee_department->department_id }}">
             <div class="">
                 <h1 class="title text-center ">BẢNG KIỂM TRA HÀNG NGÀY MÁY CẮT</h1>
                 <div class="text-center font-20">
-                    <strong>Bộ phận: </strong>
-                    <select name="selecDepartment" class="department-select">
-                        @foreach ($departments as $department)
-                            <option {{ $departmentId == $department->id ? 'selected' : '' }} value="{{ $department->id }}">
-                                {{ $department->name }}</option>
-                        @endforeach
-                    </select>
-
+                    <strong>Bộ phận: {{ $employee_department->department->name }}</strong>
                     | <span>Máy: </span>
                     <select name="selecMachine" class="machine-select">
                         @foreach ($machineLists as $machineList)
