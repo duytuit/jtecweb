@@ -16,9 +16,10 @@
                         <ul class="dropdown-menu">
                             <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i
                                         class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
-                            <li><a class="btn-action" data-target="#form_lists" data-method="active" href="javascript:;"><i
-                                        class="fa fa-check-circle" style="color: #3800df;"></i> Duyệt</a></li>
-                            <li><a class="btn-action" data-target="#form_lists" data-method="inactive"
+                            <li><a class="btn-action" data-target="#form_lists" data-method="active_check"
+                                    href="javascript:;"><i class="fa fa-check-circle" style="color: #3800df;"></i> Duyệt</a>
+                            </li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="inactive_check"
                                     href="javascript:;"><i class="fa fa-check-circle" style="color: #3800df;"></i> Bỏ
                                     duyệt</a></li>
                         </ul>
@@ -186,13 +187,14 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a title="Xem lý do sửa chữa"
-                                        class=" d-inline-block mx-1 btn-purple btn-sm text-white"
-                                        href="{{ route('admin.departments.edit', ['id' => $item->id]) }}"><i
-                                            class="fa fa-eye"></i> </a>
+                                    <a title="Xem lịch sử sửa chữa"
+                                        class=" d-inline-block mx-1 btn-purple btn-sm text-white" href="">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
                                     <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
-                                        href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}"><i
-                                            class="fa fa-trash"></i> </a>
+                                        href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

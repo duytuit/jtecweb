@@ -21,20 +21,20 @@ class CheckCutMachineController extends Controller
 {
     public $user;
 
-    // public function __construct()
-    // {
-    //     $this->middleware(function ($request, $next) {
-    //         $this->user = Auth::user();
-    //         return $next($request);
-    //     });
-    // }
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+    }
 
     public function index(Request $request)
     {
         $formTypeJobs = ArrayHelper::formTypeJobs()[1]['data_table']['check_list'];
         $machineLists = ArrayHelper::machineList();
         $username = Auth::user()->username;
-        $employee = Employee::where('code', $username)->firstOrFail();
+        $employee = Employee::where('code', $username)->first();
         $departmentId = $employee->process_id;
         $departments = Department::all();
         $requireds['keyword'] = $request->input('keyword', null);
@@ -51,6 +51,7 @@ class CheckCutMachineController extends Controller
             $requireds['advance'] = 1;
             $requireds['filter'] = $request->all();
         }
+
         return view('backend.pages.checkCutMachine.index', compact('formTypeJobs', 'machineLists', 'departments', 'employee', 'departmentId'), $requireds);
     }
     public function create()
@@ -80,10 +81,11 @@ class CheckCutMachineController extends Controller
     {
         $userId = Auth::user()->id;
         $method = $request->input('method', '');
+        // dd($method);
         if ($method == 'per_page') {
             $this->per_page($request);
             return back();
-        } else if ($method == 'active') {
+        } else if ($method == 'active_check') {
             if (isset($request->ids)) {
                 foreach ($request->ids as $key => $value) {
                     $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
@@ -96,7 +98,7 @@ class CheckCutMachineController extends Controller
                 }
             }
             return back()->with('success', 'thành công!');
-        } else if ($method == 'inactive') {
+        } else if ($method == 'inactive_check') {
             if (isset($request->ids)) {
                 foreach ($request->ids as $key => $value) {
                     $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();

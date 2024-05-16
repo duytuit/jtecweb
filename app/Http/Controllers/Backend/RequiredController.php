@@ -182,7 +182,7 @@ class RequiredController extends Controller
                 'status' => $status,
             ]);
 
-
+            //lưu dữ liệu vào signature_submissions table database
             foreach ($dataTablesIds as $dataTablesId) {
                 $emp_dept = EmployeeDepartment::where('department_id', $departmentId)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
                 if (count($emp_dept) == 0) {
@@ -207,11 +207,6 @@ class RequiredController extends Controller
             DB::rollBack();
             return redirect()->back()->withInput();
         }
-        //lưu dữ liệu vào signature_submissions table database
-
-
-
-
     }
     public function showCheckCutMachine(Request $request)
     {

@@ -282,6 +282,36 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::put('trashed/revert/{id}', 'SignatureSubmissionController@revertFromTrash')->name('trashed.revert');
         Route::delete('trashed/destroy/{id}', 'SignatureSubmissionController@destroyTrash')->name('trashed.destroy');
     });
+
+    // Check cutting machine every day
+    Route::prefix('checkCutMachine')->name('checkCutMachine.')->group(function () {
+        Route::get('/', 'CheckCutMachineController@index')->name('index');
+        Route::get('/create', 'CheckCutMachineController@create')->name('create');
+        // Route::get('/show', 'CheckCutMachineController@show')->name('show');
+        Route::post('import', 'CheckCutMachineController@importExcelData')->name('importExcelData');
+        Route::get('exportExcel', 'CheckCutMachineController@exportExcel')->name('exportExcel');
+        Route::post('action', 'CheckCutMachineController@action')->name('action');
+    });
+
+    /**
+     * Productivity Management Routes
+     */
+    Route::prefix('productvt')->name('productvt.')->group(function () {
+        Route::get('', 'ProductvtController@index')->name('index');
+        Route::get('/user-input', 'ProductvtController@UserInput')->name('user-input');
+        Route::get('/edit', 'ProductvtController@ProductvtEdit')->name('edit');
+        Route::post('', 'ProductvtController@ProductvtData')->name('view');
+    });
+
+    /**
+     * 張力を確認してください / Kiểm tra sức căng / Check Tension
+     */
+    Route::prefix('checkTension')->name('checkTension.')->group(function () {
+        Route::get('/', 'CheckTensionController@index')->name('index');
+        Route::post('/complete', 'CheckTensionController@saveData')->name('complete');
+        Route::get('/view', 'CheckTensionController@viewData')->name('view');
+        Route::get('/exportExcel', 'CheckTensionController@exportExcel')->name('exportExcel');
+    });
 });
 
 /**
@@ -300,35 +330,5 @@ Route::group(['prefix' => 'settings'], function () {
     Route::resource('languages', LanguagesController::class);
 });
 
-/**
- * Productivity Management Routes
- */
-Route::group(['prefix' => 'productvt'], function () {
-    Route::get('', [ProductvtController::class, 'index'])->name('productvt.index');
-    Route::get('/user-input', [ProductvtController::class, 'UserInput'])->name('productvt.user-input');
-    Route::get('/edit', [ProductvtController::class, 'ProductvtEdit'])->name('productvt.edit');
-    Route::post('', [ProductvtController::class, 'ProductvtData'])->name('productvt.view');
-});
-
-/**
- * 張力を確認してください / Kiểm tra sức căng / Check Tension
- */
-
-Route::group(['prefix' => 'checkTension'], function () {
-    Route::get('/', [CheckTensionController::class, 'index'])->name('checkTension.index');
-    Route::post('/complete', [CheckTensionController::class, 'saveData'])->name('checkTension.complete');
-    Route::get('/view', [CheckTensionController::class, 'viewData'])->name('checkTension.view');
-    Route::get('/exportExcel', [CheckTensionController::class, 'exportExcel'])->name('checkTension.exportExcel');
-});
-
-// Check cutting machine every day
-Route::group(['prefix' => 'checkCutMachine'], function () {
-    Route::get('/', [CheckCutMachineController::class, 'index'])->name('checkCutMachine.index');
-    Route::get('/create', [CheckCutMachineController::class, 'create'])->name('checkCutMachine.create');
-    // Route::get('/show', [CheckCutMachineController::class, 'show'])->name('checkCutMachine.show');
-    Route::post('import', 'CheckCutMachineController@importExcelData')->name('importExcelData');
-    Route::get('exportExcel', 'CheckCutMachineController@exportExcel')->name('exportExcel');
-    Route::post('action', [CheckCutMachineController::class, 'action'])->name('checkCutMachine.action');
-});
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);
