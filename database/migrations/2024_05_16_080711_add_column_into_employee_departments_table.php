@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::table('employee_departments', function (Blueprint $table) {
             $table->integer('unit_id')->nullable()->comment('khối');
-            $table->integer('dept_id')->nullable()->comment('phòng');
             $table->integer('team_id')->nullable()->comment('ban');
             $table->integer('process_id')->nullable()->comment('công đoạn');
         });
