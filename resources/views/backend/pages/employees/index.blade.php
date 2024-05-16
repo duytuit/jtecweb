@@ -20,9 +20,9 @@
                             <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i
                                         class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
                             <li><a class="btn-action" data-target="#form_lists" data-method="report" href="javascript:;"><i
-                                class="fa fa-save"></i> Có thống kê</a></li>
-                                <li><a class="btn-action" data-target="#form_lists" data-method="unreport" href="javascript:;"><i
-                                    class="fa fa-save"></i> Không thống kê</a></li>
+                                        class="fa fa-save"></i> Có thống kê</a></li>
+                            <li><a class="btn-action" data-target="#form_lists" data-method="unreport"
+                                    href="javascript:;"><i class="fa fa-save"></i> Không thống kê</a></li>
                         </ul>
                     </span>
                     <a href="{{ route('admin.employees.create') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
@@ -83,8 +83,9 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
                             </div>
-                            <input type="text" class="form-control date_picker datepicker" name="to_date" id="to_date"
-                                value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
+                            <input type="text" class="form-control date_picker datepicker" name="to_date"
+                                id="to_date" value="{{ @$filter['to_date'] }}" placeholder="Đến..."
+                                autocomplete="off">
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -138,12 +139,15 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->first_name . ' ' . $item->last_name }}</td>
-                                <td>  @if ( $item->status_exam == 1)
-                                    <span class="badge badge-success font-weight-100">Có</span>
-                                @else
-                                    <span class="badge badge-warning">Không</span>
-                                @endif</td>
-                                <td>{{ $item->process_id }}</td>
+
+                                <td>
+                                    @if ($item->status_exam == 1)
+                                        <span class="badge badge-success font-weight-100">Có</span>
+                                    @else
+                                        <span class="badge badge-warning">Không</span>
+                                    @endif
+                                </td>
+                                <td>{{ @$item->employeeDepartment->department->name }}</td>
                                 <td>
                                     <a title="Lịch sử thao tác" target="_blank" class="d-inline-block btn-info btn-sm text-white"
                                     href="{{ route('admin.activitys.index', ['modelId' => $item->id,'content_type' =>get_class($item)]) }}"><i
@@ -190,9 +194,6 @@
 
 @section('scripts')
     <script>
-        // $('.datepicker').datepicker({
-        //     format: 'dd/mm/yyyy'
-        // });
         $('input.date_picker').datepicker({
             autoclose: true,
             dateFormat: "dd-mm-yy"

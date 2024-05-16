@@ -244,6 +244,13 @@ class RolePermissionsTableSeeder extends Seeder
                 'module.edit',
                 'module.delete',
                 'module.toggle',
+            ],
+
+            'checkCutMachine' => [
+                'checkCutMachine.view',
+                'checkCutMachine.create',
+                'checkCutMachine.edit',
+                'checkCutMachine.delete',
             ]
         ];
 

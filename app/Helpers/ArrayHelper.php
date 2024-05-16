@@ -129,10 +129,12 @@ class ArrayHelper
             ],
             [
                 'id' => 2,
-                'from_dept' =>  [33], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
+                'from_dept' =>  [6, 8], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
                 'to_dept' => [], // id bộ phận tiếp nhận
                 'confirm_from_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_by_from_dept' => [4, 5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
+                'confirm_by_to_dept' => [],
                 'data_table' => [
                     'team' => 'CẮT',
                     'name' => 'máy cắt thường',
@@ -339,15 +341,11 @@ class ArrayHelper
             ],
             [
                 'id' => 4,
-                'name' => 'Leader'
-            ],
-            [
-                'id' => 5,
                 'name' => 'Sub Leader'
             ],
             [
-                'id' => 6,
-                'name' => 'Chief'
+                'id' => 5,
+                'name' => 'Leader'
             ],
         ];
     }

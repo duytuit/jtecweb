@@ -36,10 +36,18 @@ class Required extends Model
     ];
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'code', 'code');
+        return $this->belongsTo(Employee::class, 'code_required', 'code');
     }
     public function department()
     {
         return $this->belongsTo(Department::class, 'code_required', 'code');
+    }
+    public function employeeDepartment()
+    {
+        return $this->belongsTo(EmployeeDepartment::class, 'required_department_id', 'department_id');
+    }
+    public function signatureSubmission()
+    {
+        return $this->hasMany(SignatureSubmission::class, 'required_id');
     }
 }

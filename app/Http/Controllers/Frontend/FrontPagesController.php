@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Schema\Blueprint;
 
 class FrontPagesController extends Controller
 {
@@ -135,7 +136,7 @@ class FrontPagesController extends Controller
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
         // $this->remaneTable();
-         $this->addEmployee();
+        $this->addEmployee();
         // $this->updateBeginDate();
         // $this->updateType();
         // $this->updateMission();
@@ -200,11 +201,20 @@ class FrontPagesController extends Controller
             }
         }
     }
+
     public function remaneTable()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->renameColumn('image', 'avatar');
-        });
+        if (Schema::hasColumn('signature_submissions', 'sign_instead')) {
+            Schema::table('signature_submissions', function (Blueprint $table) {
+                $table->renameColumn('sign_instead', 'signature_id');
+            });
+        }
+
+        if (Schema::hasColumn('employees', 'image')) {
+            Schema::table('employees', function (Blueprint $table) {
+                $table->renameColumn('image', 'avatar');
+            });
+        }
     }
     public function store(Request $request)
     {
@@ -557,17 +567,17 @@ class FrontPagesController extends Controller
             }
             if (!$emp) {
 
-                $emp= Employee::create([
+                $emp = Employee::create([
                     'code' => $key,
                     'first_name' => $firstname,
                     'last_name' => $lastname,
                     'created_by' => 1
                 ]);
             }
-            $emp->status_exam=1;
+            $emp->status_exam = 1;
             $emp->save();
-            $admin =  Admin::where('username',$key)->first();
-            if(!$admin){
+            $admin =  Admin::where('username', $key)->first();
+            if (!$admin) {
                 //Tạo tài khoản
                 $admin = Admin::create([
                     'first_name' => $firstname,
@@ -605,15 +615,15 @@ class FrontPagesController extends Controller
         foreach ($data[0] as $key => $value) {
             if ($key > 0) {
                 try {
-                    $emp = Employee::where('code',  (int)trim( $value[0]))->first();
+                    $emp = Employee::where('code',  (int)trim($value[0]))->first();
                     $dept = Department::where('name',  $value[2])->first();
                     $emp_dept = EmployeeDepartment::where('employee_id',   $emp->id)->first();
-                    if(!$dept){
+                    if (!$dept) {
                         $dept = Department::create([
-                            'code'=>time(),
-                            'name'=>$value[2],
+                            'code' => time(),
+                            'name' => $value[2],
                             'parent_id' => 0,
-                            'status' =>1,
+                            'status' => 1,
                             'created_by' => 1,
                         ]);
                     }
@@ -628,16 +638,16 @@ class FrontPagesController extends Controller
                             $lastname = " ";
                         }
                         // Tạo nhân viên
-                        $begin_date_company=explode("/",$value[5]);
-                        $birthday=explode("/",$value[3]);
+                        $begin_date_company = explode("/", $value[5]);
+                        $birthday = explode("/", $value[3]);
                         $employee = Employee::create([
-                            'code' => (int)trim( $value[0]),
+                            'code' => (int)trim($value[0]),
                             'first_name' => $firstname,
                             'last_name' => $lastname,
-                            'begin_date_company' => $begin_date_company[2].'-'.$begin_date_company[1].'-'.$begin_date_company[0],
+                            'begin_date_company' => $begin_date_company[2] . '-' . $begin_date_company[1] . '-' . $begin_date_company[0],
                             'status' => 1,
                             'created_by' => 1,
-                            'birthday' => $birthday[2].'-'.$birthday[1].'-'.$birthday[0],
+                            'birthday' => $birthday[2] . '-' . $birthday[1] . '-' . $birthday[0],
                             'worker' => 3
 
                         ]); // Tạo một đối tượng Employee mới
@@ -663,7 +673,7 @@ class FrontPagesController extends Controller
                         // Assign Roles
                         $admin->assignRole('Worker');
                     }
-                    if(!$emp_dept){
+                    if (!$emp_dept) {
                         EmployeeDepartment::create([
                             'employee_id' => $emp->id,
                             'department_id' => $dept->id,
