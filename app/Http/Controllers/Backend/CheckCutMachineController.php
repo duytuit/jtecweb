@@ -49,24 +49,25 @@ class CheckCutMachineController extends Controller
         }
         return view('backend.pages.checkCutMachine.index', $requireds);
     }
+
     public function create(Request $request)
     {
-        $dataType = $request->input('selectedValue');
-        // dd($dataType);
+        $data['filter'] = $request->all();
+        $data['get_machineName'] = $request->selecMachine;
         $machineLists = ArrayHelper::machineList();
-        $formTypeJobs = ArrayHelper::formTypeJobs()[1]['data_table']['check_list'];
+        $key =  array_search($request->selecMachine, array_column($machineLists, 'name'));
+        $formTypeJobs = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table']['check_list'];
         $employee_id = Auth::user()->employee_id;
-        // dd($employee_id);
         $employee = Employee::where('id', $employee_id)->first();
-        // dd($employee);
         if (is_null($employee)) {
             session()->flash('error', "Bạn không có quyền vào mục này");
             return redirect()->route('admin.checkCutMachine.index');
         }
         $employee_department = EmployeeDepartment::where('employee_id', $employee->id)->first();
         // dd($departmentId);
-        return view('backend.pages.checkCutMachine.create', compact('formTypeJobs', 'machineLists', 'employee', 'employee_department'));
+        return view('backend.pages.checkCutMachine.create', compact('formTypeJobs', 'machineLists', 'employee', 'employee_department'), $data);
     }
+
     public function importExcelData(Request $request)
     {
         $request->validate([
@@ -104,6 +105,8 @@ class CheckCutMachineController extends Controller
                     $signature_submissions->signature_id = $employee_id;
                     $signature_submissions->save();
                 }
+            } else {
+                return back()->with('error', 'Bạn phải chọn yêu cầu trước khi duyệt.');
             }
             return back()->with('success', 'thành công!');
         } else if ($method == 'inactive_check') {
@@ -120,6 +123,8 @@ class CheckCutMachineController extends Controller
                     $signature_submissions->signature_id = 0;
                     $signature_submissions->save();
                 }
+            } else {
+                return back()->with('error', 'Bạn phải chọn yêu cầu trước khi bỏ duyệt.');
             }
             return back()->with('success', 'thành công!');
         } else if ($method == 'delete') {

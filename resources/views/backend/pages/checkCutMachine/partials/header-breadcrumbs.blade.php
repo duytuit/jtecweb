@@ -3,7 +3,7 @@
         <div class="col-5 align-self-center">
             <h4 class="page-title">
                 @if (Route::is('admin.checkCutMachine.index'))
-                    Danh sách kiểm tra máy cắt
+                    Danh sách check list
                 @elseif(Route::is('admin.checkCutMachine.create'))
                     Kiểm tra
                 @elseif(Route::is('admin.checkCutMachine.edit'))

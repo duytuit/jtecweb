@@ -143,13 +143,26 @@ class RequiredController extends Controller
 
     public function requireCheckListMachineCut(Request $request)
     {
-        $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
-        $dataTablesIds = ArrayHelper::formTypeJobs()[1]['confirm_by_from_dept'];
-        $dataTablesType = ArrayHelper::formTypeJobs()[1];
-        $dataTables['name_machine'] = $request->selecMachine;
+        // dd($request->all());
+        $machineLists = ArrayHelper::machineList();
+        // dd($machineLists);
+        $key =  array_search($request->machineName, array_column($machineLists, 'name'));
+        // dd($request->machineName);
+        if (is_null($request->machineName) || $request->machineName == '') {
+            session()->flash('error', "Bạn phải chọn máy kiểm tra trước khi thực hiện");
+            return redirect()->route('admin.checkCutMachine.create');
+        }
+        // dd($machineLists[$key]['type']);
+        // dd($key);
+        $dataTables = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table'];
+        $dataTablesIds = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['confirm_by_from_dept'];
+        $dataTablesType = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']];
+        // dd($dataTablesType);
+        $dataTables['name_machine'] = $request->machineName;
         $answers = $request->answer;
         $status = 1;
         $departmentId = $dataTablesType['from_dept'];
+        // dd($departmentId);
         foreach ($answers as $key => $value) {
             if ($value == 0) {
                 $status = 0;

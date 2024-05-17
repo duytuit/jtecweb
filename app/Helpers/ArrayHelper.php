@@ -301,11 +301,27 @@ class ArrayHelper
         return [
             [
                 'type' => 1,
-                'name' => ['C371A', 'C371AB', 'C371ABC']
+                'name' => 'C371A'
+            ],
+            [
+                'type' => 1,
+                'name' => 'C371AB'
+            ],
+            [
+                'type' => 1,
+                'name' => 'C371ABC'
             ],
             [
                 'type' => 2,
-                'name' => ['C371A_auto', 'C371AB_auto', 'C371ABC_auto']
+                'name' => 'C371A_auto'
+            ],
+            [
+                'type' => 2,
+                'name' => 'C371AB_auto'
+            ],
+            [
+                'type' => 2,
+                'name' => 'C371ABC_auto'
             ],
 
         ];
