@@ -95,43 +95,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $(document).ready(function() {
-            var selectedValue = 1;
-            // console.log(selectedValue);
-
-            $('.machine-select').on('change', function(e) {
-                // e.preventDefault();
-                var selectedOption = $(this).find('option:selected');
-                selectedValue = selectedOption.attr('data-type');
-                console.log(selectedValue);
-                $.ajax({
-                    url: "{{ route('admin.checkCutMachine.create') }}",
-                    type: "POST",
-                    data: {
-                        selectedValue: selectedValue
-                    },
-                    success: function(data) {
-                        toastr.success("Thành công", 'Success', {
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut",
-                            timeOut: 2000
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        toastr.success("Có lỗi xảy ra", 'Error', {
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut",
-                            timeOut: 2000
-                        });
-                    }
-                });
-            });
-        })
-    </script>
+    <script></script>
 @endsection

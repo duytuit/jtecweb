@@ -10,11 +10,10 @@ use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\Required;
 use App\Models\SignatureSubmission;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
 
 class RequiredController extends Controller
 {
@@ -146,7 +145,7 @@ class RequiredController extends Controller
         // dd($request->all());
         $machineLists = ArrayHelper::machineList();
         // dd($machineLists);
-        $key =  array_search($request->machineName, array_column($machineLists, 'name'));
+        $key = array_search($request->machineName, array_column($machineLists, 'name'));
         // dd($request->machineName);
         if (is_null($request->machineName) || $request->machineName == '') {
             session()->flash('error', "Bạn phải chọn máy kiểm tra trước khi thực hiện");

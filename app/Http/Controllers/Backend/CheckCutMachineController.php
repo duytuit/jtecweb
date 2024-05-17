@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\CheckCutMachineExport;
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Department;
-use App\Models\Required;
-use App\Models\SignatureSubmission;
-use App\Exports\CheckCutMachineExport;
 use App\Imports\CheckCutMachineImport;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Cookie;
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
-use Illuminate\Http\Request;
+use App\Models\Required;
+use App\Models\SignatureSubmission;
 use Carbon\Carbon;
-
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CheckCutMachineController extends Controller
 {
@@ -33,7 +30,11 @@ class CheckCutMachineController extends Controller
 
     public function index(Request $request)
     {
-        // dd(@Auth::user()->employee->code);
+        // dd(@Auth::user()->employeeDepartment->positions);
+        // $positionTitles = ArrayHelper::positionTitle();
+        $employeeId = Auth::user()->employee->code;
+        $employeePosition = Auth::user()->employeeDepartment->positions;
+
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
@@ -41,6 +42,10 @@ class CheckCutMachineController extends Controller
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
+            if (isset($employeePosition) && $employeePosition != 4 || $employeePosition != 5) {
+                $query->where('created_by', $employeeId);
+            }
+
         })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
@@ -55,7 +60,7 @@ class CheckCutMachineController extends Controller
         $data['filter'] = $request->all();
         $data['get_machineName'] = $request->selecMachine;
         $machineLists = ArrayHelper::machineList();
-        $key =  array_search($request->selecMachine, array_column($machineLists, 'name'));
+        $key = array_search($request->selecMachine, array_column($machineLists, 'name'));
         $formTypeJobs = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table']['check_list'];
         $employee_id = Auth::user()->employee_id;
         $employee = Employee::where('id', $employee_id)->first();
