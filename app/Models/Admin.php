@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-    use HasRoles, HasApiTokens, Notifiable;
+    use HasRoles, HasApiTokens, Notifiable,ActivityLogger;
 
     protected $table      = 'admins';
     protected $guard_name = 'admin';
