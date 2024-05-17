@@ -12,8 +12,12 @@
                     <strong>Bộ phận: {{ $employee_department->department->name }}</strong>
                     | <span>Máy: </span>
                     <select name="selecMachine" class="machine-select">
+                        <option selected data-type="1">Chọn máy kiểm tra</option>
                         @foreach ($machineLists as $machineList)
-                            <option value="{{ $machineList }}">{{ $machineList }}</option>
+                            @foreach ($machineList['name'] as $machineName)
+                                <option data-type="{{ $machineList['type'] }}" value="{{ $machineName }} ">
+                                    {{ $machineName }}</option>
+                            @endforeach
                         @endforeach
                     </select>
                     <br>
@@ -86,5 +90,43 @@
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(document).ready(function() {
+            var selectedValue = 1;
+            console.log(selectedValue);
+
+            $('.machine-select').on('change', function(e) {
+                e.preventDefault();
+                var selectedOption = $(this).find('option:selected');
+                selectedValue = selectedOption.attr('data-type');
+                console.log(selectedValue);
+                $.ajax({
+                    url: "{{ route('admin.checkCutMachine.create') }}",
+                    type: "GET",
+                    data: {
+                        selectedValue: selectedValue
+                    },
+                    success: function(data) {
+                        toastr.success("Thành công", 'Success', {
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut",
+                            timeOut: 2000
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        toastr.success("Có lỗi xảy ra", 'Error', {
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut",
+                            timeOut: 2000
+                        });
+                    }
+                });
+            });
+        })
+    </script>
 @endsection

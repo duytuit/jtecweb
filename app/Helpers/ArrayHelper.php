@@ -299,7 +299,15 @@ class ArrayHelper
     public static function machineList()
     {
         return [
-            'C371A', 'dfhgdkh',
+            [
+                'type' => 1,
+                'name' => ['C371A', 'C371AB', 'C371ABC']
+            ],
+            [
+                'type' => 2,
+                'name' => ['C371A_auto', 'C371AB_auto', 'C371ABC_auto']
+            ],
+
         ];
     }
     public static function marital()

@@ -188,7 +188,6 @@ class RequiredController extends Controller
                     // 'content',
                     'positions' => $dataTablesId,
                     'approve_id' => json_encode($emp_dept),
-                    // 'sign_instead',
                     // 'status',
                 ]);
             }
