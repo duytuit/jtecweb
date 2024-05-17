@@ -16,7 +16,7 @@ class ArrayHelper
     {
         return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
             return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
-        },$value);
+        }, $value);
     }
     public static function objArraySearch($array, $key, $value)
     {
@@ -217,15 +217,16 @@ class ArrayHelper
             ],
             [
                 'id' => 3,
-                'from_dept' =>  [33], // id bộ phận yêu cầu
-                'to_dept' => [
-                    22, 27 // id bộ phận tiếp nhận
-                ],
-                'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
-                'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
+                'from_dept' =>  [6], // id bộ phận yêu cầu
+                'to_dept' => [],
+                'confirm_from_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_by_from_dept' => [4, 5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
+                'confirm_by_to_dept' => [],
                 'data_table' => [
                     'team' => 'CẮT',
                     'name' => 'máy tự động',
+                    'name_machine' => '',
                     'check_list' => [
                         [
                             'id' => 0,
@@ -298,7 +299,31 @@ class ArrayHelper
     public static function machineList()
     {
         return [
-            'C371A', 'dfhgdkh',
+            [
+                'type' => 1,
+                'name' => 'C371A'
+            ],
+            [
+                'type' => 1,
+                'name' => 'C371AB'
+            ],
+            [
+                'type' => 1,
+                'name' => 'C371ABC'
+            ],
+            [
+                'type' => 2,
+                'name' => 'C371A_auto'
+            ],
+            [
+                'type' => 2,
+                'name' => 'C371AB_auto'
+            ],
+            [
+                'type' => 2,
+                'name' => 'C371ABC_auto'
+            ],
+
         ];
     }
     public static function marital()

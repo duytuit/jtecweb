@@ -26,6 +26,6 @@ class SignatureSubmission extends Model
     ];
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'signature_id', 'code');
+        return $this->belongsTo(Employee::class, 'signature_id', 'id');
     }
 }

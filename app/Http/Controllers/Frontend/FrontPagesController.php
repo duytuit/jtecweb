@@ -136,7 +136,8 @@ class FrontPagesController extends Controller
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
         // $this->remaneTable();
-        $this->addEmployee();
+        $this->add_employeeTableId_to_admin_table_employee_id();
+        // $this->addEmployee();
         // $this->updateBeginDate();
         // $this->updateType();
         // $this->updateMission();
@@ -175,6 +176,20 @@ class FrontPagesController extends Controller
                 'created_by' => 1,
             ]);
             // return $this->success(compact('department'));
+        }
+    }
+
+    public function add_employeeTableId_to_admin_table_employee_id()
+    {
+        $employees = Employee::all();
+        foreach ($employees as $employee) {
+            // echo $employee->code;
+            $admin = Admin::Where('username', $employee->code)->first();
+            // echo $admin;
+            if ($admin) {
+                $admin->employee_id = $employee->id;
+                $admin->save();
+            }
         }
     }
     public function add_user_and_pass()

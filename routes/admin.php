@@ -288,10 +288,14 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
     Route::prefix('checkCutMachine')->name('checkCutMachine.')->group(function () {
         Route::get('/', 'CheckCutMachineController@index')->name('index');
         Route::get('/create', 'CheckCutMachineController@create')->name('create');
+        // Route::any('/create', 'CheckCutMachineController@create')->name('create');
+        // Route::match(['get', 'post'], '/create', 'CheckCutMachineController@create')->name('create');
+
         // Route::get('/show', 'CheckCutMachineController@show')->name('show');
         Route::post('import', 'CheckCutMachineController@importExcelData')->name('importExcelData');
         Route::get('exportExcel', 'CheckCutMachineController@exportExcel')->name('exportExcel');
         Route::post('action', 'CheckCutMachineController@action')->name('action');
+        Route::get('trashed/destroy/{id}', 'CheckCutMachineController@destroyTrash')->name('trashed.destroy');
     });
 
     /**

@@ -253,20 +253,20 @@
     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
         aria-expanded="false">
         <i class="mdi mdi-view-list"></i>
-        <span class="hide-menu">Kiểm tra hàng ngày máy cắt</span>
+        <span class="hide-menu">Check list hàng ngày máy cắt</span>
     </a>
     <ul aria-expanded="false"
         class="collapse first-level {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.create') || Route::is('admin.checkCutMachine.edit') ? 'in' : null }}">
         <li class="sidebar-item">
             <a class="sidebar-link" href="{{ url('admin/checkCutMachine') }}">
                 <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Danh sách kiểm tra máy cắt</span>
+                <span class="hide-menu"> Danh sách check list</span>
             </a>
         </li>
         <li class="sidebar-item">
             <a class="sidebar-link" href="{{ url('admin/checkCutMachine/create') }}">
                 <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Kiểm tra máy cắt nhỏ</span>
+                <span class="hide-menu"> Thêm check list</span>
             </a>
         </li>
     </ul>
@@ -615,13 +615,13 @@
         </a>
         <ul aria-expanded="false"
             class="collapse first-level {{ Route::is('admin.activitys.index') || Route::is('admin.activitys.create') || Route::is('admin.activitys.edit') ? 'in' : null }}">
-                <li class="sidebar-item">
-                    <a href="{{ route('admin.activitys.index') }}"
-                        class="sidebar-link {{ Route::is('admin.activitys.index') || Route::is('admin.activitys.edit') ? 'active' : null }}">
-                        <i class="mdi mdi-view-list"></i>
-                        <span class="hide-menu"> Danh sách </span>
-                    </a>
-                </li>
+            <li class="sidebar-item">
+                <a href="{{ route('admin.activitys.index') }}"
+                    class="sidebar-link {{ Route::is('admin.activitys.index') || Route::is('admin.activitys.edit') ? 'active' : null }}">
+                    <i class="mdi mdi-view-list"></i>
+                    <span class="hide-menu"> Danh sách </span>
+                </a>
+            </li>
         </ul>
     </li>
 @endif

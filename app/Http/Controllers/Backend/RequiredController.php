@@ -50,13 +50,6 @@ class RequiredController extends Controller
         $formTypeJobs = ArrayHelper::formTypeJobs();
         $positionTitles = ArrayHelper::positionTitle();
         $required = new Required();
-        // $username = Auth::user()->username;
-        // $employee['employeeCode'] = Employee::where('code', $username)->firstOrFail();
-        // $employees = Employee::where('code',$employeeDepartment->employee_id,)->firstOrFail();
-        // $employeeDepartment = EmployeeDepartment::where('employee_id', $employee->id)->firstOrFail();
-        // $department = Department::where('id', $employee->process_id)->firstOrFail();
-        // $employeeDepartments = EmployeeDepartment::where('department_id', $department->id,)->firstOrFail();
-
         $employees = Employee::all();
         $employeeDepartments = EmployeeDepartment::all();
         $departments = Department::all();
@@ -150,13 +143,26 @@ class RequiredController extends Controller
 
     public function requireCheckListMachineCut(Request $request)
     {
-        $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
-        $dataTablesIds = ArrayHelper::formTypeJobs()[1]['confirm_by_from_dept'];
-        $dataTablesType = ArrayHelper::formTypeJobs()[1];
-        $dataTables['name_machine'] = $request->selecMachine;
+        // dd($request->all());
+        $machineLists = ArrayHelper::machineList();
+        // dd($machineLists);
+        $key =  array_search($request->machineName, array_column($machineLists, 'name'));
+        // dd($request->machineName);
+        if (is_null($request->machineName) || $request->machineName == '') {
+            session()->flash('error', "Bạn phải chọn máy kiểm tra trước khi thực hiện");
+            return redirect()->route('admin.checkCutMachine.create');
+        }
+        // dd($machineLists[$key]['type']);
+        // dd($key);
+        $dataTables = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table'];
+        $dataTablesIds = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['confirm_by_from_dept'];
+        $dataTablesType = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']];
+        // dd($dataTablesType);
+        $dataTables['name_machine'] = $request->machineName;
         $answers = $request->answer;
         $status = 1;
         $departmentId = $dataTablesType['from_dept'];
+        // dd($departmentId);
         foreach ($answers as $key => $value) {
             if ($value == 0) {
                 $status = 0;
@@ -172,11 +178,11 @@ class RequiredController extends Controller
             DB::beginTransaction();
             $requireCode = 'R_' . now()->format('Ymdhis');
             $required = Required::create([
-                'code_required' => Auth::user()->username,
-                'created_by' => Auth::user()->id,
+                'code_required' => $requireCode,
+                'created_by' => Auth::user()->employee_id,
                 'content_form' => $json_data,
                 'required_department_id' => $request->departmentId,
-                'code' => $requireCode,
+                'code' => '',
                 'content' => $request->repair_history,
                 'from_type' => $dataTablesType['id'],
                 'status' => $status,
@@ -195,7 +201,6 @@ class RequiredController extends Controller
                     // 'content',
                     'positions' => $dataTablesId,
                     'approve_id' => json_encode($emp_dept),
-                    // 'sign_instead',
                     // 'status',
                 ]);
             }
@@ -225,11 +230,11 @@ class RequiredController extends Controller
         try {
             $requireCode = 'R_' . now()->format('Ymdhis');
             $required = Required::create([
-                'code_required' => Auth::user()->username,
-                'created_by' => Auth::user()->id,
+                'code_required' => $requireCode,
+                'created_by' => Auth::user()->employee_id,
                 'content_form' => $json_data,
                 'required_department_id' => $request->selecDepartment,
-                'code' => $requireCode,
+                'code' => '',
                 'content' => $request->repair_history,
                 'from_type' => $dataTablesType['id'],
             ]);

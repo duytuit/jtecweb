@@ -35,7 +35,8 @@ class Admin extends Authenticatable
         'designation',
         'social_links',
         'deleted_by',
-        'language_id'
+        'language_id',
+        'employee_id',
     ];
 
     /**
@@ -125,5 +126,9 @@ class Admin extends Authenticatable
     public function language()
     {
         return $this->belongsTo(Language::class);
+    }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'username', 'code');
     }
 }
