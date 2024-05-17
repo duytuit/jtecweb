@@ -622,8 +622,7 @@ class FrontPagesController extends Controller
             ]);
         }
     }
-
-    public function ImportEmpPost(Request $request)
+    public function ImportEmpPostOld(Request $request)
     {
         set_time_limit(0);
         $data = Excel::toCollection(new EmpImport,  request()->file('import_file'));
@@ -687,6 +686,41 @@ class FrontPagesController extends Controller
                         ]);
                         // Assign Roles
                         $admin->assignRole('Worker');
+                    }
+                    if (!$emp_dept) {
+                        EmployeeDepartment::create([
+                            'employee_id' => $emp->id,
+                            'department_id' => $dept->id,
+                            'created_by' => 1,
+                        ]);
+                    }
+                    echo 'Thành công!';
+                } catch (\Exception $e) {
+
+                    echo $e->getMessage();
+                    dd(1);
+                }
+            }
+        }
+    }
+    public function ImportEmpPost(Request $request)
+    {
+        set_time_limit(0);
+        $data = Excel::toCollection(new EmpImport,  request()->file('import_file'));
+        foreach ($data[0] as $key => $value) {
+            if ($key > 0) {
+                try {
+                    $emp = Employee::where('code',  (int)trim($value[0]))->first();
+                    $dept = Department::where('name',  $value[2])->first();
+                    $emp_dept = EmployeeDepartment::where('employee_id',   $emp->id)->first();
+                    if (!$dept) {
+                        $dept = Department::create([
+                            'code' => time(),
+                            'name' => $value[2],
+                            'parent_id' => 0,
+                            'status' => 1,
+                            'created_by' => 1,
+                        ]);
                     }
                     if (!$emp_dept) {
                         EmployeeDepartment::create([
