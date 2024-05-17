@@ -2,27 +2,36 @@
 
 @section('admin-content')
     <div class="container-fluid ">
+        <h1 class="title text-center ">BẢNG KIỂM TRA HÀNG NGÀY MÁY CẮT</h1>
+        <div class="text-center font-20">
+            <strong>Bộ phận: {{ $employee_department->department->name }}</strong>
+            <form role="form" action="{{ route('admin.checkCutMachine.create') }}" method="GET">
+                <!-- select -->
+                <span>Máy: </span>
+                <select class="" name="selecMachine" id="selecMachine" data-live-search="true"
+                    onchange='this.form.submit()'>
+                    <option value="">Chọn máy kiểm tra</option>
+                    @foreach ($machineLists as $machineName)
+                        <option value="{{ $machineName['name'] }}" @if (@$filter['selecMachine'] == $machineName['name']) selected @endif>
+                            {{ $machineName['name'] }}</option>
+                    @endforeach
+                </select>
+                <noscript><input type="submit" value="Submit"></noscript>
+            </form>
+            <br>
+            <span>Ngày làm việc: </span><strong>{{ date('d/m/Y') }}</strong><br>
+            @php
+                $auth = Auth::user();
+            @endphp
+            <span>Người thực hiện: </span><strong>{{ $auth->first_name . ' ' . $auth->last_name }}</strong>
+        </div>
         <form action="{{ route('admin.requireds.requireCheckListMachineCut') }}" method="POST" data-parsley-validate
             data-parsley-focus="first">
             @csrf
+            <input type="hidden" name="machineName" value="{{ $get_machineName }}">
             <input type="hidden" name="departmentId" value="{{ $employee_department->department_id }}">
             <div class="">
-                <h1 class="title text-center ">BẢNG KIỂM TRA HÀNG NGÀY MÁY CẮT</h1>
-                <div class="text-center font-20">
-                    <strong>Bộ phận: {{ $employee_department->department->name }}</strong>
-                    | <span>Máy: </span>
-                    <select name="selecMachine" class="machine-select">
-                        @foreach ($machineLists as $machineList)
-                            <option value="{{ $machineList }}">{{ $machineList }}</option>
-                        @endforeach
-                    </select>
-                    <br>
-                    <span>Ngày làm việc: </span><strong>{{ date('d/m/Y') }}</strong><br>
-                    @php
-                        $auth = Auth::user();
-                    @endphp
-                    <span>Người thực hiện: </span><strong>{{ $auth->first_name . ' ' . $auth->last_name }}</strong>
-                </div>
+
                 <div class="row mb-2 ">
                     <div class="col-11 w-75 mx-auto p-md-2 fs-3">
                         <div class="row">
@@ -86,5 +95,43 @@
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(document).ready(function() {
+            var selectedValue = 1;
+            // console.log(selectedValue);
+
+            $('.machine-select').on('change', function(e) {
+                // e.preventDefault();
+                var selectedOption = $(this).find('option:selected');
+                selectedValue = selectedOption.attr('data-type');
+                console.log(selectedValue);
+                $.ajax({
+                    url: "{{ route('admin.checkCutMachine.create') }}",
+                    type: "POST",
+                    data: {
+                        selectedValue: selectedValue
+                    },
+                    success: function(data) {
+                        toastr.success("Thành công", 'Success', {
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut",
+                            timeOut: 2000
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        toastr.success("Có lỗi xảy ra", 'Error', {
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut",
+                            timeOut: 2000
+                        });
+                    }
+                });
+            });
+        })
+    </script>
 @endsection

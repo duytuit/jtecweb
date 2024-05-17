@@ -134,8 +134,8 @@
                                 <td><input type="checkbox" name="ids[]" value="{{ $item->id }}"
                                         class="greyCheck checkSingle" /></td>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->code }}</td>
-                                <td>{{ @$item->employee->first_name . ' ' . $item->employee->last_name }}</td>
+                                <td>{{ $item->code_required }}</td>
+                                <td>{{ @$item->employee->first_name . ' ' . @$item->employee->last_name }}</td>
                                 <td>{{ @$item->employeeDepartment->department->name }}</td>
                                 @php
                                     $contentForm = json_decode($item->content_form);
@@ -188,7 +188,7 @@
                                                         <button type="button" class="border-0 bg-transparent "
                                                             data-toggle="tooltip" data-html="true"
                                                             data-placement="bottom"
-                                                            title="{{ 'Leader: ' . $item2->employee->first_name . $item2->employee->last_name }} <br>
+                                                            title="{{ 'Leader: ' . @$item2->employee->first_name . @$item2->employee->last_name }} <br>
                                                     {{ 'Duyệt lúc: ' . $item2->updated_at }} ">
                                                             <span> Đã duyệt </span>
                                                             <span style="padding: 0.15rem 0.5rem;"
@@ -210,7 +210,7 @@
                                                         <button type="button" class="border-0 bg-transparent "
                                                             data-toggle="tooltip" data-html="true"
                                                             data-placement="bottom"
-                                                            title="{{ 'Leader: ' . $item2->employee->first_name . $item2->employee->last_name }} <br>
+                                                            title="{{ 'Leader: ' . @$item2->employee->first_name . @$item2->employee->last_name }} <br>
                                                             {{ 'Duyệt lúc: ' . $item2->updated_at }} ">
                                                             <span> Đã duyệt </span>
                                                             <span style="padding: 0.15rem 0.5rem;"
@@ -229,7 +229,7 @@
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
-                                        href="{{ route('admin.departments.trashed.destroy', ['id' => $item->id]) }}">
+                                        href="{{ route('admin.checkCutMachine.trashed.destroy', ['id' => $item->id]) }}">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
