@@ -84,6 +84,7 @@
                             <th>TT</th>
                             <th>Mã bộ phận</th>
                             <th>Tên bộ phận</th>
+                            <th>Số lượng nhân viên</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
@@ -96,6 +97,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->name }}</td>
+                                <td>{{ $item->employeeDepartmentByCount() }}</td>
                                 <td>{{ $item->status }}</td>
                                 <td>
                                     <a title="Lịch sử thao tác" target="_blank" class="d-inline-block btn-info btn-sm text-white"

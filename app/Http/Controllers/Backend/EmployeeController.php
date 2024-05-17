@@ -58,6 +58,9 @@ class EmployeeController extends Controller
             if (isset($request->worker) && $request->worker != null) {
                 $query->where('worker', $request->worker);
             }
+            if (isset($request->ids) && $request->ids != null && count($request->ids) > 0) {
+                $query->whereIn('id', $request->ids);
+            }
             if (isset($request->positions) && $request->positions != null) {
                 $query->where('positions', $request->positions);
             }

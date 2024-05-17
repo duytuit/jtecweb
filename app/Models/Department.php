@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ActivityLogger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    use HasFactory;
+    use HasFactory,ActivityLogger;
     protected $table = 'departments';
     protected $fillable = [
         'id',
@@ -25,5 +26,9 @@ class Department extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'code', 'code');
+    }
+    public function employeeDepartmentByCount()
+    {
+        return $this->hasMany(EmployeeDepartment::class, 'department_id')->select('id')->count();
     }
 }

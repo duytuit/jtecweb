@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ActivityLogger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SignatureSubmission extends Model
 {
-    use HasFactory;
+    use HasFactory,ActivityLogger;
     protected $guarded = [];
     protected $fillable = [
         'id',
