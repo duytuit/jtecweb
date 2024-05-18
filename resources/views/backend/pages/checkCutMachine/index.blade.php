@@ -82,16 +82,16 @@
                                 value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
                         </div>
                     </div>
-                    {{-- <div class="col-sm-2">
-                        <select class="form-control custom-select" name="worker">
-                            <option value="">Tình trạng làm việc</option>
-                            @foreach ($workers as $worker)
-                                <option value="{{ $worker['id'] }}">
-                                    {{ $worker['name'] }}</option>
+                    <div class="col-sm-2">
+                        <select class="form-control custom-select" name="machine_name">
+                            <option value="">Chọn máy</option>
+                            @foreach ($machineLists as $machineList)
+                                <option value="{{ $machineList['name'] }}">
+                                    {{ $machineList['name'] }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-sm-2">
+                    {{-- <div class="col-sm-2">
                         <select class="form-control custom-select" name="positions">
                             <option value="">Chức vụ</option>
                             @foreach ($positions as $position)
@@ -121,10 +121,10 @@
                             <th>Người thực hiện</th>
                             <th>Bộ phận</th>
                             <th>Máy</th>
-                            <th>Ngày-giờ thực hiện</th>
+                            <th>Tình trạng Duyệt</th>
                             <th>Trạng thái</th>
                             <th>Lý do - Sửa chữa</th>
-                            <th>Tình trạng Duyệt</th>
+                            <th>Ngày-giờ thực hiện</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
@@ -141,38 +141,6 @@
                                     $contentForm = json_decode($item->content_form);
                                 @endphp
                                 <td>{{ $contentForm->name_machine }}</td>
-                                <td>{{ $item->created_at }}</td>
-                                <td class="text-center">
-                                    <div class="dropdown show">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            @if ($item->status)
-                                                <span class="badge badge-success font-weight-100">OK</span>
-                                            @else
-                                                <span class="badge badge-warning">NG</span>
-                                            @endif
-                                        </a>
-
-                                        <div class="dropdown-menu z-n1 " aria-labelledby="dropdownMenuLink">
-                                            @php
-                                                $contentFormChecks = $contentForm->check_list;
-                                            @endphp
-                                            @foreach ($contentFormChecks as $index => $item1)
-                                                <div class="dropdown-item" href="#">
-                                                    {{ $item1->id + 1 }}.{{ $item1->position }}
-                                                    @if ($item1->answer)
-                                                        <span class="badge badge-success font-weight-100">OK</span>
-                                                    @else
-                                                        <span class="badge badge-warning">NG</span>
-                                                    @endif
-                                                </div>
-                                            @endforeach
-
-                                        </div>
-                                    </div>
-
-                                </td>
-                                <td>{{ $item->content }}</td>
                                 <td class="p-1">
                                     @if ($item->signatureSubmission)
                                         @foreach ($item->signatureSubmission as $index2 => $item2)
@@ -188,7 +156,7 @@
                                                         <button type="button" class="border-0 bg-transparent "
                                                             data-toggle="tooltip" data-html="true"
                                                             data-placement="bottom"
-                                                            title="{{ 'Leader: ' . @$item2->employee->first_name . @$item2->employee->last_name }} <br>
+                                                            title="{{ 'SubLeader: ' . @$item2->employee->first_name . @$item2->employee->last_name }} <br>
                                                     {{ 'Duyệt lúc: ' . $item2->updated_at }} ">
                                                             <span> Đã duyệt </span>
                                                             <span style="padding: 0.15rem 0.5rem;"
@@ -223,6 +191,39 @@
                                         @endforeach
                                     @endif
                                 </td>
+                                <td class="text-center">
+                                    <div class="dropdown show">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            @if ($item->status)
+                                                <span class="badge badge-success font-weight-100">OK</span>
+                                            @else
+                                                <span class="badge badge-warning">NG</span>
+                                            @endif
+                                        </a>
+
+                                        <div class="dropdown-menu z-n1 " aria-labelledby="dropdownMenuLink">
+                                            @php
+                                                $contentFormChecks = $contentForm->check_list;
+                                            @endphp
+                                            @foreach ($contentFormChecks as $index => $item1)
+                                                <div class="dropdown-item" href="#">
+                                                    {{ $item1->id + 1 }}.{{ $item1->position }}
+                                                    @if ($item1->answer)
+                                                        <span class="badge badge-success font-weight-100">OK</span>
+                                                    @else
+                                                        <span class="badge badge-warning">NG</span>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td>{{ $item->content }}</td>
+
+                                <td>{{ $item->created_at }}</td>
                                 <td>
                                     <a title="Xem lịch sử sửa chữa"
                                         class=" d-inline-block mx-1 btn-purple btn-sm text-white" href="">

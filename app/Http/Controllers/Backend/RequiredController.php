@@ -46,13 +46,36 @@ class RequiredController extends Controller
         if (is_null($this->user) || !$this->user->can('required.create')) {
             return abort(403, 'You are not allowed to access this page !');
         }
-        $formTypeJobs = ArrayHelper::formTypeJobs();
+        $requiredType = 0;
+        $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
+        dd($formTypeJobs);
         $positionTitles = ArrayHelper::positionTitle();
-        $required = new Required();
-        $employees = Employee::all();
-        $employeeDepartments = EmployeeDepartment::all();
-        $departments = Department::all();
-        return view('backend.pages.requireds.create', compact('employees', 'departments', 'formTypeJobs', 'positionTitles', 'employeeDepartments'));
+        $employee_id = Auth::user()->employee_id;
+        $employee = Employee::where('id', $employee_id)->first();
+        $employeeDepartment['employeeDepartmentAlls'] = EmployeeDepartment::all();
+        $employeeDepartment['employeeDepartmentFromId'] = EmployeeDepartment::where('employee_id', $employee->id)->first();
+        $departmentAlls = Department::all();
+        $departmentFromId = Department::where('id', $employeeDepartment['employeeDepartmentFromId']->department_id)->first();
+
+        // dd($departmentFromId);
+        // $dataTablesIds = $formTypeJobs['confirm_by_from_dept'];
+        // foreach ($dataTablesIds as $dataTablesId) {
+
+        // $emp_dept = EmployeeDepartment::where('department_id', $departmentFromId->id,)
+        //     ->where('positions', '5')
+
+        // $emp_dept_leader = json_encode($emp_dept);
+        // dd($emp_dept_leader);
+
+        // $emp_dept = EmployeeDepartment::where(function ($query) use ($request) {
+        //     if (isset($request->departmentId) && $request->departmentId != null) {
+        //         $query->where('department_id', $request->departmentId);
+        //     }
+        //     if (isset($request->dataTablesId) && $request->dataTablesId != null) {
+        //         $query->where('positions', $request->dataTablesId);
+        //     }
+        // })->pluck('employee_id')->toArray();
+        return view('backend.pages.requireds.create', $employeeDepartment, compact('employee', 'formTypeJobs', 'positionTitles', 'departmentAlls', 'departmentFromId'));
     }
 
     /**

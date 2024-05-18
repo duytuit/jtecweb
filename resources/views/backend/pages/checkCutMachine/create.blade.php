@@ -31,7 +31,6 @@
             <input type="hidden" name="machineName" value="{{ $get_machineName }}">
             <input type="hidden" name="departmentId" value="{{ $employee_department->department_id }}">
             <div class="">
-
                 <div class="row mb-2 ">
                     <div class="col-11 w-75 mx-auto p-md-2 fs-3">
                         <div class="row">
@@ -69,8 +68,15 @@
 
                             <div class="col-md-4 p-2 ">
                                 <div class="h-100 p-2 shadow-lg">
-                                    <span class="p-md-2 d-block bg-secondary text-light">Lý lịch sửa chữa</span><br>
-
+                                    <span class="p-md-2 d-block bg-secondary text-light">Lý lịch sửa chữa</span>
+                                    @foreach ($repairMachines as $index => $item)
+                                        @php
+                                            $contentForm = json_decode($item->content_form, true);
+                                        @endphp
+                                        @if ($contentForm['name_machine'] == $get_machineName)
+                                            <span>{{ $item->content }}</span><br>
+                                        @endif
+                                    @endforeach
                                     <span class="p-md-2 d-block bg-primary text-light">Thêm sửa chữa</span>
                                     <div class="pt-2 ">
                                         <textarea name="repair_history" id="" class="w-100">

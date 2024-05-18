@@ -32,33 +32,50 @@ class CheckCutMachineController extends Controller
     {
         // dd(@Auth::user()->employeeDepartment->positions);
         // $positionTitles = ArrayHelper::positionTitle();
-        $employeeId = Auth::user()->employee->code;
-        $employeePosition = Auth::user()->employeeDepartment->positions;
-
+        $machineLists = ArrayHelper::machineList();
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
         $requireds['lists'] = Required::where(function ($query) use ($request) {
+            $employeeId = Auth::user()->employee_id;
+            $employeeDepartment = EmployeeDepartment::where('employee_id', $employeeId)->first();
+            $employeePosition = isset($employeeDepartment) ? $employeeDepartment->positions : null;
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-            if (isset($employeePosition) && $employeePosition != 4 || $employeePosition != 5) {
-                $query->where('created_by', $employeeId);
+            if (isset($employeeId) && $employeeId != null) {
+                if ($employeePosition != 4 && $employeePosition != 5) {
+                    $query->where('created_by', $employeeId);
+                }
             }
-
+            if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
+                $query->where('required_department_id', $employeeDepartment->department_id);
+            }
+            if (isset($request->from_date) && isset($request->to_date)) {
+                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                $query->whereDate('created_at', '>=', $from_date);
+                $query->whereDate('created_at', '<=', $to_date);
+            }
+            if (isset($request->machine_name) && $request->machine_name != null) {
+                // $query->where('machine_name', $request->machine_name);
+                $query->whereRaw('JSON_EXTRACT(content_form, "$.name_machine") = ?', [$request->machine_name]);
+            }
         })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
             $requireds['advance'] = 1;
             $requireds['filter'] = $request->all();
         }
-        return view('backend.pages.checkCutMachine.index', $requireds);
+        return view('backend.pages.checkCutMachine.index', $requireds, compact('machineLists'));
     }
 
     public function create(Request $request)
     {
         $data['filter'] = $request->all();
         $data['get_machineName'] = $request->selecMachine;
+
+        $data['repairMachines'] = Required::all();
         $machineLists = ArrayHelper::machineList();
         $key = array_search($request->selecMachine, array_column($machineLists, 'name'));
         $formTypeJobs = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table']['check_list'];
@@ -89,6 +106,9 @@ class CheckCutMachineController extends Controller
     public function action(Request $request)
     {
         $employee_id = Auth::user()->employee_id;
+        if (!isset($employee_id)) {
+            return back()->with('error', 'Bạn không có quyền duyệt hoặc bỏ duyệt');
+        }
         // dd($employee_id);
         $method = $request->input('method', '');
         // dd($method);
@@ -100,6 +120,7 @@ class CheckCutMachineController extends Controller
                 // dd($request->ids);
                 foreach ($request->ids as $key => $value) {
                     $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
+                    // dd($signature_submissions);
                     if (is_null($signature_submissions || !$signature_submissions)) {
                         return back()->with('error', 'Yêu cầu này đã được duyệt hoặc bạn không có quyền duyệt');
                     }
