@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ActivityLogger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Required extends Model
 {
-    use HasFactory;
+    use HasFactory,ActivityLogger;
     protected $table = 'requireds';
 
     protected $fillable = [

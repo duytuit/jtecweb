@@ -68,6 +68,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>TT</th>
                                         <th>Code</th>
                                         <th>Tên nhân viên</th>
                                         <th>Chức vụ</th>
@@ -76,8 +77,9 @@
                                 </thead>
 
 
-                                @foreach ($employeeDepartments as $employeeDepartment)
+                                @foreach ($employeeDepartments as $index => $employeeDepartment)
                                 <tr>
+                                    <td>{{$index+1}}</td>
                                     <td>{{ @$employeeDepartment->employee->code }}</td>
                                     <td>{{ @$employeeDepartment->employee->first_name . ' ' . @$employeeDepartment->employee->last_name }}
                                     </td>

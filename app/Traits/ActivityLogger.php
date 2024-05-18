@@ -21,7 +21,7 @@ trait ActivityLogger {
 
     protected static function boot()
     {
-      
+
         parent::boot();
 
          // Hook into eloquent events that only specified in $eventToBeRecorded array,
@@ -32,7 +32,7 @@ trait ActivityLogger {
             try {
                 $new_str = substr($query->sql,0,10);
                 //app(\App\User::class)->getTable();
-              
+
                 $string_table_name =  app('\\'.$reflect->getName())->getTable();
                 if(str_contains($new_str, 'select') && strpos($query->sql, $string_table_name)){
                     $sql = substr($query->sql,strpos($query->sql,'where'),strlen($query->sql)) ;
@@ -99,7 +99,7 @@ trait ActivityLogger {
     }
     protected static function bootLogsActivity(): void
     {
-       
+
     }
      /**
      * Get the event names that should be recorded.
@@ -113,8 +113,7 @@ trait ActivityLogger {
         $events = collect([
             'created',
             'updated',
-            'deleted',
-            'restored'
+            'deleted'
         ]);
 
         // if (collect(class_uses_recursive(static::class))->contains(SoftDeletes::class)) {
@@ -130,4 +129,4 @@ trait ActivityLogger {
         return vsprintf(str_replace('?', '%s', $addSlashes), $buildings);
     }
 
-} 
+}
