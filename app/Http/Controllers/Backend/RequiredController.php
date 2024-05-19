@@ -48,7 +48,7 @@ class RequiredController extends Controller
         }
         $requiredType = 0;
         $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
-        dd($formTypeJobs);
+        // dd($formTypeJobs);
         $positionTitles = ArrayHelper::positionTitle();
         $employee_id = Auth::user()->employee_id;
         $employee = Employee::where('id', $employee_id)->first();

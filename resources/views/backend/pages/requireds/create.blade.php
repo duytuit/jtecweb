@@ -5,7 +5,7 @@
 @endsection
 @php
     use App\Models\EmployeeDepartment;
-
+    use App\Models\Employee;
 @endphp
 @section('admin-content')
     @include('backend.pages.requireds.partials.header-breadcrumbs')
@@ -15,7 +15,7 @@
             <form action="{{ route('admin.requireds.store') }}" method="POST" enctype="multipart/form-data"
                 data-parsley-validate data-parsley-focus="first">
                 @csrf
-                <input type="hidden" name="departmentId" value="{{ $employeeDepartmentFromId->department_id }}">
+                {{-- <input type="hidden" name="departmentId" value="{{ $employeeDepartmentFromId->department_id }}"> --}}
                 {{-- <input type="hidden" name="requiredType" value="0"> --}}
                 <div class="form-body">
                     <div class="card-body">
@@ -86,20 +86,19 @@
                                             readonly>
                                         @foreach ($dataTablesIds as $dataTablesId)
                                             @php
-                                                $emp_dept = EmployeeDepartment::where('department_id', $departmentId)
+                                                $emp_depts = EmployeeDepartment::where('department_id', $departmentId)
                                                     ->where('positions', $dataTablesId)
                                                     ->pluck('employee_id')
                                                     ->toArray();
-                                                dd($emp_dept);
                                             @endphp
-                                            <div class="card-body">
-                                                <div class="form-group">
-                                                    <div>
-                                                        <span>{{ $positionTitles[$dataTablesId]['name'] . ' :' }}</span>
-                                                        <span></span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @foreach ($emp_depts as $emp_dept)
+                                                <span>{{ $positionTitles[$dataTablesId]['name'] . ' :' }}</span>
+                                                <span>
+                                                    @php
+                                                        $emp_name = Employee::find($emp_dept);
+                                                    @endphp
+                                                    {{ $emp_name ? @$emp_name->first_name . ' ' . @$emp_name->last_name : '' }}</span>
+                                            @endforeach
                                         @endforeach
                                     @endforeach
                                 </div>
