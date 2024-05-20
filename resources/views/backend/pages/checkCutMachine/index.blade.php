@@ -140,7 +140,7 @@
                                 @php
                                     $contentForm = json_decode($item->content_form);
                                 @endphp
-                                <td>{{ $contentForm->name_machine }}</td>
+                                <td>{{ $contentForm ? $contentForm->name_machine : null }}</td>
                                 <td class="p-1">
                                     @if ($item->signatureSubmission)
                                         @foreach ($item->signatureSubmission as $index2 => $item2)
@@ -206,6 +206,7 @@
                                             @php
                                                 $contentFormChecks = $contentForm->check_list;
                                             @endphp
+
                                             @foreach ($contentFormChecks as $index => $item1)
                                                 <div class="dropdown-item" href="#">
                                                     {{ $item1->id + 1 }}.{{ $item1->position }}

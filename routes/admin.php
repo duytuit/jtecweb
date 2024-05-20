@@ -234,6 +234,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('', 'RequiredController@index')->name('index');
         Route::get('create', 'RequiredController@create')->name('create');
         Route::get('edit/{id}', 'RequiredController@edit')->name('edit');
+        Route::get('complete/{id}', 'RequiredController@complete')->name('complete');
         Route::get('exportExcel', 'RequiredController@exportExcel')->name('exportExcel');
         Route::post('store', 'RequiredController@store')->name('store');
         Route::post('update', 'RequiredController@update')->name('update');
@@ -241,7 +242,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
 
         Route::post('showDataAccessorys', 'RequiredController@showDataAccessorys')->name('showDataAccessorys');
         Route::post('requireCheckListMachineCut', 'RequiredController@requireCheckListMachineCut')->name('requireCheckListMachineCut');
-        Route::get('showCheckCutMachine', 'RequiredController@showCheckCutMachine')->name('showCheckCutMachine');
+        // Route::get('showCheckCutMachine', 'RequiredController@showCheckCutMachine')->name('showCheckCutMachine');
 
         Route::put('trashed/revert/{id}', 'RequiredController@revertFromTrash')->name('trashed.revert');
         Route::delete('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');

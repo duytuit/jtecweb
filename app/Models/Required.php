@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class Required extends Model
 {
     use HasFactory, ActivityLogger;
-    protected $table = 'requireds';
+    // protected $table = 'requireds';
+    protected $guarded = [];
 
     protected $seachable  = [
         'id',

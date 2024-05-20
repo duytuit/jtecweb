@@ -6,6 +6,7 @@
 @php
     use App\Models\EmployeeDepartment;
     use App\Models\Employee;
+    use App\Models\Department;
 @endphp
 @section('admin-content')
     @include('backend.pages.requireds.partials.header-breadcrumbs')
@@ -16,7 +17,7 @@
                 data-parsley-validate data-parsley-focus="first">
                 @csrf
                 {{-- <input type="hidden" name="departmentId" value="{{ $employeeDepartmentFromId->department_id }}"> --}}
-                {{-- <input type="hidden" name="requiredType" value="0"> --}}
+                <input type="hidden" id="requiredType" name="requiredType" value="{{ $requiredType }}">
                 <div class="form-body">
                     <div class="card-body">
                         <div class="row">
@@ -45,13 +46,24 @@
                                         <div class="form-group">
                                             <label class="control-label" for="quantity">Số lượng<span
                                                     class="required">*</span></label>
-                                            <input type="number" class="form-control" id="quantity" name="quantity"
+                                            <input type="number" step="1" min="0" max="1000"
+                                                class="form-control" id="quantity" name="quantity"
                                                 value="{{ old('quantity') }}" placeholder="Số lượng" required
-                                                data-parsley-required-message="Trường số lượng là bắt buộc" />
+                                                data-parsley-required-message="Trường số lượng là bắt buộc">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Loại số lượng</label>
+                                            <div>
+                                                <input name="quantityType" id="quantityUnused"
+                                                    style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                                    value="" data-parsley-required-message="Bạn chưa chọn" checked>
+                                                <label for="quantityUnused">Hàng chẵn</label>
 
+                                                <input name="quantityType" id="quantityUsed"
+                                                    style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                                    value="" data-parsley-required-message="Bạn chưa chọn">
+                                                <label for="quantityUsed">Hàng lẻ</label>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="unit">Đơn vị</label>
@@ -75,18 +87,22 @@
                             <div class="col-md-6">
                                 <div class="card">
                                     <h5 class="card-header">Bộ phận Tiếp nhận</h5>
-
                                     @php
-                                        $dataTablesIds = $formTypeJobs['confirm_by_from_dept'];
-
+                                        $dataTablesIds = $formTypeJobs['confirm_by_from_dept']; // get id leader, sub leader
                                     @endphp
-                                    @foreach ($formTypeJobs['to_dept'] as $departmentId)
+                                    @foreach ($formTypeJobsDepartmentIds as $formTypeJobsDepartmentId)
+                                        @php
+                                            $departmentName = Department::find($formTypeJobsDepartmentId);
+                                        @endphp
                                         <input type="text" class="form-control" id="department" name="department"
-                                            value="{{ $departmentsName = $departmentFromId ? $departmentFromId->name : null }}"
+                                            value="{{ $departmentsName = $formTypeJobsDepartmentId ? $departmentName->name : null }}"
                                             readonly>
                                         @foreach ($dataTablesIds as $dataTablesId)
                                             @php
-                                                $emp_depts = EmployeeDepartment::where('department_id', $departmentId)
+                                                $emp_depts = EmployeeDepartment::where(
+                                                    'department_id',
+                                                    $formTypeJobsDepartmentId,
+                                                )
                                                     ->where('positions', $dataTablesId)
                                                     ->pluck('employee_id')
                                                     ->toArray();

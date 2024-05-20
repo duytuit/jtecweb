@@ -73,8 +73,8 @@
                                         @php
                                             $contentForm = json_decode($item->content_form, true);
                                         @endphp
-                                        @if ($contentForm['name_machine'] == $get_machineName)
-                                            <span>{{ $item->content }}</span><br>
+                                        @if (isset($contentForm['name_machine']) && $contentForm['name_machine'] == $get_machineName)
+                                            <span>{{ @$item->content }}</span><br>
                                         @endif
                                     @endforeach
                                     <span class="p-md-2 d-block bg-primary text-light">Thêm sửa chữa</span>
