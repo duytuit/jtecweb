@@ -13,9 +13,8 @@ use App\Models\SignatureSubmission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
-
+use Illuminate\Support\Facades\DB;
 
 class RequiredController extends Controller
 {
@@ -56,7 +55,7 @@ class RequiredController extends Controller
             }
             if (isset($request->from_date) && isset($request->to_date)) {
                 $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
-                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                $to_date = Carbon::parse($request->to_date)->format('Y-m-d');
                 $query->whereDate('created_at', '>=', $from_date);
                 $query->whereDate('created_at', '<=', $to_date);
             }
@@ -129,6 +128,7 @@ class RequiredController extends Controller
             // dd($formTypeJobs['confirm_from_dept']);
             if ($formTypeJobs['confirm_from_dept'] == 1 || $formTypeJobs['confirm_to_dept'] == 1) {
                 $status = 1;
+
             }
 
             foreach ($dataTablesIds as $dataTablesId) {
@@ -137,7 +137,6 @@ class RequiredController extends Controller
                     DB::rollBack();
                     return redirect()->back()->withInput();
                 }
-
                 $signature = SignatureSubmission::create([
                     'required_id' => $required->id,
                     'department_id' => $departmentFromId->department_id,
@@ -145,7 +144,7 @@ class RequiredController extends Controller
                     'positions' => $dataTablesId,
                     'approve_id' => json_encode($emp_dept),
                     'status' => $status,
-                    // 'signature_id'=>,
+                    // 'signature_id' =>,
                 ]);
             }
 
@@ -157,10 +156,13 @@ class RequiredController extends Controller
                 foreach ($dataTablesIds as $dataTablesId) {
                     $emp_dept2 = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
                     // dd($emp_dept);
+                    $emp_dept_lead = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', '5')->first();
+                    // dd($emp_dept_lead->employee_id);
                     if (count($emp_dept2) == 0) {
                         DB::rollBack();
                         return redirect()->back()->withInput();
                     }
+
                     $signature = SignatureSubmission::create([
                         'required_id' => $required->id,
                         'department_id' => $formTypeJobToDept,
@@ -168,7 +170,7 @@ class RequiredController extends Controller
                         'positions' => $dataTablesId,
                         'approve_id' => json_encode($emp_dept2),
                         'status' => $status,
-                        // 'signature_id'=>,
+                        'signature_id' => $emp_dept_lead->employee_id,
                     ]);
                 }
             }
@@ -181,23 +183,28 @@ class RequiredController extends Controller
             return back();
         }
     }
-    public function complete(Request $request)
+    public function complete($id)
     {
-        $id = $request->input('id');
-        if (is_null($this->user) || !$this->user->can('requireds.index')) {
-            $message = 'You are not allowed to access this page !';
-            return view('errors.403', compact('message'));
-        }
         $requireds = Required::find($id);
+        $employee_id = Auth::user()->employee_id;
+        if (($requireds->status == 1)) {
+            session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
+            return redirect()->route('admin.requireds.index');
+        }
+
+        // if (is_null(Auth::user()) || !Auth::user()->can('admin.requireds.create')) {
+        //     $message = 'You are not allowed to access this page!';
+        //     return view('errors.403', compact('message'));
+        // }
+
         if (is_null($requireds)) {
             session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
             return redirect()->route('admin.requireds.index');
         }
 
         $requireds->status = 1;
-        $requireds->completed_by = Auth::id();
+        $requireds->completed_by = $employee_id;
         $requireds->save();
-
         session()->flash('success', 'Đã thực hiện thành công !!');
         return redirect()->route('admin.requireds.index');
     }

@@ -6,12 +6,9 @@ use App\Http\Controllers\Backend\Auth\LoginController;
 use App\Http\Controllers\Backend\Auth\ResetPasswordController;
 use App\Http\Controllers\Backend\BlogsController;
 use App\Http\Controllers\Backend\CacheController;
-use App\Http\Controllers\Backend\CheckCutMachineController;
-use App\Http\Controllers\Backend\CheckTensionController;
 use App\Http\Controllers\Backend\ContactsController;
 use App\Http\Controllers\Backend\DashboardsController;
 use App\Http\Controllers\Backend\LanguagesController;
-use App\Http\Controllers\Backend\ProductvtController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -335,6 +332,5 @@ Route::group(['prefix' => 'settings'], function () {
     Route::put('/update', [SettingsController::class, 'update'])->name('settings.update');
     Route::resource('languages', LanguagesController::class);
 });
-
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);
