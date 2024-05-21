@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SignatureSubmission extends Model
 {
-    use HasFactory,ActivityLogger;
+    use HasFactory, ActivityLogger;
     protected $guarded = [];
     protected $fillable = [
         'id',
@@ -17,7 +17,7 @@ class SignatureSubmission extends Model
         'content',
         'positions',
         'approve_id',
-        'sign_instead',
+        'signature_id',
         'status',
         'deleted_at',
         'created_at',

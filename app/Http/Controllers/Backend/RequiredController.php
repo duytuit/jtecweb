@@ -135,6 +135,7 @@ class RequiredController extends Controller
             foreach ($dataTablesIds as $dataTablesId) {
                 $emp_dept = EmployeeDepartment::where('department_id', $departmentFromId->department_id)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
                 $emp_dept_lead = EmployeeDepartment::where('department_id', $departmentFromId->department_id)->where('positions', $dataTablesId)->first();
+                $emp_dept_lead_id = $emp_dept_lead->employee_id;
 
                 if (count($emp_dept) == 0) {
                     DB::rollBack();
@@ -147,7 +148,7 @@ class RequiredController extends Controller
                     'positions' => $dataTablesId,
                     'approve_id' => json_encode($emp_dept),
                     'status' => $status,
-                    'signature_id' => (int) $emp_dept_lead->employee_id,
+                    'signature_id' => $emp_dept_lead_id,
 
                 ]);
             }
@@ -159,15 +160,12 @@ class RequiredController extends Controller
                 // dd($formTypeJobToDept);
                 foreach ($dataTablesIds as $dataTablesId) {
                     $emp_dept2 = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
-                    // dd($emp_dept);
-                    $emp_dept_lead = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', '5')->first();
-                    // dd($emp_dept_lead->employee_id);
-                    $emp_dept_lead_id = (int)$emp_dept_lead->employee_id;
+                    $emp_dept_lead = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', 5)->first();
+                    $emp_dept_lead_id = $emp_dept_lead->employee_id;
                     if (count($emp_dept2) == 0) {
                         DB::rollBack();
                         return redirect()->back()->withInput();
                     }
-
                     $signature = SignatureSubmission::create([
                         'required_id' => $required->id,
                         'department_id' => $formTypeJobToDept,

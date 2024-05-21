@@ -30,6 +30,11 @@ class CheckCutMachineController extends Controller
 
     public function index(Request $request)
     {
+        if (is_null($this->user) || !$this->user->can('checkCutMachine.create')) {
+            $message = 'You are not allowed to access this page !';
+            return view('errors.403', compact('message'));
+        }
+
         $machineLists = ArrayHelper::machineList();
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
