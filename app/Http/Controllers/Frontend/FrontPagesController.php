@@ -153,16 +153,16 @@ class FrontPagesController extends Controller
         // ->where('品目K', 'like', '7'.'%')
         // ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('新規登録日','desc')->limit(100)->get();
         //  dd($store);
-            $accessory = Accessory::where('location_k',7)->orderBy('id')->limit(100)->get();
-           foreach ($accessory as $key => $value) {
-              RedisHelper::queueSet('inventory_accessory',$value);
-           }
+        //     $accessory = Accessory::where('location_k',7)->orderBy('id')->limit(100)->get();
+        //    foreach ($accessory as $key => $value) {
+        //       RedisHelper::queueSet('inventory_accessory',$value);
+        //    }
         // $date =explode("/",'20/09/1985');
         // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
         // $this->remaneTable();
-        // $this->add_employeeTableId_to_admin_table_employee_id();
+        $this->add_employeeTableId_to_admin_table_employee_id();
         // $this->addEmployee();
         // $this->updateBeginDate();
         // $this->updateType();
