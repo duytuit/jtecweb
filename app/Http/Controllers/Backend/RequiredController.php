@@ -204,10 +204,10 @@ class RequiredController extends Controller
             return redirect()->route('admin.requireds.index');
         }
 
-        // if (is_null(Auth::user()) || !Auth::user()->can('admin.requireds.create')) {
-        //     $message = 'You are not allowed to access this page!';
-        //     return view('errors.403', compact('message'));
-        // }
+        if (is_null(Auth::user()) || !Auth::user()->can('admin.requireds.create')) {
+            $message = 'You are not allowed to access this page!';
+            return view('errors.403', compact('message'));
+        }
 
         if (is_null($requireds)) {
             session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
