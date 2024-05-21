@@ -120,16 +120,18 @@ class ArrayHelper
         return [
             [
                 'id' => 1,
-                'from_dept' =>  [33], // id bộ phận yêu cầu
+                'from_dept' =>  [6], // id bộ phận yêu cầu
                 'to_dept' => [
-                    22, 27 // id bộ phận tiếp nhận
+                    10, 11 // id bộ phận tiếp nhận
                 ],
                 'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
-                'confirm_to_dept' => 1 // 0:duyệt tay, 1: tự động duyệt
+                'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_by_from_dept' => [4, 5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
+                'confirm_by_to_dept' => [],
             ],
             [
                 'id' => 2,
-                'from_dept' =>  [5], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
+                'from_dept' =>  [6], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
                 'to_dept' => [], // id bộ phận tiếp nhận
                 'confirm_from_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt

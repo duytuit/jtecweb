@@ -31,7 +31,6 @@
             <input type="hidden" name="machineName" value="{{ $get_machineName }}">
             <input type="hidden" name="departmentId" value="{{ $employee_department->department_id }}">
             <div class="">
-
                 <div class="row mb-2 ">
                     <div class="col-11 w-75 mx-auto p-md-2 fs-3">
                         <div class="row">
@@ -69,8 +68,15 @@
 
                             <div class="col-md-4 p-2 ">
                                 <div class="h-100 p-2 shadow-lg">
-                                    <span class="p-md-2 d-block bg-secondary text-light">Lý lịch sửa chữa</span><br>
-
+                                    <span class="p-md-2 d-block bg-secondary text-light">Lý lịch sửa chữa</span>
+                                    @foreach ($repairMachines as $index => $item)
+                                        @php
+                                            $contentForm = json_decode($item->content_form, true);
+                                        @endphp
+                                        @if (isset($contentForm['name_machine']) && $contentForm['name_machine'] == $get_machineName)
+                                            <span>{{ @$item->content }}</span><br>
+                                        @endif
+                                    @endforeach
                                     <span class="p-md-2 d-block bg-primary text-light">Thêm sửa chữa</span>
                                     <div class="pt-2 ">
                                         <textarea name="repair_history" id="" class="w-100">
@@ -95,43 +101,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $(document).ready(function() {
-            var selectedValue = 1;
-            // console.log(selectedValue);
-
-            $('.machine-select').on('change', function(e) {
-                // e.preventDefault();
-                var selectedOption = $(this).find('option:selected');
-                selectedValue = selectedOption.attr('data-type');
-                console.log(selectedValue);
-                $.ajax({
-                    url: "{{ route('admin.checkCutMachine.create') }}",
-                    type: "POST",
-                    data: {
-                        selectedValue: selectedValue
-                    },
-                    success: function(data) {
-                        toastr.success("Thành công", 'Success', {
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut",
-                            timeOut: 2000
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        toastr.success("Có lỗi xảy ra", 'Error', {
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut",
-                            timeOut: 2000
-                        });
-                    }
-                });
-            });
-        })
-    </script>
+    <script></script>
 @endsection

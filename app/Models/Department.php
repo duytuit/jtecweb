@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    use HasFactory,ActivityLogger;
+    use HasFactory, ActivityLogger;
     protected $table = 'departments';
     protected $fillable = [
         'id',
@@ -30,5 +30,9 @@ class Department extends Model
     public function employeeDepartmentByCount()
     {
         return $this->hasMany(EmployeeDepartment::class, 'department_id')->select('id')->count();
+    }
+    public static function findById($id)
+    {
+        return $department =  Department::find($id);
     }
 }

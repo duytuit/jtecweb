@@ -6,12 +6,9 @@ use App\Http\Controllers\Backend\Auth\LoginController;
 use App\Http\Controllers\Backend\Auth\ResetPasswordController;
 use App\Http\Controllers\Backend\BlogsController;
 use App\Http\Controllers\Backend\CacheController;
-use App\Http\Controllers\Backend\CheckCutMachineController;
-use App\Http\Controllers\Backend\CheckTensionController;
 use App\Http\Controllers\Backend\ContactsController;
 use App\Http\Controllers\Backend\DashboardsController;
 use App\Http\Controllers\Backend\LanguagesController;
-use App\Http\Controllers\Backend\ProductvtController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -234,6 +231,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('', 'RequiredController@index')->name('index');
         Route::get('create', 'RequiredController@create')->name('create');
         Route::get('edit/{id}', 'RequiredController@edit')->name('edit');
+        Route::get('complete/{id}', 'RequiredController@complete')->name('complete');
         Route::get('exportExcel', 'RequiredController@exportExcel')->name('exportExcel');
         Route::post('store', 'RequiredController@store')->name('store');
         Route::post('update', 'RequiredController@update')->name('update');
@@ -241,7 +239,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
 
         Route::post('showDataAccessorys', 'RequiredController@showDataAccessorys')->name('showDataAccessorys');
         Route::post('requireCheckListMachineCut', 'RequiredController@requireCheckListMachineCut')->name('requireCheckListMachineCut');
-        Route::get('showCheckCutMachine', 'RequiredController@showCheckCutMachine')->name('showCheckCutMachine');
+        // Route::get('showCheckCutMachine', 'RequiredController@showCheckCutMachine')->name('showCheckCutMachine');
 
         Route::put('trashed/revert/{id}', 'RequiredController@revertFromTrash')->name('trashed.revert');
         Route::delete('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');
@@ -347,6 +345,5 @@ Route::group(['prefix' => 'settings'], function () {
     Route::put('/update', [SettingsController::class, 'update'])->name('settings.update');
     Route::resource('languages', LanguagesController::class);
 });
-
 
 Route::get('reset-cache', [CacheController::class, 'reset_cache']);

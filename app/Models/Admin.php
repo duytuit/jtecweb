@@ -131,4 +131,8 @@ class Admin extends Authenticatable
     {
         return $this->belongsTo(Employee::class, 'username', 'code');
     }
+        public function employeeDepartment()
+    {
+        return $this->belongsTo(EmployeeDepartment::class, 'employee_id', 'employee_id');
+    }
 }

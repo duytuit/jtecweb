@@ -10,11 +10,11 @@ use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\Required;
 use App\Models\SignatureSubmission;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
 
 class RequiredController extends Controller
 {
@@ -32,9 +32,45 @@ class RequiredController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // $machineLists = ArrayHelper::machineList();
+        $requireds['keyword'] = $request->input('keyword', null);
+        $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $requireds['advance'] = 0;
+        $requireds['lists'] = Required::where('from_type', 0)->where(function ($query) use ($request) {
+            $employeeId = Auth::user()->employee_id;
+            $employeeDepartment = EmployeeDepartment::where('employee_id', $employeeId)->first();
+            $employeePosition = isset($employeeDepartment) ? $employeeDepartment->positions : null;
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+            if (isset($employeeId) && $employeeId != null) {
+                if ($employeePosition != 4 && $employeePosition != 5) {
+                    $query->where('created_by', $employeeId);
+                }
+            }
+            if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
+                $query->where('required_department_id', $employeeDepartment->department_id);
+            }
+            if (isset($request->from_date) && isset($request->to_date)) {
+                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                $to_date = Carbon::parse($request->to_date)->format('Y-m-d');
+                $query->whereDate('created_at', '>=', $from_date);
+                $query->whereDate('created_at', '<=', $to_date);
+            }
+            if (isset($request->machine_name) && $request->machine_name != null) {
+                // $query->where('machine_name', $request->machine_name);
+                $query->whereRaw('JSON_EXTRACT(content_form, "$.name_machine") = ?', [$request->machine_name]);
+            }
+        })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
+        // dd($requireds['lists']);
+        if (count($request->except('keyword')) > 0) {
+            // Tìm kiếm nâng cao
+            $requireds['advance'] = 1;
+            $requireds['filter'] = $request->all();
+        }
+        return view('backend.pages.requireds.index', $requireds);
     }
 
     /**
@@ -47,13 +83,18 @@ class RequiredController extends Controller
         if (is_null($this->user) || !$this->user->can('required.create')) {
             return abort(403, 'You are not allowed to access this page !');
         }
-        $formTypeJobs = ArrayHelper::formTypeJobs();
+        $requiredType = 0;
+        $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
+        $formTypeJobsDepartmentIds = $formTypeJobs['to_dept'];
+        // dd($formTypeJobs);
         $positionTitles = ArrayHelper::positionTitle();
-        $required = new Required();
-        $employees = Employee::all();
-        $employeeDepartments = EmployeeDepartment::all();
-        $departments = Department::all();
-        return view('backend.pages.requireds.create', compact('employees', 'departments', 'formTypeJobs', 'positionTitles', 'employeeDepartments'));
+        $employee_id = Auth::user()->employee_id;
+        $employee = Employee::where('id', $employee_id)->first();
+        $employeeDepartment['employeeDepartmentAlls'] = EmployeeDepartment::all();
+        $employeeDepartment['employeeDepartmentFromId'] = EmployeeDepartment::where('employee_id', $employee->id)->first();
+        $departmentAlls = Department::all();
+        $departmentFromId = Department::where('id', $employeeDepartment['employeeDepartmentFromId']->department_id)->first();
+        return view('backend.pages.requireds.create', $employeeDepartment, compact('employee', 'formTypeJobs', 'formTypeJobsDepartmentIds', 'positionTitles', 'departmentAlls', 'departmentFromId', 'requiredType'));
     }
 
     /**
@@ -64,23 +105,80 @@ class RequiredController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'code_required' => 'required',
-        //     // 'name' => 'required',
-        // ]);
-        $username = Auth::user()->username;
-        $employee = Employee::where('code', $username)->firstOrFail();
-        $department = Department::where('id', $employee->process_id)->firstOrFail();
+        $employee_id = Auth::user()->employee_id;
+        $requireCode = 'R_' . now()->format('Ymdhis');
+        $departmentFromId = EmployeeDepartment::where('employee_id', $employee_id)->first();
+        // dd($departmentFromId->department_id);
+        $requiredType = $request->requiredType;
+        $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
+        $dataTablesIds = $formTypeJobs['confirm_by_from_dept'];
 
+        //tạo dữ liệu yêu cầu trong bảng required
         try {
             DB::beginTransaction();
             $required = Required::create([
-                'required_department_id' => $department->id,
-                'code_required' => $employee->code,
+                'required_department_id' => $departmentFromId->department_id,
+                'code_required' => $requireCode,
                 'code' => $request->code,
                 'quantity' => $request->quantity,
-                'created_by' => Auth::user()->id,
+                'created_by' => Auth::user()->employee_id,
+                'receiving_department_ids' => json_encode($formTypeJobs['to_dept']),
+
             ]);
+
+            //bộ phận yêu cầu
+            // dd($formTypeJobs['confirm_from_dept']);
+            if ($formTypeJobs['confirm_from_dept'] == 1 || $formTypeJobs['confirm_to_dept'] == 1) {
+                $status = 1;
+            }
+
+            foreach ($dataTablesIds as $dataTablesId) {
+                $emp_dept = EmployeeDepartment::where('department_id', $departmentFromId->department_id)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
+                $emp_dept_lead = EmployeeDepartment::where('department_id', $departmentFromId->department_id)->where('positions', $dataTablesId)->first();
+
+                if (count($emp_dept) == 0) {
+                    DB::rollBack();
+                    return redirect()->back()->withInput();
+                }
+                $signature = SignatureSubmission::create([
+                    'required_id' => $required->id,
+                    'department_id' => $departmentFromId->department_id,
+                    // 'content',
+                    'positions' => $dataTablesId,
+                    'approve_id' => json_encode($emp_dept),
+                    'status' => $status,
+                    'signature_id' => (int) $emp_dept_lead->employee_id,
+
+                ]);
+            }
+
+            //bộ phận tiếp nhận
+            $formTypeJobToDepts = ($formTypeJobs['to_dept']);
+            // dd($formTypeJobToDepts);
+            foreach ($formTypeJobToDepts as $key => $formTypeJobToDept) {
+                // dd($formTypeJobToDept);
+                foreach ($dataTablesIds as $dataTablesId) {
+                    $emp_dept2 = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
+                    // dd($emp_dept);
+                    $emp_dept_lead = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', '5')->first();
+                    // dd($emp_dept_lead->employee_id);
+                    $emp_dept_lead_id = (int)$emp_dept_lead->employee_id;
+                    if (count($emp_dept2) == 0) {
+                        DB::rollBack();
+                        return redirect()->back()->withInput();
+                    }
+
+                    $signature = SignatureSubmission::create([
+                        'required_id' => $required->id,
+                        'department_id' => $formTypeJobToDept,
+                        // 'content',
+                        'positions' => $dataTablesId,
+                        'approve_id' => json_encode($emp_dept2),
+                        'status' => $status,
+                        'signature_id' => $emp_dept_lead_id,
+                    ]);
+                }
+            }
             DB::commit();
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.requireds.index');
@@ -90,7 +188,31 @@ class RequiredController extends Controller
             return back();
         }
     }
+    public function complete($id)
+    {
+        $requireds = Required::find($id);
+        $employee_id = Auth::user()->employee_id;
+        if (($requireds->status == 1)) {
+            session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
+            return redirect()->route('admin.requireds.index');
+        }
 
+        // if (is_null(Auth::user()) || !Auth::user()->can('admin.requireds.create')) {
+        //     $message = 'You are not allowed to access this page!';
+        //     return view('errors.403', compact('message'));
+        // }
+
+        if (is_null($requireds)) {
+            session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
+            return redirect()->route('admin.requireds.index');
+        }
+
+        $requireds->status = 1;
+        $requireds->completed_by = $employee_id;
+        $requireds->save();
+        session()->flash('success', 'Đã thực hiện thành công !!');
+        return redirect()->route('admin.requireds.index');
+    }
     /**
      * Display the specified resource.
      *
@@ -146,7 +268,7 @@ class RequiredController extends Controller
         // dd($request->all());
         $machineLists = ArrayHelper::machineList();
         // dd($machineLists);
-        $key =  array_search($request->machineName, array_column($machineLists, 'name'));
+        $key = array_search($request->machineName, array_column($machineLists, 'name'));
         // dd($request->machineName);
         if (is_null($request->machineName) || $request->machineName == '') {
             session()->flash('error', "Bạn phải chọn máy kiểm tra trước khi thực hiện");
@@ -213,39 +335,39 @@ class RequiredController extends Controller
             return redirect()->back()->withInput();
         }
     }
-    public function showCheckCutMachine(Request $request)
-    {
-        $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
-        $dataTablesType = ArrayHelper::formTypeJobs()[1];
-        $dataTables['name_machine'] = $request->selecMachine;
-        $answers = $request->answer;
-        foreach ($answers as $key => $value) {
-            if (!is_null($value) && $value !== '') {
-                $dataTables['check_list'][$key]['answer'] = $value;
-            } else {
-                session()->flash('error', "Bạn phải kiểm tra hết tất cả nội dụng trước khi lưu");
-            }
-        }
-        $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
-        try {
-            $requireCode = 'R_' . now()->format('Ymdhis');
-            $required = Required::create([
-                'code_required' => $requireCode,
-                'created_by' => Auth::user()->employee_id,
-                'content_form' => $json_data,
-                'required_department_id' => $request->selecDepartment,
-                'code' => '',
-                'content' => $request->repair_history,
-                'from_type' => $dataTablesType['id'],
-            ]);
+    // public function showCheckCutMachine(Request $request)
+    // {
+    //     $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
+    //     $dataTablesType = ArrayHelper::formTypeJobs()[1];
+    //     $dataTables['name_machine'] = $request->selecMachine;
+    //     $answers = $request->answer;
+    //     foreach ($answers as $key => $value) {
+    //         if (!is_null($value) && $value !== '') {
+    //             $dataTables['check_list'][$key]['answer'] = $value;
+    //         } else {
+    //             session()->flash('error', "Bạn phải kiểm tra hết tất cả nội dụng trước khi lưu");
+    //         }
+    //     }
+    //     $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
+    //     try {
+    //         $requireCode = 'R_' . now()->format('Ymdhis');
+    //         $required = Required::create([
+    //             'code_required' => $requireCode,
+    //             'created_by' => Auth::user()->employee_id,
+    //             'content_form' => $json_data,
+    //             'required_department_id' => $request->selecDepartment,
+    //             'code' => '',
+    //             'content' => $request->repair_history,
+    //             'from_type' => $dataTablesType['id'],
+    //         ]);
 
-            session()->flash('success', "successfully.");
-            return redirect()->route('admin.checkCutMachine.index');
-        } catch (\Exception $e) {
-            session()->flash('error', "Failed to update: " . $e->getMessage());
-            return redirect()->back()->withInput();
-        }
-    }
+    //         session()->flash('success', "successfully.");
+    //         return redirect()->route('admin.checkCutMachine.index');
+    //     } catch (\Exception $e) {
+    //         session()->flash('error', "Failed to update: " . $e->getMessage());
+    //         return redirect()->back()->withInput();
+    //     }
+    // }
     /**
      * Remove the specified resource from storage.
      *
@@ -259,7 +381,8 @@ class RequiredController extends Controller
     public function showDataAccessorys(Request $request)
     {
         $accessorysCode = $request->input('selectedValue');
-        $data = Accessory::where('code', $accessorysCode)->first();
+        // $data = Accessory::where('code', $accessorysCode)->first();
+        $data = Accessory::where('code', 'like', '%' . $request->search . '%')->first();
         return response()->json($data);
     }
     public function destroyCheckCutMachine(Request $request)

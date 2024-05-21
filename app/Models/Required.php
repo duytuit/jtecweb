@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Required extends Model
 {
-    use HasFactory,ActivityLogger;
-    protected $table = 'requireds';
+    use HasFactory, ActivityLogger;
+    // protected $table = 'requireds';
+    protected $guarded = [];
 
-    protected $fillable = [
+    protected $seachable  = [
         'id',
         'code_required',
         'code',
@@ -35,6 +36,25 @@ class Required extends Model
         'updated_at',
         'content_form',
     ];
+
+    public function scopeFilter($query, $input)
+    {
+        foreach ($this->seachable as $value) {
+            if (isset($input[$value])) {
+                $query->where($value, $input[$value]);
+            }
+        }
+        if (isset($input['keyword'])) {
+            $search = $input['keyword'];
+            $query->where(function ($q) use ($search) {
+                foreach ($this->seachable as $value) {
+                    $q->orWhere($value, 'LIKE', '%' . $search . '%');
+                }
+            });
+        }
+        return $query;
+    }
+
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'created_by', 'id');
