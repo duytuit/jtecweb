@@ -144,6 +144,13 @@ class RolePermissionsTableSeeder extends Seeder
                 'activity.delete',
             ],
 
+            'checkdevice' => [
+                'checkdevice.view',
+                'checkdevice.create',
+                'checkdevice.edit',
+                'checkdevice.delete',
+            ],
+
             'campaign' => [
                 'campaign.view',
                 'campaign.create',
