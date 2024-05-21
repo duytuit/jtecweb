@@ -35,6 +35,7 @@ class Required extends Model
         'created_at',
         'updated_at',
         'content_form',
+        'usage_status',
     ];
 
     public function scopeFilter($query, $input)
@@ -54,7 +55,10 @@ class Required extends Model
         }
         return $query;
     }
-
+    public function accessory()
+    {
+        return $this->belongsTo(Accessory::class, 'code', 'code');
+    }
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'created_by', 'id');

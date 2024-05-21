@@ -91,16 +91,11 @@ class CheckCutMachineController extends Controller
         $employee_department = EmployeeDepartment::where('employee_id', $employee->id)->first();
         // dd($employee_department);
         $formTypeJobsDepartment = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['from_dept'];
-        // dd($employee_department->department_id);
+        // dd($formTypeJobsDepartment[0] . '---' . $employee_department->department_id);
         if ($formTypeJobsDepartment[0] !== $employee_department->department_id) {
             session()->flash('error', "Bạn không có quyền vào mục này");
             return redirect()->route('admin.checkCutMachine.index');
         }
-        // if ($formTypeJobsDepartment !== $employee_department->department_id) {
-        //     session()->flash('error', "Bạn không có quyền vào mục này");
-        //     return redirect()->route('admin.checkCutMachine.index');
-        // }
-        // dd($departmentId);
         return view('backend.pages.checkCutMachine.create', compact('formTypeJobs', 'machineLists', 'employee', 'employee_department'), $data);
     }
 

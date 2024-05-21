@@ -8,6 +8,7 @@
     use App\Models\Employee;
     use App\Models\Department;
 @endphp
+
 @section('admin-content')
     @include('backend.pages.requireds.partials.header-breadcrumbs')
     <div class="container-fluid">
@@ -56,12 +57,11 @@
                                             <div>
                                                 <input name="quantityType" id="quantityUnused"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                                    value="" data-parsley-required-message="Bạn chưa chọn" checked>
+                                                    value="1">
                                                 <label for="quantityUnused">Hàng chẵn</label>
-
                                                 <input name="quantityType" id="quantityUsed"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                                    value="" data-parsley-required-message="Bạn chưa chọn">
+                                                    value="0">
                                                 <label for="quantityUsed">Hàng lẻ</label>
                                             </div>
                                         </div>
