@@ -24,9 +24,6 @@
                             <li><a class="btn-action" data-target="#form_lists" data-method="active_check"
                                     href="javascript:;"><i class="fa fa-check-circle" style="color: #3800df;"></i> Duyệt</a>
                             </li>
-                            <li><a class="btn-action" data-target="#form_lists" data-method="inactive_check"
-                                    href="javascript:;"><i class="fa fa-check-circle" style="color: #3800df;"></i> Bỏ
-                                    duyệt</a></li>
                         </ul>
                     </span>
                     {{-- <a href="{{ route('admin.requireds.index') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
@@ -99,7 +96,7 @@
             @csrf
             <input type="hidden" name="method" value="" />
             <div class="table-responsive product-table overflow-x-scroll ">
-                <table class="table table-bordered" id="checkCutMachine_table" style="min-width: 1280px; ">
+                <table class="table table-bordered" id="checkCutMachine_table" style="min-width: 1440px; ">
                     <thead>
                         <tr>
                             <th width="3%"><input type="checkbox" class="greyCheck checkAll"
@@ -110,9 +107,9 @@
                             <th>Bộ phận yêu cầu</th>
                             <th>Bộ phận tiếp nhận</th>
                             <th>Trạng thái</th>
-                            <th>Ghi chú</th>
                             <th>Người thực hiện</th>
                             <th>Thao tác</th>
+                            <th>Ghi chú</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,14 +123,41 @@
                                 </td>
                                 <td>
                                     {{ 'Mã linh kiện: ' . @$item->code }} <br>
-                                    {{ 'Số lượng: ' . @$item->quantity }} <br>
+                                    <span class="text-success  ">{{ 'Số lượng: ' . @$item->quantity }}</span> <br>
+                                    <span class="text-danger ">{{ 'Số lượng tồn: ' . @$item->accessory->inventory }}
+                                    </span><br>
                                     {{ 'Định lượng: ' . @$item->size }} <br>
                                     {{ 'Đơn vị: ' . @$item->unit_price }} <br>
-                                    {{-- {{'Vị trí: '.@$item->}} <br> --}}
+                                    {{ 'Vị trí: ' . @$item->accessory->location_c }} <br>
+                                    {{ 'Loại số lượng: ' . @$item->usage_status == 1 ? 'Hàng chẵn' : 'Hàng lẻ' }} <br>
                                     {{ 'Người yêu cầu: ' . @$item->employee->first_name . ' ' . @$item->employee->last_name }}
                                 </td>
-                                <td>{{ @$item->employeeDepartment->department->name }}</td>
                                 <td>
+                                    {{-- bộ phận yêu cầu --}}
+                                    {{ @$item->employeeDepartment->department->name }} <br>
+                                    @foreach ($item->signatureSubmission as $index2 => $item2)
+                                        @if ($item->employeeDepartment->department->id == $item2->department_id)
+                                            @if ($item2->status == 0)
+                                                <span> chưa duyệt </span>
+                                                <span class="btn btn-outline-danger" style="padding: 0.15rem 0.5rem;">
+                                                    <i class="fa fa-times" style="color: red;"></i>
+                                                </span>
+                                            @else
+                                                <div>
+                                                    <span> Đã duyệt </span>
+                                                    <span style="padding: 0.15rem 0.5rem;"
+                                                        class="btn btn-outline-success"><i class="fa fa-check"
+                                                            style="color: green;"></i></span><br>
+                                                    <span>{{ 'Người duyệt: ' . @$item2->employee->first_name . @$item2->employee->last_name }}</span><br>
+                                                    <span>{{ 'Thời gian duyệt: ' . $item2->updated_at }}</span>
+                                                </div>
+                                            @endif
+                                        @endif
+                                    @endforeach
+
+                                </td>
+                                <td>
+                                    {{-- bộ phận tiếp nhận --}}
                                     @php
                                         $department_ids = json_decode($item->receiving_department_ids, true);
                                     @endphp
@@ -142,68 +166,46 @@
                                             $department = Department::findById($department_id);
                                         @endphp
                                         <span>
-                                            {{ $department ? $department->name : '' }} <br>
+                                            {{ $department ? $department->name : ' ' }} <br>
                                         </span>
-                                    @endforeach
-                                </td>
-                                <td class="p-1">
-                                    @if ($item->signatureSubmission)
                                         @foreach ($item->signatureSubmission as $index2 => $item2)
-                                            @if ($item2->positions == 4)
-                                                <div>SubLeader:
-                                                    @if ($item2->status == 0)
-                                                        <span> chưa duyệt </span>
-                                                        <span class="btn btn-outline-danger"
-                                                            style="padding: 0.15rem 0.5rem;">
-                                                            <i class="fa fa-times" style="color: red;"></i>
-                                                        </span>
-                                                    @else
-                                                        <button type="button" class="border-0 bg-transparent "
-                                                            data-toggle="tooltip" data-html="true"
-                                                            data-placement="bottom"
-                                                            title="{{ 'SubLeader: ' . @$item2->employee->first_name . @$item2->employee->last_name }} <br>
-                                                    {{ 'Duyệt lúc: ' . $item2->updated_at }} ">
-                                                            <span> Đã duyệt </span>
-                                                            <span style="padding: 0.15rem 0.5rem;"
-                                                                class="btn btn-outline-success"><i class="fa fa-check"
-                                                                    style="color: green;"></i></span>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            @else
-                                                <div>
-                                                    Leader:
-                                                    @if ($item2->status == 0)
-                                                        <span>chưa duyệt</span>
-                                                        <span class="btn btn-outline-danger"
-                                                            style="padding: 0.15rem 0.5rem;">
-                                                            <i class="fa fa-times" style="color: red;"></i>
-                                                        </span>
-                                                    @else
-                                                        <button type="button" class="border-0 bg-transparent "
-                                                            data-toggle="tooltip" data-html="true"
-                                                            data-placement="bottom"
-                                                            title="{{ 'Leader: ' . @$item2->employee->first_name . @$item2->employee->last_name }} <br>
-                                                            {{ 'Duyệt lúc: ' . $item2->updated_at }} ">
-                                                            <span> Đã duyệt </span>
-                                                            <span style="padding: 0.15rem 0.5rem;"
-                                                                class="btn btn-outline-success"><i class="fa fa-check"
-                                                                    style="color: green;"></i></span>
-                                                        </button>
-                                                    @endif
-                                                </div>
+                                            @if ($item2->department_id == $department->id)
+                                                @if (isset($item2->status) && $item2->status == 1)
+                                                    <div>
+                                                        <span> Đã duyệt </span>
+                                                        <span style="padding: 0.15rem 0.5rem;"
+                                                            class="btn btn-outline-success"><i class="fa fa-check"
+                                                                style="color: green;"></i></span><br>
+                                                        <span>{{ 'Người duyệt: ' . @$item2->employee->first_name . ' ' . @$item2->employee->last_name }}</span><br>
+                                                        <span>{{ 'Thời gian duyệt: ' . $item2->updated_at }}</span>
+                                                    </div>
+                                                @else
+                                                    <span> chưa duyệt </span>
+                                                    <span class="btn btn-outline-danger" style="padding: 0.15rem 0.5rem;">
+                                                        <i class="fa fa-times" style="color: red;"></i>
+                                                    </span>
+                                                @endif
                                             @endif
                                         @endforeach
-                                    @endif
+                                    @endforeach
                                 </td>
-                                <td>{{ $item->content }}</td>
+                                <td>{{ $item->status == 0 ? 'Chưa Xuất' : 'Đã xuất' }}</td>
                                 <td>
                                     <a href="{{ route('admin.requireds.complete', ['id' => $item->id]) }}"
-                                        class="btn btn-primary text-light ">Xuất hàng</a>
+                                        class="btn text-light {{ $item->status == 0 ? 'btn-danger' : 'btn-primary disabled' }}">
+                                        {{ $item->status == 1 ? 'Đã xuất hàng' : 'Xuất hàng' }}
+                                    </a><br>
+                                    @php
+                                        $employeeById = Employee::findEmployeeById($item->completed_by);
+
+                                    @endphp
+                                    {{ $item->status == 1 ? 'Người xuất: ' . @$employeeById->first_name . ' ' . @$employeeById->last_name : '' }}
+                                    <br>
+                                    {{ $item->status == 1 ? 'Ngày xuất: ' . $item->date_completed : '' }}
                                 </td>
                                 <td>
-                                    <a title="Xem lịch sử sửa chữa"
-                                        class=" d-inline-block mx-1 btn-purple btn-sm text-white" href="">
+                                    <a title="" class=" d-inline-block mx-1 btn-purple btn-sm text-white"
+                                        href="">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
@@ -211,6 +213,7 @@
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
+                                <td>{{ $item->content }}</td>
                             </tr>
                         @endforeach
                     </tbody>

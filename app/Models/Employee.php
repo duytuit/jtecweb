@@ -89,4 +89,8 @@ class Employee extends Model
     {
         return $this->belongsTo(EmployeeDepartment::class, 'id', 'employee_id');
     }
+    public static function findEmployeeById($id)
+    {
+        return $employee =  Employee::find($id);
+    }
 }

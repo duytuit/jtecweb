@@ -242,7 +242,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         // Route::get('showCheckCutMachine', 'RequiredController@showCheckCutMachine')->name('showCheckCutMachine');
 
         Route::put('trashed/revert/{id}', 'RequiredController@revertFromTrash')->name('trashed.revert');
-        Route::delete('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');
+        Route::get('trashed/destroy/{id}', 'RequiredController@destroyTrash')->name('trashed.destroy');
     });
 
     /**

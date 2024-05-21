@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Helpers\ArrayHelper;
+use App\Helpers\RedisHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Accessory;
 use App\Models\Department;
@@ -94,6 +95,11 @@ class RequiredController extends Controller
         $employeeDepartment['employeeDepartmentFromId'] = EmployeeDepartment::where('employee_id', $employee->id)->first();
         $departmentAlls = Department::all();
         $departmentFromId = Department::where('id', $employeeDepartment['employeeDepartmentFromId']->department_id)->first();
+        // dd($departmentFromId->id);
+        // if ($departmentFromId->id !== $formTypeJobs['from_dept']) {
+        //     session()->flash('error', "Bạn không có quyền vào mục này");
+        //     return redirect()->route('admin.index');
+        // }
         return view('backend.pages.requireds.create', $employeeDepartment, compact('employee', 'formTypeJobs', 'formTypeJobsDepartmentIds', 'positionTitles', 'departmentAlls', 'departmentFromId', 'requiredType'));
     }
 
@@ -105,6 +111,7 @@ class RequiredController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $employee_id = Auth::user()->employee_id;
         $requireCode = 'R_' . now()->format('Ymdhis');
         $departmentFromId = EmployeeDepartment::where('employee_id', $employee_id)->first();
@@ -114,6 +121,7 @@ class RequiredController extends Controller
         $dataTablesIds = $formTypeJobs['confirm_by_from_dept'];
 
         //tạo dữ liệu yêu cầu trong bảng required
+        // dd($request->quantityType);
         try {
             DB::beginTransaction();
             $required = Required::create([
@@ -123,6 +131,7 @@ class RequiredController extends Controller
                 'quantity' => $request->quantity,
                 'created_by' => Auth::user()->employee_id,
                 'receiving_department_ids' => json_encode($formTypeJobs['to_dept']),
+                'usage_status' => $request->quantityType,
 
             ]);
 
@@ -135,6 +144,7 @@ class RequiredController extends Controller
             foreach ($dataTablesIds as $dataTablesId) {
                 $emp_dept = EmployeeDepartment::where('department_id', $departmentFromId->department_id)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
                 $emp_dept_lead = EmployeeDepartment::where('department_id', $departmentFromId->department_id)->where('positions', $dataTablesId)->first();
+                $emp_dept_lead_id = $emp_dept_lead->employee_id;
 
                 if (count($emp_dept) == 0) {
                     DB::rollBack();
@@ -147,7 +157,7 @@ class RequiredController extends Controller
                     'positions' => $dataTablesId,
                     'approve_id' => json_encode($emp_dept),
                     'status' => $status,
-                    'signature_id' => (int) $emp_dept_lead->employee_id,
+                    'signature_id' => $emp_dept_lead_id,
 
                 ]);
             }
@@ -159,15 +169,12 @@ class RequiredController extends Controller
                 // dd($formTypeJobToDept);
                 foreach ($dataTablesIds as $dataTablesId) {
                     $emp_dept2 = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', $dataTablesId)->pluck('employee_id')->toArray();
-                    // dd($emp_dept);
-                    $emp_dept_lead = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', '5')->first();
-                    // dd($emp_dept_lead->employee_id);
-                    $emp_dept_lead_id = (int)$emp_dept_lead->employee_id;
+                    $emp_dept_lead = EmployeeDepartment::where('department_id', $formTypeJobToDept)->where('positions', 5)->first();
+                    $emp_dept_lead_id = $emp_dept_lead->employee_id;
                     if (count($emp_dept2) == 0) {
                         DB::rollBack();
                         return redirect()->back()->withInput();
                     }
-
                     $signature = SignatureSubmission::create([
                         'required_id' => $required->id,
                         'department_id' => $formTypeJobToDept,
@@ -209,10 +216,75 @@ class RequiredController extends Controller
 
         $requireds->status = 1;
         $requireds->completed_by = $employee_id;
+        $requireds->date_completed = Carbon::now();
+        RedisHelper::queueSet('inventory_accessory', $requireds->accessory);
         $requireds->save();
         session()->flash('success', 'Đã thực hiện thành công !!');
         return redirect()->route('admin.requireds.index');
     }
+
+    public function action(Request $request)
+    {
+        $employee_id = Auth::user()->employee_id;
+        if (!isset($employee_id)) {
+            return back()->with('error', 'Bạn không có quyền duyệt hoặc bỏ duyệt');
+        }
+        // dd($employee_id);
+        $method = $request->input('method', '');
+        // dd($method);
+        if ($method == 'per_page') {
+            $this->per_page($request);
+            return back();
+        } else if ($method == 'active_check') {
+            if (isset($request->ids)) {
+                // dd($request->ids);
+                foreach ($request->ids as $key => $value) {
+                    $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
+                    // dd($signature_submissions);
+                    if (is_null($signature_submissions) || !$signature_submissions) {
+                        return back()->with('error', 'Yêu cầu này đã được duyệt hoặc bạn không có quyền duyệt');
+                    }
+                    if (!in_array($employee_id, json_decode($signature_submissions->approve_id))) {
+                        return back()->with('error', 'Yêu cầu này đã được duyệt hoặc bạn không có quyền duyệt');
+                    }
+                    $signature_submissions->status = 1;
+                    $signature_submissions->signature_id = $employee_id;
+                    $signature_submissions->save();
+                }
+            } else {
+                return back()->with('error', 'Bạn phải chọn yêu cầu trước khi duyệt.');
+            }
+            return back()->with('success', 'thành công!');
+        } else if ($method == 'inactive_check') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 1)->first();
+                    if (is_null($signature_submissions) || !$signature_submissions) {
+                        return back()->with('error', 'Yêu cầu này chưa được duyệt.');
+                    }
+                    if (!$signature_submissions && !in_array($employee_id, json_decode($signature_submissions->approve_id))) {
+                        return back()->with('error', 'Bạn không có quyền bỏ duyệt yêu cầu này!');
+                    }
+                    $signature_submissions->status = 0;
+                    $signature_submissions->signature_id = 0;
+                    $signature_submissions->save();
+                }
+            } else {
+                return back()->with('error', 'Bạn phải chọn yêu cầu trước khi bỏ duyệt.');
+            }
+            return back()->with('success', 'thành công!');
+        } else if ($method == 'delete') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $count_record = Required::find($value)->delete();
+                }
+            }
+            return back()->with('success', 'đã xóa ' . count($request->ids) . ' bản ghi');
+        } else {
+            return back()->with('success', 'thành công!');
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -404,5 +476,20 @@ class RequiredController extends Controller
 
         session()->flash('success', 'Đã xóa bản ghi thành công !!');
         return redirect()->route('admin.checkCutMachine.edit');
+    }
+    public function destroyTrash($id)
+    {
+        $required = Required::find($id);
+        if (is_null($required)) {
+            session()->flash('error', "Nội dung đã được xóa hoặc không tồn tại !");
+            return redirect()->route('admin.required.index');
+        }
+        $required->deleted_at = Carbon::now();
+        $required->deleted_by = Auth::id();
+        $required->status = 0;
+        $required->save();
+        $required->delete();
+        session()->flash('success', 'Đã xóa bản ghi thành công !!');
+        return redirect()->route('admin.requireds.index');
     }
 }

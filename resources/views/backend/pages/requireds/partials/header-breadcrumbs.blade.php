@@ -3,7 +3,7 @@
         <div class="col-5 align-self-center">
             <h4 class="page-title">
                 @if (Route::is('admin.requireds.index'))
-                    requireds List
+                    Danh sách yêu cầu
                 @elseif(Route::is('admin.requireds.create'))
                     Thêm mới yêu cầu linh kiện
                 @elseif(Route::is('admin.requireds.edit'))
@@ -27,8 +27,8 @@
                                     List</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Thêm yêu cầu linh kiện</li>
                         @elseif(Route::is('admin.requireds.edit'))
-                            <li class="breadcrumb-item"><a href="{{ route('admin.requireds.index') }}">requireds
-                                    List</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.requireds.index') }}">Danh sách</a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">Edit requireds</li>
                         @elseif(Route::is('admin.requireds.show'))
                             <li class="breadcrumb-item"><a href="{{ route('admin.requireds.index') }}">requireds
