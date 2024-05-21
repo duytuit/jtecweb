@@ -36,25 +36,36 @@ class RequiredController extends Controller
     public function index(Request $request)
     {
         // $machineLists = ArrayHelper::machineList();
+        // dd($confirmBy);
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
         $requireds['lists'] = Required::where('from_type', 0)->where(function ($query) use ($request) {
             $employeeId = Auth::user()->employee_id;
+            $configData = ArrayHelper::formTypeJobs()[0];
+            $confirmBy = $configData['confirm_by_from_dept'];
+            $toDept = $configData['to_dept'];
             $employeeDepartment = EmployeeDepartment::where('employee_id', $employeeId)->first();
             $employeePosition = isset($employeeDepartment) ? $employeeDepartment->positions : null;
+            $employeeDepartmentId = isset($employeeDepartment) ? $employeeDepartment->department_id : null;
+            // dd($employeeDepartmentId);
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-            if (isset($employeeId) && $employeeId != null) {
-                if ($employeePosition != 4 && $employeePosition != 5) {
-                    $query->where('created_by', $employeeId);
-                }
+            // dd(in_array($employeeDepartmentId, $toDept));
+            if (in_array($employeeDepartmentId, $toDept)) {
+                $query->whereRaw('JSON_CONTAINS(receiving_department_ids, ?)', [json_encode($toDept)]);
             }
 
-            if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
-                $query->where('required_department_id', $employeeDepartment->department_id);
-            }
+            // if (isset($employeeId) && $employeeId != null) {
+            //     if (!in_array($employeePosition, $confirmBy)) {
+            //         $query->where('created_by', $employeeId);
+            //     }
+            // }
+
+            // if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
+            //     $query->where('required_department_id', $employeeDepartment->department_id);
+            // }
 
             if (isset($request->from_date) && isset($request->to_date)) {
                 $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
@@ -63,7 +74,6 @@ class RequiredController extends Controller
                 $query->whereDate('created_at', '<=', $to_date);
             }
         })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
-        // dd($requireds['lists']);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
             $requireds['advance'] = 1;
@@ -204,8 +214,7 @@ class RequiredController extends Controller
         // required_department_id
         $receiving_department_ids = $requireds->receiving_department_ids;
         $employee_department = EmployeeDepartment::where('employee_id', $employee_id)->first()->department_id;
-        // dd($receiving_department_ids);
-        if (!in_array($employee_department, $receiving_department_ids)) {
+        if (!in_array($employee_department, json_decode($receiving_department_ids))) {
             session()->flash('error', "Bạn không được thực hiện chức năng này !");
             return redirect()->route('admin.requireds.index');
         }
