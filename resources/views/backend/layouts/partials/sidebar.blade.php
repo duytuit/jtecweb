@@ -573,7 +573,37 @@
         </ul>
     </li>
 @endif
+@if ($user->can('checkdevice.view') || $user->can('checkdevice.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Kiểm tra thiết bị</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.checkdevices.index') || Route::is('admin.checkdevices.create') || Route::is('admin.checkdevices.edit') ? 'in' : null }}">
+            @if ($user->can('checkdevice.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.checkdevices.index') }}"
+                        class="sidebar-link {{ Route::is('admin.checkdevices.index') || Route::is('admin.checkdevices.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
 
+            @if ($user->can('signature_submission.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.checkdevices.create') }}"
+                        class="sidebar-link {{ Route::is('admin.checkdevices.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu">Kiểm tra</span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
 @if ($user->can('signature_submission.view') || $user->can('signature_submission.create'))
     <li class="sidebar-item ">
         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"

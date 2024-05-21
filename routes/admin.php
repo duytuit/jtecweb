@@ -270,6 +270,19 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
     });
 
     /**
+     * CheckDevice Management Routes
+     */
+    Route::prefix('checkdevices')->name('checkdevices.')->group(function () {
+        Route::get('', 'CheckDeviceController@index')->name('index');
+        Route::get('create', 'CheckDeviceController@create')->name('create');
+        Route::get('edit/{id}', 'CheckDeviceController@edit')->name('edit');
+        Route::get('exportExcel', 'CheckDeviceController@exportExcel')->name('exportExcel');
+        Route::post('action', 'CheckDeviceController@action')->name('action');
+        Route::post('store', 'CheckDeviceController@store')->name('store');
+        Route::post('update/{id}', 'CheckDeviceController@update')->name('update');
+    });
+
+    /**
      * Signature Submission Management Routes
      */
     Route::prefix('signatureSubmissions')->name('signatureSubmissions.')->group(function () {
