@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Helpers\ArrayHelper;
+use App\Helpers\RedisHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Accessory;
 use App\Models\Department;
@@ -95,10 +96,10 @@ class RequiredController extends Controller
         $departmentAlls = Department::all();
         $departmentFromId = Department::where('id', $employeeDepartment['employeeDepartmentFromId']->department_id)->first();
         // dd($departmentFromId->id);
-        if ($departmentFromId->id !== $formTypeJobs['from_dept']) {
-            session()->flash('error', "Bạn không có quyền vào mục này");
-            return redirect()->route('admin.index');
-        }
+        // if ($departmentFromId->id !== $formTypeJobs['from_dept']) {
+        //     session()->flash('error', "Bạn không có quyền vào mục này");
+        //     return redirect()->route('admin.index');
+        // }
         return view('backend.pages.requireds.create', $employeeDepartment, compact('employee', 'formTypeJobs', 'formTypeJobsDepartmentIds', 'positionTitles', 'departmentAlls', 'departmentFromId', 'requiredType'));
     }
 
@@ -216,6 +217,7 @@ class RequiredController extends Controller
         $requireds->status = 1;
         $requireds->completed_by = $employee_id;
         $requireds->date_completed = Carbon::now();
+        RedisHelper::queueSet('inventory_accessory', $requireds->accessory);
         $requireds->save();
         session()->flash('success', 'Đã thực hiện thành công !!');
         return redirect()->route('admin.requireds.index');

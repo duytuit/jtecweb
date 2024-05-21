@@ -126,7 +126,7 @@ class ArrayHelper
                 ],
                 'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
-                'confirm_by_from_dept' => [4, 5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
+                'confirm_by_from_dept' => [5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
                 'confirm_by_to_dept' => [],
             ],
             [

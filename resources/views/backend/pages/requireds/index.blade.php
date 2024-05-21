@@ -123,7 +123,9 @@
                                 </td>
                                 <td>
                                     {{ 'Mã linh kiện: ' . @$item->code }} <br>
-                                    {{ 'Số lượng: ' . @$item->quantity }} <br>
+                                    <span class="text-success  ">{{ 'Số lượng: ' . @$item->quantity }}</span> <br>
+                                    <span class="text-danger ">{{ 'Số lượng tồn: ' . @$item->accessory->inventory }}
+                                    </span><br>
                                     {{ 'Định lượng: ' . @$item->size }} <br>
                                     {{ 'Đơn vị: ' . @$item->unit_price }} <br>
                                     {{ 'Vị trí: ' . @$item->accessory->location_c }} <br>
