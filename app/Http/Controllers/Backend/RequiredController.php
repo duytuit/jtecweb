@@ -51,18 +51,16 @@ class RequiredController extends Controller
                     $query->where('created_by', $employeeId);
                 }
             }
+
             if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
                 $query->where('required_department_id', $employeeDepartment->department_id);
             }
+
             if (isset($request->from_date) && isset($request->to_date)) {
                 $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                 $to_date = Carbon::parse($request->to_date)->format('Y-m-d');
                 $query->whereDate('created_at', '>=', $from_date);
                 $query->whereDate('created_at', '<=', $to_date);
-            }
-            if (isset($request->machine_name) && $request->machine_name != null) {
-                // $query->where('machine_name', $request->machine_name);
-                $query->whereRaw('JSON_EXTRACT(content_form, "$.name_machine") = ?', [$request->machine_name]);
             }
         })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
         // dd($requireds['lists']);
@@ -203,10 +201,13 @@ class RequiredController extends Controller
             session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
             return redirect()->route('admin.requireds.index');
         }
-
-        if (is_null(Auth::user()) || !Auth::user()->can('admin.requireds.create')) {
-            $message = 'You are not allowed to access this page!';
-            return view('errors.403', compact('message'));
+        // required_department_id
+        $receiving_department_ids = $requireds->receiving_department_ids;
+        $employee_department = EmployeeDepartment::where('employee_id', $employee_id)->first()->department_id;
+        // dd($receiving_department_ids);
+        if (!in_array($employee_department, $receiving_department_ids)) {
+            session()->flash('error', "Bạn không được thực hiện chức năng này !");
+            return redirect()->route('admin.requireds.index');
         }
 
         if (is_null($requireds)) {

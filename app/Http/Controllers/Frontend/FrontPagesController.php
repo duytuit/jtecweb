@@ -138,7 +138,7 @@ class FrontPagesController extends Controller
         //     ->where('品目K', 'like', '7'.'%')
         //     ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('年月度','desc')->first();
         //  dd($store);
-       // Nhập và Xuất
+        // Nhập và Xuất
         // $store = DB::connection('oracle')->table('DFW_Z30F')
         // ->where('場所C', 'like', '0111%')
         // ->where('品目K', 'like', '7'.'%')
@@ -153,10 +153,10 @@ class FrontPagesController extends Controller
         // ->where('品目K', 'like', '7'.'%')
         // ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('新規登録日','desc')->limit(100)->get();
         //  dd($store);
-            $accessory = Accessory::where('location_k',7)->orderBy('id')->limit(100)->get();
-           foreach ($accessory as $key => $value) {
-              RedisHelper::queueSet('inventory_accessory',$value);
-           }
+        $accessory = Accessory::where('location_k', 7)->orderBy('id')->limit(100)->get();
+        foreach ($accessory as $key => $value) {
+            RedisHelper::queueSet('inventory_accessory', $value);
+        }
         // $date =explode("/",'20/09/1985');
         // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();
