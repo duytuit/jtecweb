@@ -5,7 +5,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Redis;
 
-class RedisUtility
+class RedisHelper
 {
     public static function queueSet($key, $data)
     {

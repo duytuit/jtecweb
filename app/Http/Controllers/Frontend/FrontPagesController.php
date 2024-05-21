@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Exports\DetailReportExport1;
 use App\Exports\DetailReportExport;
 use App\Helpers\ArrayHelper;
+use App\Helpers\RedisHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\EmpImport;
 use App\Models\Accessory;
@@ -131,12 +132,37 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
+        // // tồn tháng 4
+        //  $store = DB::connection('oracle')->table('DFW_Z20F')
+        //     ->where('場所C', 'like', '0111%')
+        //     ->where('品目K', 'like', '7'.'%')
+        //     ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('年月度','desc')->first();
+        //  dd($store);
+       // Nhập và Xuất
+        // $store = DB::connection('oracle')->table('DFW_Z30F')
+        // ->where('場所C', 'like', '0111%')
+        // ->where('品目K', 'like', '7'.'%')
+        // ->where('在庫受払日', 'like', Carbon::now()->format('Y/m').'%')
+        // ->where('新規登録日', 'like', Carbon::now()->format('Y/m').'%')
+        // ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('新規登録日','desc')->get();
+        //  dd($store);
+
+        // Nhập ok
+        //  $store = DB::connection('oracle')->table('DFW_H30F')
+        // ->where('在庫場所C', 'like', '0111%')
+        // ->where('品目K', 'like', '7'.'%')
+        // ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('新規登録日','desc')->limit(100)->get();
+        //  dd($store);
+            $accessory = Accessory::where('location_k',7)->orderBy('id')->limit(100)->get();
+           foreach ($accessory as $key => $value) {
+              RedisHelper::queueSet('inventory_accessory',$value);
+           }
         // $date =explode("/",'20/09/1985');
         // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
         // $this->remaneTable();
-        $this->add_employeeTableId_to_admin_table_employee_id();
+        // $this->add_employeeTableId_to_admin_table_employee_id();
         // $this->addEmployee();
         // $this->updateBeginDate();
         // $this->updateType();

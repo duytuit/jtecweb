@@ -20,6 +20,11 @@ class Accessory extends Model
         'image',
         'status'
     ];
+       // $store = DB::connection('oracle')
+        //         ->table('TAD_Z60M')
+        //         ->where('場所C','like', '%0111%')
+        //         ->where('品目K','like', '%7%')
+        //         ->where('品目C','like', 'AVS5B%')->get();
     public function scopeFilter($query, $input)
     {
         foreach ($this->seachable as $value) {
