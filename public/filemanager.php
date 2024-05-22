@@ -60,7 +60,8 @@ $default_timezone = 'Etc/UTC'; // UTC
 
 // Root path for file manager
 // use absolute path of directory i.e: '/var/www/folder' or $_SERVER['DOCUMENT_ROOT'].'/folder'
-$root_path = "//192.168.207.6/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM";
+// $root_path = "//192.168.207.6/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM";
+$root_path = $_SERVER['DOCUMENT_ROOT']."/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM";
 
 // Root url for links in file manager.Relative to $http_host. Variants: '', 'path/to/subfolder'
 // Will not working if $root_path will be outside of server document root
@@ -3664,7 +3665,7 @@ global $lang, $root_url, $favicon_path;
         .message.alert{ border-color:orange;color:orange}
         body.fm-login-page.theme-dark {background-color: #2f2a2a;}
         .theme-dark svg g, .theme-dark svg path {fill: #ffffff; }
-    </styl>
+    </style>
 </head>
 <body class="fm-login-page <?php echo (FM_THEME == "dark") ? 'theme-dark' : ''; ?>">
 <div id="wrapper" class="container-fluid">
