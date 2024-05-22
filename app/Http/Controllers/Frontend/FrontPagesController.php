@@ -128,10 +128,33 @@ class FrontPagesController extends Controller
         shuffle($fruits);
         dd($fruits);
     }
+    public function get_client_ip() {
+        $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';
+        return $ipaddress;
+    }
     public function test1()
     {
-        $dfgdfg =trim(str_replace('_','',str_replace('/', "_\_", '//192.168.207.6/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM/ĐẦU 1/12H/12HD010K.pdf')));
-        dd( $dfgdfg);
+        //dd($_SERVER["HTTP_USER_AGENT"]);
+        $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        $ip = getenv('HTTP_CLIENT_IP');
+        $ip = getenv('HTTP_CLIENT_IP');
+        dd(self::get_client_ip());
+        // $dfgdfg =trim(str_replace('_','',str_replace('/', "_\_", '//192.168.207.6/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM/ĐẦU 1/12H/12HD010K.pdf')));
+        // dd( $dfgdfg);
         // // tồn tháng 4
         //  $store = DB::connection('oracle')->table('DFW_Z20F')
         //     ->where('場所C', 'like', '0111%')
@@ -153,10 +176,10 @@ class FrontPagesController extends Controller
         // ->where('品目K', 'like', '7'.'%')
         // ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('新規登録日','desc')->limit(100)->get();
         //  dd($store);
-        $accessory = Accessory::where('location_k', 7)->orderBy('id')->limit(100)->get();
-        foreach ($accessory as $key => $value) {
-            RedisHelper::queueSet('inventory_accessory', $value);
-        }
+        // $accessory = Accessory::where('location_k', 7)->orderBy('id')->limit(100)->get();
+        // foreach ($accessory as $key => $value) {
+        //     RedisHelper::queueSet('inventory_accessory', $value);
+        // }
         // $date =explode("/",'20/09/1985');
         // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();

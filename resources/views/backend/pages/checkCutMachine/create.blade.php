@@ -57,7 +57,7 @@
                                                     id="answerId{{ $index . $index1 }}"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
                                                     value="{{ $item }}"
-                                                    data-parsley-required-message="Bạn chưa check list" required>
+                                                    data-parsley-required-message="Bạn chưa check list" required {{ $item == 1 ? 'checked' : '' }}>
                                                 <label
                                                     for="answerId{{ $index . $index1 }}">{{ $item == 0 ? 'Bất bình thường' : 'Bình thường' }}</label>
                                             @endforeach
