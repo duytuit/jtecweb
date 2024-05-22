@@ -159,7 +159,7 @@ class FrontPagesController extends Controller
         // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
-        // $this->remaneTable();
+        $this->remaneTable();
         // $this->add_employeeTableId_to_admin_table_employee_id();
         // $this->addEmployee();
         // $this->updateBeginDate();
