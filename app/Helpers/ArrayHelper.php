@@ -122,7 +122,7 @@ class ArrayHelper
                 'id' => 1,
                 'from_dept' =>  [5], // id bộ phận yêu cầu
                 'to_dept' => [
-                    10, 11 // id bộ phận tiếp nhận
+                    8 // id bộ phận tiếp nhận
                 ],
                 'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
