@@ -36,36 +36,50 @@ class RequiredController extends Controller
     public function index(Request $request)
     {
         // $machineLists = ArrayHelper::machineList();
+        // dd($confirmBy);
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
+        $requireds['to_dept'] = ArrayHelper::formTypeJobs()[0]['to_dept'];
         $requireds['lists'] = Required::where('from_type', 0)->where(function ($query) use ($request) {
             $employeeId = Auth::user()->employee_id;
+            $configData = ArrayHelper::formTypeJobs()[0];
+            $confirmBy = $configData['confirm_by_from_dept'];
+            $toDept = $configData['to_dept'];
             $employeeDepartment = EmployeeDepartment::where('employee_id', $employeeId)->first();
             $employeePosition = isset($employeeDepartment) ? $employeeDepartment->positions : null;
+            $employeeDepartmentId = isset($employeeDepartment) ? $employeeDepartment->department_id : null;
+            // dd($employeeDepartmentId);
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-            if (isset($employeeId) && $employeeId != null) {
-                if ($employeePosition != 4 && $employeePosition != 5) {
-                    $query->where('created_by', $employeeId);
-                }
+            // dd(in_array($employeeDepartmentId, $toDept));
+            if (in_array($employeeDepartmentId, $toDept)) {
+                // $query->whereRaw('JSON_CONTAINS(receiving_department_ids, ?)', [json_encode($toDept)]);
+                // $query->whereRaw('JSON_CONTAINS(receiving_department_ids, ?) AND receiving_department_ids IS NOT NULL AND receiving_department_ids != ""', [json_encode($toDept)]);
+
+                $query->whereNotNull('receiving_department_ids')
+                    ->where('receiving_department_ids', '!=', '')
+                    ->whereRaw('JSON_CONTAINS(receiving_department_ids, ?)', [json_encode($toDept)]);
             }
-            if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
-                $query->where('required_department_id', $employeeDepartment->department_id);
-            }
+
+            // if (isset($employeeId) && $employeeId != null) {
+            //     if (!in_array($employeePosition, $confirmBy)) {
+            //         $query->where('created_by', $employeeId);
+            //     }
+            // }
+
+            // if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
+            //     $query->where('required_department_id', $employeeDepartment->department_id);
+            // }
+
             if (isset($request->from_date) && isset($request->to_date)) {
                 $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                 $to_date = Carbon::parse($request->to_date)->format('Y-m-d');
                 $query->whereDate('created_at', '>=', $from_date);
                 $query->whereDate('created_at', '<=', $to_date);
             }
-            if (isset($request->machine_name) && $request->machine_name != null) {
-                // $query->where('machine_name', $request->machine_name);
-                $query->whereRaw('JSON_EXTRACT(content_form, "$.name_machine") = ?', [$request->machine_name]);
-            }
         })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
-        // dd($requireds['lists']);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
             $requireds['advance'] = 1;
@@ -90,16 +104,21 @@ class RequiredController extends Controller
         // dd($formTypeJobs);
         $positionTitles = ArrayHelper::positionTitle();
         $employee_id = Auth::user()->employee_id;
+        if (is_null($employee_id) || $employee_id == '') {
+            session()->flash('error', "Tài khoản này không được cấp quyền");
+            return redirect()->route('admin.requireds.index');
+        }
         $employee = Employee::where('id', $employee_id)->first();
         $employeeDepartment['employeeDepartmentAlls'] = EmployeeDepartment::all();
         $employeeDepartment['employeeDepartmentFromId'] = EmployeeDepartment::where('employee_id', $employee->id)->first();
         $departmentAlls = Department::all();
         $departmentFromId = Department::where('id', $employeeDepartment['employeeDepartmentFromId']->department_id)->first();
-        // dd($departmentFromId->id);
-        // if ($departmentFromId->id !== $formTypeJobs['from_dept']) {
-        //     session()->flash('error', "Bạn không có quyền vào mục này");
-        //     return redirect()->route('admin.index');
-        // }
+        // dd($departmentFromId->id, $formTypeJobs['from_dept']);
+        // dd(in_array($departmentFromId->id, $formTypeJobs['from_dept']));
+        if (!in_array($departmentFromId->id, $formTypeJobs['from_dept'])) {
+            session()->flash('error', "Bạn không có quyền vào mục này");
+            return redirect()->route('admin.requireds.index');
+        }
         return view('backend.pages.requireds.create', $employeeDepartment, compact('employee', 'formTypeJobs', 'formTypeJobsDepartmentIds', 'positionTitles', 'departmentAlls', 'departmentFromId', 'requiredType'));
     }
 
@@ -199,14 +218,21 @@ class RequiredController extends Controller
     {
         $requireds = Required::find($id);
         $employee_id = Auth::user()->employee_id;
+        if (!$employee_id) {
+            session()->flash('error', "Bạn không được thực hiện chức năng này !");
+            return redirect()->route('admin.requireds.index');
+        }
         if (($requireds->status == 1)) {
             session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
             return redirect()->route('admin.requireds.index');
         }
-
-        if (is_null(Auth::user()) || !Auth::user()->can('admin.requireds.create')) {
-            $message = 'You are not allowed to access this page!';
-            return view('errors.403', compact('message'));
+        // required_department_id
+        $receiving_department_ids = $requireds->receiving_department_ids;
+        $employee_department = EmployeeDepartment::where('employee_id', $employee_id)->first()?->department_id;
+        // dd($employee_department);
+        if ((!$employee_department) || !in_array($employee_department, json_decode($receiving_department_ids))) {
+            session()->flash('error', "Bạn không được thực hiện chức năng này !");
+            return redirect()->route('admin.requireds.index');
         }
 
         if (is_null($requireds)) {
