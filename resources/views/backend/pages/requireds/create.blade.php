@@ -57,7 +57,7 @@
                                             <div>
                                                 <input name="quantityType" id="quantityUnused"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                                    value="1" required
+                                                    value="1" required checked
                                                     data-parsley-error-message="Vui lòng chọn một loại số lượng.">
                                                 <label for="quantityUnused">Hàng chẵn</label>
                                                 <input name="quantityType" id="quantityUsed"
