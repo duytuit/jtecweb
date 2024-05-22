@@ -113,109 +113,111 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($lists as $index => $item)
-                            <tr>
-                                <td><input type="checkbox" name="ids[]" value="{{ $item->id }}"
-                                        class="greyCheck checkSingle" /></td>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->code_required }} <br>
-                                    {{ $item->created_at }}
-                                </td>
-                                <td>
-                                    {{ 'Mã linh kiện: ' . @$item->code }} <br>
-                                    <span class="text-success  ">{{ 'Số lượng: ' . @$item->quantity }}</span> <br>
-                                    <span class="text-danger ">{{ 'Số lượng tồn: ' . @$item->accessory->inventory }}
-                                    </span><br>
-                                    {{ 'Định lượng: ' . @$item->size }} <br>
-                                    {{ 'Đơn vị: ' . @$item->unit_price }} <br>
-                                    {{ 'Vị trí: ' . @$item->accessory->location_c }} <br>
-                                    {{ 'Loại số lượng: ' . @$item->usage_status == 1 ? 'Hàng chẵn' : 'Hàng lẻ' }} <br>
-                                    {{ 'Người yêu cầu: ' . @$item->employee->first_name . ' ' . @$item->employee->last_name }}
-                                </td>
-                                <td>
-                                    {{-- bộ phận yêu cầu --}}
-                                    {{ @$item->employeeDepartment->department->name }} <br>
-                                    @foreach ($item->signatureSubmission as $index2 => $item2)
-                                        @if ($item->employeeDepartment->department->id == $item2->department_id)
-                                            @if ($item2->status == 0)
-                                                <span> chưa duyệt </span>
-                                                <span class="btn btn-outline-danger" style="padding: 0.15rem 0.5rem;">
-                                                    <i class="fa fa-times" style="color: red;"></i>
-                                                </span>
-                                            @else
-                                                <div>
-                                                    <span> Đã duyệt </span>
-                                                    <span style="padding: 0.15rem 0.5rem;"
-                                                        class="btn btn-outline-success"><i class="fa fa-check"
-                                                            style="color: green;"></i></span><br>
-                                                    <span>{{ 'Người duyệt: ' . @$item2->employee->first_name . @$item2->employee->last_name }}</span><br>
-                                                    <span>{{ 'Thời gian duyệt: ' . $item2->updated_at }}</span>
-                                                </div>
-                                            @endif
-                                        @endif
-                                    @endforeach
-
-                                </td>
-                                <td>
-                                    {{-- bộ phận tiếp nhận --}}
-                                    @php
-                                        $department_ids = json_decode($item->receiving_department_ids, true);
-                                    @endphp
-                                    @foreach ($department_ids as $department_id)
-                                        @php
-                                            $department = Department::findById($department_id);
-                                        @endphp
-                                        <span>
-                                            {{ $department ? $department->name : ' ' }} <br>
-                                        </span>
+                        @if (isset($lists) && $lists != null)
+                            @foreach ($lists as $index => $item)
+                                <tr>
+                                    <td><input type="checkbox" name="ids[]" value="{{ $item->id }}"
+                                            class="greyCheck checkSingle" /></td>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $item->code_required }} <br>
+                                        {{ $item->created_at }}
+                                    </td>
+                                    <td>
+                                        {{ 'Mã linh kiện: ' . @$item->code }} <br>
+                                        <span class="text-success  ">{{ 'Số lượng: ' . @$item->quantity }}</span> <br>
+                                        <span class="text-danger ">{{ 'Số lượng tồn: ' . @$item->accessory->inventory }}
+                                        </span><br>
+                                        {{ 'Định lượng: ' . @$item->size }} <br>
+                                        {{ 'Đơn vị: ' . @$item->unit_price }} <br>
+                                        {{ 'Vị trí: ' . @$item->accessory->location_c }} <br>
+                                        {{ 'Loại số lượng: ' . @$item->usage_status == 1 ? 'Hàng chẵn' : 'Hàng lẻ' }} <br>
+                                        {{ 'Người yêu cầu: ' . @$item->employee->first_name . ' ' . @$item->employee->last_name }}
+                                    </td>
+                                    <td>
+                                        {{-- bộ phận yêu cầu --}}
+                                        {{ @$item->employeeDepartment->department->name }} <br>
                                         @foreach ($item->signatureSubmission as $index2 => $item2)
-                                            @if ($item2->department_id == $department->id)
-                                                @if (isset($item2->status) && $item2->status == 1)
+                                            @if (@$item->employeeDepartment->department->id == $item2->department_id)
+                                                @if ($item2->status == 0)
+                                                    <span> chưa duyệt </span>
+                                                    <span class="btn btn-outline-danger" style="padding: 0.15rem 0.5rem;">
+                                                        <i class="fa fa-times" style="color: red;"></i>
+                                                    </span>
+                                                @else
                                                     <div>
                                                         <span> Đã duyệt </span>
                                                         <span style="padding: 0.15rem 0.5rem;"
                                                             class="btn btn-outline-success"><i class="fa fa-check"
                                                                 style="color: green;"></i></span><br>
-                                                        <span>{{ 'Người duyệt: ' . @$item2->employee->first_name . ' ' . @$item2->employee->last_name }}</span><br>
+                                                        <span>{{ 'Người duyệt: ' . @$item2->employee->first_name . @$item2->employee->last_name }}</span><br>
                                                         <span>{{ 'Thời gian duyệt: ' . $item2->updated_at }}</span>
                                                     </div>
-                                                @else
-                                                    <span> chưa duyệt </span>
-                                                    <span class="btn btn-outline-danger" style="padding: 0.15rem 0.5rem;">
-                                                        <i class="fa fa-times" style="color: red;"></i>
-                                                    </span>
                                                 @endif
                                             @endif
                                         @endforeach
-                                    @endforeach
-                                </td>
-                                <td>{{ $item->status == 0 ? 'Chưa Xuất' : 'Đã xuất' }}</td>
-                                <td>
-                                    <a href="{{ route('admin.requireds.complete', ['id' => $item->id]) }}"
-                                        class="btn text-light {{ $item->status == 0 ? 'btn-danger' : 'btn-primary disabled' }}">
-                                        {{ $item->status == 1 ? 'Đã xuất hàng' : 'Xuất hàng' }}
-                                    </a><br>
-                                    @php
-                                        $employeeById = Employee::findEmployeeById($item->completed_by);
+                                    </td>
+                                    <td>
+                                        {{-- bộ phận tiếp nhận --}}
+                                        @php
+                                            $department_ids = $to_dept;
+                                        @endphp
+                                        @foreach ($department_ids as $department_id)
+                                            @php
+                                                $department = Department::findById($department_id);
+                                            @endphp
+                                            <span>
+                                                {{ $department ? $department->name : ' ' }} <br>
+                                            </span>
+                                            @foreach ($item->signatureSubmission as $index2 => $item2)
+                                                @if ($item2->department_id == $department->id)
+                                                    @if (isset($item2->status) && $item2->status == 1)
+                                                        <div>
+                                                            <span> Đã duyệt </span>
+                                                            <span style="padding: 0.15rem 0.5rem;"
+                                                                class="btn btn-outline-success"><i class="fa fa-check"
+                                                                    style="color: green;"></i></span><br>
+                                                            <span>{{ 'Người duyệt: ' . @$item2->employee->first_name . ' ' . @$item2->employee->last_name }}</span><br>
+                                                            <span>{{ 'Thời gian duyệt: ' . $item2->updated_at }}</span>
+                                                        </div>
+                                                    @else
+                                                        <span> chưa duyệt </span>
+                                                        <span class="btn btn-outline-danger"
+                                                            style="padding: 0.15rem 0.5rem;">
+                                                            <i class="fa fa-times" style="color: red;"></i>
+                                                        </span>
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </td>
+                                    <td>{{ $item->status == 0 ? 'Chưa Xuất' : 'Đã xuất' }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.requireds.complete', ['id' => $item->id]) }}"
+                                            class="btn text-light {{ $item->status == 0 ? 'btn-danger' : 'btn-primary disabled' }}">
+                                            {{ $item->status == 1 ? 'Đã xuất hàng' : 'Xuất hàng' }}
+                                        </a><br>
+                                        @php
+                                            $employeeById = Employee::findEmployeeById($item->completed_by);
 
-                                    @endphp
-                                    {{ $item->status == 1 ? 'Người xuất: ' . @$employeeById->first_name . ' ' . @$employeeById->last_name : '' }}
-                                    <br>
-                                    {{ $item->status == 1 ? 'Ngày xuất: ' . $item->date_completed : '' }}
-                                </td>
-                                <td>
-                                    <a title="" class=" d-inline-block mx-1 btn-purple btn-sm text-white"
-                                        href="">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
-                                        href="{{ route('admin.requireds.trashed.destroy', ['id' => $item->id]) }}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                                <td>{{ $item->content }}</td>
-                            </tr>
-                        @endforeach
+                                        @endphp
+                                        {{ $item->status == 1 ? 'Người xuất: ' . @$employeeById->first_name . ' ' . @$employeeById->last_name : '' }}
+                                        <br>
+                                        {{ $item->status == 1 ? 'Ngày xuất: ' . $item->date_completed : '' }}
+                                    </td>
+                                    <td>
+                                        <a title="" class=" d-inline-block mx-1 btn-purple btn-sm text-white"
+                                            href="">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
+                                            href="{{ route('admin.requireds.trashed.destroy', ['id' => $item->id]) }}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{ $item->content }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
