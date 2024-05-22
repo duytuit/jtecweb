@@ -132,6 +132,8 @@ class FrontPagesController extends Controller
     }
     public function test1()
     {
+        $dfgdfg =trim(str_replace('_','',str_replace('/', "_\_", '//192.168.207.6/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM/ĐẦU 1/12H/12HD010K.pdf')));
+        dd( $dfgdfg);
         // // tồn tháng 4
         //  $store = DB::connection('oracle')->table('DFW_Z20F')
         //     ->where('場所C', 'like', '0111%')
