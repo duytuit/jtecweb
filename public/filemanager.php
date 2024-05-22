@@ -1701,56 +1701,11 @@ if (isset($_GET['view'])) {
     ?>
     <div class="row">
         <div class="col-12">
-            <p class="break-word"><b><?php echo lng($view_title) ?> "<?php echo fm_enc(fm_convert_win($file)) ?>"</b></p>
-            <p class="break-word">
-                <?php $display_path = fm_get_display_path($file_path); ?>
-                <strong><?php echo $display_path['label']; ?>:</strong> <?php echo $display_path['path']; ?><br>
-                <strong>File size:</strong> <?php echo ($filesize_raw <= 1000) ? "$filesize_raw bytes" : $filesize; ?><br>
-                <strong>MIME-type:</strong> <?php echo $mime_type ?><br>
-                <?php
-                // ZIP info
-                if (($is_zip || $is_gzip) && $filenames !== false) {
-                    $total_files = 0;
-                    $total_comp = 0;
-                    $total_uncomp = 0;
-                    foreach ($filenames as $fn) {
-                        if (!$fn['folder']) {
-                            $total_files++;
-                        }
-                        $total_comp += $fn['compressed_size'];
-                        $total_uncomp += $fn['filesize'];
-                    }
-                    ?>
-                    <?php echo lng('Files in archive') ?>: <?php echo $total_files ?><br>
-                    <?php echo lng('Total size') ?>: <?php echo fm_get_filesize($total_uncomp) ?><br>
-                    <?php echo lng('Size in archive') ?>: <?php echo fm_get_filesize($total_comp) ?><br>
-                    <?php echo lng('Compression') ?>: <?php echo round(($total_comp / max($total_uncomp, 1)) * 100) ?>%<br>
-                    <?php
-                }
-                // Image info
-                if ($is_image) {
-                    $image_size = getimagesize($file_path);
-                    echo '<strong>'.lng('Image size').':</strong> ' . (isset($image_size[0]) ? $image_size[0] : '0') . ' x ' . (isset($image_size[1]) ? $image_size[1] : '0') . '<br>';
-                }
-                // Text info
-                if ($is_text) {
-                    $is_utf8 = fm_is_utf8($content);
-                    if (function_exists('iconv')) {
-                        if (!$is_utf8) {
-                            $content = iconv(FM_ICONV_INPUT_ENC, 'UTF-8//IGNORE', $content);
-                        }
-                    }
-                    echo '<strong>'.lng('Charset').':</strong> ' . ($is_utf8 ? 'utf-8' : '8 bit') . '<br>';
-                }
-                ?>
-            </p>
             <div class="d-flex align-items-center mb-3">
                 <form method="post" class="d-inline ms-2" action="?p=<?php echo urlencode(FM_PATH) ?>&amp;dl=<?php echo urlencode($file) ?>">
                     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
                     <button type="submit" class="btn btn-link text-decoration-none fw-bold p-0"><i class="fa fa-cloud-download"></i> <?php echo lng('Download') ?></button> &nbsp;
                 </form>
-               <b class="ms-2"><a href="<?php echo fm_enc(str_replace_path($file_path)) ?>" target="_blank"><i class="fa fa-external-link-square"></i> <?php echo lng('Open') ?></a></b>
-
                <?php
 
                 // ZIP actions
@@ -1838,7 +1793,9 @@ if (isset($_GET['view'])) {
            // }
            //
            ?>
-              <object data="<?php echo convertPdfToBase64($file_path) ?>" width="100%" height="100%" type="application/pdf"></object>
+           <div>
+               <object data="<?php echo convertPdfToBase64($file_path) ?>" width="100%" style="height:90vh" type="application/pdf"></object>
+           </div>
         </div>
     </div>
     <?php
@@ -3707,7 +3664,7 @@ global $lang, $root_url, $favicon_path;
         .message.alert{ border-color:orange;color:orange}
         body.fm-login-page.theme-dark {background-color: #2f2a2a;}
         .theme-dark svg g, .theme-dark svg path {fill: #ffffff; }
-    </style>
+    </styl>
 </head>
 <body class="fm-login-page <?php echo (FM_THEME == "dark") ? 'theme-dark' : ''; ?>">
 <div id="wrapper" class="container-fluid">
