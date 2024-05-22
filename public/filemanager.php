@@ -356,12 +356,12 @@ if ($use_auth) {
                                     <hr />
                                     <div class="mb-3">
                                         <label for="fm_usr" class="pb-2"><?php echo lng('Tài khoản'); ?></label>
-                                        <input type="text" class="form-control" id="fm_usr" name="fm_usr" required autofocus>
+                                        <input type="text" class="form-control" id="fm_usr" value="admin" name="fm_usr" required autofocus>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="fm_pwd" class="pb-2"><?php echo lng('Mật khẩu'); ?></label>
-                                        <input type="password" class="form-control" id="fm_pwd" name="fm_pwd" required>
+                                        <input type="password" class="form-control" id="fm_pwd" value="admin@123" name="fm_pwd" required>
                                     </div>
 
                                     <div class="mb-3">
