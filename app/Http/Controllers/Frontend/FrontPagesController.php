@@ -151,10 +151,10 @@ class FrontPagesController extends Controller
         // ->where('品目K', 'like', '7'.'%')
         // ->where('品目C', 'like', 'AVS2R%')->orderBy('品目C')->orderBy('新規登録日','desc')->limit(100)->get();
         //  dd($store);
-        // $accessory = Accessory::where('location_k', 7)->orderBy('id')->limit(100)->get();
-        // foreach ($accessory as $key => $value) {
-        //     RedisHelper::queueSet('inventory_accessory', $value);
-        // }
+        $accessory = Accessory::where('location_k', 7)->orderBy('id')->limit(100)->get();
+        foreach ($accessory as $key => $value) {
+            RedisHelper::queueSet('inventory_accessory', $value);
+        }
         // $date =explode("/",'20/09/1985');
         // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();
@@ -269,7 +269,7 @@ class FrontPagesController extends Controller
         }
         $results = 0;
         foreach ($request->answer as $key => $value) {
-            $array_answer = array_filter($arrayExam, fn($element) => $element['id'] == $key);
+            $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
             if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
                 $results++;
             }
@@ -333,7 +333,7 @@ class FrontPagesController extends Controller
             $arrayExam = $questionItem['question'];
             $totalQuestion += $questionItem['quantity_question'];
             foreach ($request->answer as $key => $item) {
-                $array_answer = array_filter($arrayExam, fn($element) => $element['id'] == $key);
+                $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
                 if (count($array_answer) > 0 && current($array_answer)['answer'] == $item) {
                     $results++;
                     $scores = $scores + $questionItem['point'];
