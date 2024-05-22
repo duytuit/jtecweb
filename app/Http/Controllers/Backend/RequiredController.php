@@ -138,7 +138,10 @@ class RequiredController extends Controller
         $requiredType = $request->requiredType;
         $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
         $dataTablesIds = $formTypeJobs['confirm_by_from_dept'];
-
+        if (is_null($request->quantityType)) {
+            session()->flash('error', "Bạn phải chọn loại hàng trước khi tiếp tục");
+            return redirect()->route('admin.requireds.create');
+        }
         //tạo dữ liệu yêu cầu trong bảng required
         // dd($request->quantityType);
         try {
@@ -151,7 +154,6 @@ class RequiredController extends Controller
                 'created_by' => Auth::user()->employee_id,
                 'receiving_department_ids' => json_encode($formTypeJobs['to_dept']),
                 'usage_status' => $request->quantityType,
-
             ]);
 
             //bộ phận yêu cầu
@@ -367,7 +369,7 @@ class RequiredController extends Controller
         $machineLists = ArrayHelper::machineList();
         // dd($machineLists);
         $key = array_search($request->machineName, array_column($machineLists, 'name'));
-        // dd($request->machineName);
+        // dd($key);
         if (is_null($request->machineName) || $request->machineName == '') {
             session()->flash('error', "Bạn phải chọn máy kiểm tra trước khi thực hiện");
             return redirect()->route('admin.checkCutMachine.create');
@@ -375,11 +377,13 @@ class RequiredController extends Controller
         // dd($machineLists[$key]['type']);
         // dd($key);
         $dataTables = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table'];
+        // dd($dataTables);
         $dataTablesIds = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['confirm_by_from_dept'];
         $dataTablesType = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']];
         // dd($dataTablesType);
         $dataTables['name_machine'] = $request->machineName;
         $answers = $request->answer;
+        // dd($answers);
         $status = 1;
         $departmentId = $dataTablesType['from_dept'];
         // dd($departmentId);
@@ -394,6 +398,8 @@ class RequiredController extends Controller
             }
         }
         $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
+        // dd($json_data);
+        // dd($request->repair_history);
         try {
             DB::beginTransaction();
             $requireCode = 'R_' . now()->format('Ymdhis');
