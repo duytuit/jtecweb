@@ -198,7 +198,6 @@
                                         </a><br>
                                         @php
                                             $employeeById = Employee::findEmployeeById($item->completed_by);
-
                                         @endphp
                                         {{ $item->status == 1 ? 'Người xuất: ' . @$employeeById->first_name . ' ' . @$employeeById->last_name : '' }}
                                         <br>
@@ -209,8 +208,10 @@
                                             href="">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
-                                            href="{{ route('admin.requireds.trashed.destroy', ['id' => $item->id]) }}">
+                                        <a title="Xóa"
+                                            class=" d-inline-block btn-danger btn-sm text-white {{ $item->status == 0 ? '' : 'disabled' }}"
+                                            {{ $item->status == 0 ? '' : 'disabled aria-disabled=true' }}
+                                            href="{{ $item->status == 0 ? route('admin.requireds.trashed.destroy', ['id' => $item->id]) : 'javascript:void(0);' }}">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>

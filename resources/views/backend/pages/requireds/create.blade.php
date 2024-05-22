@@ -57,11 +57,12 @@
                                             <div>
                                                 <input name="quantityType" id="quantityUnused"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                                    value="1">
+                                                    value="1" required
+                                                    data-parsley-error-message="Vui lòng chọn một loại số lượng.">
                                                 <label for="quantityUnused">Hàng chẵn</label>
                                                 <input name="quantityType" id="quantityUsed"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                                    value="0">
+                                                    value="0" required>
                                                 <label for="quantityUsed">Hàng lẻ</label>
                                             </div>
                                         </div>
@@ -75,7 +76,6 @@
                                             <input type="text" class="form-control" id="material_norms"
                                                 name="material_norms" value="{{ old('material_norms') }}" readonly />
                                         </div>
-
                                         <div class="form-group">
                                             <label class="control-label" for="content">Ghi chú</label>
                                             <input type="text" class="form-control" id="content" name="content"
