@@ -40,6 +40,7 @@ class RequiredController extends Controller
         $requireds['keyword'] = $request->input('keyword', null);
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
+        $requireds['to_dept'] = ArrayHelper::formTypeJobs()[0]['to_dept'];
         $requireds['lists'] = Required::where('from_type', 0)->where(function ($query) use ($request) {
             $employeeId = Auth::user()->employee_id;
             $configData = ArrayHelper::formTypeJobs()[0];
@@ -54,7 +55,12 @@ class RequiredController extends Controller
             }
             // dd(in_array($employeeDepartmentId, $toDept));
             if (in_array($employeeDepartmentId, $toDept)) {
-                $query->whereRaw('JSON_CONTAINS(receiving_department_ids, ?)', [json_encode($toDept)]);
+                // $query->whereRaw('JSON_CONTAINS(receiving_department_ids, ?)', [json_encode($toDept)]);
+                // $query->whereRaw('JSON_CONTAINS(receiving_department_ids, ?) AND receiving_department_ids IS NOT NULL AND receiving_department_ids != ""', [json_encode($toDept)]);
+
+                $query->whereNotNull('receiving_department_ids')
+                    ->where('receiving_department_ids', '!=', '')
+                    ->whereRaw('JSON_CONTAINS(receiving_department_ids, ?)', [json_encode($toDept)]);
             }
 
             // if (isset($employeeId) && $employeeId != null) {
@@ -98,16 +104,21 @@ class RequiredController extends Controller
         // dd($formTypeJobs);
         $positionTitles = ArrayHelper::positionTitle();
         $employee_id = Auth::user()->employee_id;
+        if (is_null($employee_id) || $employee_id == '') {
+            session()->flash('error', "Tài khoản này không được cấp quyền");
+            return redirect()->route('admin.requireds.index');
+        }
         $employee = Employee::where('id', $employee_id)->first();
         $employeeDepartment['employeeDepartmentAlls'] = EmployeeDepartment::all();
         $employeeDepartment['employeeDepartmentFromId'] = EmployeeDepartment::where('employee_id', $employee->id)->first();
         $departmentAlls = Department::all();
         $departmentFromId = Department::where('id', $employeeDepartment['employeeDepartmentFromId']->department_id)->first();
-        // dd($departmentFromId->id);
-        // if ($departmentFromId->id !== $formTypeJobs['from_dept']) {
-        //     session()->flash('error', "Bạn không có quyền vào mục này");
-        //     return redirect()->route('admin.index');
-        // }
+        // dd($departmentFromId->id, $formTypeJobs['from_dept']);
+        // dd(in_array($departmentFromId->id, $formTypeJobs['from_dept']));
+        if (!in_array($departmentFromId->id, $formTypeJobs['from_dept'])) {
+            session()->flash('error', "Bạn không có quyền vào mục này");
+            return redirect()->route('admin.requireds.index');
+        }
         return view('backend.pages.requireds.create', $employeeDepartment, compact('employee', 'formTypeJobs', 'formTypeJobsDepartmentIds', 'positionTitles', 'departmentAlls', 'departmentFromId', 'requiredType'));
     }
 
@@ -207,14 +218,19 @@ class RequiredController extends Controller
     {
         $requireds = Required::find($id);
         $employee_id = Auth::user()->employee_id;
+        if (!$employee_id) {
+            session()->flash('error', "Bạn không được thực hiện chức năng này !");
+            return redirect()->route('admin.requireds.index');
+        }
         if (($requireds->status == 1)) {
             session()->flash('error', "Yêu cầu đã được thực hiện hoặc không tồn tại !");
             return redirect()->route('admin.requireds.index');
         }
         // required_department_id
         $receiving_department_ids = $requireds->receiving_department_ids;
-        $employee_department = EmployeeDepartment::where('employee_id', $employee_id)->first()->department_id;
-        if (!in_array($employee_department, json_decode($receiving_department_ids))) {
+        $employee_department = EmployeeDepartment::where('employee_id', $employee_id)->first()?->department_id;
+        // dd($employee_department);
+        if ((!$employee_department) || !in_array($employee_department, json_decode($receiving_department_ids))) {
             session()->flash('error', "Bạn không được thực hiện chức năng này !");
             return redirect()->route('admin.requireds.index');
         }
