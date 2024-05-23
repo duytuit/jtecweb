@@ -56,11 +56,19 @@ use App\Models\Department;
                             value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <select name="cycle_name" class="form-control" style="width: 100%;">
                             <option value="">Kỳ thi</option>
                              @foreach ($cycleNames as $item)
                                 <option value="{{$item}}" {{ @$filter['cycle_name'] == $item ? 'selected' : '' }}>{{$item}}</option>
+                             @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select name="exam_type" class="form-control" style="width: 100%;">
+                            <option value="">Bài thi</option>
+                             @foreach ($arrayExamPd as $key => $item)
+                                <option value="{{$key}}" {{ @$filter['exam_type'] == $key ? 'selected' : '' }}>{{$item['title']}}</option>
                              @endforeach
                         </select>
                     </div>
@@ -72,7 +80,7 @@ use App\Models\Department;
                              @endforeach
                         </select>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <select name="status" class="form-control" style="width: 100%;">
                             <option value="">Trạng thái</option>
                             <option value="1" {{ @$filter['status'] == '1' ? 'selected' : '' }}>Đạt</option>

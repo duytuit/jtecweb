@@ -225,7 +225,7 @@
                     <a href="{{ route('admin.exams.index') }}"
                         class="sidebar-link {{ Route::is('admin.exams.index') || Route::is('admin.exams.edit') ? 'active' : null }}">
                         <i class="mdi mdi-view-list"></i>
-                        <span class="hide-menu"> Kiểm tra màu dây </span>
+                        <span class="hide-menu"> Danh sách kiểm tra </span>
                     </a>
                 </li>
                 <li class="sidebar-item">
