@@ -1282,7 +1282,7 @@ class ArrayHelper
                         'id' => 20,
                         'name' => 'Nhánh rẽ được yêu cầu quấn băng dính như thế nào?',
                         'path_image' => 'public\assets\frontend\images\ktnq\20_ktnq.png',
-                        'answer' => '.Quấn 0mm-30mm',
+                        'answer' => 'Quấn 0mm-30mm',
                         'answer_list' => ['Quấn 20mm-30mm', 'Quấn 0mm-30mm', 'Quấn 30mm-30mm'],
                         'show_question' => 1,
                     ],
