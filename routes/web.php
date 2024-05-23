@@ -4,9 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\FrontPagesController;
+use App\Http\Controllers\Frontend\PrintMakuController;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes - Frontend routes.
@@ -20,7 +20,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 Auth::routes();
 
-Route::get('qrcode', [App\Http\Controllers\QrcodeController::class, 'index']);
 Route::get('qrcode/export', [App\Http\Controllers\QrcodeController::class], 'QrExportExcel')->name('QrExportExcel');
 Route::post('qrcode/printfile', [App\Http\Controllers\QrcodeController::class, 'QrCodePrint'])->name('QrCodePrint');
 Route::get('qrcode/printfile', [App\Http\Controllers\QrcodeController::class, 'GetDataPrint']);
@@ -32,6 +31,9 @@ Route::get('qrcode/printfile2', [App\Http\Controllers\QrcodeController::class, '
 
 Route::get('question/import', [App\Http\Controllers\QuestionController::class, 'index']);
 Route::post('question/import', [App\Http\Controllers\QuestionController::class, 'importExcelData']);
+
+//print maku
+Route::get('printMaku', [PrintMakuController::class, 'index'])->name('printMaku');
 
 Route::get('/', [FrontPagesController::class, 'index'])->name('index');
 Route::get('/exam', [FrontPagesController::class, 'exam'])->name('exam');
@@ -45,7 +47,7 @@ Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
 Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
 Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');
 Route::post('/exam/storeNew', [FrontPagesController::class, 'storeNew'])->name('exam.storeNew');
-Route::get('/ImportEmp',function () {
+Route::get('/ImportEmp', function () {
     return view('frontend.pages.import_emp');
 });
 Route::post('/ImportEmpPost', [FrontPagesController::class, 'ImportEmpPost'])->name('exam.ImportEmpPost');

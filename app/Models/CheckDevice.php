@@ -71,8 +71,6 @@ class CheckDevice extends Model
                     $parts = explode('=', $line);
                     if (count($parts) === 2 && trim($parts[0]) == 'TotalPhysicalMemory') {
                         $totalMemoryBytes = (int)$parts[1];
-                        // $totalMemoryMB = $totalMemoryBytes / 1048576; // Chuyển đổi từ bytes sang MB
-                        // return round($totalMemoryMB, 2) . ' MB';
                         $totalMemoryGB = $totalMemoryBytes / (1024 * 1024 * 1024); // Chuyển đổi từ bytes sang GB
                         return round($totalMemoryGB, 2) . ' GB';
                     }

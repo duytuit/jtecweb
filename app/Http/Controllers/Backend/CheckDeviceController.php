@@ -58,11 +58,7 @@ class CheckDeviceController extends Controller
         $data['getProcessorInfo'] = $checkDevice->getProcessorInfo();
         $data['getOSInfo'] = $checkDevice->getOSInfo();
         $data['diskInfo'] = $checkDevice->getDiskInfo();
-        // $data['serverLoad'] = $checkDevice->getServerLoadWindow();
-        // $data['getFree'] = $checkDevice->getFreeWindow();
-        // $data['getUsed'] = $checkDevice->getUsed();
         $data['getTotal'] = $checkDevice->getTotal();
-        // $data['getFreePercentage'] = $checkDevice->getFreePercentageWindow();
         return view('backend.pages.checkdevices.create', $data);
     }
 

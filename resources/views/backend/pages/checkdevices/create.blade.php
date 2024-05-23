@@ -17,6 +17,7 @@
                 <div class="card-body">
                     <span>Tên máy:</span>
                     <span>{{ $getComputerName }}</span>
+                    <p id="device_info">Loading...</p>
                 </div>
                 <div class="card-body">
                     <span>Thông tin chip:</span>
@@ -173,6 +174,29 @@
                 codeLatLng(point);
             });
         } //end mapServiceProvider
+    </script>
+    <script>
+        function getDeviceInfo() {
+            var deviceName = navigator.userAgent; // Lấy thông tin user agent
+
+            // Gửi thông tin thiết bị đến server Laravel
+            fetch('/receive-device-info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Đảm bảo rằng bạn đang gửi CSRF token
+                    },
+                    body: JSON.stringify({
+                        device_name: deviceName
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('device_info').innerText = 'Device Name: ' + data.device_name;
+                });
+        }
+
+        getDeviceInfo();
     </script>
 @endsection
 <style type="text/css">

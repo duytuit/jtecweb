@@ -485,8 +485,8 @@ class RequiredController extends Controller
     public function showDataAccessorys(Request $request)
     {
         $accessorysCode = $request->input('selectedValue');
-        // $data = Accessory::where('code', $accessorysCode)->first();
-        $data = Accessory::where('code', 'like', '%' . $request->search . '%')->first();
+        $data = Accessory::where('code', $accessorysCode)->first();
+        // $data = Accessory::where('code', 'like', '%' . $request->search . '%')->first();
         return response()->json($data);
     }
     public function destroyCheckCutMachine(Request $request)

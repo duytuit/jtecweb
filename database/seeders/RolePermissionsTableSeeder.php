@@ -178,7 +178,18 @@ class RolePermissionsTableSeeder extends Seeder
                 'cronjob.edit',
                 'cronjob.delete',
             ],
-
+            'checkTension' => [
+                'checkTension.view',
+                'checkTension.create',
+                'checkTension.edit',
+                'checkTension.delete',
+            ],
+            'productvt' => [
+                'productvt.view',
+                'productvt.create',
+                'productvt.edit',
+                'productvt.delete',
+            ],
             'employee' => [
                 'employee.view',
                 'employee.create',

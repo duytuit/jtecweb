@@ -62,12 +62,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="cards_item">
+                {{-- <div class="cards_item">
                     <div class="card">
                         <div class="card_content">
                             <h2 class="card_title">
                                 <a href="/admin/checkTension/">Kiểm tra sức căng</a>
                             </h2>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="cards_item">
+                    <div class="card">
+                        <div class="card_content">
+                            <a href="/printMaku/">
+                                <h2 class="card_title">
+                                    In maku <br>
+                                    <span class="card_text">Bộ phận Cắm</span>
+                                </h2>
+                            </a>
                         </div>
                     </div>
                 </div>
