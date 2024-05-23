@@ -45,6 +45,8 @@ class ExamController extends Controller
         $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $data['keyword'] = $request->input('keyword', null);
         $data['advance'] = 0;
+        $data['arrayExamPd'] = ArrayHelper::arrayExamPd();
+        $type = $request->input('exam_type', 1);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
             $data['advance'] = 1;
@@ -110,7 +112,7 @@ class ExamController extends Controller
                     $query->where('department_id', $request->dept);
                 }
             })->pluck('code');
-        $data['emp_pass_1'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
+        $data['emp_pass_1'] = Exam::where('type', $type)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where(function ($query) use ($request,$current_cycleName) {
@@ -135,7 +137,7 @@ class ExamController extends Controller
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
 
-        $data['emp_fail_1_90_95'] = Exam::where('type', 1)->select('id', 'code')
+        $data['emp_fail_1_90_95'] = Exam::where('type', $type)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where(function ($query) use ($request,$current_cycleName) {
@@ -163,7 +165,7 @@ class ExamController extends Controller
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
 
-        $data['emp_fail_1_90'] = Exam::where('type', 1)->select('id', 'code')
+        $data['emp_fail_1_90'] = Exam::where('type', $type)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where(function ($query) use ($request,$current_cycleName) {
@@ -202,7 +204,7 @@ class ExamController extends Controller
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90'], 'code'))
             ->get()->ToArray();
-        $data['emp_pass_2'] = Exam::where('type', 1)->select('id', 'code')->whereIn('code', $data['emp'])
+        $data['emp_pass_2'] = Exam::where('type', $type)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->where(function ($query) use ($request,$current_cycleName) {
                 if (isset($request->cycle_name) && $request->cycle_name != null) {
@@ -226,7 +228,7 @@ class ExamController extends Controller
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
 
-        $data['emp_fail_2_90_95'] = Exam::where('type', 1)->select('id', 'code')
+        $data['emp_fail_2_90_95'] = Exam::where('type', $type)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_2'], 'code'))
@@ -251,7 +253,7 @@ class ExamController extends Controller
             ->where('scores', '>=', 90)->where('scores', '<=', 95)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
-        $data['emp_fail_2_90'] = Exam::where('type', 1)->select('id', 'code')
+        $data['emp_fail_2_90'] = Exam::where('type', $type)->select('id', 'code')
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_2'], 'code'))
@@ -289,7 +291,7 @@ class ExamController extends Controller
             ->whereNotIn('code', array_column($data['emp_fail_2_90_95'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_2_90'], 'code'))
             ->get()->ToArray();
-        $data['lists'] = Exam::where('type', 1)->where(function ($query) use ($request) {
+        $data['lists'] = Exam::where('type', $type)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
@@ -449,7 +451,8 @@ class ExamController extends Controller
 
     public function exportExcel(Request $request)
     {
-        $data = Exam::where('type', 1)->where(function ($query) use ($request) {
+        $type = $request->input('exam_type', 1);
+        $data = Exam::where('type', $type)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }

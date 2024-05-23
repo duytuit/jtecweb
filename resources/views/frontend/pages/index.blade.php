@@ -71,13 +71,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="cards_item">
+                <div class="cards_item js_card_btn" data-type="3">
                     <div class="card">
-
                         <div class="card_content">
-                            <h2 class="card_title">Công đoạn Demo</h2>
-                            <p class="card_text">Nội dung kiểm tra</p>
-                            <a href="#" class="btn card_btn">Bắt đầu làm bài</a>
+                            <h2 class="card_title">Bộ phận kiểm tra</h2>
+                            <p class="card_text">Kiểm tra đánh giá công nhân</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
                         </div>
                     </div>
                 </div>
@@ -134,7 +133,7 @@
         $('.js_card_btn').click(function() {
             type = $(this).data('type');
             $('#confirmType').val(type);
-            if (type == 1) {
+            if (type == 1 || type == 3) {
                 $('#confirmCode').attr('action', '{{ route('exam') }}');
             } else if (type == 2) {
                 $('#confirmCode').attr('action', '{{ route('examNew') }}');
