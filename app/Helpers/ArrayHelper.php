@@ -303,27 +303,138 @@ class ArrayHelper
         return [
             [
                 'type' => 1,
-                'name' => 'C371A'
+                'name' => 'CA01',
+                'model' => 'C371A',
             ],
             [
                 'type' => 1,
-                'name' => 'C371AB'
+                'name' => 'CA02',
+                'model' => 'C371',
             ],
             [
                 'type' => 1,
-                'name' => 'C371ABC'
+                'name' => 'CA03',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA04',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA05',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA06',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA07',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA08',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA09',
+                'model' => 'C371',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA010',
+                'model' => 'C371',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA011',
+                'model' => 'C371',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA012',
+                'model' => 'C371',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA013',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA014',
+                'model' => 'C371',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA015',
+                'model' => 'C371A',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA016',
+                'model' => 'C371',
+            ],
+            [
+                'type' => 1,
+                'name' => 'CA017',
+                'model' => 'C385A',
             ],
             [
                 'type' => 2,
-                'name' => 'C371A_auto'
+                'name' => 'TD01',
+                'model' => 'C558SZ1',
             ],
             [
                 'type' => 2,
-                'name' => 'C371AB_auto'
+                'name' => 'TD02',
+                'model' => 'C558SZ2',
             ],
             [
                 'type' => 2,
-                'name' => 'C371ABC_auto'
+                'name' => 'TD03',
+                'model' => 'C558SZ3',
+            ],
+            [
+                'type' => 2,
+                'name' => 'TD04',
+                'model' => 'C558SZ4',
+            ],
+            [
+                'type' => 2,
+                'name' => 'TD05',
+                'model' => 'C558SZ5',
+            ],
+            [
+                'type' => 2,
+                'name' => 'TD06',
+                'model' => 'C558SZ6',
+            ],
+            [
+                'type' => 2,
+                'name' => 'TD07',
+                'model' => 'C551',
+            ],
+            [
+                'type' => 2,
+                'name' => 'TD08',
+                'model' => 'C558SZ6',
+            ],
+            [
+                'type' => 2,
+                'name' => 'TD09',
+                'model' => 'C558SZ7',
+            ],
+            [
+                'type' => 2,
+                'name' => 'TD010',
+                'model' => 'C558S',
             ],
 
         ];

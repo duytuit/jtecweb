@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\CheckDevice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Required;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 
 class CheckDeviceController extends Controller
 {
@@ -23,9 +27,18 @@ class CheckDeviceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $requireds['keyword'] = $request->input('keyword', null);
+        $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $requireds['advance'] = 0;
+        $requireds['lists'] = Required::where('from_type', 3)->where(function ($query) use ($request) {
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+        });
+
+        return view('backend.pages.checkdevices.index', $requireds);
     }
 
     /**
@@ -38,7 +51,19 @@ class CheckDeviceController extends Controller
         // if (is_null($this->user) || !$this->user->can('employee.create')) {
         //     return abort(403, 'You are not allowed to access this page !');
         // }
-        return view('backend.pages.checkdevices.create');
+
+        $checkDevice = new CheckDevice();
+        $data['getWifiSSID'] = $checkDevice->getWifiSSID();
+        $data['getComputerName'] = $checkDevice->getComputerName();
+        $data['getProcessorInfo'] = $checkDevice->getProcessorInfo();
+        $data['getOSInfo'] = $checkDevice->getOSInfo();
+        $data['diskInfo'] = $checkDevice->getDiskInfo();
+        // $data['serverLoad'] = $checkDevice->getServerLoadWindow();
+        // $data['getFree'] = $checkDevice->getFreeWindow();
+        // $data['getUsed'] = $checkDevice->getUsed();
+        $data['getTotal'] = $checkDevice->getTotal();
+        // $data['getFreePercentage'] = $checkDevice->getFreePercentageWindow();
+        return view('backend.pages.checkdevices.create', $data);
     }
 
     /**
