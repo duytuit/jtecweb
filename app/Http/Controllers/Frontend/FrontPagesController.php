@@ -531,10 +531,9 @@ class FrontPagesController extends Controller
     {
         //dd($request->exists('answer'));
         $emp = Employee::where('code', $request->manhanvien)->first();
-        $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
-        // if(!$emp){
-        //     return $this->success(['warning'=>'Nhân viên không có trên hệ thống!']);
-        // }
+        if($emp){
+            $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
+        }
         $arrayExam = ArrayHelper::arrayExamPd()[$request->type];
         if (!$request->exists('answer')) {
             return $this->error(['error', 'chưa chọn đáp án']);

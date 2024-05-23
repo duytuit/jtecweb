@@ -276,6 +276,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(5 * 60); // 4 minutes in seconds
+        startTimer({{$arrayExamPd['time']}} * 60); // 4 minutes in seconds
     </script>
 @endsection

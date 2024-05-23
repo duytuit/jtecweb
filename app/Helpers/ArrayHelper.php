@@ -653,6 +653,7 @@ class ArrayHelper
                                <i>Từ 80->90 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                                <i>Dưới 80 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
                                <i>Thời gian làm bài <strong>05:00</strong></i><br>',
+                'time'=>5,
                 'data'=>[
                     [
                         'id' => 1,
@@ -1125,6 +1126,7 @@ class ArrayHelper
                                <i>Từ 80->90 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                                <i>Dưới 80 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
                                <i>Thời gian làm bài <strong>05:00</strong></i><br>',
+                'time'=>10,
                 'data'=>[
                     [
                         'id' => 1,
@@ -1178,7 +1180,7 @@ class ArrayHelper
                         'id' => 7,
                         'name' => 'Cách quấn băng dính đầu ống là bao nhiêu?',
                         'path_image' => 'public\assets\frontend\images\ktnq\7_ktnq.png',
-                        'answer' => 'Kích Thước 30 mm',
+                        'answer' => 'Kích Thước ra 30 mm vào 30 mm',
                         'answer_list' => ['Kích Thước ra 30 mm vào 30 mm', 'Kích Thước 30 mm', 'Kích Thước 90 mm'],
                         'show_question' => 1,
                     ],
