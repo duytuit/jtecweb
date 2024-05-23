@@ -130,7 +130,7 @@
                                         {{ 'Định lượng: ' . @$item->size }} <br>
                                         {{ 'Đơn vị: ' . @$item->unit_price }} <br>
                                         {{ 'Vị trí: ' . @$item->accessory->location_c }} <br>
-                                        Loại số lượng: {{  @$item->usage_status == 1 ? 'Hàng chẵn' : 'Hàng lẻ' }} <br>
+                                        Loại số lượng: {{ @$item->usage_status == 1 ? 'Hàng chẵn' : 'Hàng lẻ' }} <br>
                                         {{ 'Người yêu cầu: ' . @$item->employee->first_name . ' ' . @$item->employee->last_name }}
                                     </td>
                                     <td>

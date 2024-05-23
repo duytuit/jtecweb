@@ -223,74 +223,97 @@
 
                                 </td>
                                 <td>{{ $item->content }}</td>
-
                                 <td>{{ $item->created_at }}</td>
                                 <td>
-                                    <a title="Xem lịch sử sửa chữa"
-                                        class=" d-inline-block mx-1 btn-purple btn-sm text-white" href="">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
-                                        href="{{ route('admin.checkCutMachine.trashed.destroy', ['id' => $item->id]) }}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                    <span class="dropdown show">
+                                        <a title="Xem lịch sử sửa chữa"
+                                            class=" d-inline-block mx-1 btn-purple btn-sm text-white dropdown-toggle"
+                                            href="" role="button" id="dropdownHistory" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <div class="dropdown-menu z-n1 " aria-labelledby="dropdownHistory">
+                                            <div class="dropdown-item">
+                                                <p><strong>Lịch sử sửa chữa:</strong></p>
+                                                @foreach ($lists as $index => $item3)
+                                                    @php
+                                                        $contentForm2 = json_decode($item3->content_form);
+                                                    @endphp
+
+                                                    @if ($contentForm2->name_machine == $contentForm->name_machine)
+                                                        <span>Ngày hỏng: {{ $item3->created_at }}</span><br>
+                                                        <span>{{ $item3->content }}</span><br>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </span>
+                                    @foreach (@$item->signatureSubmission as $index2 => $item2)
+                                        @if ($item2->status != 1)
+                                            <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
+                                                href="{{ route('admin.checkCutMachine.trashed.destroy', ['id' => $item->id]) }}">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        @break
+                                    @endif
+                                @endforeach
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <span class="record-total">Tổng: {{ $lists->total() }} bản ghi</span>
+            </div>
+            <div class="col-sm-6 text-center">
+                <div class="pagination-panel">
+                    {{ $lists->appends(Request::all())->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
+                </div>
+            </div>
+            <div class="col-sm-3 text-right">
+                <span>
+                    Hiển thị
+                    <select name="per_page" class="form-control" style="display: inline;width: auto;"
+                        data-target="#form_lists">
+                        @php $list = [5, 10, 20, 50, 100, 200]; @endphp
+                        @foreach ($list as $num)
+                            <option value="{{ $num }}" {{ $num == $per_page ? 'selected' : '' }}>
+                                {{ $num }}</option>
                         @endforeach
-                    </tbody>
-                </table>
+                    </select>
+                </span>
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="record-total">Tổng: {{ $lists->total() }} bản ghi</span>
-                </div>
-                <div class="col-sm-6 text-center">
-                    <div class="pagination-panel">
-                        {{ $lists->appends(Request::all())->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
-                    </div>
-                </div>
-                <div class="col-sm-3 text-right">
-                    <span>
-                        Hiển thị
-                        <select name="per_page" class="form-control" style="display: inline;width: auto;"
-                            data-target="#form_lists">
-                            @php $list = [5, 10, 20, 50, 100, 200]; @endphp
-                            @foreach ($list as $num)
-                                <option value="{{ $num }}" {{ $num == $per_page ? 'selected' : '' }}>
-                                    {{ $num }}</option>
-                            @endforeach
-                        </select>
-                    </span>
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 @endsection
 
 @section('scripts')
-    <script>
-        $(function() {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
 
-        $('input.date_picker').datepicker({
-            autoclose: true,
-            dateFormat: "dd-mm-yy"
-        }).val();
+    $('input.date_picker').datepicker({
+        autoclose: true,
+        dateFormat: "dd-mm-yy"
+    }).val();
 
-        function deleteItem(params) {
-            swal.fire({
-                title: "Bạn có chắc chắn?",
-                text: "bản ghi này sẽ được chuyển vào thùng rác!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Vâng, Xóa nó!"
-            }).then((result) => {
-                if (result.value) {
-                    $("#deleteForm" + params).submit();
-                }
-            })
-        }
-    </script>
+    function deleteItem(params) {
+        swal.fire({
+            title: "Bạn có chắc chắn?",
+            text: "bản ghi này sẽ được chuyển vào thùng rác!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Vâng, Xóa nó!"
+        }).then((result) => {
+            if (result.value) {
+                $("#deleteForm" + params).submit();
+            }
+        })
+    }
+</script>
 @endsection
