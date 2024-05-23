@@ -54,6 +54,7 @@
                 <div class="card-body">
                     <span>Địa chỉ IP:</span>
                     <span>{{ $localIP }}</span>
+                    <pre id="output"></pre>
                 </div>
                 <div class="card-body">
                     <span>Định vị hiện tại:</span>
@@ -176,27 +177,88 @@
         } //end mapServiceProvider
     </script>
     <script>
-        function getDeviceInfo() {
-            var deviceName = navigator.userAgent; // Lấy thông tin user agent
+        // function getDeviceInfo() {
+        //     var deviceName = navigator.userAgent; // Lấy thông tin user agent
 
-            // Gửi thông tin thiết bị đến server Laravel
-            fetch('/receive-device-info', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Đảm bảo rằng bạn đang gửi CSRF token
-                    },
-                    body: JSON.stringify({
-                        device_name: deviceName
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('device_info').innerText = 'Device Name: ' + data.device_name;
+        //     // Gửi thông tin thiết bị đến server Laravel
+        //     fetch('/receive-device-info', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}' // Đảm bảo rằng bạn đang gửi CSRF token
+        //             },
+        //             body: JSON.stringify({
+        //                 device_name: deviceName
+        //             })
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             document.getElementById('device_info').innerText = 'Device Name: ' + data.device_name;
+        //         });
+        // }
+
+        // getDeviceInfo();
+    </script>
+    <script>
+        function getDeviceInfo() {
+            const deviceInfoElement = document.getElementById('device_info');
+            if (navigator.userAgentData) {
+                navigator.userAgentData.getHighEntropyValues([
+                    "architecture",
+                    "model",
+                    "platform",
+                    "platformVersion",
+                    "fullVersionList"
+                ]).then(ua => {
+                    let deviceInfo = `You are using: `;
+                    if (ua.model) deviceInfo += `Model: ${ua.model}, `;
+                    if (ua.platform) deviceInfo += `Platform: ${ua.platform}, `;
+                    if (ua.platformVersion) deviceInfo += `Platform Version: ${ua.platformVersion}, `;
+                    if (ua.architecture) deviceInfo += `Architecture: ${ua.architecture}, `;
+                    if (ua.fullVersionList) {
+                        deviceInfo +=
+                            `Full Version List: ${ua.fullVersionList.map(item => item.brand + " " + item.version).join(", ")}`;
+                    }
+
+                    deviceInfoElement.innerText = deviceInfo;
                 });
+            } else {
+                const ua = navigator.userAgent;
+                deviceInfoElement.innerText = `Your User Agent: ${ua}`;
+            }
+        }
+        getDeviceInfo();
+    </script>
+    <script>
+        const RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+
+        // Function to get local IP
+        function getLocalIP() {
+            return new Promise((resolve, reject) => {
+                const pc = new RTCPeerConnection({
+                    iceServers: []
+                });
+                const localIPs = {};
+                pc.createDataChannel('');
+                pc.createOffer().then((sdp) => {
+                    pc.setLocalDescription(sdp);
+                });
+                pc.onicecandidate = (ice) => {
+                    if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+                    const ip = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(ice.candidate.candidate)[1];
+                    if (!localIPs[ip]) {
+                        localIPs[ip] = true;
+                        resolve(ip);
+                    }
+                };
+            });
         }
 
-        getDeviceInfo();
+        getLocalIP().then((ip) => {
+            document.getElementById('output').textContent = 'Local IP: ' + ip;
+        }).catch((error) => {
+            document.getElementById('output').textContent = 'Error: ' + error;
+        });
     </script>
 @endsection
 <style type="text/css">
