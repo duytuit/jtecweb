@@ -649,10 +649,9 @@ class ArrayHelper
         return [
             1=>[
                 'title'=>'Bài kiểm tra năng lực nhận biết màu dây',
-                'description'=>'<i>Điểm đạt: 90->100 điểm</i><br>
-                               <i>Từ 80->90 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
-                               <i>Dưới 80 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
-                               <i>Thời gian làm bài <strong>05:00</strong></i><br>',
+                'description'=>'<i>Điểm đạt: 96->100 điểm</i><br>
+                               <i>Từ 90->95 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
+                               <i>Dưới 90 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>',
                 'time'=>5,
                 'data'=>[
                     [
@@ -1124,8 +1123,7 @@ class ArrayHelper
                 'title'=>'Bài kiểm tra năng lực nhìn bản vẽ',
                 'description'=>'<i>Điểm đạt: 90->100 điểm</i><br>
                                <i>Từ 80->90 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
-                               <i>Dưới 80 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
-                               <i>Thời gian làm bài <strong>05:00</strong></i><br>',
+                               <i>Dưới 80 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>',
                 'time'=>10,
                 'data'=>[
                     [
