@@ -13,17 +13,18 @@
                 <input name="type" type="hidden" value="{{ Request::query('type') }}">
                 <div>
                     <div>
-                        <strong style=" text-transform: uppercase;">Bài kiểm tra năng lực nhận biết màu dây</strong>
+                        <strong style=" text-transform: uppercase;">{{$arrayExamPd['title']}}</strong>
                     </div>
                 </div>
                 <div>
                     <div>
                         <strong>Tiêu chuẩn đánh giá</strong>
                     </div>
-                    <i>Điểm đạt: 96->100 điểm</i><br>
+                    {!!$arrayExamPd['description']!!}
+                    {{-- <i>Điểm đạt: 96->100 điểm</i><br>
                     <i>Từ 90->95 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                     <i>Dưới 90 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>
-                    <i>Thời gian làm bài <strong>05:00</strong></i><br>
+                    <i>Thời gian làm bài <strong>05:00</strong></i><br> --}}
                 </div>
                 <div>
                     {{-- <div>
@@ -51,7 +52,7 @@
                     </div>
                 </div>
                 @php
-                    $array_exam = App\Helpers\ArrayHelper::arrayExamPd();
+                    $array_exam = $arrayExamPd['data'];
                     shuffle($array_exam);
                 @endphp
                 <div class="cards map_question">

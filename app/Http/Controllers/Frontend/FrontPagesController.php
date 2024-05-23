@@ -107,7 +107,8 @@ class FrontPagesController extends Controller
     }
     public function exam(Request $request)
     {
-        return view('frontend.pages.exam');
+        $data['arrayExamPd'] = ArrayHelper::arrayExamPd()[$request->type];
+        return view('frontend.pages.exam',$data);
     }
 
     // New exam
@@ -146,13 +147,210 @@ class FrontPagesController extends Controller
             $ipaddress = 'UNKNOWN';
         return $ipaddress;
     }
+    static function getWifiSSID()
+    {
+        $output = shell_exec('netsh wlan show interfaces');
+        if ($output) {
+            if (preg_match('/SSID\s*:\s*(.*)/i', $output, $matches)) {
+                return $matches[1];
+            } else {
+                return 'SSID not found';
+            }
+        } else {
+            return 'Command failed';
+        }
+    }
+    public function fgetCPULoad(){
+        $load = null;
+
+        $cmd = 'wmic cpu get loadpercentage /all';
+        @exec($cmd, $output);
+
+        if ($output){
+            foreach ($output as $line){
+                if ($line && preg_match("/^[0-9]+\$/", $line)){
+                    $load = $line;
+                    break;
+                    }
+                } // /foreach output
+        } // /IF $output
+
+        return $load;
+    } // /fgetCPULoad()
+
+
+    /*
+    *  GET TotalHd Space in bytes
+    *
+    *  @return int $TotalHD
+    */
+
+    public function fGetTotalHD( ){
+        $UnitPath   = substr($_SERVER['DOCUMENT_ROOT'], 0, 2);
+	    $TotalHD    = disk_total_space($UnitPath);
+        return $TotalHD;
+    }// /fGetTotalHD()
+
+
+    /*
+    *  GET fGetHWVersion
+    *
+    *  @return string
+    */
+
+    public function fGetHWVersion( ){
+        return 'Not Available';
+    }// /fGetHWVersion()
+
+
+
+
+    /*
+    *  GET fGetReleaseDistrib
+    *
+    *  @return string
+    */
+
+    public function fGetReleaseDistrib( ){
+        return 'Not Available';
+    }// /fGetReleaseDistrib()
+
+
+
+
+    /*
+    *  GET fGetNumCPUs
+    *
+    *  @return integer
+    */
+
+    public function fGetNumCPUs( ){
+        return 1; // Not available for Windows
+    }// /fGetNumCPUs()
+
+
+
+
+
+    /*
+    *  GET TotalFreeHd Space in bytes
+    *
+    *  @return int $TotalFreeHD
+    */
+
+    public function fGetTotalFreeHD( ){
+        $UnitPath   = substr($_SERVER['DOCUMENT_ROOT'], 0, 2);
+	    $TotalFreeHD    = disk_free_space($UnitPath);
+        return $TotalFreeHD;
+    }// /fGetTotalFreeHD()
+
+
+
+    /*
+    *  GET TotalUsedHd Space in bytes
+    *
+    *  @return int $TotalUsedHD
+    */
+
+    public function fGetTotalUsedHD( ){
+	    $TotalUsedHD    = $this->fGetTotalHD() - $this->fGetTotalFreeHD();
+        return $TotalUsedHD;
+    }// /fGetTotalUsedHD()
+
+
+
+    /*
+    *  GET MemResources
+    *
+    *  @return array $items
+    */
+
+    public function fGetMemResources( ){
+        @exec( 'systeminfo', $output );
+
+		foreach ( $output as $value ) {
+			if ( preg_match( '|Total Physical Memory\:([^$]+)|', $value, $m ) ) {
+				$MemTotal = trim( $m[1] );
+				$MemTotal = str_replace('.', '', $MemTotal);
+				$MemTotal = str_replace(' MB', '', $MemTotal);
+				$MemTotal = (int)$MemTotal;
+				$MemTotal *= 1024; // Mb 2 kb
+				$MemTotal = (string)$MemTotal;
+				} else if ( preg_match( '|Available Physical Memory\:([^$]+)|', $value, $m ) ) {
+				$MemFree = trim( $m[1] );
+				$MemFree = str_replace('.', '', $MemFree);
+				$MemFree = str_replace(' MB', '', $MemFree);
+				$MemFree = (int)$MemFree;
+				$MemFree *= 1024; // Mb 2 kb
+				$MemFree = (string)$MemFree;
+				}
+			} // /Foreach
+        $MemResources = [['MemTotal']=> $MemTotal, ['MemFree']=> $MemFree, ['MemAvailable']=> ($MemTotal-$MemFree) ];
+
+        return $MemResources;
+    }// /fGetMemResources()
+
+
+
+
+    /*
+    *  GET Uptime String
+    *
+    *  @return string $uptime
+    */
+
+    public function fGetUptime( ){
+        $uptime = '';
+
+        @exec( 'systeminfo', $output );
+
+		foreach ( $output as $value ) {
+			if ( preg_match( '|System Boot Time\:([^$]+)|', $value, $m ) ) {
+				$uptime = 'Uptime From '.trim($m[1]);
+				}
+			} // /Foreach
+
+        return $uptime;
+    }// /fGetUptime()
+
+
+
+
+    /*
+    *  GET OS Version
+    *
+    *  @return string $OsVersion
+    */
+
+    public function fGetOSVersion( ){
+        $OSName = '';
+
+        @exec( 'systeminfo', $output );
+
+		foreach ( $output as $value ) {
+			if ( preg_match( '|OS Name\:([^$]+)|', $value, $m ) ) {
+				$OSName = trim( $m[1] );
+				}
+			} // /Foreach
+
+        return $OSName;
+    }
+
     public function test1()
     {
-        //dd($_SERVER["HTTP_USER_AGENT"]);
-        $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        $ip = getenv('HTTP_CLIENT_IP');
-        $ip = getenv('HTTP_CLIENT_IP');
-        dd(self::get_client_ip());
+    //     dd($_SERVER["HTTP_USER_AGENT"]);
+    //     $PC_name = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+    //      dd($PC_name);
+    //     $ip = getenv('HTTP_CLIENT_IP');
+    //     $ip = getenv('HTTP_CLIENT_IP');
+    //    $ipconfig =   shell_exec ("ipconfig/all");
+    //     echo $ipconfig.'</br>';
+    //     $localIP = getHostByName(getHostName());
+    //     echo 'Local IP: ' . $localIP . '<br>';
+
+        // $wifiSSID =self::get_server_memory_usage();
+
+       // echo 'Wi-Fi SSID: '. self::fGetMemResources();
         // $dfgdfg =trim(str_replace('_','',str_replace('/', "_\_", '//192.168.207.6/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM/ĐẦU 1/12H/12HD010K.pdf')));
         // dd( $dfgdfg);
         // // tồn tháng 4
@@ -184,7 +382,7 @@ class FrontPagesController extends Controller
         // dd(  'R_'.now()->format('Ymdhis'));
         // $this->add_employee_to_department();
         // $this->add_user_and_pass();
-        $this->remaneTable();
+       // $this->remaneTable();
         // $this->add_employeeTableId_to_admin_table_employee_id();
         // $this->addEmployee();
         // $this->updateBeginDate();
@@ -213,6 +411,55 @@ class FrontPagesController extends Controller
         // array_push($firstThreeElements, "R");
         // shuffle($firstThreeElements);
         // dd(count($arrayFiltered));
+        Employee::whereIn('code',[
+120701,
+120818,
+130625,
+130734,
+140372,
+140415,
+140423,
+140436,
+140631,
+1407117,
+141066,
+141131,
+1606141,
+160866,
+160873,
+1609198,
+161164,
+161250,
+170324,
+1707104,
+170907,
+171192,
+190318,
+210469,
+210484,
+220552,
+220872,
+220873,
+2303119,
+231002,
+231066,
+231070,
+231072,
+231103,
+131078,
+160960,
+240505,
+240507,
+240510,
+240529,
+240531,
+240534,
+240537,
+240540,
+240545
+        ])->update([
+'status_exam'=>1
+        ]);
     }
     public function add_employee_to_department()
     {
@@ -288,20 +535,20 @@ class FrontPagesController extends Controller
         // if(!$emp){
         //     return $this->success(['warning'=>'Nhân viên không có trên hệ thống!']);
         // }
-        $arrayExam = ArrayHelper::arrayExamPd();
+        $arrayExam = ArrayHelper::arrayExamPd()[$request->type];
         if (!$request->exists('answer')) {
             return $this->error(['error', 'chưa chọn đáp án']);
         }
         $results = 0;
         foreach ($request->answer as $key => $value) {
-            $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
+            $array_answer = array_filter($arrayExam['data'], fn ($element) => $element['id'] == $key);
             if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
                 $results++;
             }
         }
         $mytime = Carbon::now();
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
-        $scores = round(($results / count($arrayExam)) * 100);
+        $scores = round(($results / count($arrayExam['data'])) * 100);
         $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
         $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
 
@@ -324,7 +571,7 @@ class FrontPagesController extends Controller
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng
-                'total_questions' => count($arrayExam), // tổng số câu hỏi
+                'total_questions' => count($arrayExam['data']), // tổng số câu hỏi
                 'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
                 'limit_time' => '05:00', // tổng số câu hỏi
                 'data' => json_encode($request->answer), // tổng số câu hỏi
