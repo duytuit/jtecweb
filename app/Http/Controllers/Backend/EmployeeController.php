@@ -51,12 +51,18 @@ class EmployeeController extends Controller
             $employees['advance'] = 1;
             $employees['filter'] = $request->all();
         }
+        $depts = Department::where('status',1)->get();
         $employees['lists'] = Employee::where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
             if (isset($request->worker) && $request->worker != null) {
                 $query->where('worker', $request->worker);
+            }
+            if (isset($request->dept) && $request->dept != null) {
+                $query->whereHas('employeeDepartment',function ($query) use ($request) {
+                    $query->where('department_id', $request->dept);
+                });
             }
             if (isset($request->ids) && $request->ids != null && count($request->ids) > 0) {
                 $query->whereIn('id', $request->ids);
@@ -74,7 +80,7 @@ class EmployeeController extends Controller
         $workers = ArrayHelper::worker();
         $positions = ArrayHelper::positions();
 
-        return view('backend.pages.employees.index', compact('workers', 'positions'), $employees);
+        return view('backend.pages.employees.index', compact('workers', 'positions','depts'), $employees);
     }
 
     /**

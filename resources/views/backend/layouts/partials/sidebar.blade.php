@@ -236,16 +236,6 @@
                     </a>
                 </li>
             @endif
-
-            @if ($user->can('exam.create'))
-                <li class="sidebar-item">
-                    <a href="{{ route('admin.exams.create') }}"
-                        class="sidebar-link {{ Route::is('admin.exams.create') ? 'active' : null }}">
-                        <i class="mdi mdi-plus-circle"></i>
-                        <span class="hide-menu"> Cấu hình </span>
-                    </a>
-                </li>
-            @endif
         </ul>
     </li>
 @endif
@@ -544,7 +534,7 @@
                     <a href="{{ route('admin.requireds.create') }}"
                         class="sidebar-link {{ Route::is('admin.requireds.create') ? 'active' : null }}">
                         <i class="mdi mdi-plus-circle"></i>
-                        <span class="hide-menu"> Cấu hình </span>
+                        <span class="hide-menu"> Thêm yêu cầu </span>
                     </a>
                 </li>
             @endif
@@ -628,7 +618,7 @@
                     <a href="{{ route('admin.signatureSubmissions.create') }}"
                         class="sidebar-link {{ Route::is('admin.signatureSubmissions.create') ? 'active' : null }}">
                         <i class="mdi mdi-plus-circle"></i>
-                        <span class="hide-menu"> Cấu hình </span>
+                        <span class="hide-menu"> Thêm mới </span>
                     </a>
                 </li>
             @endif
@@ -671,16 +661,6 @@
                         class="sidebar-link {{ Route::is('admin.logImports.index') || Route::is('admin.logImports.edit') ? 'active' : null }}">
                         <i class="mdi mdi-view-list"></i>
                         <span class="hide-menu"> Danh sách </span>
-                    </a>
-                </li>
-            @endif
-
-            @if ($user->can('log_import.create'))
-                <li class="sidebar-item">
-                    <a href="{{ route('admin.logImports.create') }}"
-                        class="sidebar-link {{ Route::is('admin.logImports.create') ? 'active' : null }}">
-                        <i class="mdi mdi-plus-circle"></i>
-                        <span class="hide-menu"> Cấu hình </span>
                     </a>
                 </li>
             @endif
