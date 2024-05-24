@@ -3,76 +3,334 @@
 @section('title')
     @include('backend.pages.checkdevices.partials.title')
 @endsection
+<style type="text/css">
+    .checkdevices-table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+    }
 
+    .checkdevices-table td {
+        border-style: solid;
+        border-width: 1px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+    }
+
+    .checkdevices-table th {
+        border-style: solid;
+        border-width: 0px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+        text-align: center;
+    }
+
+    .checkdevices-table .tg-0lax {
+        vertical-align: top
+    }
+
+    .checkdevices-table .tg-73oq {
+        border-color: #000000;
+        text-align: left;
+        vertical-align: top;
+        border-width: 0px;
+        width: 20px;
+    }
+
+    .checkdevices-table .tg-73oq-text {
+        width: fit-content;
+        vertical-align: middle;
+        text-wrap: nowrap;
+    }
+
+    .checkdevices-table .tg-0pky {
+        border-color: inherit;
+        text-align: left;
+        vertical-align: top
+    }
+</style>
 @section('admin-content')
     @include('backend.pages.checkdevices.partials.header-breadcrumbs')
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
-        <div class="create-page">
-            <?php
-            $localIP = getHostByName(getHostName());
-            $wifiSSID = '';
-            ?>
-            <div class="form-body">
-                <div class="card-body">
-                    <span>Tên máy:</span>
-                    <span>{{ $getComputerName }}</span>
-                    <p id="device_info">Loading...</p>
-                </div>
-                <div class="card-body">
-                    <span>Thông tin chip:</span>
-                    <span>{{ $getProcessorInfo }}</span>
-                </div>
-                <div class="card-body">
-                    <span>Hệ điều hành:</span>
-                    <span>{{ $getOSInfo }}</span>
-                </div>
-                <div class="card-body">
-                    <span>Thông tin bộ nhớ RAM:</span>
-                    <span>{{ $getTotal }}</span>
-                </div>
-                <div class="card-body">
-                    <span>Thông tin ổ cứng:</span>
-                    @foreach ($diskInfo as $disk)
-                        <p>{{ $disk['caption'] }} - Dung lượng trống: {{ $disk['size'] }} GB, Tổng dung lượng:
-                            {{ $disk['freeSpace'] }} GB
-                        </p>
-                    @endforeach
-                </div>
-                <div class="card-body">
-                    <span>Người thao tác:</span>
-                    <input type="text" name="devicesName" id="devicesName" value="" placeholder="Người thao tác">
-                </div>
-                <div class="card-body">
-                    <span>Thời gian hiện tại:</span>
-                    <span>{{ date('Y-m-d H:i:s', time()) }}</span>
-                </div>
-                <div class="card-body">
-                    <span>Kết nối wifi:</span>
-                    <span>{{ $getWifiSSID ? $getWifiSSID : '' }}</span>
-                </div>
-                <div class="card-body">
-                    <span>Địa chỉ IP:</span>
-                    <span>{{ $localIP }}</span>
-                    <pre id="output"></pre>
-                </div>
-                <div class="card-body">
-                    <span>Định vị hiện tại:</span>
-                    <input type="text" name="devicesName" id="devicesName" value="" placeholder="Định vị hiện tại">
-                </div>
-                <div class="card-body">
-                    <button class="btn btn-success " onclick="initialize()">Hiện vị trí</button>
-                    <div id="location-map" style="display:none;"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="create-page">
+                    <?php
+                    $localIP = getHostByName(getHostName());
+                    $wifiSSID = '';
+                    ?>
+                    <div class="form-body">
+                        <div class="card-body">
+                            <span>Tên máy:</span>
+                            <span>{{ $getComputerName }}</span>
+                            <p id="device_info">Loading...</p>
+                        </div>
+                        <div class="card-body">
+                            <span>Người thao tác:</span>
+                            <input type="text" name="devicesName" id="devicesName" value=""
+                                placeholder="Người thao tác">
+                        </div>
+                        <div class="card-body">
+                            <span>Thời gian hiện tại:</span>
+                            <span>{{ date('Y-m-d H:i:s', time()) }}</span>
+                        </div>
+                        <div class="card-body">
+                            <span>Địa chỉ IP:</span>
+                            <span>{{ $localIP }}</span>
+                            <pre id="output"></pre>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-success " onclick="initialize()">Hiện vị trí</button>
+                            <div id="location-map" style="display:none;"></div>
+                        </div>
+                    </div>
+                    <div class="row fixed-bottom">
+                        <div class="col-md-6 form-actions mx-auto">
+                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
+                                Save</button>
+                            <a href="{{ route('admin.requireds.index') }}" class="btn btn-dark">Cancel</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row fixed-bottom">
-                <div class="col-md-6 form-actions mx-auto">
-                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
-                        Save</button>
-                    <a href="{{ route('admin.requireds.index') }}" class="btn btn-dark">Cancel</a>
-                </div>
+            <div class="col-md-8">
+                <table class="checkdevices-table">
+                    <thead>
+                        <tr>
+                            <th class="tg-0lax"></th>
+                            <th class="tg-0lax">1</th>
+                            <th class="tg-0lax">2</th>
+                            <th class="tg-0lax">3</th>
+                            <th class="tg-0lax">4</th>
+                            {{-- <th class="tg-0lax">5</th> --}}
+                            <th class="tg-0lax"></th>
+                            <th class="tg-0lax">1</th>
+                            <th class="tg-0lax">2</th>
+                            <th class="tg-0lax">3</th>
+                            <th class="tg-0lax">4</th>
+                            {{-- <th class="tg-0lax">5</th> --}}
+                            <th class="tg-0lax"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tg-73oq tg-73oq-text text-right">Giá 1 - Trái</td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+
+                            <td class="tg-73oq">
+
+                            </td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+                            <td class="tg-0pky">
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                <hr>
+                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
+                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                            </td>
+
+                            <td class="tg-73oq tg-73oq-text">Giá 1 - Phải</td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq tg-73oq-text text-right">Giá 2 - Trái</td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq tg-73oq-text">Giá 2 - Phải</td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq tg-73oq-text text-right">Giá 3 - Trái</td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq tg-73oq-text">Giá 3 - Phải</td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq tg-73oq-text text-right">Giá 4 - Trái</td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq tg-73oq-text">Giá 4 - Phải</td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq tg-73oq-text text-right">Giá 5 - Trái</td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq tg-73oq-text">Giá 5 - Phải</td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq tg-73oq-text text-right">Giá 6 - Trái</td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-0pky"></td>
+                            <td class="tg-73oq tg-73oq-text">Giá 6 - Phải</td>
+                        </tr>
+                        <tr>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                            <td class="tg-73oq"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
 @endsection
 
@@ -177,29 +435,6 @@
         } //end mapServiceProvider
     </script>
     <script>
-        // function getDeviceInfo() {
-        //     var deviceName = navigator.userAgent; // Lấy thông tin user agent
-
-        //     // Gửi thông tin thiết bị đến server Laravel
-        //     fetch('/receive-device-info', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}' // Đảm bảo rằng bạn đang gửi CSRF token
-        //             },
-        //             body: JSON.stringify({
-        //                 device_name: deviceName
-        //             })
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             document.getElementById('device_info').innerText = 'Device Name: ' + data.device_name;
-        //         });
-        // }
-
-        // getDeviceInfo();
-    </script>
-    <script>
         function getDeviceInfo() {
             const deviceInfoElement = document.getElementById('device_info');
             if (navigator.userAgentData) {
@@ -231,7 +466,6 @@
     </script>
     <script>
         const RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
-
         // Function to get local IP
         function getLocalIP() {
             return new Promise((resolve, reject) => {
@@ -258,6 +492,21 @@
             document.getElementById('output').textContent = 'Local IP: ' + ip;
         }).catch((error) => {
             document.getElementById('output').textContent = 'Error: ' + error;
+        });
+    </script>
+    <script>
+        function median_device_info(deviceInfo) {
+            console.log(deviceInfo);
+        }
+
+        // You may also call the median_device_info function manually, e.g. on a single page web app
+        median.run.deviceInfo();
+
+        // Or return the OneSignal Info via a promise (in async function)
+        var deviceInfo = await median.deviceInfo();
+
+        median.deviceInfo().then(function(deviceInfo) {
+            console.log(deviceInfo);
         });
     </script>
 @endsection
