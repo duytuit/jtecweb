@@ -764,6 +764,7 @@ class ArrayHelper
                                <i>Từ 90->95 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                                <i>Dưới 90 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>',
                 'time'=>5,
+                'scores' => [96, 90],// điểm đạt
                 'data'=>[
                     [
                         'id' => 1,
@@ -1236,6 +1237,7 @@ class ArrayHelper
                                <i>Từ 80->90 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
                                <i>Dưới 80 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br>',
                 'time'=>10,
+                'scores' => [90, 80],// điểm đạt
                 'data'=>[
                     [
                         'id' => 1,
