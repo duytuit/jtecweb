@@ -239,83 +239,37 @@
         </ul>
     </li>
 @endif
-<li class="sidebar-item ">
-    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-        aria-expanded="false">
-        <i class="mdi mdi-view-list"></i>
-        <span class="hide-menu">Check list hàng ngày máy cắt</span>
-    </a>
-    <ul aria-expanded="false"
-        class="collapse first-level {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.create') || Route::is('admin.checkCutMachine.edit') ? 'in' : null }}">
-        <li class="sidebar-item">
-            <a class="sidebar-link" href="{{ url('admin/checkCutMachine') }}">
-                <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Danh sách check list</span>
-            </a>
-        </li>
-        <li class="sidebar-item">
-            <a class="sidebar-link" href="{{ url('admin/checkCutMachine/create') }}">
-                <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Thêm check list</span>
-            </a>
-        </li>
-    </ul>
-</li>
-{{-- @if ($user->can('productvt.view')) --}}
-<li class="sidebar-item ">
-    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-        aria-expanded="false">
-        <i class="mdi mdi-view-list"></i>
-        <span class="hide-menu">Sản lượng </span>
-    </a>
-    <ul aria-expanded="false"
-        class="collapse first-level {{ Route::is('admin.productvt.index') || Route::is('admin.productvt.create') || Route::is('admin.productvt.edit') ? 'in' : null }}">
-        {{-- @if ($user->can('productvt.view')) --}}
-        <li class="sidebar-item">
-            {{-- <a href="{{ route('admin.productvt.index') }}" class="sidebar-link {{ (Route::is('admin.productvt.index') || Route::is('admin.productvt.edit')) ? 'active' : null }}"> --}}
-            <a class="sidebar-link" href="{{ url('admin/productvt') }}">
-                <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Danh sách </span>
-            </a>
-        </li>
-        {{-- @endif --}}
-    </ul>
-</li>
-{{-- @endif --}}
+@if ($user->can('contact.view') || $user->can('contact.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Check list hàng ngày máy cắt</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.create') || Route::is('admin.checkCutMachine.edit') ? 'in' : null }}">
+            @if ($user->can('department.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.checkCutMachine.index') }}"
+                        class="sidebar-link {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách check list </span>
+                    </a>
+                </li>
+            @endif
 
-
-{{-- 張力を確認してください
-                Kiểm tra sức căng
-                Check Tension --}}
-{{-- @if ($user->can('checkTension.view')) --}}
-<li class="sidebar-item ">
-    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-        aria-expanded="false">
-        <i class="mdi mdi-view-list"></i>
-        <span class="hide-menu">Kiểm tra sức căng</span>
-    </a>
-    <ul aria-expanded="false"
-        class="collapse first-level {{ Route::is('admin.checkTension.index') || Route::is('admin.checkTension.create') || Route::is('admin.checkTension.edit') ? 'in' : null }}">
-        {{-- @if ($user->can('checkTension.view')) --}}
-        <li class="sidebar-item">
-            {{-- <a href="{{ route('admin.checkTension.index') }}" class="sidebar-link {{ (Route::is('admin.checkTension.index') || Route::is('admin.checkTension.edit')) ? 'active' : null }}"> --}}
-            <a class="sidebar-link" href="{{ url('admin/checkTension') }}">
-                <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Nhập dữ liệu </span>
-            </a>
-        </li>
-        <li class="sidebar-item">
-            {{-- <a href="{{ route('admin.checkTension.index') }}" class="sidebar-link {{ (Route::is('admin.checkTension.index') || Route::is('admin.checkTension.edit')) ? 'active' : null }}"> --}}
-            <a class="sidebar-link" href="{{ url('admin/checkTension/view') }}">
-                <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Xem dữ liệu </span>
-            </a>
-        </li>
-        {{-- @endif --}}
-    </ul>
-</li>
-{{-- @endif --}}
-
+            @if ($user->can('department.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.checkCutMachine.create') }}"
+                        class="sidebar-link {{ Route::is('admin.checkCutMachine.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Thêm check list</span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
 {{-- @if ($user->can('contact.view') || $user->can('contact.create'))
                     <li class="sidebar-item ">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
