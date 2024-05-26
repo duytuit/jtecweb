@@ -51,9 +51,9 @@
                     <div class="col-sm-2">
                         <select name="content_type" class="form-control" style="width: 100%;">
                             <option value="">Model</option>
-                             @foreach ($models as $item)
+                            {{-- @foreach ($models as $item)
                                 <option value="{{$item}}" {{ @$filter['content_type'] == $item ? 'selected' : '' }}>{{$item}}</option>
-                             @endforeach
+                             @endforeach --}}
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -86,10 +86,10 @@
                     </thead>
                     <tbody>
                         @foreach ($lists as $_index => $_item)
-                           @php
+                            @php
                                 $data_old = json_decode(@$_item->old_data);
                                 $data_new = json_decode(@$_item->new_data);
-                           @endphp
+                            @endphp
                             <tr>
                                 <td><input type="checkbox" name="ids[]" value="{{ $_item->id }}"
                                         class="greyCheck checkSingle" /></td>
@@ -97,44 +97,62 @@
                                 <td>{{ $_item->content_type }}</td>
                                 <td>{{ $_item->action }}</td>
                                 <td>{{ $_item->ip_address }}</td>
-                                <td>{{ Auth::user()->first_name .' '. Auth::user()->last_name}}</td>
+                                <td>{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}</td>
                                 <td>
                                     @php
-                                        if (@$data_old){
+                                        if (@$data_old) {
                                             foreach ($data_old as $index => $item) {
-                                            if(@$index == 'remember_token'){
-                                                continue;
+                                                if (@$index == 'remember_token') {
+                                                    continue;
+                                                }
+                                                @$_index = isset(trans('model')[@$index])
+                                                    ? trans('model')[@$index]
+                                                    : @$index;
+                                                echo '<p  style="width:300px;word-wrap: break-word;">' .
+                                                    @$_index .
+                                                    ' : ' .
+                                                    ArrayHelper::decode_string(json_encode(@$data_old->$index)) .
+                                                    '</p>';
                                             }
-                                                @$_index = isset(trans('model')[@$index]) ? trans('model')[@$index] : @$index;
-                                                echo '<p  style="width:300px;word-wrap: break-word;">'. @$_index .' : '. ArrayHelper::decode_string(json_encode(@$data_old->$index)).'</p>';
-                                        }
                                         }
                                     @endphp
                                 </td>
                                 <td>
                                     @php
                                         foreach ($data_new as $index => $item) {
-                                        if(@$index == 'remember_token'){
-                                            continue;
-                                        }
-                                        if(@$data_old->$index != @$data_new->$index){
-
-                                            if(@$data_old->$index){
-                                                    @$_index = isset(trans('model')[@$index]) ? trans('model')[@$index] : @$index;
-                                                    echo '<p  style="width:300px;word-wrap: break-word;">'. @$_index .' : '. ArrayHelper::decode_string(json_encode(@$data_old->$index)).' => '. ArrayHelper::decode_string(json_encode(@$data_new->$index)) .'</p>';
-                                            }else{
-                                                    @$_index = isset(trans('model')[@$index]) ? trans('model')[@$index] : @$index;
-                                                    echo '<p  style="width:300px;word-wrap: break-word;">'. @$_index .' : '.ArrayHelper::decode_string(json_encode(@$data_new->$index)).'</p>';
+                                            if (@$index == 'remember_token') {
+                                                continue;
+                                            }
+                                            if (@$data_old->$index != @$data_new->$index) {
+                                                if (@$data_old->$index) {
+                                                    @$_index = isset(trans('model')[@$index])
+                                                        ? trans('model')[@$index]
+                                                        : @$index;
+                                                    echo '<p  style="width:300px;word-wrap: break-word;">' .
+                                                        @$_index .
+                                                        ' : ' .
+                                                        ArrayHelper::decode_string(json_encode(@$data_old->$index)) .
+                                                        ' => ' .
+                                                        ArrayHelper::decode_string(json_encode(@$data_new->$index)) .
+                                                        '</p>';
+                                                } else {
+                                                    @$_index = isset(trans('model')[@$index])
+                                                        ? trans('model')[@$index]
+                                                        : @$index;
+                                                    echo '<p  style="width:300px;word-wrap: break-word;">' .
+                                                        @$_index .
+                                                        ' : ' .
+                                                        ArrayHelper::decode_string(json_encode(@$data_new->$index)) .
+                                                        '</p>';
+                                                }
                                             }
                                         }
-
-                                    }
                                     @endphp
                                 </td>
                                 <td>{{ $_item->sql }}</td>
                                 <td>
                                     <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
-                                        href="{{ route('admin.checkdevices.trashed.destroy', ['id' =>$_item->id]) }}"><i
+                                        href="{{ route('admin.checkdevices.trashed.destroy', ['id' => $_item->id]) }}"><i
                                             class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
@@ -171,6 +189,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-    </script>
+    <script></script>
 @endsection

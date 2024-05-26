@@ -35,7 +35,7 @@ class ArrayHelper
     {
         $fruits = ArrayHelper::arrayExamPd();
         $array_answer = array_column($fruits, 'answer');
-        $arrayFiltered = array_filter($array_answer, fn ($element) => $element != $value);
+        $arrayFiltered = array_filter($array_answer, fn($element) => $element != $value);
         $firstThreeElements = array_slice($arrayFiltered, 0, 3);
         array_push($firstThreeElements, $value);
         shuffle($firstThreeElements);
@@ -71,48 +71,48 @@ class ArrayHelper
         return [
             [
                 'id' => 1,
-                'name' => 'General Director'
+                'name' => 'General Director',
             ],
             [
                 'id' => 2,
-                'name' => 'Director'
+                'name' => 'Director',
             ],
             [
                 'id' => 3,
-                'name' => 'Supper Manager'
+                'name' => 'Supper Manager',
             ],
             [
                 'id' => 4,
-                'name' => 'Manager'
+                'name' => 'Manager',
             ],
             [
                 'id' => 5,
-                'name' => 'Supper Chief'
+                'name' => 'Supper Chief',
             ],
             [
                 'id' => 6,
-                'name' => 'Chief'
+                'name' => 'Chief',
             ],
             [
                 'id' => 7,
-                'name' => 'Staff'
+                'name' => 'Staff',
             ],
             [
                 'id' => 8,
-                'name' => 'Suppser Leader'
+                'name' => 'Suppser Leader',
             ],
             [
                 'id' => 9,
-                'name' => 'Leader'
+                'name' => 'Leader',
             ],
             [
                 'id' => 10,
-                'name' => 'Sub Leader'
+                'name' => 'Sub Leader',
             ],
             [
                 'id' => 11,
-                'name' => 'worker'
-            ]
+                'name' => 'worker',
+            ],
         ];
     }
     public static function formTypeJobs()
@@ -120,9 +120,9 @@ class ArrayHelper
         return [
             [
                 'id' => 1,
-                'from_dept' =>  [5], // id bộ phận yêu cầu
+                'from_dept' => [5], // id bộ phận yêu cầu
                 'to_dept' => [
-                    8 // id bộ phận tiếp nhận
+                    8, // id bộ phận tiếp nhận
                 ],
                 'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
@@ -131,7 +131,7 @@ class ArrayHelper
             ],
             [
                 'id' => 2,
-                'from_dept' =>  [5], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
+                'from_dept' => [5], // id bộ phận yêu cầu,gửi yêu cầu cho leader,subleader
                 'to_dept' => [], // id bộ phận tiếp nhận
                 'confirm_from_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
@@ -214,12 +214,12 @@ class ArrayHelper
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'id' => 3,
-                'from_dept' =>  [5], // id bộ phận yêu cầu
+                'from_dept' => [5], // id bộ phận yêu cầu
                 'to_dept' => [],
                 'confirm_from_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
@@ -293,8 +293,22 @@ class ArrayHelper
                             'answer' => '',
                             'answer_list' => [0, 1], //1: bình thường , 0: bất thường
                         ],
-                    ]
-                ]
+                    ],
+                ],
+            ],
+            [
+                'id' => 4,
+                'from_dept' => [5], // id bộ phận yêu cầu
+                'to_dept' => [],
+                'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_by_from_dept' => [4, 5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
+                'confirm_by_to_dept' => [],
+                'data_table' => [
+                    'devices_name' => '',
+                    'devices_os' => '',
+                    'devices_ip' => '',
+                ],
             ],
         ];
     }
@@ -302,8 +316,8 @@ class ArrayHelper
     {
         return [
             [
-                'Mã máy' => 'abc',
-                'Tên máy' => 'T1010',
+                'device_model' => 'LAPTOP-EH5IBUV0',
+                'device_name' => 'T1010',
             ],
         ];
     }
@@ -453,18 +467,18 @@ class ArrayHelper
         return [
             [
                 'id' => 0,
-                'name' => 'Chưa kết hôn'
+                'name' => 'Chưa kết hôn',
             ],
 
             [
                 'id' => 1,
-                'name' => 'Đã kết hôn'
+                'name' => 'Đã kết hôn',
 
             ],
             [
                 'id' => 2,
-                'name' => 'Ly hôn'
-            ]
+                'name' => 'Ly hôn',
+            ],
         ];
     }
     public static function positionTitle()
@@ -472,27 +486,27 @@ class ArrayHelper
         return [
             [
                 'id' => 0,
-                'name' => 'Nhân viên'
+                'name' => 'Nhân viên',
             ],
             [
                 'id' => 1,
-                'name' => 'Trưởng phòng'
+                'name' => 'Trưởng phòng',
             ],
             [
                 'id' => 2,
-                'name' => 'Phó phòng'
+                'name' => 'Phó phòng',
             ],
             [
                 'id' => 3,
-                'name' => 'Trợ lý'
+                'name' => 'Trợ lý',
             ],
             [
                 'id' => 4,
-                'name' => 'Sub Leader'
+                'name' => 'Sub Leader',
             ],
             [
                 'id' => 5,
-                'name' => 'Leader'
+                'name' => 'Leader',
             ],
         ];
     }
@@ -501,19 +515,19 @@ class ArrayHelper
         return [
             [
                 'id' => 0,
-                'name' => 'Nghỉ việc'
+                'name' => 'Nghỉ việc',
             ],
             [
                 'id' => 1,
-                'name' => 'Nghỉ chế độ bảo hiểm'
+                'name' => 'Nghỉ chế độ bảo hiểm',
             ],
             [
                 'id' => 2,
-                'name' => 'Nghỉ không lương'
+                'name' => 'Nghỉ không lương',
             ],
             [
                 'id' => 3,
-                'name' => 'Đang làm việc'
+                'name' => 'Đang làm việc',
             ],
         ];
     }
@@ -523,242 +537,242 @@ class ArrayHelper
             [
                 'id' => 1,
                 'name' => 'TMCP Đầu tư và Phát triển Việt Nam	',
-                'code' => 'BIDV'
+                'code' => 'BIDV',
             ],
             [
                 'id' => 2,
                 'name' => 'TMCP Ngoại Thương Việt Nam	',
-                'code' => 'Vietcombank'
+                'code' => 'Vietcombank',
             ],
             [
                 'id' => 3,
                 'name' => 'TMCP Công thương Việt Nam	',
-                'code' => 'VietinBank'
+                'code' => 'VietinBank',
             ],
             [
                 'id' => 4,
                 'name' => 'TMCP Quân Đội	',
-                'code' => 'MBBANK'
+                'code' => 'MBBANK',
             ],
             [
                 'id' => 5,
                 'name' => 'TMCP Á Châu	',
-                'code' => 'ACB'
+                'code' => 'ACB',
             ],
             [
                 'id' => 6,
                 'name' => 'TMCP Sài Gòn – Hà Nội	',
-                'code' => 'SHB'
+                'code' => 'SHB',
             ],
             [
                 'id' => 7,
                 'name' => 'TMCP Kỹ Thương	',
-                'code' => 'Techcombank'
+                'code' => 'Techcombank',
             ],
             [
                 'id' => 8,
                 'name' => 'NN&PT Nông thôn Việt Nam	',
-                'code' => 'Agribank'
+                'code' => 'Agribank',
             ],
             [
                 'id' => 9,
                 'name' => 'TMCP Phát triển Thành phố Hồ Chí Minh	',
-                'code' => 'HDBank'
+                'code' => 'HDBank',
             ],
             [
                 'id' => 10,
                 'name' => 'TMCP Bưu điện Liên Việt	',
-                'code' => 'LienVietPostBank'
+                'code' => 'LienVietPostBank',
             ],
             [
                 'id' => 11,
                 'name' => 'TMCP Quốc Tế 	',
-                'code' => 'VIB'
+                'code' => 'VIB',
             ],
             [
                 'id' => 12,
                 'name' => 'TMCP Đông Nam Á	',
-                'code' => 'SeABank'
+                'code' => 'SeABank',
             ],
             [
                 'id' => 13,
                 'name' => 'Chính sách xã hội Việt Nam	',
-                'code' => 'VBSP'
+                'code' => 'VBSP',
             ],
             [
                 'id' => 14,
                 'name' => 'TMCP Tiên Phong	',
-                'code' => 'TPBank'
+                'code' => 'TPBank',
             ],
             [
                 'id' => 15,
                 'name' => 'TMCP Phương Đông	',
-                'code' => 'OCB'
+                'code' => 'OCB',
             ],
             [
                 'id' => 16,
                 'name' => 'TMCP Hàng Hải	',
-                'code' => 'MSB'
+                'code' => 'MSB',
             ],
             [
                 'id' => 17,
                 'name' => 'TMCP Sài Gòn Thương Tín	',
-                'code' => 'Sacombank'
+                'code' => 'Sacombank',
             ],
             [
                 'id' => 18,
                 'name' => 'TMCP Xuất Nhập Khẩu	',
-                'code' => 'Eximbank'
+                'code' => 'Eximbank',
             ],
             [
                 'id' => 19,
                 'name' => 'TMCP Sài Gòn	',
-                'code' => 'SCB'
+                'code' => 'SCB',
             ],
             [
                 'id' => 20,
                 'name' => 'Phát triển Việt Nam	',
-                'code' => 'VDB'
+                'code' => 'VDB',
             ],
             [
                 'id' => 21,
                 'name' => 'TMCP Nam Á	Nam A ',
-                'code' => 'Bank'
+                'code' => 'Bank',
             ],
             [
                 'id' => 22,
                 'name' => 'TMCP An Bình	',
-                'code' => 'ABBANK'
+                'code' => 'ABBANK',
             ],
             [
                 'id' => 23,
                 'name' => 'TMCP Đại Chúng Việt Nam	',
-                'code' => 'PVcomBank'
+                'code' => 'PVcomBank',
             ],
             [
                 'id' => 24,
                 'name' => 'TMCP Bắc Á	Bac A ',
-                'code' => 'Bank'
+                'code' => 'Bank',
             ],
             [
                 'id' => 25,
                 'name' => 'TNHH MTV UOB Việt Nam	',
-                'code' => 'UOB'
+                'code' => 'UOB',
             ],
             [
                 'id' => 26,
                 'name' => 'TNHH MTV Woori Việt Nam	',
-                'code' => 'Woori'
+                'code' => 'Woori',
             ],
             [
                 'id' => 27,
                 'name' => 'TNHH MTV HSBC Việt Nam	',
-                'code' => 'HSBC'
+                'code' => 'HSBC',
             ],
             [
                 'id' => 28,
                 'name' => 'TNHH MTV Standard Chartered Việt Nam	',
-                'code' => 'SCBVL'
+                'code' => 'SCBVL',
             ],
             [
                 'id' => 29,
                 'name' => 'TNHH MTV Public Bank Việt Nam	',
-                'code' => 'PBVN'
+                'code' => 'PBVN',
             ],
             [
                 'id' => 30,
                 'name' => 'TNHH MTV Shinhan Việt Nam	',
-                'code' => 'SHBVN'
+                'code' => 'SHBVN',
             ],
             [
                 'id' => 31,
                 'name' => 'TMCP Quốc dân	',
-                'code' => 'NCB'
+                'code' => 'NCB',
             ],
             [
                 'id' => 32,
                 'name' => 'TMCP Việt Á	',
-                'code' => 'VietABank'
+                'code' => 'VietABank',
             ],
             [
                 'id' => 33,
                 'name' => 'TMCP Bản Việt	 ',
-                'code' => 'Viet Capital Bank'
+                'code' => 'Viet Capital Bank',
             ],
             [
                 'id' => 34,
                 'name' => 'TMCP Đông Á',
-                'code' => 'DongABank'
+                'code' => 'DongABank',
             ],
             [
                 'id' => 35,
                 'name' => 'TMCP Việt Nam Thương Tín	',
-                'code' => 'Vietbank'
+                'code' => 'Vietbank',
             ],
             [
                 'id' => 36,
                 'name' => 'TNHH MTV ANZ Việt Nam',
-                'code' => 'ANZVL'
+                'code' => 'ANZVL',
             ],
             [
                 'id' => 37,
                 'name' => 'TNHH MTV Đại Dương	',
-                'code' => 'OceanBank'
+                'code' => 'OceanBank',
             ],
             [
                 'id' => 38,
                 'name' => 'TNHH MTV CIMB Việt Nam',
-                'code' => 'CIMB'
+                'code' => 'CIMB',
             ],
             [
                 'id' => 39,
                 'name' => 'TMCP Kiên Long',
-                'code' => 'Kienlongbank'
+                'code' => 'Kienlongbank',
             ],
             [
                 'id' => 40,
                 'name' => 'TNHH Indovina',
-                'code' => 'IVB'
+                'code' => 'IVB',
             ],
             [
                 'id' => 41,
                 'name' => 'TMCP Bảo Việt',
-                'code' => 'BAOVIETBank'
+                'code' => 'BAOVIETBank',
             ],
             [
                 'id' => 42,
                 'name' => 'TMCP Sài Gòn Công Thương	',
-                'code' => 'SAIGONBANK'
+                'code' => 'SAIGONBANK',
             ],
             [
                 'id' => 43,
                 'name' => 'Hợp tác xã Việt Nam',
-                'code' => 'Co-opBank'
+                'code' => 'Co-opBank',
             ],
             [
                 'id' => 44,
                 'name' => 'TNHH MTV Dầu khí toàn cầu',
-                'code' => 'GPBank'
+                'code' => 'GPBank',
             ],
             [
                 'id' => 45,
                 'name' => 'Liên doanh Việt Nga',
-                'code' => 'VRB'
+                'code' => 'VRB',
             ],
             [
                 'id' => 46,
                 'name' => 'TNHH MTV Xây dựng',
-                'code' => 'CB'
+                'code' => 'CB',
             ],
             [
                 'id' => 47,
                 'name' => 'TNHH MTV Hong Leong Việt Nam	',
-                'code' => 'HLBVN'
+                'code' => 'HLBVN',
             ],
             [
                 'id' => 48,
                 'name' => 'TMCP Xăng dầu ',
-                'code' => 'Petrolimex'
+                'code' => 'Petrolimex',
             ],
 
         ];
@@ -1236,8 +1250,8 @@ class ArrayHelper
                         'answer_list' => ['BrW', 'GrB', 'BrB', 'GrY'],
                         'show_question' => 0,
 
-                    ]
-                ]
+                    ],
+                ],
             ],
             3 => [
                 'title' => 'Bài kiểm tra năng lực nhìn bản vẽ',
@@ -1412,10 +1426,10 @@ class ArrayHelper
                         'path_image' => 'public\assets\frontend\images\ktnq\21_ktnq.png',
                         'answer' => 'Quấn 20mm',
                         'answer_list' => ['Quấn 20mm', 'Quấn dưới 20 mm', 'Quấn trên  20 mm'],
-                        'show_question' => 1
-                    ]
-                ]
-            ]
+                        'show_question' => 1,
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -1778,7 +1792,7 @@ class ArrayHelper
                         'show_question' => 0,
 
                     ],
-                ]
+                ],
             ],
             [
                 'groupname' => 'II) Bạn hãy chọn đáp án đúng bằng cách tích vào ô có hình ảnh tương ứng (20 điểm): (1 câu đúng 5 điểm) ',
@@ -1886,7 +1900,7 @@ class ArrayHelper
                         'answer_list' => ['Kiểm tra lại', 'Đánh dấu lại', 'Báo cấp trên', 'Tất cả'],
                         'show_question' => 1,
                     ],
-                ]
+                ],
             ],
             [
                 'groupname' => 'IV) Bạn hãy tích vào câu trả lời đúng (20 điểm): (1 câu đúng 5 điểm) ',
@@ -1922,7 +1936,7 @@ class ArrayHelper
                         'name' => 'Cách cầm dây để cắm áp dụng với : dây đơn ( …) ',
                         'path_image' => null,
                         'answer' => 'Cầm cả bó dây để cắm',
-                        'answer_list' => ['Nhặt từng dây để cắm', 'Cầm cả bó dây để cắm', 'Lọc theo màu dây rồi cắm',],
+                        'answer_list' => ['Nhặt từng dây để cắm', 'Cầm cả bó dây để cắm', 'Lọc theo màu dây rồi cắm'],
                         'show_question' => 1,
                     ],
                     [
@@ -1930,7 +1944,7 @@ class ArrayHelper
                         'name' => 'Cách cầm dây để cắm áp dụng với : dây xoắn(  … ) ',
                         'path_image' => null,
                         'answer' => 'Lọc theo màu dây rồi cắm',
-                        'answer_list' => ['Lọc theo màu dây rồi cắm', 'Cầm cả bó dây để cắm', 'Nhặt từng dây để cắm',],
+                        'answer_list' => ['Lọc theo màu dây rồi cắm', 'Cầm cả bó dây để cắm', 'Nhặt từng dây để cắm'],
                         'show_question' => 1,
                     ],
                     [
@@ -1938,7 +1952,7 @@ class ArrayHelper
                         'name' => 'Cách cầm dây để cắm áp dụng với : dây chập bộ( …) ',
                         'path_image' => null,
                         'answer' => 'Nhặt từng dây để cắm',
-                        'answer_list' => ['Nhặt từng dây để cắm', 'Cầm cả bó dây để cắm', 'Lọc theo màu dây rồi cắm',],
+                        'answer_list' => ['Nhặt từng dây để cắm', 'Cầm cả bó dây để cắm', 'Lọc theo màu dây rồi cắm'],
                         'show_question' => 1,
                     ],
                 ],
@@ -1962,7 +1976,7 @@ class ArrayHelper
                         'name' => 'Thao tác cắm connector DRC&HD </br> a.Xác nhận số lượng hạt umesen đã được cắm sau đó đếm tanshi xem đã đủ chân chưa. </br> b.Cắm dây điện vào connector đến khi có tiếng kêu cạch thì kéo lại với lực = 2kg theo 5  hướng : trên,dưới,trái,phải,thẳng </br> c.Kiểm tra xem tanshi có bằng mặt không,điểm sáng có đều nhau và đủ chân không',
                         'path_image' => null,
                         'answer' => '.b→a→c',
-                        'answer_list' => ['.b→a→c', 'c→a→b', 'c→b→a',],
+                        'answer_list' => ['.b→a→c', 'c→a→b', 'c→b→a'],
                         'show_question' => 1,
                     ],
                 ],
@@ -2005,7 +2019,7 @@ class ArrayHelper
                         'show_question' => 1,
                     ],
                 ],
-            ]
+            ],
         ];
     }
 }

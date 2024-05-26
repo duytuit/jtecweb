@@ -144,11 +144,11 @@ class RolePermissionsTableSeeder extends Seeder
                 'activity.delete',
             ],
 
-            'checkdevice' => [
-                'checkdevice.view',
-                'checkdevice.create',
-                'checkdevice.edit',
-                'checkdevice.delete',
+            'checkdevices' => [
+                'checkdevices.view',
+                'checkdevices.create',
+                'checkdevices.edit',
+                'checkdevices.delete',
             ],
 
             'campaign' => [
@@ -269,7 +269,7 @@ class RolePermissionsTableSeeder extends Seeder
                 'checkCutMachine.create',
                 'checkCutMachine.edit',
                 'checkCutMachine.delete',
-            ]
+            ],
         ];
 
         // Assign group wise permissions
@@ -280,7 +280,7 @@ class RolePermissionsTableSeeder extends Seeder
                     $permission = Permission::create([
                         'guard_name' => 'admin',
                         'group_name' => $groupKey,
-                        'name'       => $permissionName
+                        'name' => $permissionName,
                     ]);
                 }
 

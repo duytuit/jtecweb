@@ -52,289 +52,394 @@
 
     .checkdevices-table .tg-0pky {
         border-color: inherit;
-        text-align: left;
+        text-align: center;
         vertical-align: top
+    }
+
+    .checkdevices-table .tg-0pky img {
+        width: 40px;
+        text-align: center;
     }
 </style>
 @section('admin-content')
     @include('backend.pages.checkdevices.partials.header-breadcrumbs')
     <div class="container-fluid">
         @include('backend.layouts.partials.messages')
-        <div class="row">
-            <div class="col-md-4">
-                <div class="create-page">
-                    <?php
-                    $localIP = getHostByName(getHostName());
-                    $wifiSSID = '';
-                    ?>
-                    <div class="form-body">
-                        <div class="card-body">
-                            <span>Tên máy:</span>
-                            <span>{{ $getComputerName }}</span>
-                            <p id="device_info">Loading...</p>
+        <form action="{{ route('admin.checkdevices.store') }}" method="POST" enctype="multipart/form-data"
+            data-parsley-validate data-parsley-focus="first">
+            @csrf
+            <input type="hidden" id="requiredType" name="requiredType" value="3">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="create-page">
+                        <?php
+                        $localIP = getHostByName(getHostName());
+                        $wifiSSID = '';
+                        ?>
+                        <div class="form-body">
+                            <div class="p-2">
+                                <span>Người thao tác:</span>
+                                <span>SuperAdmin</span>
+                            </div>
+                            <div class="p-2">
+                                <span>Vị trí hiện tại:</span>
+                                <input class="border-0 outline-none ml-2" id="device_position" name="device_position"
+                                    type="text" value="Chưa chọn">
+                            </div>
+                            <div class="p-2">
+                                <span>Tên máy:</span>
+                                <input class="border-0 outline-none ml-2" id="device_name" name="device_name" type="text"
+                                    value="{{ $getComputerName }}">
+                                {{-- <span>{{ $getComputerName }}</span><br> --}}
+                                {{-- <span id="device_info">Loading...</span> --}}
+                            </div>
+
+                            <div class="p-2">
+                                <span>Thời gian hiện tại:</span>
+                                <span>{{ date('Y-m-d H:i:s', time()) }}</span>
+                            </div>
+                            <div class="p-2">
+                                <span>Địa chỉ IP:</span>
+                                <input class="border-0 outline-none ml-2" id="device_ip" name="device_ip" type="text"
+                                    value="{{ $localIP }}">
+                                {{-- <span>{{ $localIP }}</span> --}}
+                                {{-- <pre id="output"></pre> --}}
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12 form-actions mx-auto">
+                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
+                                        Yêu cầu vị trí mới</button>
+                                    <a href="{{ route('admin.requireds.index') }}" class="btn btn-dark">Cancel</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <span>Người thao tác:</span>
-                            <input type="text" name="devicesName" id="devicesName" value=""
-                                placeholder="Người thao tác">
-                        </div>
-                        <div class="card-body">
-                            <span>Thời gian hiện tại:</span>
-                            <span>{{ date('Y-m-d H:i:s', time()) }}</span>
-                        </div>
-                        <div class="card-body">
-                            <span>Địa chỉ IP:</span>
-                            <span>{{ $localIP }}</span>
-                            <pre id="output"></pre>
-                        </div>
-                        <div class="card-body">
-                            <button class="btn btn-success " onclick="initialize()">Hiện vị trí</button>
-                            <div id="location-map" style="display:none;"></div>
-                        </div>
-                    </div>
-                    <div class="row fixed-bottom">
-                        <div class="col-md-6 form-actions mx-auto">
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
-                                Save</button>
-                            <a href="{{ route('admin.requireds.index') }}" class="btn btn-dark">Cancel</a>
-                        </div>
+
                     </div>
                 </div>
+                <div class="col-md-8">
+                    <table class="checkdevices-table">
+                        <thead>
+                            <tr>
+                                <th class="tg-0lax"></th>
+                                <th class="tg-0lax">1</th>
+                                <th class="tg-0lax">2</th>
+                                <th class="tg-0lax">3</th>
+                                <th class="tg-0lax">4</th>
+                                {{-- <th class="tg-0lax">5</th> --}}
+                                <th class="tg-0lax"></th>
+                                <th class="tg-0lax">1</th>
+                                <th class="tg-0lax">2</th>
+                                <th class="tg-0lax">3</th>
+                                <th class="tg-0lax">4</th>
+                                {{-- <th class="tg-0lax">5</th> --}}
+                                <th class="tg-0lax"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tg-73oq tg-73oq-text text-right">Giá 1 - Trái</td>
+                                <td class="tg-0pky">
+                                    <label for="left_1_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_1_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="left_1_top">
+                                    <hr>
+                                    <label for="left_1_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_1_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="left_1_bottom">
+                                </td>
+                                <td class="tg-0pky">
+                                    <label for="left_2_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_2_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="left_2_top">
+                                    <hr>
+                                    <label for="left_2_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_2_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="left_2_bottom">
+                                </td>
+                                <td class="tg-0pky">
+                                    <label for="left_3_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_3_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                    <hr>
+                                    <label for="left_3_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_3_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                </td>
+                                <td class="tg-0pky">
+                                    <label for="left_4_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_4_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                    <hr>
+                                    <label for="left_4_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="left_4_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                </td>
+                                <td class="tg-73oq">
+
+                                </td>
+                                <td class="tg-0pky">
+                                    <label for="right_1_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_1_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                    <hr>
+                                    <label for="right_1_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_1_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                </td>
+                                <td class="tg-0pky">
+                                    <label for="right_2_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_2_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                    <hr>
+                                    <label for="right_2_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_2_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                </td>
+                                <td class="tg-0pky">
+                                    <label for="right_3_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_3_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                    <hr>
+                                    <label for="right_3_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_3_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                </td>
+                                <td class="tg-0pky">
+                                    <label for="right_4_top">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_4_top"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                    <hr>
+                                    <label for="right_4_bottom">
+                                        <img style="object-fit: contain;object-position: top center;"
+                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                    </label>
+                                    <input name="devicesInput" id="right_4_bottom"
+                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                        value="1">
+                                </td>
+
+                                <td class="tg-73oq tg-73oq-text">Giá 1 - Phải</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq tg-73oq-text text-right">Giá 2 - Trái</td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq tg-73oq-text">Giá 2 - Phải</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq tg-73oq-text text-right">Giá 3 - Trái</td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq tg-73oq-text">Giá 3 - Phải</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq tg-73oq-text text-right">Giá 4 - Trái</td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq tg-73oq-text">Giá 4 - Phải</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq tg-73oq-text text-right">Giá 5 - Trái</td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq tg-73oq-text">Giá 5 - Phải</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq tg-73oq-text text-right">Giá 6 - Trái</td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-0pky"></td>
+                                <td class="tg-73oq tg-73oq-text">Giá 6 - Phải</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                                <td class="tg-73oq"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="col-md-8">
-                <table class="checkdevices-table">
-                    <thead>
-                        <tr>
-                            <th class="tg-0lax"></th>
-                            <th class="tg-0lax">1</th>
-                            <th class="tg-0lax">2</th>
-                            <th class="tg-0lax">3</th>
-                            <th class="tg-0lax">4</th>
-                            {{-- <th class="tg-0lax">5</th> --}}
-                            <th class="tg-0lax"></th>
-                            <th class="tg-0lax">1</th>
-                            <th class="tg-0lax">2</th>
-                            <th class="tg-0lax">3</th>
-                            <th class="tg-0lax">4</th>
-                            {{-- <th class="tg-0lax">5</th> --}}
-                            <th class="tg-0lax"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="tg-73oq tg-73oq-text text-right">Giá 1 - Trái</td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-
-                            <td class="tg-73oq">
-
-                            </td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-                            <td class="tg-0pky">
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                <hr>
-                                <img style="height: 50px; object-fit: contain;object-position: top center;" class="w-100"
-                                    src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                            </td>
-
-                            <td class="tg-73oq tg-73oq-text">Giá 1 - Phải</td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq tg-73oq-text text-right">Giá 2 - Trái</td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq tg-73oq-text">Giá 2 - Phải</td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq tg-73oq-text text-right">Giá 3 - Trái</td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq tg-73oq-text">Giá 3 - Phải</td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq tg-73oq-text text-right">Giá 4 - Trái</td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq tg-73oq-text">Giá 4 - Phải</td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq tg-73oq-text text-right">Giá 5 - Trái</td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq tg-73oq-text">Giá 5 - Phải</td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq tg-73oq-text text-right">Giá 6 - Trái</td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-0pky"></td>
-                            <td class="tg-73oq tg-73oq-text">Giá 6 - Phải</td>
-                        </tr>
-                        <tr>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                            <td class="tg-73oq"></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <button class="btn btn-success " onclick="initialize()">Hiện vị trí</button>
+                <div id="location-map" style="display:none;"></div>
             </div>
-        </div>
-
+        </form>
     </div>
 @endsection
 
 @section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('input[name="devicesInput"]').change(function() {
+                $('#device_position').val(this.value);
+            });
+        });
+    </script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=vi"></script>
     <script>
         var myMap;
@@ -435,34 +540,24 @@
         } //end mapServiceProvider
     </script>
     <script>
-        function getDeviceInfo() {
-            const deviceInfoElement = document.getElementById('device_info');
-            if (navigator.userAgentData) {
-                navigator.userAgentData.getHighEntropyValues([
-                    "architecture",
+        if (navigator.userAgentData) {
+            navigator.userAgentData
+                .getHighEntropyValues([
                     "model",
-                    "platform",
-                    "platformVersion",
-                    "fullVersionList"
-                ]).then(ua => {
-                    let deviceInfo = `You are using: `;
-                    if (ua.model) deviceInfo += `Model: ${ua.model}, `;
-                    if (ua.platform) deviceInfo += `Platform: ${ua.platform}, `;
-                    if (ua.platformVersion) deviceInfo += `Platform Version: ${ua.platformVersion}, `;
-                    if (ua.architecture) deviceInfo += `Architecture: ${ua.architecture}, `;
-                    if (ua.fullVersionList) {
-                        deviceInfo +=
-                            `Full Version List: ${ua.fullVersionList.map(item => item.brand + " " + item.version).join(", ")}`;
-                    }
+                    "platform"
+                ])
+                .then((ua) => {
+                    const model = ua["model"];
+                    const platform = ua["platform"];
 
-                    deviceInfoElement.innerText = deviceInfo;
+                    let deviceInfo = ``;
+                    if (model) deviceInfo += `Model: ${model}, `;
+                    if (platform) deviceInfo += `Platform: ${platform}, `;
+                    document.getElementById('device_info').innerText = deviceInfo;
                 });
-            } else {
-                const ua = navigator.userAgent;
-                deviceInfoElement.innerText = `Your User Agent: ${ua}`;
-            }
+        } else {
+            document.getElementById('device_info').innerText = 'navigator.userAgentData is not supported in this browser.';
         }
-        getDeviceInfo();
     </script>
     <script>
         const RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
@@ -492,21 +587,6 @@
             document.getElementById('output').textContent = 'Local IP: ' + ip;
         }).catch((error) => {
             document.getElementById('output').textContent = 'Error: ' + error;
-        });
-    </script>
-    <script>
-        function median_device_info(deviceInfo) {
-            console.log(deviceInfo);
-        }
-
-        // You may also call the median_device_info function manually, e.g. on a single page web app
-        median.run.deviceInfo();
-
-        // Or return the OneSignal Info via a promise (in async function)
-        var deviceInfo = await median.deviceInfo();
-
-        median.deviceInfo().then(function(deviceInfo) {
-            console.log(deviceInfo);
         });
     </script>
 @endsection
