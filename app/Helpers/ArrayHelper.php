@@ -35,7 +35,7 @@ class ArrayHelper
     {
         $fruits = ArrayHelper::arrayExamPd();
         $array_answer = array_column($fruits, 'answer');
-        $arrayFiltered = array_filter($array_answer, fn($element) => $element != $value);
+        $arrayFiltered = array_filter($array_answer, fn ($element) => $element != $value);
         $firstThreeElements = array_slice($arrayFiltered, 0, 3);
         array_push($firstThreeElements, $value);
         shuffle($firstThreeElements);
@@ -305,9 +305,30 @@ class ArrayHelper
                 'confirm_by_from_dept' => [4, 5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
                 'confirm_by_to_dept' => [],
                 'data_table' => [
-                    'devices_name' => '',
-                    'devices_os' => '',
-                    'devices_ip' => '',
+                    [
+                        'model' => '',
+                        'name' => '',
+                        'ip' => '',
+                        'position' => 'left_1_top',
+                    ],
+                    [
+                        'model' => '',
+                        'name' => '',
+                        'ip' => '',
+                        'position' => 'left_2_top',
+                    ],
+                    [
+                        'model' => '',
+                        'name' => '',
+                        'ip' => '',
+                        'position' => 'left_1_bottom',
+                    ],
+                    [
+                        'model' => '',
+                        'name' => '',
+                        'ip' => '',
+                        'position' => 'left_2_bottom',
+                    ],
                 ],
             ],
         ];

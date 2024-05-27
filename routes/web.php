@@ -19,7 +19,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 */
 
 Auth::routes();
-
+Route::get('qrcode', [App\Http\Controllers\QrcodeController::class, 'index']);
 Route::get('qrcode/export', [App\Http\Controllers\QrcodeController::class], 'QrExportExcel')->name('QrExportExcel');
 Route::post('qrcode/printfile', [App\Http\Controllers\QrcodeController::class, 'QrCodePrint'])->name('QrCodePrint');
 Route::get('qrcode/printfile', [App\Http\Controllers\QrcodeController::class, 'GetDataPrint']);

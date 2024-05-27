@@ -83,13 +83,13 @@
                             </div>
                             <div class="p-2">
                                 <span>Vị trí hiện tại:</span>
-                                <input class="border-0 outline-none ml-2" id="device_position" name="device_position"
-                                    type="text" value="Chưa chọn">
+                                <input class="border-0 outline-none ml-2" id="devices_position" name="devices_position"
+                                    type="text" value="">
                             </div>
                             <div class="p-2">
                                 <span>Tên máy:</span>
-                                <input class="border-0 outline-none ml-2" id="device_name" name="device_name" type="text"
-                                    value="{{ $getComputerName }}">
+                                <input class="border-0 outline-none ml-2" id="devices_name" name="devices_name"
+                                    type="text" value="{{ $getComputerName }}">
                                 {{-- <span>{{ $getComputerName }}</span><br> --}}
                                 {{-- <span id="device_info">Loading...</span> --}}
                             </div>
@@ -100,7 +100,7 @@
                             </div>
                             <div class="p-2">
                                 <span>Địa chỉ IP:</span>
-                                <input class="border-0 outline-none ml-2" id="device_ip" name="device_ip" type="text"
+                                <input class="border-0 outline-none ml-2" id="devices_ip" name="devices_ip" type="text"
                                     value="{{ $localIP }}">
                                 {{-- <span>{{ $localIP }}</span> --}}
                                 {{-- <pre id="output"></pre> --}}
@@ -118,307 +118,25 @@
                 </div>
                 <div class="col-md-8">
                     <table class="checkdevices-table">
-                        <thead>
-                            <tr>
-                                <th class="tg-0lax"></th>
-                                <th class="tg-0lax">1</th>
-                                <th class="tg-0lax">2</th>
-                                <th class="tg-0lax">3</th>
-                                <th class="tg-0lax">4</th>
-                                {{-- <th class="tg-0lax">5</th> --}}
-                                <th class="tg-0lax"></th>
-                                <th class="tg-0lax">1</th>
-                                <th class="tg-0lax">2</th>
-                                <th class="tg-0lax">3</th>
-                                <th class="tg-0lax">4</th>
-                                {{-- <th class="tg-0lax">5</th> --}}
-                                <th class="tg-0lax"></th>
-                            </tr>
-                        </thead>
+
                         <tbody>
-                            <tr>
-                                <td class="tg-73oq tg-73oq-text text-right">Giá 1 - Trái</td>
-                                <td class="tg-0pky">
-                                    <label for="left_1_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_1_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="left_1_top">
-                                    <hr>
-                                    <label for="left_1_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_1_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="left_1_bottom">
-                                </td>
-                                <td class="tg-0pky">
-                                    <label for="left_2_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_2_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="left_2_top">
-                                    <hr>
-                                    <label for="left_2_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_2_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="left_2_bottom">
-                                </td>
-                                <td class="tg-0pky">
-                                    <label for="left_3_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_3_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                    <hr>
-                                    <label for="left_3_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_3_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                </td>
-                                <td class="tg-0pky">
-                                    <label for="left_4_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_4_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                    <hr>
-                                    <label for="left_4_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="left_4_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                </td>
-                                <td class="tg-73oq">
-
-                                </td>
-                                <td class="tg-0pky">
-                                    <label for="right_1_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_1_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                    <hr>
-                                    <label for="right_1_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_1_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                </td>
-                                <td class="tg-0pky">
-                                    <label for="right_2_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_2_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                    <hr>
-                                    <label for="right_2_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_2_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                </td>
-                                <td class="tg-0pky">
-                                    <label for="right_3_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_3_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                    <hr>
-                                    <label for="right_3_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_3_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                </td>
-                                <td class="tg-0pky">
-                                    <label for="right_4_top">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_4_top"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                    <hr>
-                                    <label for="right_4_bottom">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="right_4_bottom"
-                                        style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                        value="1">
-                                </td>
-
-                                <td class="tg-73oq tg-73oq-text">Giá 1 - Phải</td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq tg-73oq-text text-right">Giá 2 - Trái</td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq tg-73oq-text">Giá 2 - Phải</td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq tg-73oq-text text-right">Giá 3 - Trái</td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq tg-73oq-text">Giá 3 - Phải</td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq tg-73oq-text text-right">Giá 4 - Trái</td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq tg-73oq-text">Giá 4 - Phải</td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq tg-73oq-text text-right">Giá 5 - Trái</td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq tg-73oq-text">Giá 5 - Phải</td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq tg-73oq-text text-right">Giá 6 - Trái</td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-0pky"></td>
-                                <td class="tg-73oq tg-73oq-text">Giá 6 - Phải</td>
-                            </tr>
-                            <tr>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
-                                <td class="tg-73oq"></td>
+                            <tr class="row">
+                                @foreach ($requiredNews as $requiredNew)
+                                    {{-- @dd($requiredNew); --}}
+                                    <td class="tg-0pky">
+                                        <label for="{{ $requiredNew['position'] }}">
+                                            <img style="object-fit: contain;object-position: top center;"
+                                                src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
+                                        </label>
+                                        <input name="devicesInput" id="{{ $requiredNew['position'] }}"
+                                            style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                            value="{{ $requiredNew['position'] }}"
+                                            @if (in_array($requiredNew['position'], $positions)) disabled @endif> <br>
+                                        <span>{{ $requiredNew['position'] }}</span><br>
+                                        <span>{{ @$requiredNew['name'] }}
+                                        </span>
+                                    </td>
+                                @endforeach
                             </tr>
                         </tbody>
                     </table>
@@ -436,7 +154,7 @@
     <script>
         $(document).ready(function() {
             $('input[name="devicesInput"]').change(function() {
-                $('#device_position').val(this.value);
+                $('#devices_position').val(this.value);
             });
         });
     </script>
