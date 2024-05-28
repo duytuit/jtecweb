@@ -12,7 +12,26 @@ class CheckDevice extends Model
     protected $guarded = [];
 
     protected $memoryType;
+    public function scopeFilter($query, $input)
+    {
+        foreach ($this->seachable as $value) {
+            if (isset($input[$value])) {
+                $query->where($value, $input[$value]);
+            }
+        }
+        if (isset($input['keyword'])) {
+            $search = $input['keyword'];
+            $query->where(function ($q) use ($search) {
+                foreach ($this->seachable as $value) {
+                    $q->orWhere($value, 'LIKE', '%' . $search . '%');
+                }
+            });
+        }
+        return $query;
+    }
     protected $format;
+
+
 
     //get wifi name
     // OK

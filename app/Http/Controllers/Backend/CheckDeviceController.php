@@ -32,15 +32,16 @@ class CheckDeviceController extends Controller
      */
     public function index(Request $request)
     {
-        $requireds['keyword'] = $request->input('keyword', null);
-        $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
-        $requireds['advance'] = 0;
-        $requireds['lists'] = Required::where('from_type', 3)->where(function ($query) use ($request) {
+        $data['keyword'] = $request->input('keyword', null);
+        $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $data['advance'] = 0;
+        $getDataRequired = Required::orderBy('created_at', 'desc')->where('from_type', 3)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-        });
-        return view('backend.pages.checkdevices.index', $requireds);
+        })->first();
+        $data['lists'] = json_decode($getDataRequired->content_form, true);
+        return view('backend.pages.checkdevices.index', $data);
     }
 
     /**
@@ -48,29 +49,39 @@ class CheckDeviceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         // if (is_null($this->user) || !$this->user->can('employee.create')) {
         //     return abort(403, 'You are not allowed to access this page !');
         // }
+        // dd($request->all());
         $employee_id = Auth::user()->employee_id;
+        // $requiredType = $request->requiredType;
+        $requiredType = 3;
         $checkDeviceData = new CheckDevice();
         $data['getWifiSSID'] = $checkDeviceData->getWifiSSID();
         $data['getComputerName'] = $checkDeviceData->getComputerName();
         $data['getProcessorInfo'] = $checkDeviceData->getProcessorInfo();
         $data['getOSInfo'] = $checkDeviceData->getOSInfo();
-        $required = Required::orderBy('created_at', 'desc')->first();
-        // $requiredData = $required->content_form;
-        $requiredData = json_decode($required->content_form, true);
-        $data['requiredNews'] =  $requiredData;
+        $required = Required::orderBy('created_at', 'desc')->where('from_type', $requiredType)->first();
+        $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
+        if (!$required || is_null($required)) {
+            $requiredData = $formTypeJobs['data_table'];
+        } else {
+            $requiredData = json_decode($required->content_form, true);
+        }
         // dd($requiredData);
+        $data['requiredNews'] =  $requiredData;
         $filteredPositions = array_filter($requiredData, function ($item) {
             return !empty($item['name']);
         });
+        // $requiredData = $formTypeJobs['data_table'];
+        $filteredPositionsByName = array_filter($requiredData, function ($item) use ($data) {
+            return $item['name'] == $data['getComputerName'];
+        });
+        $positionsByName = array_column($filteredPositionsByName, 'position');
         $positions = array_column($filteredPositions, 'position');
-        // dd($filteredPositions);
-
-        return view('backend.pages.checkdevices.create', $data, compact('filteredPositions', 'positions'));
+        return view('backend.pages.checkdevices.create', $data, compact('filteredPositions', 'positionsByName', 'positions'));
     }
 
     /**
@@ -87,13 +98,16 @@ class CheckDeviceController extends Controller
         $departmentFromId = EmployeeDepartment::where('employee_id', $employee_id)->first();
         $requiredType = $request->requiredType;
         $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
-        // $dataTables = $formTypeJobs['data_table'];
+        // $formData = $formTypeJobs['data_table'];
+        $required = Required::orderBy('created_at', 'desc')->where('from_type', $requiredType)->first();
+        if (is_null($required) || $required == '') {
+            $requiredData = $formTypeJobs['data_table'];
+            $dataTables = $requiredData;
+        } else {
+            $requiredData = $required->content_form;
+            $dataTables = json_decode($requiredData, true);
+        }
 
-        $required = Required::orderBy('created_at', 'desc')->first();
-        // $requiredData = $required->content_form;
-        $dataTables = json_decode($required->content_form, true);
-
-        // dd($dataTables);
         if (is_null($departmentFromId) || $departmentFromId == '') {
             session()->flash('error', "Tài khoản của bạn không thể thực hiện tác vụ này");
             return redirect()->route('admin.checkdevices.create');
@@ -102,52 +116,69 @@ class CheckDeviceController extends Controller
             session()->flash('error', "Bạn chưa chọn vị trí");
             return redirect()->route('admin.checkdevices.create');
         }
-        // $dataTables['model'] = $request->device_os;
 
         $position = $request->devices_position;
-        // dd($position);
-        foreach ($dataTables as $key => $dataTable) {
-            // dd($dataTable);
-            if ($dataTable['name'] == $request->devices_name) {
-                $dataTable['name'] = '';
-                $dataTable['ip'] = '';
-            }
-            $dataTable['name'] = $request->devices_name;
-            $dataTable['ip'] = $request->devices_ip;
-        }
-        // dd($dataTables);
-        $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
-        $status = 1;
-        if ($formTypeJobs['confirm_from_dept'] == 1 && $formTypeJobs['confirm_to_dept'] == 1) {
-            $status = 1;
-        } else {
-            $status = 0;
-        }
-        try {
-            DB::beginTransaction();
-            $required = Required::create([
-                'required_department_id' => $departmentFromId->department_id,
-                'code_required' => $requireCode,
-                'code' => '',
-                'quantity' => '',
-                'created_by' => Auth::user()->employee_id,
-                // 'receiving_department_ids' => json_encode($formTypeJobs['to_dept']),
-                'usage_status' => 1,
-                'content_form' => $json_data,
-                'status' => $status,
-                'from_type' => $requiredType,
-                'content' => $request->devices_position,
-            ]);
+        $deviceName = $request->devices_name;
+        $deviceIP = $request->devices_ip;
+        $dataTablesChanged = false;
 
-            DB::commit();
-            session()->flash('success', 'Thêm mới thành công');
+        // Tìm và xóa thiết bị khỏi vị trí cũ
+        foreach ($dataTables as $key => $dataTable) {
+            if ($dataTable['name'] == $deviceName) {
+                $dataTables[$key]['name'] = '';
+                $dataTables[$key]['ip'] = '';
+                $dataTablesChanged = true;
+            }
+        }
+
+        // Tìm và cập nhật thiết bị vào vị trí mới
+        foreach ($dataTables as $key => $dataTable) {
+            if ($dataTable['position'] == $position && $dataTable['name'] == '') {
+                $dataTables[$key]['name'] = $deviceName;
+                $dataTables[$key]['ip'] = $deviceIP;
+                $dataTablesChanged = true;
+                break;
+            }
+        }
+
+        // Chỉ lưu nếu có thay đổi trong dataTables
+        if ($dataTablesChanged) {
+            $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
+            $status = 1;
+            if ($formTypeJobs['confirm_from_dept'] == 1 && $formTypeJobs['confirm_to_dept'] == 1) {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+
+            try {
+                DB::beginTransaction();
+                $required = Required::create([
+                    'required_department_id' => $departmentFromId->department_id,
+                    'code_required' => $requireCode,
+                    'code' => '',
+                    'quantity' => '',
+                    'created_by' => Auth::user()->employee_id,
+                    'usage_status' => 1,
+                    'content_form' => $json_data,
+                    'status' => $status,
+                    'from_type' => $requiredType,
+                    'content' => $position,
+                ]);
+
+                DB::commit();
+                session()->flash('success', 'Thêm mới thành công');
+                return redirect()->route('admin.checkdevices.index');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return $this->error(['error', $e->getMessage()]);
+            }
+        } else {
+            session()->flash('info', 'Không có thay đổi nào được lưu.');
             return redirect()->route('admin.checkdevices.index');
-        } catch (\Exception $e) {
-            return $this->error(['error', $e->getMessage()]);
-            DB::rollBack();
-            return back();
         }
     }
+
 
     /**
      * Display the specified resource.

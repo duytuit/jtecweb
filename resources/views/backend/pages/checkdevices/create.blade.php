@@ -14,7 +14,7 @@
         border-style: solid;
         border-width: 1px;
         font-family: Arial, sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         overflow: hidden;
         padding: 10px 5px;
         word-break: normal;
@@ -24,7 +24,7 @@
         border-style: solid;
         border-width: 0px;
         font-family: Arial, sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: normal;
         overflow: hidden;
         padding: 10px 5px;
@@ -84,7 +84,7 @@
                             <div class="p-2">
                                 <span>Vị trí hiện tại:</span>
                                 <input class="border-0 outline-none ml-2" id="devices_position" name="devices_position"
-                                    type="text" value="">
+                                    type="text" value="{{ isset($positionsByName[0]) ? $positionsByName[0] : '' }}">
                             </div>
                             <div class="p-2">
                                 <span>Tên máy:</span>
@@ -113,29 +113,34 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-8">
                     <table class="checkdevices-table">
-
                         <tbody>
                             <tr class="row">
+                                @php $count = 0; @endphp
                                 @foreach ($requiredNews as $requiredNew)
-                                    {{-- @dd($requiredNew); --}}
-                                    <td class="tg-0pky">
+                                    <td class="tg-0pky" style="width: calc(100% / 8)">
+                                        <span>{{ $requiredNew['position'] }}</span><br>
                                         <label for="{{ $requiredNew['position'] }}">
                                             <img style="object-fit: contain;object-position: top center;"
                                                 src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
                                         </label>
                                         <input name="devicesInput" id="{{ $requiredNew['position'] }}"
-                                            style="width:20px;height:20px; vertical-align: middle;" type="radio"
+                                            style="width:14px;height:14px; vertical-align: middle;" type="radio"
                                             value="{{ $requiredNew['position'] }}"
-                                            @if (in_array($requiredNew['position'], $positions)) disabled @endif> <br>
-                                        <span>{{ $requiredNew['position'] }}</span><br>
-                                        <span>{{ @$requiredNew['name'] }}
+                                            @if (in_array($requiredNew['position'], $positions)) disabled @endif
+                                            @if ($positionsByName[0] && $requiredNew['position'] == $positionsByName[0]) checked @endif> <br>
+                                        <span
+                                            class="{{ $positionsByName[0] && $requiredNew['position'] == $positionsByName[0] ? 'text-danger' : '' }}">{{ @$requiredNew['name'] }}
                                         </span>
                                     </td>
+                                    @php $count++; @endphp
+                                    @if ($count % 8 == 0)
+                            </tr>
+                            <tr class="row mt-3">
+                                @endif
                                 @endforeach
                             </tr>
                         </tbody>
@@ -166,15 +171,15 @@
         var marker;
         var addr_comps = new Array();
 
-        function initialize() {
-            $('#location-map').hide();
-
+        function initialize(e) {
+            // $('#location-map').hide();
+            e.preventDefault();
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     mapServiceProvider(position.coords.latitude, position.coords.longitude);
                     console.log(position.coords.latitude);
                     console.log(position.coords.longitude);
-                    $('#location-map').show();
+                    // $('#location-map').show();
 
                 }, errorHandler);
             } else {
