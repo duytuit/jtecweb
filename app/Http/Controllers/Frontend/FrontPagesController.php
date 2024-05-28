@@ -574,7 +574,7 @@ class FrontPagesController extends Controller
                 'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
                 'limit_time' => '05:00', // tổng số câu hỏi
                 'data' => json_encode($request->answer), // tổng số câu hỏi
-                'status' => $scores > 95 ? 1 : 0, // 0:chưa duyệt,1:đã duyệt
+                'status' => $scores >= ArrayHelper::arrayExamPd()[$request->type]['scores'][0] ? 1 : 0, // 0:chưa duyệt,1:đã duyệt
                 'mission' => $mission + 1, // số lần thi
                 'scores' => $scores, // điểm thi
                 'examinations' => $examinations, // đợt thi

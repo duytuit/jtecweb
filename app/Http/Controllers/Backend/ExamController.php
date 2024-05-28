@@ -46,6 +46,7 @@ class ExamController extends Controller
         $data['keyword'] = $request->input('keyword', null);
         $data['advance'] = 0;
         $data['arrayExamPd'] = ArrayHelper::arrayExamPd();
+        $arrayExamPd = $data['arrayExamPd'];
         $type = $request->input('exam_type', 1);
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
@@ -132,7 +133,7 @@ class ExamController extends Controller
                 }
             })
             ->where('status', 1)
-            ->where('scores', '>', 95)
+            ->where('scores', '>=', $arrayExamPd[$type]['scores'][0])
             ->where('examinations', 1)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
@@ -161,7 +162,7 @@ class ExamController extends Controller
             ->where('cycle_name', $current_cycleName)
             ->where('examinations', 1)
             ->where('status', 0)
-            ->where('scores', '>=', 90)->where('scores', '<=', 95)
+            ->where('scores', '>=', $arrayExamPd[$type]['scores'][1])->where('scores', '<', $arrayExamPd[$type]['scores'][0])
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
 
@@ -189,7 +190,7 @@ class ExamController extends Controller
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
             ->where('cycle_name', $current_cycleName)
             ->where('examinations', 1)
-            ->where('status', 0)->where('scores', '<', 90)
+            ->where('status', 0)->where('scores', '<', $arrayExamPd[$type]['scores'][1])
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
         $data['emp_yet_1'] = Employee::select('code')->where('status', 1)->where('status_exam', 1)
@@ -223,7 +224,7 @@ class ExamController extends Controller
                 }
             })
             ->where('status', 1)
-            ->where('scores', '>', 95)
+            ->where('scores', '>=', $arrayExamPd[$type]['scores'][0])
             ->where('examinations', 2)
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
@@ -250,7 +251,7 @@ class ExamController extends Controller
             })
             ->where('examinations', 2)
             ->where('status', 0)
-            ->where('scores', '>=', 90)->where('scores', '<=', 95)
+            ->where('scores', '>=', $arrayExamPd[$type]['scores'][1])->where('scores', '<', $arrayExamPd[$type]['scores'][0])
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
         $data['emp_fail_2_90'] = Exam::where('type', $type)->select('id', 'code')
@@ -276,7 +277,7 @@ class ExamController extends Controller
             })
             ->where('examinations', 2)
             ->where('status', 0)
-            ->where('scores', '<', 90)
+            ->where('scores', '<', $arrayExamPd[$type]['scores'][1])
             ->groupBy('code')->orderBy('id', 'desc')
             ->get()->ToArray();
 

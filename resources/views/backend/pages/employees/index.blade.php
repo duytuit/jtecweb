@@ -89,6 +89,14 @@
                         </div>
                     </div>
                     <div class="col-sm-2">
+                        <select name="dept" class="form-control" style="width: 100%;">
+                            <option value="">Bộ phận</option>
+                             @foreach ($depts as $item)
+                                <option value="{{$item->id}}" {{ @$filter['dept'] == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                             @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
                         <select class="form-control custom-select" name="worker">
                             <option value="">Tình trạng làm việc</option>
                             @foreach ($workers as $worker)
@@ -97,7 +105,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <select class="form-control custom-select" name="positions">
                             <option value="">Chức vụ</option>
                             @foreach ($positions as $position)
