@@ -5,12 +5,13 @@
                 @if (Route::is('admin.checkdevices.index'))
                     checkdevices List
                 @elseif(Route::is('admin.checkdevices.create'))
-                    Create New checkdevices
+                    Kiểm tra vị trí
                 @elseif(Route::is('admin.checkdevices.edit'))
                     Edit checkdevices <span class="badge badge-info">{{ $checkdevices->title }}</span>
                 @elseif(Route::is('admin.checkdevices.show'))
                     View checkdevices <span class="badge badge-info">{{ $checkdevices->title }}</span>
-                    <a  class="btn btn-outline-success btn-sm" href="{{ route('admin.checkdevices.edit', $checkdevices->id) }}"> <i class="fa fa-edit"></i></a>
+                    <a class="btn btn-outline-success btn-sm"
+                        href="{{ route('admin.checkdevices.edit', $checkdevices->id) }}"> <i class="fa fa-edit"></i></a>
                 @endif
             </h4>
         </div>
@@ -22,14 +23,17 @@
                         @if (Route::is('admin.checkdevices.index'))
                             <li class="breadcrumb-item active" aria-current="page">checkdevices List</li>
                         @elseif(Route::is('admin.checkdevices.create'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.checkdevices.index') }}">checkdevices List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Create New checkdevices</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.checkdevices.index') }}">checkdevices
+                                    List</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Kiểm tra vị trí</li>
                         @elseif(Route::is('admin.checkdevices.edit'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.checkdevices.index') }}">checkdevices List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit checkdevices</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.checkdevices.index') }}">checkdevices
+                                    List</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit checkdevices</li>
                         @elseif(Route::is('admin.checkdevices.show'))
-                        <li class="breadcrumb-item"><a href="{{ route('admin.checkdevices.index') }}">checkdevices List</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Show checkdevices</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.checkdevices.index') }}">checkdevices
+                                    List</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Show checkdevices</li>
                         @endif
 
                     </ol>

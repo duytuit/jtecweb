@@ -47,7 +47,7 @@
                                         <div class="form-group">
                                             <label class="control-label" for="quantity">Số lượng<span
                                                     class="required">*</span></label>
-                                            <input type="number" step="1" min="0" max="1000"
+                                            <input type="number" step="1" min="0" max="100000"
                                                 class="form-control" id="quantity" name="quantity"
                                                 value="{{ old('quantity') }}" placeholder="Số lượng" required
                                                 data-parsley-required-message="Trường số lượng là bắt buộc">
@@ -57,12 +57,12 @@
                                             <div>
                                                 <input name="quantityType" id="quantityUnused"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                                    value="1" required checked
+                                                    value="1" required
                                                     data-parsley-error-message="Vui lòng chọn một loại số lượng.">
                                                 <label for="quantityUnused">Hàng chẵn</label>
                                                 <input name="quantityType" id="quantityUsed"
                                                     style="width:20px;height:20px; vertical-align: middle;" type="radio"
-                                                    value="0" required>
+                                                    value="0" required checked>
                                                 <label for="quantityUsed">Hàng lẻ</label>
                                             </div>
                                         </div>

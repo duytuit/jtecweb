@@ -295,7 +295,9 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::delete('trashed/destroy/{id}', 'SignatureSubmissionController@destroyTrash')->name('trashed.destroy');
     });
 
-    // Check cutting machine every day
+    /**
+     * Check cutting machine every day
+     */
     Route::prefix('checkCutMachine')->name('checkCutMachine.')->group(function () {
         Route::get('/', 'CheckCutMachineController@index')->name('index');
         Route::get('/create', 'CheckCutMachineController@create')->name('create');
