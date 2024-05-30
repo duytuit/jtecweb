@@ -181,9 +181,9 @@
                     </div>
                     <div class="form-actions">
                         <div class="card-body">
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Lưu</button>
                             <a href="{{ Route::is('admin.admins.profile.edit') ? route('admin.index') : route('admin.admins.index') }}"
-                                class="btn btn-dark">Cancel</a>
+                                class="btn btn-dark">Hủy</a>
                         </div>
                     </div>
                 </div>

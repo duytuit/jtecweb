@@ -151,7 +151,7 @@
                 <div class="form-actions">
                     <div class="card-body">
                         <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Update</button>
-                        <a href="{{ route('admin.booking_request.index') }}" class="btn btn-dark">Cancel</a>
+                        <a href="{{ route('admin.booking_request.index') }}" class="btn btn-dark">Hủy</a>
                     </div>
                 </div>
             </form>

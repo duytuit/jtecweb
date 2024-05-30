@@ -35,12 +35,12 @@
                                     <br>
                                     @if ($blog->image != null)
                                     <img src="{{ asset('public/assets/images/blogs/'.$blog->image) }}" alt="Image" class="img width-100" />
-                                    @else 
+                                    @else
                                     <span class="border p-2">
                                         No Image
                                     </span>
                                     @endif
-                                    
+
                                 </div>
                             </div>
 
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                         <div class="row ">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -72,7 +72,7 @@
                                 <div class="form-actions">
                                     <div class="card-body">
                                         <a  class="btn btn-success" href="{{ route('admin.blogs.edit', $blog->id) }}"> <i class="fa fa-edit"></i> Edit Now</a>
-                                        <a href="{{ route('admin.blogs.index') }}" class="btn btn-dark ml-2">Cancel</a>
+                                        <a href="{{ route('admin.blogs.index') }}" class="btn btn-dark ml-2">Hủy</a>
                                     </div>
                                 </div>
                             </div>

@@ -12,7 +12,7 @@
             <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
                 @csrf
                 @method('put')
-                
+
                 <div class="form-body">
                     <div class="card-body">
                         <div class="row ">
@@ -24,10 +24,10 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="row">
                             <div class="col-md-3">
-                                <label class="control-label" for="allManagement">Assign Permissions 
+                                <label class="control-label" for="allManagement">Assign Permissions
                                     <span class="optional">(optional)</span>
                                 </label>
                             </div>
@@ -81,16 +81,16 @@
                             <div class="col-md-12">
                                 <div class="form-actions">
                                     <div class="card-body">
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                                        <a href="{{ route('admin.roles.index') }}" class="btn btn-dark">Cancel</a>
+                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Lưu</button>
+                                        <a href="{{ route('admin.roles.index') }}" class="btn btn-dark">Hủy</a>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                     </div>
-                    
+
                 </div>
             </form>
         </div>

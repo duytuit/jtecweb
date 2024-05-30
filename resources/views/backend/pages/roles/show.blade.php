@@ -77,7 +77,7 @@
                                         <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-success"> <i class="fa fa-arrow-left"></i> Edit Now</a>
                                         @endif
 
-                                        <a href="{{ route('admin.roles.index') }}" class="btn btn-dark">Cancel</a>
+                                        <a href="{{ route('admin.roles.index') }}" class="btn btn-dark">Hủy</a>
                                     </div>
                                 </div>
                             </div>

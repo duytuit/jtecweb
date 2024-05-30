@@ -44,8 +44,8 @@
                                 <div class="form-actions ">
                                     <div class="card-body d-flex justify-content-between">
                                         <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
-                                            Save</button>
-                                        <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Cancel</a>
+                                            Lưu</button>
+                                        <a href="{{ route('admin.departments.index') }}" class="btn btn-dark">Hủy</a>
                                     </div>
                                 </div>
                             </div>

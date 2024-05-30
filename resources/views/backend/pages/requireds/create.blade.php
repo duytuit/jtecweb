@@ -124,8 +124,8 @@
                     <div class="row fixed-bottom">
                         <div class="col-md-6 form-actions mx-auto">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
-                                Save</button>
-                            <a href="{{ route('admin.requireds.index') }}" class="btn btn-dark">Cancel</a>
+                                Lưu</button>
+                            <a href="{{ route('admin.requireds.index') }}" class="btn btn-dark">Hủy</a>
                         </div>
                     </div>
                 </div>

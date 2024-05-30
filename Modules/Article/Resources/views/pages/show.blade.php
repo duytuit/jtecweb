@@ -99,7 +99,7 @@
                                         @if (Auth::user()->can('page.edit'))
                                             <a  class="btn btn-success" href="{{ route('admin.pages.edit', $page->id) }}"> <i class="fa fa-edit"></i> Edit Now</a>
                                         @endif
-                                        <a href="{{ route('admin.pages.index') }}" class="btn btn-dark ml-2">Cancel</a>
+                                        <a href="{{ route('admin.pages.index') }}" class="btn btn-dark ml-2">Hủy</a>
                                     </div>
                                 </div>
                             </div>

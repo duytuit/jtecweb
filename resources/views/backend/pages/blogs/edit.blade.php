@@ -29,7 +29,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row ">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -63,16 +63,16 @@
                                 </div>
                                 <div class="form-actions">
                                     <div class="card-body">
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                                        <a href="{{ route('admin.blogs.index') }}" class="btn btn-dark">Cancel</a>
+                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Lưu</button>
+                                        <a href="{{ route('admin.blogs.index') }}" class="btn btn-dark">Hủy</a>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                     </div>
-                    
+
                 </div>
             </form>
         </div>
