@@ -97,7 +97,7 @@
                                 <td>{{ $_item->content_type }}</td>
                                 <td>{{ $_item->action }}</td>
                                 <td>{{ $_item->ip_address }}</td>
-                                <td>{{ Auth::user()->first_name .' '. Auth::user()->last_name}}</td>
+                                <td>{{ $_item->user_id}}</td>
                                 <td>
                                     @php
                                         if (@$data_old){
@@ -113,22 +113,23 @@
                                 </td>
                                 <td>
                                     @php
-                                        foreach ($data_new as $index => $item) {
-                                        if(@$index == 'remember_token'){
-                                            continue;
-                                        }
-                                        if(@$data_old->$index != @$data_new->$index){
-
-                                            if(@$data_old->$index){
-                                                    @$_index = isset(trans('model')[@$index]) ? trans('model')[@$index] : @$index;
-                                                    echo '<p  style="width:300px;word-wrap: break-word;">'. @$_index .' : '. ArrayHelper::decode_string(json_encode(@$data_old->$index)).' => '. ArrayHelper::decode_string(json_encode(@$data_new->$index)) .'</p>';
-                                            }else{
-                                                    @$_index = isset(trans('model')[@$index]) ? trans('model')[@$index] : @$index;
-                                                    echo '<p  style="width:300px;word-wrap: break-word;">'. @$_index .' : '.ArrayHelper::decode_string(json_encode(@$data_new->$index)).'</p>';
+                                      if($data_new){
+                                            foreach ($data_new as $index => $item) {
+                                            if(@$index == 'remember_token'){
+                                                continue;
                                             }
-                                        }
+                                            if(@$data_old->$index != @$data_new->$index){
 
-                                    }
+                                                if(@$data_old->$index){
+                                                        @$_index = isset(trans('model')[@$index]) ? trans('model')[@$index] : @$index;
+                                                        echo '<p  style="width:300px;word-wrap: break-word;">'. @$_index .' : '. ArrayHelper::decode_string(json_encode(@$data_old->$index)).' => '. ArrayHelper::decode_string(json_encode(@$data_new->$index)) .'</p>';
+                                                }else{
+                                                        @$_index = isset(trans('model')[@$index]) ? trans('model')[@$index] : @$index;
+                                                        echo '<p  style="width:300px;word-wrap: break-word;">'. @$_index .' : '.ArrayHelper::decode_string(json_encode(@$data_new->$index)).'</p>';
+                                                }
+                                            }
+                                          }
+                                        }
                                     @endphp
                                 </td>
                                 <td>{{ $_item->sql }}</td>

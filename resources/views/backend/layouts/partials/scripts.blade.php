@@ -64,9 +64,9 @@
 {{-- <script src="{{ asset('public/assets/backend/js/chartist-plugin-tooltip.min.js') }}"></script> --}}
 
 {{-- <!--c3 charts --> --}}
-{{-- <script src="{{ asset('public/assets/backend/js/d3.min.js') }}"></script>
+<script src="{{ asset('public/assets/backend/js/d3.min.js') }}"></script>
 <script src="{{ asset('public/assets/backend/js/c3.min.js') }}"></script>
-<script src="{{ asset('public/assets/backend/js/jquery-jvectormap-2.0.2.min.js') }}"></script>
-<script src="{{ asset('public/assets/backend/js/jquery-jvectormap-world-mill-en.js') }}"></script>
-<script src="{{ asset('public/assets/backend/js/dashboard1.js') }}"></script> --}}
+{{-- <script src="{{ asset('public/assets/backend/js/jquery-jvectormap-2.0.2.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('public/assets/backend/js/jquery-jvectormap-world-mill-en.js') }}"></script> --}}
+{{-- <script src="{{ asset('public/assets/backend/js/dashboard1.js') }}"></script> --}}
 @include('backend.layouts.partials.flash-message')

@@ -39,13 +39,18 @@ label,
 output {
     display: inline-block;
 }
-
+label{
+    line-height: 34px;
+}
 .dropdown-menu,
 .nav,
 .navbar-nav {
     list-style: none;
 }
-
+.thead-primary{
+    background-color: #007bff;
+    color: white;
+}
 @font-face {
     font-family: Rubik;
     font-style: normal;

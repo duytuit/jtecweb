@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Exports\DetailReportExport1;
 use App\Exports\DetailReportExport;
 use App\Helpers\ArrayHelper;
+use App\Helpers\RedisHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\EmpImport;
 use App\Models\Admin;
@@ -539,11 +540,21 @@ class FrontPagesController extends Controller
             return $this->error(['error', 'chưa chọn đáp án']);
         }
         $results = 0;
+        $fail_aws=[];
         foreach ($request->answer as $key => $value) {
+            $_answer=0;
             $array_answer = array_filter($arrayExam['data'], fn ($element) => $element['id'] == $key);
             if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
                 $results++;
+                $_answer=1;
             }
+            $fail_aws[$key]=[
+                'id'=>$key,
+                'result'=>$_answer,
+                'answer'=>$value,
+                'code'=>$request->manhanvien,
+                'name'=>$emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien,
+            ];
         }
         $mytime = Carbon::now();
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
@@ -560,6 +571,11 @@ class FrontPagesController extends Controller
                 $date_examinations[] = $value[1] == 100 ? $ngaykiemtra->endOfMonth()->format('Y-m-d') : $ngaykiemtra->year . '-' . $ngaykiemtra->month . '-' . $value[1];
                 $examinations = $key;
             }
+        }
+        $check_status = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations, 'status' => 1])->count();
+        // dd( $check_status.'==='.$examinations);
+        if($check_status > 0){
+            return $this->success(['message'=> 'Bạn đã thi đạt. Hãy chờ đợt thi tiếp theo']);
         }
         $mission = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations])->count();
         try {
@@ -580,6 +596,7 @@ class FrontPagesController extends Controller
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
                 'type' => $request->type,
+                'fail_aws' => json_encode($fail_aws)
             ]);
             return $this->success(compact('exam'));
         } catch (\Exception $e) {
@@ -1002,36 +1019,44 @@ class FrontPagesController extends Controller
     {
         set_time_limit(0);
         $data = Excel::toCollection(new EmpImport, request()->file('import_file'));
+        $sdfsd=[];
         foreach ($data[0] as $key => $value) {
             if ($key > 0) {
-                try {
-                    $emp = Employee::where('code', (int) trim($value[0]))->first();
-                    $dept = Department::where('name', $value[2])->first();
-                    $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
-                    if (!$dept) {
-                        $dept = Department::create([
-                            'code' => time(),
-                            'name' => $value[2],
-                            'parent_id' => 0,
-                            'status' => 1,
-                            'created_by' => 1,
-                        ]);
-                    }
-                    if (!$emp_dept) {
-                        EmployeeDepartment::create([
-                            'employee_id' => $emp->id,
-                            'department_id' => $dept->id,
-                            'created_by' => 1,
-                        ]);
-                    }
-                    echo 'Thành công!';
-                } catch (\Exception $e) {
+                $sdfsd[]=[
+                    'name' => $value[1],
+                    'color' => $value[2],
+                    'model' =>  $value[3],
+                ];
+                // try {
+                //     $emp = Employee::where('code', (int) trim($value[0]))->first();
+                //     $dept = Department::where('name', $value[2])->first();
+                //     $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
+                //     if (!$dept) {
+                //         $dept = Department::create([
+                //             'code' => time(),
+                //             'name' => $value[2],
+                //             'parent_id' => 0,
+                //             'status' => 1,
+                //             'created_by' => 1,
+                //         ]);
+                //     }
+                //     if (!$emp_dept) {
+                //         EmployeeDepartment::create([
+                //             'employee_id' => $emp->id,
+                //             'department_id' => $dept->id,
+                //             'created_by' => 1,
+                //         ]);
+                //     }
+                //     echo 'Thành công!';
+                // } catch (\Exception $e) {
 
-                    echo $e->getMessage();
-                    dd(1);
-                }
+                //     echo $e->getMessage();
+                //     dd(1);
+                // }
             }
         }
+        RedisHelper::setKey('inventory_accessorysdfd',json_encode($sdfsd) );
+        dd( $sdfsd);
     }
 
     public function updateCreateDate()

@@ -298,120 +298,400 @@ class ArrayHelper
             ],
             [
                 'id' => 4,
-                'from_dept' => [5], // id bộ phận yêu cầu
+                'from_dept' => [4], // id bộ phận yêu cầu
                 'to_dept' => [],
                 'confirm_from_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
-                'confirm_to_dept' => 1, // 0:duyệt tay, 1: tự động duyệt
+                'confirm_to_dept' => 0, // 0:duyệt tay, 1: tự động duyệt
                 'confirm_by_from_dept' => [4, 5], //duyệt bởi leader ,sub leader -- id lấy từ positionsTitle()
                 'confirm_by_to_dept' => [],
                 'data_table' => [
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 1',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 2',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 3',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 4',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 5',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 6',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 7',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 8',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 9',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 10',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 11',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 12',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 13',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 14',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 15',
-                    ],
-                    [
-                        'model' => '',
-                        'name' => '',
-                        'ip' => '',
-                        'position' => 'Vị trí 16',
-                    ],
+                    'model' => '',
+                    'color' => '',
+                    'name' => '',
+                    'ip' => '',
+                    'wifi' => '',
+                    'position' => ''
                 ],
             ],
         ];
+    }
+    public static function PositionByDevices()
+    {
+       return [1,2,3,4,5,6,7,8,9,10,11,12,13];
     }
     public static function devicesList()
     {
         return [
             [
-                'device_model' => 'LAPTOP-EH5IBUV0',
-                'device_name' => 'T1010',
+                "name"=> "T031",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
             ],
+            [
+                "name"=> "T002",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T036",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T096",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T171",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T206",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T224",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T225",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T134",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T143",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T167",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T124",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T215",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "THB T202",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T131",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T173",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T016",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T226",
+                "model"=> "Samsung",
+                "color"=> "Xám"
+            ],
+            [
+                "name"=> "T072",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T035",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T116",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T145",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T183",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T218",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T186",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T211",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T212",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T213",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T169",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T155",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T191",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T152",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T140",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T160",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T214",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T227",
+                "model"=> "Samsung",
+                "color"=> "Xám"
+            ],
+            [
+                "name"=> "T089",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T091",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T098",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T082",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T015",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T029",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T084",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T108",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T125",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T156",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T174",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T130",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T129",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T158",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T220",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T007",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T222",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T106",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T229",
+                "model"=> "Samsung",
+                "color"=> "Xám"
+            ],
+            [
+                "name"=> "T230",
+                "model"=> "Samsung",
+                "color"=> "Xám"
+            ],
+            [
+                "name"=> "T074",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T110",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T111",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T083",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T028",
+                "model"=> "ASUS",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T100",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T161",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T126",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T157",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T136",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T165",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T216",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T217",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T194",
+                "model"=> "Samsung",
+                "color"=> "Trắng"
+            ],
+            [
+                "name"=> "T127",
+                "model"=> "Samsung",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T223",
+                "model"=> "Samsung",
+                "color"=> "Vàng"
+            ],
+            [
+                "name"=> "T101",
+                "model"=> "ASUS",
+                "color"=> "Đen"
+            ],
+            [
+                "name"=> "T228",
+                "model"=> "Samsung",
+                "color"=> "Xám"
+            ]
         ];
     }
     public static function machineList()

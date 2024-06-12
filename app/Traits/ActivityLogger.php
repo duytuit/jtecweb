@@ -75,7 +75,7 @@ trait ActivityLogger {
                     $reflect = new \ReflectionClass($model);
                     $query= DB::getQueryLog();
                     $lastQuery= end($query);
-                    return Activity::create([
+                    $activity = Activity::create([
                         'user_id' => Auth::id(),
                         'content_id' => $model->attributes[$model->primaryKey],
                         'content_type' => get_class($model),
@@ -86,6 +86,7 @@ trait ActivityLogger {
                         'ip_address' =>  $_SERVER['REMOTE_ADDR'],
                         'sql' =>  json_encode($lastQuery)
                     ]);
+                    return $activity;
                 } catch (\Exception $e) {
                     Log::debug($e->getMessage());
                 }

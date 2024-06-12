@@ -47,7 +47,7 @@ class ExamController extends Controller
         $data['advance'] = 0;
         $data['arrayExamPd'] = ArrayHelper::arrayExamPd();
         $arrayExamPd = $data['arrayExamPd'];
-        $type = $request->input('exam_type', 1);
+        $type = $request->exam_type ? $request->exam_type : 1;
         if (count($request->except('keyword')) > 0) {
             // Tìm kiếm nâng cao
             $data['advance'] = 1;
@@ -62,6 +62,8 @@ class ExamController extends Controller
                 $query->where('department_id', $request->dept);
             }
         })->pluck('code');
+        $data['filter']['cycle_name'] =$request->cycle_name ? (int)$request->cycle_name : $current_cycleName;
+        $data['filter']['exam_type'] =$type;
          // lấy ra nhân viên vào đợt 1 (nv vào lớn hơn ngày 15 thì không lấy)
          $getEmployeeBeginWorking1 = Employee::select('code')->where('status', 1)->where('status_exam', 1)
          ->where(function ($query) use ($request) {
@@ -117,11 +119,6 @@ class ExamController extends Controller
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where(function ($query) use ($request,$current_cycleName) {
-                if (isset($request->cycle_name) && $request->cycle_name != null) {
-                    $query->where('cycle_name', $request->cycle_name);
-                }else{
-                    $query->where('cycle_name', $current_cycleName);
-                }
                 if (isset($request->from_date) && isset($request->to_date)) {
                     $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
@@ -133,6 +130,7 @@ class ExamController extends Controller
                 }
             })
             ->where('status', 1)
+            ->where('cycle_name',$data['filter']['cycle_name'])
             ->where('scores', '>=', $arrayExamPd[$type]['scores'][0])
             ->where('examinations', 1)
             ->groupBy('code')->orderBy('id', 'desc')
@@ -142,11 +140,6 @@ class ExamController extends Controller
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where(function ($query) use ($request,$current_cycleName) {
-                if (isset($request->cycle_name) && $request->cycle_name != null) {
-                    $query->where('cycle_name', $request->cycle_name);
-                }else{
-                    $query->where('cycle_name', $current_cycleName);
-                }
                 if (isset($request->from_date) && isset($request->to_date)) {
                     $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
@@ -159,7 +152,7 @@ class ExamController extends Controller
             })
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
-            ->where('cycle_name', $current_cycleName)
+            ->where('cycle_name',$data['filter']['cycle_name'])
             ->where('examinations', 1)
             ->where('status', 0)
             ->where('scores', '>=', $arrayExamPd[$type]['scores'][1])->where('scores', '<', $arrayExamPd[$type]['scores'][0])
@@ -170,11 +163,6 @@ class ExamController extends Controller
             ->whereNotIn('code', $getEmployeeWorkingMission1)
             ->whereNotIn('code', $getEmployeeBeginWorking1)
             ->where(function ($query) use ($request,$current_cycleName) {
-                if (isset($request->cycle_name) && $request->cycle_name != null) {
-                    $query->where('cycle_name', $request->cycle_name);
-                }else{
-                    $query->where('cycle_name', $current_cycleName);
-                }
                 if (isset($request->from_date) && isset($request->to_date)) {
                     $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
@@ -188,7 +176,7 @@ class ExamController extends Controller
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_1'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_1_90_95'], 'code'))
-            ->where('cycle_name', $current_cycleName)
+            ->where('cycle_name',$data['filter']['cycle_name'])
             ->where('examinations', 1)
             ->where('status', 0)->where('scores', '<', $arrayExamPd[$type]['scores'][1])
             ->groupBy('code')->orderBy('id', 'desc')
@@ -208,11 +196,6 @@ class ExamController extends Controller
         $data['emp_pass_2'] = Exam::where('type', $type)->select('id', 'code')->whereIn('code', $data['emp'])
             ->whereNotIn('code', $getEmployeeWorkingMission2)
             ->where(function ($query) use ($request,$current_cycleName) {
-                if (isset($request->cycle_name) && $request->cycle_name != null) {
-                    $query->where('cycle_name', $request->cycle_name);
-                }else{
-                    $query->where('cycle_name', $current_cycleName);
-                }
                 if (isset($request->from_date) && isset($request->to_date)) {
                     $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
@@ -234,11 +217,6 @@ class ExamController extends Controller
             ->whereIn('code', $data['emp'])
             ->whereNotIn('code', array_column($data['emp_pass_2'], 'code'))
             ->where(function ($query) use ($request,$current_cycleName) {
-                if (isset($request->cycle_name) && $request->cycle_name != null) {
-                    $query->where('cycle_name', $request->cycle_name);
-                }else{
-                    $query->where('cycle_name', $current_cycleName);
-                }
                 if (isset($request->from_date) && isset($request->to_date)) {
                     $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
@@ -249,6 +227,7 @@ class ExamController extends Controller
                     $query->where('sub_dept', $request->dept);
                 }
             })
+            ->where('cycle_name',$data['filter']['cycle_name'])
             ->where('examinations', 2)
             ->where('status', 0)
             ->where('scores', '>=', $arrayExamPd[$type]['scores'][1])->where('scores', '<', $arrayExamPd[$type]['scores'][0])
@@ -260,11 +239,6 @@ class ExamController extends Controller
             ->whereNotIn('code', array_column($data['emp_pass_2'], 'code'))
             ->whereNotIn('code', array_column($data['emp_fail_2_90_95'], 'code'))
             ->where(function ($query) use ($request,$current_cycleName) {
-                if (isset($request->cycle_name) && $request->cycle_name != null) {
-                    $query->where('cycle_name', $request->cycle_name);
-                }else{
-                    $query->where('cycle_name', $current_cycleName);
-                }
                 if (isset($request->from_date) && isset($request->to_date)) {
                     $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
                     $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
@@ -275,6 +249,7 @@ class ExamController extends Controller
                     $query->where('sub_dept', $request->dept);
                 }
             })
+            ->where('cycle_name',$data['filter']['cycle_name'])
             ->where('examinations', 2)
             ->where('status', 0)
             ->where('scores', '<', $arrayExamPd[$type]['scores'][1])
@@ -299,9 +274,6 @@ class ExamController extends Controller
             if (isset($request->dept) && $request->dept != null) {
                 $query->where('sub_dept', $request->dept);
             }
-            if (isset($request->cycle_name) && $request->cycle_name != null) {
-                $query->where('cycle_name', $request->cycle_name);
-            }
             if (isset($request->status) && $request->status != null) {
                 $query->where('status', $request->status);
             }
@@ -311,7 +283,9 @@ class ExamController extends Controller
                 $query->whereDate('create_date', '>=', $from_date);
                 $query->whereDate('create_date', '<=', $to_date);
             }
-        })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->paginate($data['per_page']);
+        })
+        ->where('cycle_name',$data['filter']['cycle_name'])
+        ->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->paginate($data['per_page']);
         return view('backend.pages.exams.index', $data);
     }
 
@@ -452,7 +426,7 @@ class ExamController extends Controller
 
     public function exportExcel(Request $request)
     {
-        $type = $request->input('exam_type', 1);
+        $type = $request->exam_type ? $request->exam_type : 1;
         $data = Exam::where('type', $type)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
@@ -471,6 +445,72 @@ class ExamController extends Controller
             }
         })->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
         return (new ExamExport($data))->download('exam.xlsx');
+    }
+
+    public function reportFailAnswer(Request $request)
+    {
+        // Phân trang
+        $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $data['keyword'] = $request->input('keyword', null);
+        $data['advance'] = 0;
+        $data['arrayExamPd'] = ArrayHelper::arrayExamPd();
+        $type = $request->exam_type ? $request->exam_type : 1;
+        $current_cycleName = $request->cycle_name ? (int)$request->cycle_name : Carbon::now()->format('mY');
+        $data['filter'] = $request->all();
+        $data['filter']['cycle_name'] =$request->cycle_name ? (int)$request->cycle_name : $current_cycleName;
+        $data['cycleNames'] = ArrayHelper::cycleName();
+        $data['depts'] = Department::where('status',1)->get();
+        $data['filter']['exam_type'] =$type;
+        $exam = Exam::where('type', $type)->where(function ($query) use ($request) {
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->filter($request);
+            }
+            if (isset($request->status) && $request->status != null) {
+                $query->where('status', $request->status);
+            }
+            if (isset($request->from_date) && isset($request->to_date)) {
+                $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
+                $to_date   = Carbon::parse($request->to_date)->format('Y-m-d');
+                $query->whereDate('create_date', '>=', $from_date);
+                $query->whereDate('create_date', '<=', $to_date);
+            }
+        })->where('cycle_name',$data['filter']['cycle_name'])->orderBy('code')->orderBy('cycle_name')->orderBy('created_at')->get();
+        $list_answer=[];
+        if($exam){
+            foreach ($exam as $key => $value) {
+                if($value->fail_aws){
+                    $fail_aws = json_decode($value->fail_aws);
+                    foreach ($fail_aws as $key1 => $value1) {
+                        $list_answer[]= $value1;
+                    }
+
+                }
+            }
+        }
+        $data['lists'] = collect($list_answer)->sortBy('id');
+        if (isset($request->question) && $request->question != null) {
+            $data['lists'] = collect($list_answer)->where('id',$request->question)->sortBy('id');
+        }
+        $x[] ='x';
+        $true[] ='Đúng';
+        $false[] ='Sai';
+        $arrayExamPd = $data['arrayExamPd'];
+        foreach ($arrayExamPd[$type]['data'] as $key => $value) {
+            $x[] ='Câu '.$value['id'];
+            foreach ($list_answer as $key1 => $value1) {
+               if($value['id'] == $value1->id  && $value1->result == 1){ //đúng
+                  $true[] =collect($list_answer)->where('id',$value['id'])->where('result',1)->count();
+               }
+               if($value['id'] == $value1->id  && $value1->result == 0){ //sai
+                  $false[] =collect($list_answer)->where('id',$value['id'])->where('result',0)->count();
+               }
+            }
+        }
+        $data['report_lists'][] =$x;
+        $data['report_lists'][] =$true;
+        $data['report_lists'][] =$false;
+        // dd($data['report_lists']);
+        return view('backend.pages.exams.report-fail', $data);
     }
 
     public function exportExcelAudit(Request $request)

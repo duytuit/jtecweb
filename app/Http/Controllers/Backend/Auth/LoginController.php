@@ -45,16 +45,16 @@ class LoginController extends Controller
         //Attempt to log the employee in
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'status' => 1], $request->remember)) {
             //If successful then redirect to the intended location
-            session()->flash('login_success', 'Successfully Logged In');
+            session()->flash('login_success', 'Đã đăng nhập thành công');
             return redirect()->intended(route('admin.index'));
         } else {
             if (Auth::attempt(['email' => $request->username, 'password' => $request->password, 'status' => 1], $request->remember)) {
                 //If successful then redirect to the intended location
-                session()->flash('login_success', 'Successfully Logged In');
+                session()->flash('login_success', 'Đã đăng nhập thành công');
                 return redirect()->intended(route('admin.index'));
             } else {
                 //If unsuccessfull, then redirect to the admin login with the data
-                session()->flash('sticky_error', "Username and password combination doesn't match. Please provide correct Username and password");
+                session()->flash('sticky_error', "Thông tin tài khoản và mật khẩu không đúng. Vui lòng cung cấp lại thông tin");
                 return redirect()->back()->withInput($request->only('username', 'remember'));
             }
         }

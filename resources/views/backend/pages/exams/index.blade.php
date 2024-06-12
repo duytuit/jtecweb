@@ -22,6 +22,7 @@ use App\Models\Department;
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
+                    <a href="{{ route('admin.exams.reportFailAnswer',Request::all()) }}" class="btn btn-secondary"><i class="fa fa-chart-bar"></i> Thống kê câu trả lời</a>
                     <a href="{{ route('admin.exams.exportExcel',Request::all()) }}" class="btn btn-success"><i class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
                 <div class="col-sm-4 text-right">
@@ -36,7 +37,7 @@ use App\Models\Department;
             </div>
         </form><!-- END #form-search -->
         <form id="form-search-advance" action="{{ route('admin.exams.index') }}" method="get" class="hidden">
-            <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
+            <div id="search-advance" class="search-advance">
                 <div class="row form-group space-5">
                     <div class="col-sm-2">
                         <div class="input-group mb-3">
@@ -170,7 +171,7 @@ use App\Models\Department;
                                 </td>
                             @endif --}}
                             <td>{{ $item->cycle_name }}</td>
-                            <td>{{ date('H:i:s d-m-Y', strtotime(@$item->created_at))  }}</td>
+                            <td>{{ date('d-m-Y', strtotime(@$item->create_date))  }}</td>
                             <td>{{ $item->total_questions }}</td>
                             <td>{{ $item->results }}</td>
                             <td>{{ $item->scores }}</td>

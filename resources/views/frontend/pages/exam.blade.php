@@ -187,7 +187,11 @@
                         }
                     });
                     if (data.status == "success") {
-
+                        console.log(data);
+                        if(data.message){
+                            swal(data.message);
+                            return;
+                        }
                         $(".right_answer").css("color", "blue");
                         var results = Math.round((data.exam.results / data.exam.total_questions) * 100);
                         if (results > 79) {

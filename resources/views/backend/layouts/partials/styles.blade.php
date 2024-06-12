@@ -2,8 +2,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('public/assets/backend/css/bootstrap.min.css') }}">
 <!-- Custom CSS -->
 
-{{-- <link href="{{ asset('public/assets/backend/css/chartist.min.css') }}" rel="stylesheet">
-<link href="{{ asset('public/assets/backend/css/c3.min.css') }}" rel="stylesheet"> --}}
+{{-- <link href="{{ asset('public/assets/backend/css/chartist.min.css') }}" rel="stylesheet">--}}
+<link href="{{ asset('public/assets/backend/css/c3.min.css') }}" rel="stylesheet">
 
 <link href="{{ asset('public/assets/backend/css/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
 

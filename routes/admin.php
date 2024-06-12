@@ -75,6 +75,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('show/{id}', 'ExamController@show')->name('show');
         Route::get('exportExcel', 'ExamController@exportExcel')->name('exportExcel');
         Route::get('AuditExport', 'ExamController@exportExcelAudit')->name('exportExcelAudit');
+        Route::get('reportFailAnswer', 'ExamController@reportFailAnswer')->name('reportFailAnswer');
         Route::post('action', 'ExamController@action')->name('action');
         Route::delete('trashed/destroy/{id}', 'ExamController@destroyTrash')->name('trashed.destroy');
         Route::get('trashed/view', 'ExamController@trashed')->name('trashed');
@@ -87,7 +88,6 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('', 'DepartmentController@index')->name('index');
         Route::get('create', 'DepartmentController@create')->name('create');
         Route::get('edit/{id}', 'DepartmentController@edit')->name('edit');
-
         Route::get('ajaxGetSelectCode', 'DepartmentController@ajaxGetSelectCode')->name('ajaxGetSelectCode');
         Route::post('changePositionTitle', 'DepartmentController@changePositionTitle')->name('changePositionTitle');
         Route::post('import', 'DepartmentController@importExcelData')->name('importExcelData');
@@ -98,8 +98,21 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('addEmployeeIntoDepartment', 'DepartmentController@addEmployeeIntoDepartment')->name('addEmployeeIntoDepartment');
         Route::put('trashed/revert/{id}', 'DepartmentController@revertFromTrash')->name('trashed.revert');
         Route::get('trashed/destroy/{id}', 'DepartmentController@destroyTrash')->name('trashed.destroy');
-
         Route::post('destroyEmployeeDepartments', 'DepartmentController@destroyEmployeeDepartments')->name('destroyEmployeeDepartments');
+    });
+
+      /**
+     * assets Management Routes
+     */
+    Route::prefix('assets')->name('assets.')->group(function () {
+        Route::get('', 'AssetController@index')->name('index');
+        Route::get('create', 'AssetController@create')->name('create');
+        Route::get('edit/{id}', 'AssetController@edit')->name('edit');
+        Route::post('store', 'AssetController@store')->name('store');
+        Route::post('update/{id}', 'AssetController@update')->name('update');
+        Route::post('action', 'AssetController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'AssetController@revertFromTrash')->name('trashed.revert');
+        Route::get('trashed/destroy/{id}', 'AssetController@destroyTrash')->name('trashed.destroy');
     });
 
     /**

@@ -8,11 +8,11 @@
             <div class="box bg-info text-center">
                 <div class="bg-yellow">
                     @php
-                        $month = substr($cycleName, 0, 2);
-                        $year = substr($cycleName, 2);
+                        $month = substr(sprintf("%06s", $cycleName), 0, 2);
+                        $year = substr(sprintf("%06s", $cycleName), 2);
                         $formattedDate = $month . '/' . $year;
                     @endphp
-                    <div class="text-white">Kết quả lần <b>1</b> tháng <b>{{ $formattedDate }}</b></div>
+                    <div class="text-white">Kết quả Đợt <b>1</b> (Từ 1 đến 15) tháng <b>{{ $formattedDate }}</b></div>
                     <div class="text-white" style="display: flex;
                         justify-content: space-around;">
                         <div>
@@ -71,7 +71,7 @@
         <div class="card card-hover">
             <div class="box bg-info text-center">
                 <div class="bg-yellow">
-                    <div class="text-white">Kết quả lần <b>2</b> tháng <b>{{ $formattedDate }}</b></div>
+                    <div class="text-white">Kết quả Đợt <b>2</b> (Từ 16 đến 31) tháng <b>{{ $formattedDate }}</b></div>
                     <div class="text-white"
                         style="display: flex;
                         justify-content: space-around;">

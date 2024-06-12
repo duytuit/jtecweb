@@ -62,6 +62,10 @@
         width: 40px;
         text-align: center;
     }
+    .info-person-device div{
+        line-height: 1;
+        font-size: 12px;
+    }
 </style>
 @section('admin-content')
     @include('backend.pages.checkdevices.partials.header-breadcrumbs')
@@ -70,64 +74,141 @@
         @include('backend.layouts.partials.messages')
         <form id="form-search" action="{{ route('admin.checkdevices.index') }}" method="get">
             <div class="row form-group">
-                <div class="col-sm-8">
+                <div class="col-sm-2">
+                    <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa" class="form-control" />
                 </div>
-                <div class="col-sm-4 text-right">
-                    <div class="input-group">
-                        <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập Từ Khóa"
-                            class="form-control" />
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-info"><span class="fa fa-search"></span></button>
-                            <button type="button" class="btn btn-warning btn-search-advance" data-toggle="show"
-                                data-target=".search-advance"><span class="fa fa-filter"></span></button>
+                <div class="col-sm-2">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
                         </div>
+                        <input type="text" class="form-control date_picker" name="search_date" id="search_date"
+                        value="{{ @$filter['search_date'] }}" placeholder="Ngày kiểm tra" autocomplete="off">
                     </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-warning btn-block">Tìm kiếm</button>
                 </div>
             </div>
         </form><!-- END #form-search -->
-        <!-- START #form-search-advance -->
-        <form id="form-search-advance" action="{{ route('admin.checkdevices.index') }}" method="get" class="hidden">
-            <div id="search-advance" class="search-advance">
-                <table class="checkdevices-table">
-                    <tbody>
-                        <tr class="row">
+        <!-- START #show list device -->
+        <div id="location-device" class="row col-sm-12">
+                @if ($lists)
+                    @foreach ($positionByDevices as $key => $item)
+                        <div class="col-sm-6" style="padding: 5px;">
+                            <div style="padding: 5px;border: 1px solid;height: 120px;display: flex">
+                                    <div style="display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    padding: 5px;
+                                    background-color: blueviolet;color: white;">
+                                        {{'Bàn '.$item}}
+                                   </div>
+                                    @foreach ($lists as $key1 => $item1)
+                                        @php
+                                            $content_form= json_decode($item1->content_form);
+                                            $employee = @$item1->employee;
+                                        @endphp
+                                        @if ($item == $content_form->position)
+                                            <div class="info-person-device" style="display:inline-block;padding-left: 5px;padding-right: 5px;">
+                                                <div>
+                                                    <img style="object-fit: contain;object-position: top center;" src="{{ '../../public/assets/images/pages/tablet.png' }}" width="50">
+                                                </div>
+                                                <div>
+                                                    {{$content_form->name}}
+                                                </div>
+                                                <div>
+                                                    {{@$employee->code}}
+                                                </div>
+                                                <div>
+                                                    {{@$employee->first_name.' '.@$employee->last_name }}
+                                                </div>
+                                                <div>
+                                                    {{date('h:i:s',strtotime(@$item1->updated_at))}}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+        </div>
+            <form id="form_lists" action="{{ route('admin.checkdevices.action') }}" method="post">
+                @csrf
+                <input type="hidden" name="method" value="" />
+                <input type="hidden" name="status" value="" />
+                <div class="table-responsive product-table">
+                    <table class="table table-bordered" id="exams_table">
+                        <thead class="thead-primary">
+                            <tr>
+                                <th>TT</th>
+                                <th>Thiết bị</th>
+                                <th>Loại</th>
+                                <th>Màu</th>
+                                <th>Vị trí</th>
+                                <th>Mã nhân viên</th>
+                                <th>Nhân viên</th>
+                                <th>Thời gian</th>
+                                <th>Ghi chú</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($lists as $index=> $item)
                             @php
-                                $count = 0;
+                            $device = json_decode($item->content_form);
                             @endphp
-                            @foreach ($lists as $key => $item)
-                                @php
-                                    $nameColor = '';
-                                    if (!empty($keyword) && strpos($item['name'], $keyword) !== false) {
-                                        $nameColor = 'text-danger';
-                                    }
-                                @endphp
-                                <td class="tg-0pky" style="width: calc(100% / 8)">
-                                    <span>{{ $item['position'] }}</span><br>
-                                    <label for="{{ $item['position'] }}">
-                                        <img style="object-fit: contain;object-position: top center;"
-                                            src="{{ '../../public/assets/images/pages/tablet.png' }}" alt="">
-                                    </label>
-                                    <input name="devicesInput" id="{{ $item['position'] }}"
-                                        style="width:14px;height:14px; vertical-align: middle;" type="radio"
-                                        value="{{ $item['position'] }}" @if ($item['name'] != '') disabled @endif>
-                                    <br>
-                                    <span class="{{ $nameColor }}">{{ @$item['name'] ? $item['name'] : 'Chưa có máy' }}
-                                    </span>
-                                </td>
-                                @php $count++; @endphp
-                                @if ($count % 8 == 0)
-                        </tr>
-                        <tr class="row mt-3">
-                            @endif
+                            <td>{{ ($index+1) }}</td>
+                            <td>{{ @$device->name }}</td>
+                            <td>{{ @$device->model }}</td>
+                            <td>{{ @$device->color }}</td>
+                            <td>{{ "Bàn " . @$device->position }}</td>
+                            <td>{{ @$item->employee->code }}</td>
+                            <td>{{ @$item->employee->first_name.' '.@$item->employee->last_name }}</td>
+                            <td>{{ @$item->created_at }}</td>
+                            <td>{{ @$item->content }}</td>
+                            <td>
+                                <a title="Lịch sử thao tác" target="_blank" class="d-inline-block btn-info btn-sm text-white"
+                                    href="{{ route('admin.activitys.index', ['modelId' => $item->id,'content_type' =>get_class($item)]) }}"><i
+                                        class="fa fa-history"></i> </a>
+                            </td>
+                            </tr>
                             @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <span class="record-total">Tổng: {{ $lists->total() }} bản ghi</span>
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <div class="pagination-panel">
+                            {{ $lists->appends(Request::all())->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
+                        </div>
+                    </div>
+                    <div class="col-sm-3 text-right">
+                        <span>
+                            Hiển thị
+                            <select name="per_page" class="form-control" style="display: inline;width: auto;"
+                                data-target="#form_lists">
+                                @php $list = [5, 10, 20, 50, 100, 200]; @endphp
+                                @foreach ($list as $num)
+                                <option value="{{ $num }}" {{ $num==$per_page ? 'selected' : '' }}>{{ $num }}</option>
+                                @endforeach
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </form>
     </div>
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+         $('input.date_picker').datepicker({
+            autoclose: true,
+            dateFormat: "dd-mm-yy"
+           }).val();
+    </script>
 @endsection

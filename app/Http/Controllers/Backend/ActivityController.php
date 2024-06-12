@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
-
 use App\Models\Activity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

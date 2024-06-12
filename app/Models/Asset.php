@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
+use App\Traits\ActivityLogger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Activity extends Model
+class Asset extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, ActivityLogger;
     protected $guarded = [];
     protected $fillable =[
-        'id',
-        'user_id',
-        'content_id',
-        'content_type',
-        'action',
-        'description',
-        'old_data',
-        'new_data',
-        'ip_address',
-        'sql'
+        'code',
+        'name',
+        'image',
+        'note',
+        'status',
+        'created_by',
+        'updated_by',
+        'deleted_by'
     ];
     public function scopeFilter($query, $input)
     {
@@ -37,5 +37,9 @@ class Activity extends Model
             });
         }
         return $query;
+    }
+    public function user()
+    {
+        return $this->belongsTo(Admin::class, 'created_by', 'id');
     }
 }

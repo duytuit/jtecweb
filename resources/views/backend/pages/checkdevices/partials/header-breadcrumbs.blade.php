@@ -3,7 +3,7 @@
         <div class="col-5 align-self-center">
             <h4 class="page-title">
                 @if (Route::is('admin.checkdevices.index'))
-                    checkdevices List
+                    Danh sách
                 @elseif(Route::is('admin.checkdevices.create'))
                     Kiểm tra vị trí
                 @elseif(Route::is('admin.checkdevices.edit'))
@@ -21,7 +21,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
                         @if (Route::is('admin.checkdevices.index'))
-                            <li class="breadcrumb-item active" aria-current="page">checkdevices List</li>
+                            <li class="breadcrumb-item active" aria-current="page">Danh sách</li>
                         @elseif(Route::is('admin.checkdevices.create'))
                             <li class="breadcrumb-item"><a href="{{ route('admin.checkdevices.index') }}">checkdevices
                                     List</a></li>

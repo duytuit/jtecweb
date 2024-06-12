@@ -239,7 +239,7 @@
         </ul>
     </li>
 @endif
-@if ($user->can('contact.view') || $user->can('contact.create'))
+@if ($user->can('checkCutMachine.view') || $user->can('checkCutMachine.create'))
     <li class="sidebar-item ">
         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
             aria-expanded="false">
@@ -248,7 +248,7 @@
         </a>
         <ul aria-expanded="false"
             class="collapse first-level {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.create') || Route::is('admin.checkCutMachine.edit') ? 'in' : null }}">
-            @if ($user->can('department.view'))
+            @if ($user->can('checkCutMachine.view'))
                 <li class="sidebar-item">
                     <a href="{{ route('admin.checkCutMachine.index') }}"
                         class="sidebar-link {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.edit') ? 'active' : null }}">
@@ -258,7 +258,7 @@
                 </li>
             @endif
 
-            @if ($user->can('department.create'))
+            @if ($user->can('checkCutMachine.create'))
                 <li class="sidebar-item">
                     <a href="{{ route('admin.checkCutMachine.create') }}"
                         class="sidebar-link {{ Route::is('admin.checkCutMachine.create') ? 'active' : null }}">
@@ -270,29 +270,6 @@
         </ul>
     </li>
 @endif
-
-<li class="sidebar-item ">
-    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-        aria-expanded="false">
-        <i class="mdi mdi-view-list"></i>
-        <span class="hide-menu">Check list hàng ngày máy cắt</span>
-    </a>
-    <ul aria-expanded="false"
-        class="collapse first-level {{ Route::is('admin.checkCutMachine.index') || Route::is('admin.checkCutMachine.create') || Route::is('admin.checkCutMachine.edit') ? 'in' : null }}">
-        <li class="sidebar-item">
-            <a class="sidebar-link" href="{{ url('admin/checkCutMachine') }}">
-                <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Danh sách check list</span>
-            </a>
-        </li>
-        <li class="sidebar-item">
-            <a class="sidebar-link" href="{{ url('admin/checkCutMachine/create') }}">
-                <i class="mdi mdi-view-list"></i>
-                <span class="hide-menu"> Thêm check list</span>
-            </a>
-        </li>
-    </ul>
-</li>
 @if ($user->can('productvt.view') || $user->can('productvt.create'))
     <li class="sidebar-item ">
         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
@@ -390,6 +367,38 @@
                 <li class="sidebar-item">
                     <a href="{{ route('admin.departments.create') }}"
                         class="sidebar-link {{ Route::is('admin.departments.create') ? 'active' : null }}">
+                        <i class="mdi mdi-plus-circle"></i>
+                        <span class="hide-menu"> Thêm mới </span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
+@if ($user->can('asset.view') || $user->can('asset.create'))
+    <li class="sidebar-item ">
+        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false">
+            <i class="mdi mdi-view-list"></i>
+            <span class="hide-menu">Tài sản</span>
+        </a>
+        <ul aria-expanded="false"
+            class="collapse first-level {{ Route::is('admin.assets.index') || Route::is('admin.assets.create') || Route::is('admin.assets.edit') ? 'in' : null }}">
+            @if ($user->can('asset.view'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.assets.index') }}"
+                        class="sidebar-link {{ Route::is('admin.assets.index') || Route::is('admin.assets.edit') ? 'active' : null }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu"> Danh sách </span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($user->can('asset.create'))
+                <li class="sidebar-item">
+                    <a href="{{ route('admin.assets.create') }}"
+                        class="sidebar-link {{ Route::is('admin.assets.create') ? 'active' : null }}">
                         <i class="mdi mdi-plus-circle"></i>
                         <span class="hide-menu"> Thêm mới </span>
                     </a>
@@ -609,7 +618,7 @@
                 </li>
             @endif
 
-            @if ($user->can('signature_submission.create'))
+            @if ($user->can('checkdevice.create'))
                 <li class="sidebar-item">
                     <a href="{{ route('admin.checkdevices.create') }}"
                         class="sidebar-link {{ Route::is('admin.checkdevices.create') ? 'active' : null }}">
