@@ -340,7 +340,7 @@ class FrontPagesController extends Controller
 
     public function test1()
     {
-        $this->addAsset();
+        // $this->addAsset();
     //     dd($_SERVER["HTTP_USER_AGENT"]);
     //     $PC_name = gethostbyaddr($_SERVER['REMOTE_ADDR']);
     //      dd($PC_name);
