@@ -73,7 +73,7 @@ class AssetController extends Controller
     {
         $request->validate([
             'code' => 'required',
-            'name' => 'required',
+            'name' => 'required|unique:assets,name'
         ]);
         try {
             $image = null;
@@ -85,6 +85,8 @@ class AssetController extends Controller
                 'name'=> $request->name,
                 'image'=>$image,
                 'note'=> $request->note,
+                'model'=> $request->model,
+                'color'=> $request->color,
                 'status'=> @$request->status ? 1 : 0,
                 'created_by'=>Auth::user()->id,
                 'updated_by'=>Auth::user()->id,
@@ -132,6 +134,10 @@ class AssetController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|unique:assets,name' . ($id ? ",$id" : '')
+        ]);
+
         $asset = Asset::find($id);
 
         if (empty($asset)) {
@@ -146,6 +152,8 @@ class AssetController extends Controller
             }
             $asset->name = $request->name;
             $asset->code = $request->code;
+            $asset->model = $request->model;
+            $asset->color = $request->color;
             $image ? $asset->image = $image : '';
             $asset->note = $request->note;
             asset($request->status) ? $asset->status = @$request->status : '';

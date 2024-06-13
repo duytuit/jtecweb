@@ -45,6 +45,18 @@
                             </div>
                             <div class="w-100">
                                 <div class="form-group">
+                                    <label class="control-label" for="model">Hãng sản xuất</label>
+                                    <input type="text" class="form-control" id="model" name="model" value="{{ $asset->model }}" placeholder="Hãng sản xuất">
+                                </div>
+                            </div>
+                            <div class="w-100">
+                                <div class="form-group">
+                                    <label class="control-label" for="color">Màu sắc</label>
+                                    <input type="text" class="form-control" id="color" name="color" value="{{ $asset->color }}" placeholder="Màu sắc">
+                                </div>
+                            </div>
+                            <div class="w-100">
+                                <div class="form-group">
                                     <label class="control-label" for="image">Ảnh nhân viên 4x6</label>
                                     <input type="file" class="form-control dropify" data-height="100"
                                         data-allowed-file-extensions="png jpg jpeg webp" id="image" name="image" data-default-file="{{ $asset->image != null ? asset('public/assets/images/asset/' . $asset->image) : null }}" />

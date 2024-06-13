@@ -157,15 +157,10 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required',
+            'code' => 'required|unique:employees,code',
             'first_name' => 'required',
             'last_name' => 'required',
         ]);
-        $employeeExist = Employee::Where('code', $request->code)->first();
-        if ($employeeExist) {
-            session()->flash('error', 'Mã code đã tồn tại');
-            return redirect()->back();
-        }
         try {
             DB::beginTransaction();
 
@@ -284,11 +279,11 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id, $isProfileUpdate = false)
     {
-        $employeeExist = Employee::Where('code', $request->code)->first();
-        if ($employeeExist) {
-            session()->flash('error', 'Mã code đã tồn tại');
-            return redirect()->back();
-        }
+        $request->validate([
+            'code' => 'required|unique:employees,code' . ($id ? ",$id" : ''),
+            'first_name' => 'required',
+            'last_name' => 'required',
+        ]);
         $employee = Employee::find($id);
         $data['departments'] = Department::all();
         if (empty($employee)) {

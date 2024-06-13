@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('name',500);
             $table->string('image',250);
+            $table->string('model');
+            $table->string('color');
             $table->string('note',250);
             $table->tinyInteger('status');
             $table->integer('created_by')->nullable();

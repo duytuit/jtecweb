@@ -9,6 +9,7 @@ use App\Helpers\RedisHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\EmpImport;
 use App\Models\Admin;
+use App\Models\Asset;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
@@ -339,6 +340,7 @@ class FrontPagesController extends Controller
 
     public function test1()
     {
+        $this->addAsset();
     //     dd($_SERVER["HTTP_USER_AGENT"]);
     //     $PC_name = gethostbyaddr($_SERVER['REMOTE_ADDR']);
     //      dd($PC_name);
@@ -412,55 +414,6 @@ class FrontPagesController extends Controller
         // array_push($firstThreeElements, "R");
         // shuffle($firstThreeElements);
         // dd(count($arrayFiltered));
-        Employee::whereIn('code',[
-120701,
-120818,
-130625,
-130734,
-140372,
-140415,
-140423,
-140436,
-140631,
-1407117,
-141066,
-141131,
-1606141,
-160866,
-160873,
-1609198,
-161164,
-161250,
-170324,
-1707104,
-170907,
-171192,
-190318,
-210469,
-210484,
-220552,
-220872,
-220873,
-2303119,
-231002,
-231066,
-231070,
-231072,
-231103,
-131078,
-160960,
-240505,
-240507,
-240510,
-240529,
-240531,
-240534,
-240537,
-240540,
-240545
-        ])->update([
-'status_exam'=>1
-        ]);
     }
     public function add_employee_to_department()
     {
@@ -607,6 +560,22 @@ class FrontPagesController extends Controller
     {
         Exam::where('type', 0)->update(['type' => 1]);
         // echo 'thanhf cong';
+    }
+    public function addAsset()
+    {
+        $devicesList = ArrayHelper::devicesList();
+        foreach ($devicesList as $key => $value) {
+              Asset::create([
+                'code'=>time(),
+                'name'=> $value['name'],
+                'model'=> $value['model'],
+                'color'=> $value['color'],
+                'status'=> 1,
+                'created_by'=>Auth::user()->id,
+                'updated_by'=>Auth::user()->id,
+              ]);
+        }
+        dd('thành công.');
     }
     public function storeNew(Request $request)
     {
