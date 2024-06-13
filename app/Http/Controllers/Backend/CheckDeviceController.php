@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Asset;
 use App\Models\CheckDevice;
 use App\Models\EmployeeDepartment;
 use App\Models\Required;
@@ -68,7 +69,7 @@ class CheckDeviceController extends Controller
             $data['employeeDepartment']= EmployeeDepartment::where('employee_id', $employee->id)->first();
         }
         $data['requiredType']=3;
-        $data['devicesList']  = ArrayHelper::devicesList();
+        $data['devicesList']  = Asset::where('status',1)->get();
         $data['PositionByDevices']  = ArrayHelper::PositionByDevices();
         $data['lists'] = Required::where('from_type',3)->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {

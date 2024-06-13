@@ -35,8 +35,8 @@
                             <select name="device" class="form-control select2" style="width: 100%;" required>
                                 <option value="">Chọn máy thao tác</option>
                                 @foreach ($devicesList as $item)
-                                <option value="{{$item['name']}}" {{ @$filter['device']==$item['name'] ? 'selected' : ''
-                                    }}>{{$item['name'].'-'.$item['model'].'-'.$item['color']}}</option>
+                                <option value="{{$item->name}}" {{ @$filter['device']==$item->name ? 'selected' : ''
+                                    }}>{{$item->name.'-'.$item->model.'-'.$item->color}}</option>
                                 @endforeach
                             </select>
                         </div>
