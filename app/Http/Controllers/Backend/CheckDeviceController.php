@@ -25,6 +25,10 @@ class CheckDeviceController extends Controller
             return $next($request);
         });
     }
+    public function checklist_realtime(Request $request)
+    {
+        return view('backend.pages.checkdevices.index_v2');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -39,14 +43,42 @@ class CheckDeviceController extends Controller
         $curentDate = $request->search_date ? $request->search_date : Carbon::now()->format('d-m-Y');
         $data['filter'] = $request->all();
         $data['filter']['search_date'] = $curentDate;
-        $data['lists'] = Required::where('from_type',3)->whereDate('created_at',Carbon::parse($curentDate)->format('Y-m-d'))->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+        $list_machine_checked =[];
+        $data['lists'] = Required::where('type',0)->where('from_type',3)->whereDate('created_at',Carbon::parse($curentDate)->format('Y-m-d'))->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->whereHas('employee',function($query) use($request){
                     $query->where('code',$request->keyword);
                 });
             }
-        })->paginate(5);
+        })->get();
+        if($data['lists']){
+            foreach ($data['lists'] as $key => $value) {
+                $content_form = json_decode($value->content_form);
+                $list_machine_checked[] =$content_form->name;
+            }
+        }
+        $data['assetDevices'] = Asset::whereNotIn('name',$list_machine_checked)->where('status',1)->get();
+        $data['getManger'] = Asset::groupBy('manager_by')->get();
         return view('backend.pages.checkdevices.index', $data);
+    }
+
+    public function index_list(Request $request)
+    {
+        $data['keyword'] = $request->input('keyword', null);
+        $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $data['advance'] = 0;
+        $data['positionByDevices'] = ArrayHelper::PositionByDevices();
+        $curentDate = $request->search_date ? $request->search_date : Carbon::now()->format('d-m-Y');
+        $data['filter'] = $request->all();
+        $data['filter']['search_date'] = $curentDate;
+        $data['lists'] = Required::where('type',0)->where('from_type',5)->whereDate('created_at',Carbon::parse($curentDate)->format('Y-m-d'))->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            if (isset($request->keyword) && $request->keyword != null) {
+                $query->whereHas('employee',function($query) use($request){
+                    $query->where('code',$request->keyword);
+                });
+            }
+        })->get();
+        return view('backend.pages.checkdevices.index_list', $data);
     }
 
     /**
@@ -71,12 +103,15 @@ class CheckDeviceController extends Controller
         $data['requiredType']=3;
         $data['devicesList']  = Asset::where('status',1)->get();
         $data['PositionByDevices']  = ArrayHelper::PositionByDevices();
-        $data['lists'] = Required::where('from_type',3)->where(function ($query) use ($request) {
+        $data['lists'] = Required::where('type',0)->where('from_type',3)->where(function ($query) use ($request,$employee) {
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
             if (isset($request->status) && $request->status != null) {
                 $query->where('status', $request->status);
+            }
+            if($employee){
+                $query->where('created_by', $employee->id);
             }
         })->paginate(5);
         return view('backend.pages.checkdevices.create', $data);
@@ -103,82 +138,89 @@ class CheckDeviceController extends Controller
         $formTypeJobs = ArrayHelper::formTypeJobs()[$requiredType];
         $content_form = $formTypeJobs['data_table'];
         $list_device = ArrayHelper::devicesList();
-        $device = array_filter($list_device, fn ($element) => $element['name'] == $request->device);
-        $content_form['model']=current($device)['model'];
-        $content_form['color']=current($device)['color'];
-        $content_form['name']=current($device)['name'];
-        $content_form['position']=$request->position;
-        if (is_null($employeeDepartment) || $employeeDepartment == '') {
-            session()->flash('warning', "Liên hệ admin để sử dụng tính năng");
-            return redirect()->route('admin.checkdevices.create');
-        }
         $status = 0;
         if ($formTypeJobs['confirm_from_dept'] == 1) {
             $status = 1;
         }
+        if (is_null($employeeDepartment) || $employeeDepartment == '') {
+            session()->flash('warning', "Liên hệ admin để sử dụng tính năng");
+            return redirect()->route('admin.checkdevices.create');
+        }
+        // $count_required = Required::where(['from_type'=>$requiredType])->where('created_at','like',Carbon::now()->format('Y-m-d').'%')
+        // ->whereRaw('JSON_EXTRACT(content_form, "$.position") = ?', [$request->position])
+        // ->count();
+        // if($count_required > 8){
+        //     session()->flash('warning', 'Chỉ được để tối đa 8 thiết bị trên bàn');
+        //     return redirect()->route('admin.checkdevices.create');
+        // }
+        $device_all = $request->device;
         try {
-            DB::beginTransaction();
 
-            if($request->requiredItem){ // cập nhật lại
+            foreach ($device_all as $key => $value) {
+                if($value){
+                    DB::beginTransaction();
+                    $device = array_filter($list_device, fn ($element) => $element['name'] == $value);
+                    $content_form['model']=current($device)['model'];
+                    $content_form['color']=current($device)['color'];
+                    $content_form['name']=current($device)['name'];
+                    $content_form['position']=$request->position;
+                    if($request->requiredItem){ // cập nhật lại
+                        $_required = json_decode($request->requiredItem);
+                        $required = Required::find($_required->id);
+                        if (!str_contains($required->created_at, Carbon::now()->format('Y-m-d'))) {
+                            session()->flash('warning', 'Chỉ được sửa dũ liệu của ngày hiện tại');
+                            return redirect()->route('admin.checkdevices.create');
+                        }
+                        $required->content_form = json_encode($content_form);
+                        $required->content = $request->description;
+                        $required->updated_by = $employee->id;
+                        $required->save();
+                        DB::commit();
+                        session()->flash('success', 'Cập nhật thành công');
+                        return redirect()->route('admin.checkdevices.create');
+                    }
 
-                $_required = json_decode($request->requiredItem);
-                $required = Required::find($_required->id);
-                if (!str_contains($required->created_at, Carbon::now()->format('Y-m-d'))) {
-                    session()->flash('warning', 'Chỉ được sửa dũ liệu của ngày hiện tại');
-                    return redirect()->route('admin.checkdevices.create');
+                    $check_machine = Required::where('type',0)->where(['completed_by'=>$employee->id,'from_type'=>$requiredType])->where('created_at','like',Carbon::now()->format('Y-m-d').'%')->whereRaw('JSON_EXTRACT(content_form, "$.name") = ?', [$value])->first();
+                    if($check_machine > 0){
+                       continue;
+                    }
+
+                    $required = Required::create([
+                        'required_department_id' => $employeeDepartment->department_id,
+                        'code_required' => $requireCode,
+                        'code' => '',
+                        'quantity' => 1,
+                        'created_by' => $employee->id,
+                        'date_completed'=> Carbon::now(),
+                        'completed_by'=>$employee->id,
+                        'usage_status' => 1,
+                        'content_form' => json_encode($content_form),
+                        'status' => $status,
+                        'from_type' => $requiredType,
+                        'content' => $request->description,
+                    ]);
+                    // bộ phận yêu cầu
+                    $from_depts = $formTypeJobs['from_dept'];
+                    foreach ($from_depts as $dept_id) {
+                        $emp_dept = EmployeeDepartment::where('department_id',$dept_id)->whereIn('positions', $formTypeJobs['confirm_by_from_dept'])->pluck('employee_id')->toArray();
+                        if (count($emp_dept) == 0) {
+                            DB::rollBack();
+                            session()->flash('error', 'Bộ phận chưa có người quản lý');
+                            return redirect()->route('admin.checkdevices.create');
+                        }
+                        $signature = SignatureSubmission::create([
+                            'required_id' => $required->id,
+                            'department_id' => $employeeDepartment->department_id,
+                            'positions' => 0,
+                            'approve_id' => json_encode($emp_dept),
+                            'status' => $status,
+                            'signature_id' => $emp_dept[0],
+
+                        ]);
+                    }
+                    DB::commit();
                 }
-                $required->content_form = json_encode($content_form);
-                $required->content = $request->description;
-                $required->updated_by = $employee->id;
-                $required->save();
-                DB::commit();
-                session()->flash('success', 'Cập nhật thành công');
-                return redirect()->route('admin.checkdevices.create');
             }
-            $required = Required::where(['completed_by'=>$employee->id,'from_type'=>$requiredType])->where('created_at','like',Carbon::now()->format('Y-m-d').'%')->first();
-            if($required){
-                session()->flash('warning', 'Chỉ được cập nhật vị trí máy 1 lần trong ngày');
-                return redirect()->route('admin.checkdevices.create');
-            }
-            $count_required = Required::where(['from_type'=>$requiredType])->where('created_at','like',Carbon::now()->format('Y-m-d').'%')->where('content_form','like','%position":"'.$request->position.'%')->count();
-            if($count_required > 8){
-                session()->flash('warning', 'Chỉ được để tối đa 8 thiết bị trên bàn');
-                return redirect()->route('admin.checkdevices.create');
-            }
-            $required = Required::create([
-                'required_department_id' => $employeeDepartment->department_id,
-                'code_required' => $requireCode,
-                'code' => '',
-                'quantity' => 1,
-                'created_by' => $employee->id,
-                'date_completed'=> Carbon::now(),
-                'completed_by'=>$employee->id,
-                'usage_status' => 1,
-                'content_form' => json_encode($content_form),
-                'status' => $status,
-                'from_type' => $requiredType,
-                'content' => $request->description,
-            ]);
-            // bộ phận yêu cầu
-            $from_depts = $formTypeJobs['from_dept'];
-            foreach ($from_depts as $dept_id) {
-                $emp_dept = EmployeeDepartment::where('department_id',$dept_id)->whereIn('positions', $formTypeJobs['confirm_by_from_dept'])->pluck('employee_id')->toArray();
-                if (count($emp_dept) == 0) {
-                    DB::rollBack();
-                    session()->flash('error', 'Bộ phận chưa có người quản lý');
-                    return redirect()->route('admin.checkdevices.create');
-                }
-                $signature = SignatureSubmission::create([
-                    'required_id' => $required->id,
-                    'department_id' => $employeeDepartment->department_id,
-                    'positions' => 0,
-                    'approve_id' => json_encode($emp_dept),
-                    'status' => $status,
-                    'signature_id' => $emp_dept[0],
-
-                ]);
-            }
-            DB::commit();
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.checkdevices.create');
         } catch (\Exception $e) {
@@ -232,5 +274,22 @@ class CheckDeviceController extends Controller
     public function destroy(CheckDevice $checkDevice)
     {
         //
+    }
+    public function action(Request $request)
+    {
+        $method = $request->input('method', '');
+        if ($method == 'per_page') {
+            $this->per_page($request);
+            return back();
+        } else if ($method == 'delete') {
+            if (isset($request->ids)) {
+                foreach ($request->ids as $key => $value) {
+                    $count_record = Required::find($value)->delete();
+                }
+            }
+            return back()->with('success', 'đã xóa ' . count($request->ids) . ' bản ghi');
+        } else {
+            return back()->with('success', 'thành công!');
+        }
     }
 }

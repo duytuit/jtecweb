@@ -277,6 +277,25 @@ class RolePermissionsTableSeeder extends Seeder
                 'checkCutMachine.edit',
                 'checkCutMachine.delete',
             ],
+
+            'requestForm' => [
+                'requestForm.view',
+                'requestForm.create',
+                'requestForm.edit',
+                'requestForm.delete',
+            ],
+            'test_exam' => [
+                'test_exam.view',
+                'test_exam.create',
+                'test_exam.edit',
+                'test_exam.delete',
+            ],
+            'tool' => [
+                'tool.view',
+                'tool.create',
+                'tool.edit',
+                'tool.delete',
+            ],
         ];
 
         // Assign group wise permissions
@@ -290,7 +309,6 @@ class RolePermissionsTableSeeder extends Seeder
                         'name' => $permissionName,
                     ]);
                 }
-
                 $roleSuperAdmin->givePermissionTo($permission);
                 $permission->assignRole($roleSuperAdmin);
             }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -27,6 +28,9 @@ trait ActivityLogger {
          // Hook into eloquent events that only specified in $eventToBeRecorded array,
         // checking for "updated" event hook explicitly to temporary hold original
         // attributes on the model as we'll need them later to compare against.
+        if(Cache::get('maintenance')){
+            return redirect()->back();
+        }
         DB::listen(function ($query) {
             $reflect = new \ReflectionClass(get_called_class());
             try {

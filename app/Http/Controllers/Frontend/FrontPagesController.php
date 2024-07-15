@@ -5,24 +5,42 @@ namespace App\Http\Controllers\Frontend;
 use App\Exports\DetailReportExport1;
 use App\Exports\DetailReportExport;
 use App\Helpers\ArrayHelper;
+use App\Helpers\item;
 use App\Helpers\RedisHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\EmpImport;
+use App\Imports\ProductionPlanImport;
 use App\Models\Admin;
 use App\Models\Asset;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\Exam;
+use App\Models\Required;
+use App\Models\SignatureSubmission;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
+use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\Printer;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Mike42\Escpos\ImagickEscposImage;
 
 class FrontPagesController extends Controller
 {
@@ -107,6 +125,145 @@ class FrontPagesController extends Controller
 
         return (new DetailReportExport1($data))->download('detail-report.xlsx');
     }
+    public function check_device(Request $request)
+    {
+        $data['ip_client'] = $_SERVER['REMOTE_ADDR'];
+        $data['device'] = $_SERVER['HTTP_USER_AGENT'];
+        $data['uuid'] = Str::uuid()->toString();
+        $data['current_time'] = Carbon::now();
+        return view('frontend.pages.check_device',$data);
+    }
+    public function check_device_realtime(Request $request)
+    {
+        return view('frontend.pages.check_device_realtime');
+    }
+    public function check_device_store(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $employee = @$user->employee;
+            if($employee){
+                $employeeDepartment = EmployeeDepartment::where('employee_id', $employee->id)->first();
+            }
+            $requireCode = 'R_' . now()->format('Ymdhis');
+            $required = Required::where('type',0)
+                                      ->where(['from_type'=>5])
+                                      ->where('created_at','like',Carbon::now()->format('Y-m-d').'%')
+                                      ->whereRaw('JSON_EXTRACT(content_form, "$.ip_client") = ?', [$request->ip_client])->orderBy('id','desc')->first();
+
+            DB::beginTransaction();
+            if($required){
+                $content_form = json_decode($required->content_form);
+                if($request->status == 'out' && $content_form->status == 'in'){
+                    $content_form->status=$request->status;
+                    $content_form->time_out=$request->current_time;
+                    $content_form->status_out=1;
+                    $required->content_form=json_encode($content_form);
+                    $required->save();
+                }
+                if($request->status == 'in' && $content_form->status == 'out'){
+                    $content_form->room=$request->room;
+                    $content_form->username=$request->username;
+                    $content_form->ip_client=$request->ip_client;
+                    $content_form->device=$request->device;
+                    $content_form->status=$request->status;
+                    $content_form->time_out=null;
+                    $content_form->status_out=0;
+                    $content_form->time_in=$request->current_time;
+                    $content_form->status_in=1;
+                    $required = Required::create([
+                        'required_department_id' =>$employeeDepartment->department_id??0,
+                        'code_required' => $requireCode,
+                        'code' => '',
+                        'quantity' => 1,
+                        'created_by' => @$employee->id??0,
+                        'date_completed'=> Carbon::now(),
+                        'completed_by'=>@$employee->id??0,
+                        'usage_status' => 1,
+                        'content_form' => json_encode($content_form),
+                        'status' => 0,
+                        'from_type' => 5,
+                        'content' =>'',
+                    ]);
+                    SignatureSubmission::create([
+                        'required_id' =>  @$required->id,
+                        'department_id' =>$employeeDepartment->department_id??0,
+                        'positions' => 0,
+                        'approve_id' => json_encode([]),
+                        'status' => 0,
+                        'signature_id' => 0,
+                    ]);
+                }
+
+            }else{
+                if ($request->status == 'in') {
+
+                    $content_form['room'] = $request->room;
+                    $content_form['username'] = $request->username;
+                    $content_form['ip_client'] = $request->ip_client;
+                    $content_form['device'] = $request->device;
+                    $content_form['status'] = $request->status;
+                    $content_form['time_out'] = null;
+                    $content_form['status_out'] = 0;
+                    if ($request->status == 'in') {
+                        $content_form['time_in'] = $request->current_time;
+                        $content_form['status_in'] = 1;
+                    }
+                    $required = Required::create([
+                        'required_department_id' => $employeeDepartment->department_id ?? 0,
+                        'code_required' => $requireCode,
+                        'code' => '',
+                        'quantity' => 1,
+                        'created_by' => @$employee->id ?? 0,
+                        'date_completed' => Carbon::now(),
+                        'completed_by' => @$employee->id ?? 0,
+                        'usage_status' => 1,
+                        'content_form' => json_encode($content_form),
+                        'status' => 0,
+                        'from_type' => 5,
+                        'content' => '',
+                    ]);
+                    SignatureSubmission::create([
+                        'required_id' =>  @$required->id,
+                        'department_id' => $employeeDepartment->department_id ?? 0,
+                        'positions' => 0,
+                        'approve_id' => json_encode([]),
+                        'status' => 0,
+                        'signature_id' => 0,
+                    ]);
+                }
+            }
+            DB::commit();
+           return $this->success(['susses'=>true]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->error(['error' => $e->getLine(), 'detail' => $e->getTraceAsString()]);
+        }
+    }
+    public function clearKeysRedis(Request $request)
+    {
+        $allKey = Redis::keys('*' . $request->key . '*');
+        if($allKey){
+            $result = Redis::del($allKey);
+        }
+        $allKey = Redis::connection('default')->keys('*' . $request->key . '*');
+        if($allKey){
+            $result = Redis::connection('default')->del($allKey);
+        }
+    }
+
+    public function getKeysRedis(Request $request)
+    {
+        $resuls = Redis::get('jtec_hn_database__ip_192.168.207.168');
+        dd($resuls);
+        $exam = Redis::keys('*_ip_*');
+        dd($exam);
+        if(count($exam)>0){
+             foreach ($exam as $key => $value) {
+
+             }
+        }
+    }
     public function exam(Request $request)
     {
         $data['arrayExamPd'] = ArrayHelper::arrayExamPd()[$request->type];
@@ -116,12 +273,14 @@ class FrontPagesController extends Controller
     // New exam
     public function examNew(Request $request)
     {
-        $getEmployeeBeginOneMonth = Employee::whereDate('begin_date_company', '>=', (Carbon::now()->subMonths(1))->format('Y-m-d'))->Where('code', $request->code)->first();
-
+        $cycle_name = Carbon::now()->format('mY');
+        $new_cycle_name = Carbon::parse(substr((int)$cycle_name, 1, 4) . '-' . substr((int)$cycle_name, 0, 1) . '-1')->subMonths(1)->format('Y-m-d');
+        $data['arrayExamPd'] = ArrayHelper::arrayExamPd()[$request->type];
+        $getEmployeeBeginOneMonth = Employee::whereDate('begin_date_company', '>=', $new_cycle_name)->Where('code', $request->code)->first();
         if (!$getEmployeeBeginOneMonth) {
-            return redirect()->back()->with('warning', 'Mã code không hợp lệ');
+            return redirect()->back()->with('warning', 'Mã code không hợp lệ. Bạn cần cập nhật lại ngày bắt đầu làm việc.');
         } else {
-            return view('frontend.pages.examNew');
+            return view('frontend.pages.examNew',$data);
         }
     }
 
@@ -337,13 +496,75 @@ class FrontPagesController extends Controller
 
         return $OSName;
     }
-
+    public function updatePermision(){
+        $roleSuperAdmin = Role::where('guard_name', 'admin')->where('name', 'Super Admin')->first();
+        $permission = Permission::all();
+        foreach ($permission as $key => $value) {
+            $roleSuperAdmin->givePermissionTo($value);
+            $value->assignRole($roleSuperAdmin);
+        }
+    }
+    public function updateEmployeeProductionPlan(){
+       $dfg = Artisan::call('sync:production_plan');
+        dd($dfg);
+    }
+    function title(Printer $printer, $str)
+    {
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_HEIGHT | Printer::MODE_DOUBLE_WIDTH);
+        $printer -> text($str);
+        $printer -> selectPrintMode();
+    }
     public function test1()
     {
+          try {
+             /* Print a "Hello world" receipt" */
+             $connector = new NetworkPrintConnector("192.168.207.18", 9100);
+             $printer = new Printer($connector);
+             $pdf = public_path('\public\assets\frontend\document.pdf');
+             $pages = ImagickEscposImage::loadPdf($pdf, 260);
+             foreach ($pages as $page) {
+                 $printer -> graphics($page, Printer::IMG_DOUBLE_HEIGHT | Printer::IMG_DOUBLE_WIDTH);
+             }
+             $printer -> cut();
+             $printer -> close();
+             dd('xong');
+          } catch (\Exception $th) {
+            dd($th->getMessage());
+            //throw $th;
+          }
+
+    //    $dfgdg = Cache::get('maintenance');
+    //    dd($dfgdg);
+    //     Cache::put('maintenance', false);
+        // $dfg = Artisan::call('sync:production_plan');
+        // dd($dfg);
+        // $dfdfg = RedisHelper::getKey('update_EmployeeProductionPlan');
+        // dd($dfdfg);
+      //  exec("cd D:/JtecData/JTEC_PD_PROGAM/CMSWeb/jtecweb && nohup php artisan sync:production_plan --daemon &", $r2);
+
+    //    exec('nohup php artisan sync:production_plan > /dev/null &');
+
+            // exec("nohup php artisan sync:production_plan --daemon &", $r2);
+        // $collection =  Excel::load('D:/JtecData/QUAN LY SAN XUAT/VUI/コマツインドの出荷日程  HT MỚI.xlsx', function($file) {
+        //     dd($file);
+        // });
+        // $collection =   Excel::load('D:/JtecData/QUAN LY SAN XUAT/VUI/コマツインドの出荷日程  HT MỚI.xlsx', function($file) {
+        // })->store('xls');
+        // dd($collection);
+        // $mytime = Carbon::now();
+        // $counting_time = $mytime->diffInDays(Carbon::parse('2024-04-07 09:56:46'));
+        // dd($counting_time);
+        // $dfsgfdgfd= [1=>'Kích thước dây', 2=>'Mã sản phẩm', 3=>'Số dây', 4=>'Chủng loại dây',5=> 'Giá để tanshi', 6=>'Tên lot',7=> 'Tanshi A', 8=>'Đầu chuốt Tanshi A', 9=>'Tanshi B', 10=>'Đầu chuốt Tanshi B', 11=>'Nội dung cần chú ý',12=> 'Số lượng dây cắt',13=> 'Kí hiệu của lót hàng', 14=>'Tên mối nối', 15=>'Kích thước dây sau xoắn',16=> 'Cost QR',17=> 'Maku dây'];
+        // foreach ($dfsgfdgfd as $key => $value) {
+        //    dd($key);
+        // }
+        // dd(round(99.825));
+        //$this->updatePermision();
+       // dd(gethostbyaddr($_SERVER['REMOTE_ADDR']));
         // $this->addAsset();
     //     dd($_SERVER["HTTP_USER_AGENT"]);
-    //     $PC_name = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-    //      dd($PC_name);
+        // $pc_name = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        //  dd(str_replace("MT-","", $pc_name));
     //     $ip = getenv('HTTP_CLIENT_IP');
     //     $ip = getenv('HTTP_CLIENT_IP');
     //    $ipconfig =   shell_exec ("ipconfig/all");
@@ -483,55 +704,103 @@ class FrontPagesController extends Controller
     }
     public function store(Request $request)
     {
-        //dd($request->exists('answer'));
-        $emp = Employee::where('code', $request->manhanvien)->first();
-        if($emp){
-            $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
-        }
-        $arrayExam = ArrayHelper::arrayExamPd()[$request->type];
-        if (!$request->exists('answer')) {
-            return $this->error(['error', 'chưa chọn đáp án']);
-        }
-        $results = 0;
-        $fail_aws=[];
-        foreach ($request->answer as $key => $value) {
-            $_answer=0;
-            $array_answer = array_filter($arrayExam['data'], fn ($element) => $element['id'] == $key);
-            if (count($array_answer) > 0 && current($array_answer)['answer'] == $value) {
-                $results++;
-                $_answer=1;
-            }
-            $fail_aws[$key]=[
-                'id'=>$key,
-                'result'=>$_answer,
-                'answer'=>$value,
-                'code'=>$request->manhanvien,
-                'name'=>$emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien,
-            ];
-        }
-        $mytime = Carbon::now();
-        $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
-        $scores = round(($results / count($arrayExam['data'])) * 100);
-        $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
-        $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
-
-        $conversionDates = ArrayHelper::conversionDate();
-        $examinations = 1;
-        $date_examinations = [];
-        foreach ($conversionDates as $key => $value) {
-            if (($value[0] <= $ngaykiemtra->day) && ($ngaykiemtra->day <= $value[1])) {
-                $date_examinations[] = $ngaykiemtra->year . '-' . $ngaykiemtra->month . '-' . $value[0];
-                $date_examinations[] = $value[1] == 100 ? $ngaykiemtra->endOfMonth()->format('Y-m-d') : $ngaykiemtra->year . '-' . $ngaykiemtra->month . '-' . $value[1];
-                $examinations = $key;
-            }
-        }
-        $check_status = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations, 'status' => 1])->count();
-        // dd( $check_status.'==='.$examinations);
-        if($check_status > 0){
-            return $this->success(['message'=> 'Bạn đã thi đạt. Hãy chờ đợt thi tiếp theo']);
-        }
-        $mission = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations])->count();
+        // dd($request->all());
         try {
+            $emp = Employee::where('code', $request->manhanvien)->first();
+            if ($emp) {
+                $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
+            }
+            $groupQuestion =$request->type != 2 ? ArrayHelper::arrayExamPd()[$request->type] : ArrayHelper::groupQuestion1();
+            if (!$request->exists('answer')) {
+                return $this->error(['error', 'chưa chọn đáp án']);
+            }
+            $results = 0;
+            $fail_aws = [];
+            $totalQuestion = 0;
+            $scores = 0;
+            foreach ($groupQuestion['data'] as $questionItem) {
+                $arrayExam = $questionItem['questions'];
+                if($questionItem['random'] > 0){
+                    $totalQuestion += $questionItem['random'];
+                }else{
+                    $totalQuestion += count($arrayExam);
+                }
+                $check_multiple_answer = 1;
+                foreach ($request->answer as $key => $item) {
+                    $_answer = 0;
+                    $array_answer = array_filter($arrayExam, fn ($element) => $element['id'] == $key);
+                    $array_answer = current($array_answer);
+                    if ($array_answer && count($array_answer['multiple_answer']) > 0) {
+                        $multiple_answer = $array_answer['multiple_answer'];
+
+                        if($array_answer['type_input'] == 'checkbox'){
+                            foreach ($item as $key_2 => $value_2) {
+                                 $check_answer = array_filter($multiple_answer, fn ($element) => $element == $value_2);
+                                if (count($check_answer) == 0) {
+                                    $check_multiple_answer = 0;
+                                 }
+                            }
+
+                        }else{
+                            if(count($multiple_answer) > 0){
+                                foreach ($multiple_answer as $key1 => $value1) {
+                                    if ($item[$value1] != ($key1)) {
+                                        $check_multiple_answer = 0;
+                                    }
+                                }
+                            }
+                        }
+
+                        if ($check_multiple_answer == 1) {
+                            $results++;
+                            $_answer = 1;
+                            $scores += $array_answer['point'];
+                        }
+                    } elseif ($array_answer && $array_answer['answer'] == $item) {
+                        $results++;
+                        $_answer = 1;
+                        $scores += $array_answer['point'];
+                    }
+
+                    $fail_aws[$key] = [
+                        'id' => $key,
+                        'result' => $_answer,
+                        'answer' => $item,
+                        'code' => $request->manhanvien,
+                        'name' => $emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien,
+                    ];
+                }
+            }
+
+            $mytime = Carbon::now();
+            $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
+            $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
+            $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
+
+            $conversionDates = ArrayHelper::conversionDate();
+            $examinations = 1;
+            $date_examinations = [];
+            foreach ($conversionDates as $key => $value) {
+                if (($value[0] <= $ngaykiemtra->day) && ($ngaykiemtra->day <= $value[1])) {
+                    $date_examinations[] = $ngaykiemtra->year . '-' . $ngaykiemtra->month . '-' . $value[0];
+                    $date_examinations[] = $value[1] == 100 ? $ngaykiemtra->endOfMonth()->format('Y-m-d') : $ngaykiemtra->year . '-' . $ngaykiemtra->month . '-' . $value[1];
+                    $examinations = $key;
+                }
+            }
+            $check_status = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations, 'status' => 1])->count();
+            if ($check_status > 0) {
+                return $this->success(['message' => 'Bạn đã thi đạt. Hãy chờ đợt thi tiếp theo']);
+            }
+            $exam_status_fail = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations, 'status' => 0])->orderBy('id', 'desc')->first();
+            if ($exam_status_fail) {
+                $check_time = $mytime->diffInSeconds($exam_status_fail->created_at);
+                if ($check_time < 86400) {
+                    return $this->success(['message' => 'Bạn thi chưa đạt lúc:<br>[' . $exam_status_fail->created_at . ']<br>Sau 2 ngày bạn mới có thể thi lại.']);
+                }
+            }
+
+            $mission = Exam::where(['code' => $request->manhanvien, 'cycle_name' => $cycle_name, 'examinations' => $examinations])->count();
+
             $exam = Exam::create([
                 'name' => $emp ? $emp->first_name . ' ' . $emp->last_name : $request->manhanvien, //tên nhân viên
                 'code' => $request->manhanvien, // mã nhân viên
@@ -539,21 +808,21 @@ class FrontPagesController extends Controller
                 'cycle_name' => $cycle_name, // kỳ thi
                 'create_date' => $request->ngaykiemtra, // ngày làm bài thi
                 'results' => $results, // tổng số câu trả lời đúng
-                'total_questions' => count($arrayExam['data']), // tổng số câu hỏi
+                'total_questions' => $totalQuestion, // tổng số câu hỏi
                 'counting_time' => gmdate('i:s', $counting_time), // thời gian làm bài
-                'limit_time' => '05:00', // tổng số câu hỏi
+                'limit_time' => $groupQuestion['time'], // tổng số câu hỏi
                 'data' => json_encode($request->answer), // tổng số câu hỏi
-                'status' => $scores >= ArrayHelper::arrayExamPd()[$request->type]['scores'][0] ? 1 : 0, // 0:chưa duyệt,1:đã duyệt
+                'status' => $scores >= $groupQuestion['scores'][0] ? 1 : 0, // 0:chưa duyệt,1:đã duyệt
                 'mission' => $mission + 1, // số lần thi
-                'scores' => $scores, // điểm thi
+                'scores' => round($scores), // điểm thi
                 'examinations' => $examinations, // đợt thi
                 'date_examinations' => json_encode($date_examinations), // khoảng thời gian thi
                 'type' => $request->type,
                 'fail_aws' => json_encode($fail_aws)
             ]);
-            return $this->success(compact('exam'));
+            return $this->success(compact('exam', 'groupQuestion'));
         } catch (\Exception $e) {
-            return $this->error(['error', $e->getMessage()]);
+            return $this->error(['error'=> $e->getLine(),'sdfdsf44'=>$e->getTraceAsString()]);
         }
     }
     public function updateType()
@@ -565,22 +834,17 @@ class FrontPagesController extends Controller
     {
         $devicesList = ArrayHelper::devicesList();
         foreach ($devicesList as $key => $value) {
-              Asset::create([
-                'code'=>time(),
-                'name'=> $value['name'],
-                'model'=> $value['model'],
-                'color'=> $value['color'],
-                'status'=> 1,
-                'created_by'=>Auth::user()->id,
-                'updated_by'=>Auth::user()->id,
-              ]);
+            $asset = Asset::where('name',trim($value['name']))->first();
+            $asset->model= $value['model'];
+            $asset->color= $value['color'];
+            $asset->save();
         }
         dd('thành công.');
     }
     public function storeNew(Request $request)
     {
         // dd($request->all());
-        $emp = Employee::where(['code' => $request->manhanvien], ['type' => $request->type])->first();
+        $emp = Employee::where(['code' => $request->manhanvien])->first();
         $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
         $groupQuestion = ArrayHelper::groupQuestion();
         $results = 0;
@@ -597,10 +861,8 @@ class FrontPagesController extends Controller
                 }
             }
         }
-        // dd($totalQuestion);
         $mytime = Carbon::now();
         $counting_time = $mytime->diffInSeconds(Carbon::parse($request->count_timer));
-        // $scores = round(($results / count($arrayExam)) * 100);
         $cycle_name = Carbon::parse($request->ngaykiemtra)->format('mY');
         $ngaykiemtra = Carbon::parse($request->ngaykiemtra);
 
@@ -894,12 +1156,12 @@ class FrontPagesController extends Controller
 
     public function updateScoresAndStatus()
     {
-        $fdgfdgf = Exam::all();
+        $fdgfdgf = Exam::where('type',1)->get();
         foreach ($fdgfdgf as $key => $value) {
             $scores = round(($value->results / $value->total_questions) * 100);
             $value->update([
                 'scores' => $scores + 1,
-                'status' => $scores > 80 ? 1 : 0,
+                'status' => $scores > 95 ? 1 : 0,
             ]);
         }
     }
@@ -990,42 +1252,21 @@ class FrontPagesController extends Controller
         $data = Excel::toCollection(new EmpImport, request()->file('import_file'));
         $sdfsd=[];
         foreach ($data[0] as $key => $value) {
-            if ($key > 0) {
-                $sdfsd[]=[
-                    'name' => $value[1],
-                    'color' => $value[2],
-                    'model' =>  $value[3],
-                ];
-                // try {
-                //     $emp = Employee::where('code', (int) trim($value[0]))->first();
-                //     $dept = Department::where('name', $value[2])->first();
-                //     $emp_dept = EmployeeDepartment::where('employee_id', $emp->id)->first();
-                //     if (!$dept) {
-                //         $dept = Department::create([
-                //             'code' => time(),
-                //             'name' => $value[2],
-                //             'parent_id' => 0,
-                //             'status' => 1,
-                //             'created_by' => 1,
-                //         ]);
-                //     }
-                //     if (!$emp_dept) {
-                //         EmployeeDepartment::create([
-                //             'employee_id' => $emp->id,
-                //             'department_id' => $dept->id,
-                //             'created_by' => 1,
-                //         ]);
-                //     }
-                //     echo 'Thành công!';
-                // } catch (\Exception $e) {
-
-                //     echo $e->getMessage();
-                //     dd(1);
-                // }
-            }
+                try {
+                    $asset = Asset::where('name',trim($value[0]))->first();
+                    if($asset){
+                        $emp = Employee::where('code',(int) trim($value[4]))->first();
+                        $asset->manager_by = $emp->id;
+                        $asset->save();
+                    }
+                    echo 'Thành công!';
+                } catch (\Exception $e) {
+                    echo $e->getMessage();
+                    dd(1);
+                }
         }
-        RedisHelper::setKey('inventory_accessorysdfd',json_encode($sdfsd) );
-        dd( $sdfsd);
+        // RedisHelper::setKey('inventory_accessorysdfd',json_encode($sdfsd) );
+        // dd( $sdfsd);
     }
 
     public function updateCreateDate()

@@ -48,7 +48,7 @@ class ActivityController extends Controller
             if (isset($request->content_type) && $request->content_type != null) {
                 $query->where('content_type', $request->content_type);
             }
-        })->paginate($data['per_page']);
+        })->orderBy('id','desc')->paginate($data['per_page']);
         return view('backend.pages.activitys.index', $data);
     }
   /**

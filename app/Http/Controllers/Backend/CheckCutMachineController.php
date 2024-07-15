@@ -36,23 +36,27 @@ class CheckCutMachineController extends Controller
         }
 
         $machineLists = ArrayHelper::machineList();
-        $requireds['keyword'] = $request->input('keyword', null);
-        $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
-        $requireds['advance'] = 0;
-        $requireds['lists'] = Required::whereIn('from_type', [2, 3])->where(function ($query) use ($request) {
-            $employeeId = Auth::user()->employee_id;
-            $employeeDepartment = EmployeeDepartment::where('employee_id', $employeeId)->first();
-            $employeePosition = isset($employeeDepartment) ? $employeeDepartment->positions : null;
+        $data['keyword'] = $request->input('keyword', null);
+        $data['per_page'] = $request->input('per_page', Cookie::get('per_page'));
+        $data['advance'] = 0;
+        $user = Auth::user();
+        $employee = @$user->employee;
+        $employeeDepartment = $employee ? EmployeeDepartment::where('employee_id', $employee->id)->first():null;
+        $curentDate = $request->search_date ? $request->search_date : Carbon::now()->format('d-m-Y');
+        $data['filter'] = $request->all();
+        $data['filter']['search_date'] = $curentDate;
+        $data['lists'] = Required::where('type',0)->whereIn('from_type', [2])->whereDate('created_at',Carbon::parse($curentDate)->format('Y-m-d'))->where(function ($query) use ($request,$employeeDepartment) {
+
             if (isset($request->keyword) && $request->keyword != null) {
                 $query->filter($request);
             }
-            if (isset($employeeId) && $employeeId != null) {
-                if ($employeePosition != 4 && $employeePosition != 5) {
-                    $query->where('created_by', $employeeId);
-                }
+            if (isset($request->employee_name) && $request->employee_name != null) {
+                $query->whereHas('employee',function ($query) use ($request){
+                    $query->where('created_by',$request->employee_name);
+                });
             }
-            if (isset($employeeDepartment->department_id) && $employeeDepartment->department_id != null) {
-                $query->where('required_department_id', $employeeDepartment->department_id);
+            if ($employeeDepartment && $employeeDepartment->positions == 0) {
+                $query->where('created_by',$employeeDepartment->employee_id);
             }
             if (isset($request->from_date) && isset($request->to_date)) {
                 $from_date = Carbon::parse($request->from_date)->format('Y-m-d');
@@ -61,39 +65,31 @@ class CheckCutMachineController extends Controller
                 $query->whereDate('created_at', '<=', $to_date);
             }
             if (isset($request->machine_name) && $request->machine_name != null) {
-                // $query->where('machine_name', $request->machine_name);
                 $query->whereRaw('JSON_EXTRACT(content_form, "$.name_machine") = ?', [$request->machine_name]);
             }
-        })->orderBy('updated_at', 'desc')->paginate($requireds['per_page']);
-        if (count($request->except('keyword')) > 0) {
-            // Tìm kiếm nâng cao
-            $requireds['advance'] = 1;
-            $requireds['filter'] = $request->all();
-        }
-        return view('backend.pages.checkCutMachine.index', $requireds, compact('machineLists'));
+        })->orderBy('updated_at', 'desc')->get();
+        return view('backend.pages.checkCutMachine.index', $data, compact('machineLists'));
     }
 
     public function create(Request $request)
     {
         $data['filter'] = $request->all();
-        $data['get_machineName'] = $request->selecMachine;
-
-        $data['repairMachines'] = Required::all();
+        $pc_name = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        $pc_name= str_replace("MT-","", $pc_name);
+        $data['filter']['selecMachine']=$request->input('selecMachine',$pc_name);
         $machineLists = ArrayHelper::machineList();
-        $key = array_search($request->selecMachine, array_column($machineLists, 'name'));
+        $key = array_search($data['filter']['selecMachine'], array_column($machineLists, 'name'));
         $formTypeJobs = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table']['check_list'];
-        $employee_id = Auth::user()->employee_id;
-        $employee = Employee::where('id', $employee_id)->first();
+        $user = Auth::user();
+        $employee = @$user->employee;
         if (is_null($employee)) {
-            session()->flash('error', "Bạn không có quyền vào mục này");
+            session()->flash('error', "Liên hệ Admin để được cấp quyền");
             return redirect()->route('admin.checkCutMachine.index');
         }
         $employee_department = EmployeeDepartment::where('employee_id', $employee->id)->first();
-        // dd($employee_department);
         $formTypeJobsDepartment = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['from_dept'];
-        // dd($formTypeJobsDepartment[0] . '---' . $employee_department->department_id);
         if ($formTypeJobsDepartment[0] !== $employee_department->department_id) {
-            session()->flash('error', "Bạn không có quyền vào mục này");
+            session()->flash('error', "Bạn không có quyền vào công đoạn [".@$employee_department->department->name.']');
             return redirect()->route('admin.checkCutMachine.index');
         }
         return view('backend.pages.checkCutMachine.create', compact('formTypeJobs', 'machineLists', 'employee', 'employee_department'), $data);
@@ -118,27 +114,31 @@ class CheckCutMachineController extends Controller
         if (!isset($employee_id)) {
             return back()->with('error', 'Bạn không có quyền duyệt hoặc bỏ duyệt');
         }
-        // dd($employee_id);
         $method = $request->input('method', '');
-        // dd($method);
         if ($method == 'per_page') {
             $this->per_page($request);
             return back();
         } else if ($method == 'active_check') {
             if (isset($request->ids)) {
-                // dd($request->ids);
                 foreach ($request->ids as $key => $value) {
                     $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
-                    // dd($signature_submissions);
-                    if (is_null($signature_submissions || !$signature_submissions)) {
+                    $employee_confirm = json_decode($signature_submissions->approve_id);
+                    if (!$signature_submissions || is_null($signature_submissions)) {
                         return back()->with('error', 'Yêu cầu này đã được duyệt hoặc bạn không có quyền duyệt');
                     }
-                    if (!in_array($employee_id, json_decode($signature_submissions->approve_id))) {
-                        return back()->with('error', 'Yêu cầu này đã được duyệt hoặc bạn không có quyền duyệt');
+                    if (!in_array($employee_id, $employee_confirm)) {
+                        $employee = Employee::find($employee_confirm[0]);
+                        return back()->with('error', 'Yêu cầu này cần được duyệt bởi ['.@$employee->first_name.' '.@$employee->last_name.']');
                     }
                     $signature_submissions->status = 1;
                     $signature_submissions->signature_id = $employee_id;
                     $signature_submissions->save();
+                    $signature_submissions = SignatureSubmission::where('required_id', $value)->where('status', 0)->first();
+                    if(!$signature_submissions){
+                        $required = Required::find($value);
+                        $required->status = 1;
+                        $required->save();
+                    }
                 }
             } else {
                 return back()->with('error', 'Bạn phải chọn yêu cầu trước khi duyệt.');
@@ -157,6 +157,9 @@ class CheckCutMachineController extends Controller
                     $signature_submissions->status = 0;
                     $signature_submissions->signature_id = 0;
                     $signature_submissions->save();
+                    $required = Required::find($value);
+                    $required->status = 0;
+                    $required->save();
                 }
             } else {
                 return back()->with('error', 'Bạn phải chọn yêu cầu trước khi bỏ duyệt.');

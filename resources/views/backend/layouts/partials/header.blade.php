@@ -67,7 +67,7 @@
                     <a class="nav-link sidebartoggler waves-effect waves-light" href="{{ route('index') }}"
                         target="_blank">
                         <i class="mdi mdi-eye font-16"></i>
-                        <span> Trang chủ </span>
+                        <span> Thi Online </span>
                     </a>
                 </li>
                 <!-- ============================================================== -->

@@ -25,6 +25,7 @@
                         </ul>
                     </span>
                     <a href="#" class="btn btn-info"><i class="fa fa-edit"></i> Thêm mới</a>
+                    <a href="{{ route('admin.exams.reportFailAnswer',Request::all()) }}" class="btn btn-secondary"><i class="fa fa-chart-bar"></i> Thống kê câu trả lời</a>
                     <a href="{{ route('admin.exams.exportExcelAudit', Request::all()) }}" class="btn btn-success"><i
                             class="fa fa-edit"></i> Xuất Excel</a>
                 </div>
@@ -42,7 +43,7 @@
             </div>
         </form><!-- END #form-search -->
         <form id="form-search-advance" action="{{ route('admin.exams.audit') }}" method="get" class="hidden">
-            <div id="search-advance" class="search-advance" style="display: {{ $advance ? 'block' : 'none' }};">
+            <div id="search-advance" class="search-advance">
                 <div class="row form-group space-5">
                     <div class="col-sm-2">
                         <div class="input-group mb-3">
@@ -65,15 +66,9 @@
                     <div class="col-sm-2">
                         <select name="cycle_name" class="form-control" style="width: 100%;">
                             <option value="">Kỳ thi</option>
-                            @foreach ($cycleNames as $item)
-                                @php
-                                    $month = substr($item, 0, strlen($item) - 4);
-                                    $year = substr($item, -4);
-                                    $formattedDate = $month . '/' . $year;
-                                @endphp
-                                <option value="{{ $item }}"
-                                    {{ @$filter['cycle_name'] === $item ? 'selected' : '' }}>{{ $formattedDate }}</option>
-                            @endforeach
+                             @foreach ($cycleNames as $item)
+                                <option value="{{$item}}" {{ @$filter['cycle_name'] == $item ? 'selected' : '' }}>{{$item}}</option>
+                             @endforeach
                         </select>
                     </div>
                     <div class="col-sm-2">

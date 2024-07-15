@@ -3864,8 +3864,7 @@ h2,
 h3,
 h4,
 h5,
-h6,
-label {
+h6 {
     margin-bottom: 0.5rem;
 }
 
@@ -35360,11 +35359,11 @@ body .jqstooltip {
 .select2-container--default .select2-selection--single .select2-selection__arrow,
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     border-color: rgba(0, 0, 0, 0.1);
-    /* height: 40px; */
+    /* height: 35px; */
     color: #6a7a8c;
-    line-height: 40px;
+    /* line-height: 40px; */
+    /* padding: 5px 5px; */
 }
-
 .select2-container--default .select2-selection--multiple {
     line-height: 27px;
 }
@@ -38731,4 +38730,7 @@ textarea.note {
 
 .check-cut-machine .parsley-required {
     font-size: 16px !important;
+}
+.dropify-wrapper input {
+    z-index: 0;
 }

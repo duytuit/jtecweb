@@ -113,7 +113,7 @@ use App\Models\Department;
                             <th>Trả lời đúng</th>
                             <th>Điểm</th>
                             <th>Thời gian làm bài</th>
-                            <th>Đợt thi</th>
+                            <th>Kỳ thi</th>
                             <th>Lần thi</th>
                             <th>Kết quả</th>
                             <th>Thao tác</th>
@@ -176,7 +176,7 @@ use App\Models\Department;
                             <td>{{ $item->results }}</td>
                             <td>{{ $item->scores }}</td>
                             <td>{{ $item->counting_time }}</td>
-                            <td>{{'Đợt '.$item->examinations }}</td>
+                            <td>{{'Kỳ '.$item->examinations }}</td>
                             <td>{{'Lần '.$item->mission}}</td>
                             <td>
                                 @if ( $item->status)

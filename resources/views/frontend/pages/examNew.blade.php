@@ -13,19 +13,18 @@
                 <input name="type" type="hidden" value="{{ Request::query('type') }}">
                 <div>
                     <div>
-                        <strong style=" text-transform: uppercase;">Bài kiểm tra kiến thức công nhân mới</strong>
+                        <strong style=" text-transform: uppercase;">{{$arrayExamPd['title']}}</strong>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <strong>Tiêu chuẩn đánh giá</strong><br>
-                        <i>(Thang điểm : 100 điểm)</i>
+                        <strong>Tiêu chuẩn đánh giá</strong>
                     </div>
-                    <i>Điểm đạt: 80->100 điểm</i><br>
-                    <i>Từ 60->80 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
-                    <i>Từ 50->59 điểm: Đào tạo lại 1 tuần và kiểm tra lại </i><br>
-                    <i>Dưới 50 điểm: Không đạt </i><br>
-                    <i>Thời gian làm bài <strong>05:00</strong></i><br>
+                    {!!$arrayExamPd['description']!!}
+                    {{-- <i>Điểm đạt: 96->100 điểm</i><br>
+                    <i>Từ 90->95 điểm: kiểm tra lại sau 2 ngày (nếu không đạt sẽ được đào tạo lại)</i><br>
+                    <i>Dưới 90 điểm: Không đạt ( đào tạo lại màu dây 1 tuần)</i><br> --}}
+                    <i>Thời gian làm bài <strong>{{$arrayExamPd['time']}}:00</strong></i><br>
                 </div>
                 <div>
                     {{-- <div>
@@ -52,197 +51,113 @@
                         <input type="hidden" id="count_timer" name="count_timer" value="{{ date('Y-m-d H:i:s') }}">
                     </div>
                 </div>
-                @php
-                    $groupQuestion = App\Helpers\ArrayHelper::groupQuestion();
-                    foreach ($groupQuestion as &$group) {
-                        shuffle($group['question']);
-                    }
-
-                    // Nhóm câu hỏi 1
-                    $names1 = $groupQuestion[0]['groupname'];
-                    $array_exam1 = $groupQuestion[0]['question'];
-                    $array_quantity1 = $groupQuestion[0]['quantity_question'];
-                    $array_exam1 = array_slice($array_exam1, 0, $array_quantity1); // Số lượng câu hỏi
-
-                    // Nhóm câu hỏi 2
-                    $names2 = $groupQuestion[1]['groupname'];
-                    $array_exam2 = $groupQuestion[1]['question'];
-                    $array_quantity2 = $groupQuestion[1]['quantity_question'];
-                    $array_exam2 = array_slice($array_exam2, 0, $array_quantity2); // Số lượng câu hỏi
-                @endphp
-
                 <div class="cards map_question">
-                    <div>
-                        <div class="px-3 d-flex flex-wrap">
-                            <div class="d-flex flex-wrap">
-                                @foreach ($array_exam1 as $index => $item)
-                                    <a href="javascript:;" id="label_{{ $item['id'] }}" class="map_item"
-                                        data-id="{{ $item['id'] }}" data-value="{{ $item['answer'] }}"
-                                        onclick="getMapQuestion({{ $item['id'] }})">
-                                        {{ $index + 1 }}
-                                    </a>
-                                @endforeach
-                            </div>
-                            <div class="d-flex flex-wrap">
-                                @foreach ($array_exam2 as $index => $item)
-                                    <a href="javascript:;" id="label_{{ $item['id'] }}" class="map_item"
-                                        data-id="{{ $item['id'] }}" data-value="{{ $item['answer'] }}"
-                                        onclick="getMapQuestion({{ $item['id'] }})">
-                                        {{ $index + 1 }}
-                                    </a>
-                                @endforeach
-                            </div>
-                            @foreach (array_slice($groupQuestion, 2) as $array_exam_index)
-                                @php
-                                    $array_quantity = $array_exam_index['quantity_question'];
-                                    $array_exam = $array_exam_index['question'];
-                                    $array_exam = array_slice($array_exam, 0, $array_quantity);
-                                @endphp
-                                <div class="d-flex flex-wrap">
-                                    @foreach ($array_exam as $index => $item)
-                                        <a href="javascript:;" id="label_{{ $item['id'] }}" class="map_item"
-                                            data-id="{{ $item['id'] }}" data-value="{{ $item['answer'] }}"
-                                            onclick="getMapQuestion({{ $item['id'] }})">
-                                            {{ $index + 1 }}
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endforeach
-                            <div class="form-group ml-1">
-                                <button class="btn btn-primary font-weight-bold btn-custom examSubmit">Nộp bài</button>
-                            </div>
-                        </div>
+                    @php
+                        $groupExam = $arrayExamPd['data'];
+                        $newGroupExam = [];
+                    @endphp
+                    @foreach ($groupExam as $index_1 => $groupItem)
+                        @php
+
+                            $array_exam = $groupItem['questions'];
+                            shuffle($array_exam);
+                            $groupItem['questions'] = $array_exam;
+                            $newGroupExam[] = $groupItem;
+                        @endphp
+                        @foreach ($array_exam as $index => $item)
+                            <a href="javascript:;" id="label_{{ $item['id'] }}" class="map_item" data-id="{{ $item['id'] }}"
+                                data-value="{{ $item['answer'] }}" onclick="getMapQuestion({{ $item['id'] }})">
+                                <strong>{{($index_1+1).'.'}}</strong>{{$index + 1 }}
+                            </a>
+                        @endforeach
+                    @endforeach
+                    <div class="form-group ml-1">
+                        <button class="btn btn-primary font-weight-bold btn-custom examSubmit">Nộp bài</button>
                     </div>
                 </div>
 
-                {{-- start group question 1 --}}
-                <strong class="px-3 d-inline-block">{{ $names1 }}</strong>
-                <div class="cards">
-                    @foreach ($array_exam1 as $index => $item)
-                        <div class="cards_item" id="{{ $item['id'] }}">
-                            <div class="card_question">
-                                <div class="form-group">
-                                    <div><strong>Câu {{ $index + 1 }} :
-                                        </strong><strong>{{ $item['show_question'] == 1 ? $item['name'] : '' }}</strong>
-                                    </div>
-                                    <div> <img src="{{ asset($item['path_image']) }}" alt="" width="200" />
-                                    </div>
-                                </div>
-                                @php
-                                    $array_Answer = $item['answer_list'];
-                                    $firstThree = array_slice($array_Answer, 0, 3);
-                                    shuffle($firstThree);
-                                    for ($i = 0; $i < 3; $i++) {
-                                        $array_Answer[$i] = $firstThree[$i];
-                                    }
-                                @endphp
-                                <div>
-                                    @foreach ($array_Answer as $index1 => $item1)
-                                        <div @if ($item['answer'] == $item1) class="right_answer" @endif>
-                                            <label for="cau__{{ $item['id'] }}_answer_{{ $index1 }}"><input
-                                                    type="radio" value="{{ $item1 }}"
-                                                    onclick="getCheck({{ $item['id'] }})"
-                                                    name="answer[{{ $item['id'] }}]"
-                                                    id="cau__{{ $item['id'] }}_answer_{{ $index1 }}"
-                                                    class="largerCheckbox">
-                                                <strong> {{ $index1 + 1 }}. </strong>{{ $item1 }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                {{-- End group question 1 --}}
-
-                {{-- start group question 2 --}}
-                <strong class="px-3 d-inline-block">{{ $names2 }}</strong>
-                <div class="cards d-block">
-                    @foreach ($array_exam2 as $index => $item)
-                        <div class="cards_item w-100" id="{{ $item['id'] }}">
-                            <div class="card_question w-100">
-                                <div class="form-group">
-                                    <div><strong>Câu {{ $index + 1 }} :</strong>
-                                        <strong>{{ $item['show_question'] == 1 ? $item['name'] : '' }}</strong>
-                                    </div>
-                                </div>
-                                @php
-                                    $array_Answer = $item['answer_list'];
-                                    shuffle($array_Answer);
-                                @endphp
-                                <div class="d-flex justify-content-between flex-wrap">
-                                    @foreach ($array_Answer as $index1 => $item1)
-                                        <div @if ($item['answer'] == $item1) class="right_answer" @endif>
-                                            <label for="cau__{{ $item['id'] }}_answer_{{ $index1 }}">
-                                                <input type="radio" value="{{ $item1 }}"
-                                                    onclick="getCheck({{ $item['id'] }})"
-                                                    name="answer[{{ $item['id'] }}]"
-                                                    id="cau__{{ $item['id'] }}_answer_{{ $index1 }}"
-                                                    class="largerCheckbox">
-                                                <strong> {{ $index1 + 1 }}. </strong>
-                                                <div> <img src="{{ asset($item1) }}" alt="" width="200" />
-                                                </div>
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                {{-- end Question 2 --}}
-
-
-                @foreach (array_slice($groupQuestion, 2) as $questionItem)
+                @foreach ($newGroupExam as $key_3 => $groupItem)
                     @php
-                        $names = $questionItem['groupname'];
-                        $array_exam = $questionItem['question'];
-                        $array_quantity = $questionItem['quantity_question'];
-                        $array_exam = array_slice($array_exam, 0, $array_quantity); // Số lượng câu hỏi
+                        $array_exam = $groupItem['questions'];
                     @endphp
-                    <strong class="px-3 d-inline-block">{!! $names !!}</strong>
-                    <div class="cards d-block">
+                    @if ($groupItem['group'])
+                        {!!$groupItem['group']!!}
+                    @endif
+                    <div class="cards">
                         @foreach ($array_exam as $index => $item)
-                            <div class="cards_item w-100" id="{{ $item['id'] }}">
+                            <div class="cards_item" style="width:calc((100%/{{$groupItem['width']}}) - 0.1px)" id="{{ $item['id'] }}">
                                 <div class="card_question">
                                     <div class="form-group">
                                         <div><strong>Câu {{ $index + 1 }} :
-                                            </strong>
-                                            <strong>{!! $item['show_question'] == 1 ? $item['name'] : '' !!}</strong>
+                                            </strong><strong>{!! $item['show_question'] == 1 ? $item['name'] : '' !!}</strong>
                                         </div>
+                                        @if ($item['path_image'])
+                                          <div> <img src="{{ asset($item['path_image']) }}" alt="" width="{{$item['width_image']}}%" /></div>
+                                        @endif
                                     </div>
                                     @php
                                         $array_Answer = $item['answer_list'];
-                                        $firstThree = array_slice($array_Answer, 0, 3);
-                                        shuffle($firstThree);
-                                        for ($i = 0; $i < 3; $i++) {
-                                            $array_Answer[$i] = $firstThree[$i];
-                                        }
+                                        shuffle($array_Answer);
                                     @endphp
-                                    <div>
+                                    <div style="display: flex;flex-flow: column wrap;max-height: 250px;align-content: flex-start;justify-content: space-between;">
                                         @foreach ($array_Answer as $index1 => $item1)
-                                            <div @if ($item['answer'] == $item1) class="right_answer" @endif>
-                                                <label for="cau__{{ $item['id'] }}_answer_{{ $index1 }}">
-                                                    <input type="radio" value="{{ $item1 }}"
+                                            <div @if ($item['answer'] == $item1) class="right_answer" @endif><label
+                                                    for="group_{{$key_3}}_cau__{{ $item['id'] }}_answer_{{ $index1 }}" style="margin-right: 30px;">
+                                                    @if ($groupItem['point'] == 24)
+                                                      <span><strong>B</strong></span>
+                                                    @endif
+                                                    @php
+                                                        $newarray_answer = array_filter($item['answer_list'], fn ($element_1) => $element_1 == $item1);
+                                                        $new_multiple_answer = array_filter($item['multiple_answer'], fn ($element_1) => $element_1 == $item1);
+                                                    @endphp
+                                                    @if ( count($item['multiple_answer']) > 0)
+                                                        @if ($item['type_input'] == 'number')
+                                                                <input
+                                                                type="number" min="1" max="50" value="{{ $item1 }}"
+                                                                name="answer[{{ $item['id'] }}][{{$item1}}]"
+                                                                onclick="getCheck({{ $item['id'] }})"
+                                                                id="group_{{$key_3}}_cau__{{ $item['id'] }}_answer_{{ $index1 }}" class="multiple_answer" data-answer_resuls="{{key($newarray_answer)}}">
+                                                        @else
+                                                                <input
+                                                                type="checkbox" value="{{ $item1 }}"
+                                                                onclick="getCheck({{ $item['id'] }})"
+                                                                name="answer[{{ $item['id'] }}][]"
+                                                                id="group_{{$key_3}}_cau__{{ $item['id'] }}_answer_{{ $index1 }}"
+                                                                class="largerCheckbox multiple_answer_checkbox" data-answer_resuls="{{ current($new_multiple_answer)}}">
+                                                                <strong> {{ $index1 + 1 }}. </strong>
+                                                        @endif
+                                                    @else
+                                                        <input
+                                                        type="radio" value="{{ $item1 }}"
                                                         onclick="getCheck({{ $item['id'] }})"
                                                         name="answer[{{ $item['id'] }}]"
-                                                        id="cau__{{ $item['id'] }}_answer_{{ $index1 }}"
+                                                        id="group_{{$key_3}}_cau__{{ $item['id'] }}_answer_{{ $index1 }}"
                                                         class="largerCheckbox">
-                                                    <strong> {{ $index1 + 1 }}. </strong>
-                                                    {{ $item1 }}
+                                                        <strong> {{ $index1 + 1 }}. </strong>
+                                                    @endif
+                                                    @if ( $item['answer_image_width'] > 0)
+                                                        <img src="{{ asset($item1) }}" width="{{$item['answer_image_width']}}%" />
+                                                    @else
+                                                        {!! $item1 !!}
+                                                    @endif
+                                                    @if ( count($item['answer_image']) > 0)
+                                                        <div>
+                                                            <img src="{{ asset($item['answer_image'][key($newarray_answer)]) }}" width="{{$item['width_image']}}%" style="height:250px;" />
+                                                        </div>
+                                                    @endif
                                                 </label>
                                             </div>
                                         @endforeach
                                     </div>
+                                    <br>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                @endforeach
+                 @endforeach
                 <div class="container">
                     <div class="form-group">
-                        <button class="btn btn-secondary font-weight-bold examSubmit">Nộp bài</button>
+                        <button class="btn btn-secondary font-weight-bold examSubmit" style="margin-top: 50px">Nộp bài</button>
                     </div>
                 </div>
             </form>
@@ -301,7 +216,7 @@
             var values = $('#examForm').serialize()
             console.log(values);
             $.ajax({
-                url: "{{ route('exam.storeNew') }}",
+                url: "{{ route('exam.store') }}",
                 method: 'POST',
                 data: values,
                 success: function(data) {
@@ -328,11 +243,46 @@
                             }
                         }
                     });
+                    $('.multiple_answer').each(function(i, obj) {
+                       var answer_resuls =  $(this).data('answer_resuls');
+                       if(answer_resuls == $(this).val()){
+                            $(this).parent()
+                            .css({
+                                "color": "blue"
+                            })
+                       }else{
+                            $(this).parent()
+                            .css({
+                                "color": "red"
+                            })
+                       }
+
+                    });
+                    $('.multiple_answer_checkbox').each(function(i, obj) {
+                       var answer_resuls =  $(this).data('answer_resuls');
+                       if(answer_resuls == $(this).val()){
+                            $(this).parent()
+                            .css({
+                                "color": "blue"
+                            })
+                       }else{
+                            $(this).parent()
+                            .css({
+                                "color": "red"
+                            })
+                       }
+
+                    });
+                    console.log(data.groupQuestion);
                     if (data.status == "success") {
+                        if(data.message){
+                            swal(data.message);
+                            return;
+                        }
                         $(".right_answer").css("color", "blue");
-                        var scores = data.exam.scores;
-                        if (scores > 79) {
-                            swal("Bạn đã đạt: " + scores + "điểm \n CHÚC MỪNG BẠN ĐÃ HOÀN THÀNH BÀI TEST");
+
+                        if (data.exam.scores > data.groupQuestion.scores[0]) {
+                            swal("SỐ ĐIỂM CỦA BẠN LÀ: " + data.exam.scores + " "+data.groupQuestion.description);
 
                             var end = Date.now() + (2 * 1000);
                             var colors = ['#bb0000', '#F7FF0B', '#D05DD1', '#0D9EE6', '#fff', '#8CFF68'];
@@ -390,7 +340,12 @@
                                 }
                             }());
                         } else {
-                            swal("Số điểm của bạn là: " + scores + ". Bạn chưa đạt");
+                            if(data.exam.scores > data.groupQuestion.scores[1]){
+                                swal("SỐ ĐIỂM CỦA BẠN LÀ: " + data.exam.scores + " "+data.groupQuestion.messager[2]);
+                            }else{
+                                swal("SỐ ĐIỂM CỦA BẠN LÀ: " + data.exam.scores + " "+data.groupQuestion.messager[3]);
+                            }
+
                         }
                     }
                 }
@@ -417,6 +372,6 @@
             document.getElementById("countdown").innerHTML = pretty;
         }
 
-        startTimer(10 * 60); // 4 minutes in seconds
+        startTimer({{$arrayExamPd['time']}} * 60); // 4 minutes in seconds
     </script>
 @endsection

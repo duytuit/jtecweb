@@ -22,7 +22,9 @@
                         <select name="question" class="form-control" style="width: 100%;">
                             <option value="">Câu hỏi</option>
                              @foreach ($arrayExamPd[@$filter['exam_type']]['data'] as $key => $item)
-                                <option value="{{$item['id']}}" {{ @$filter['question'] == $item['id'] ? 'selected' : '' }}>{{'Câu '.$item['id']}}</option>
+                                @foreach ($item['questions'] as $item1)
+                                    <option value="{{$item1['id']}}" {{ @$filter['question'] == $item1['id'] ? 'selected' : '' }}>{{'Câu '.$item1['id']}}</option>
+                                @endforeach
                              @endforeach
                         </select>
                     </div>
@@ -69,45 +71,100 @@
             </div>
         </div>
         <div class="row form-group">
-            <form id="form_lists" action="{{ route('admin.exams.action') }}" method="post">
-                @csrf
-                <input type="hidden" name="method" value="" />
-                <input type="hidden" name="status" value="" />
+            <div class="col-sm-6">
+                <form id="form_lists" action="{{ route('admin.exams.action') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="method" value="" />
+                    <input type="hidden" name="status" value="" />
+                    <div class="table-responsive product-table">
+                        <h3>Danh sách nhân viên trả lời sai</h3>
+                        <table class="table table-bordered" id="exams_table">
+                            <thead>
+                                <tr>
+                                    <th>Câu hỏi</th>
+                                    <th>kết quả</th>
+                                    <th>Mã NV</th>
+                                    <th>Nhân viên</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($lists->where('result',0)->all() as $index=> $item)
+                                <tr>
+                                    <td>
+                                        @php
+                                             $groupExamPd = ArrayHelper::arrayExamPd()[@$filter['exam_type']]['data'];
+                                             $array_answer = [];
+                                             foreach ($groupExamPd as $key => $value) {
+                                                $array_answer = array_filter($value['questions'], fn ($element) => $element['id'] == $item->id);
+                                                if( count($array_answer) > 0){
+                                                    break;
+                                                }
+                                             }
+                                        @endphp
+                                        {{'Câu: ' .$item->id }}
+                                         <div>
+                                            {{ @$array_answer ? current($array_answer)['name'] :''}}
+                                         </div>
+                                         <div>
+                                            <img src="{{  @$array_answer ? asset(current($array_answer)['path_image']) :'' }}" alt="" width="200" />
+                                         </div>
+                                    </td>
+                                    <td>{{ $item->result == 0?'sai':'đúng' }}</td>
+                                    <td>{{ $item->code }}</td>
+                                    <td>{{ $item->name }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-6">
+                @php
+                    $report_false = $report_lists[2];
+                    arsort($report_false);
+                    $report_false = array_slice($report_false, 0, 11, true);
+                @endphp
                 <div class="table-responsive product-table">
+                    <h3>Top 10 câu trả lời sai nhiều nhất</h3>
                     <table class="table table-bordered" id="exams_table">
                         <thead>
                             <tr>
                                 <th>Câu hỏi</th>
-                                <th>kết quả</th>
-                                <th>Mã NV</th>
-                                <th>Nhân viên</th>
+                                <th>Số người trả lời sai</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($lists->where('result',0)->all() as $index=> $item)
-                            <tr>
-                                <td>
-                                    @php
-                                         $array_answer = array_filter(ArrayHelper::arrayExamPd()[@$filter['exam_type']]['data'], fn ($element) => $element['id'] == $item->id);
-
-                                   @endphp
-                                    {{'Câu: ' .$item->id }}
-                                     <div>
-                                        {{ @$array_answer ? current($array_answer)['name'] :''}}
-                                     </div>
-                                     <div>
-                                        <img src="{{  @$array_answer ? asset(current($array_answer)['path_image']) :'' }}" alt="" width="200" />
-                                     </div>
-                                </td>
-                                <td>{{ $item->result == 0?'sai':'đúng' }}</td>
-                                <td>{{ $item->code }}</td>
-                                <td>{{ $item->name }}</td>
-                            </tr>
+                            @foreach ($report_false as $index=> $item)
+                                @if ($index > 0)
+                                    <tr>
+                                        <td>
+                                            @php
+                                                $groupExamPd = ArrayHelper::arrayExamPd()[@$filter['exam_type']]['data'];
+                                                $array_answer = [];
+                                                foreach ($groupExamPd as $key => $value) {
+                                                    $array_answer = array_filter($value['questions'], fn ($element) => $element['id'] == $index);
+                                                    if( count($array_answer) > 0){
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+                                            {{'Câu: ' .$index }}
+                                            <div>
+                                                {{ @$array_answer ? current($array_answer)['name'] :''}}
+                                            </div>
+                                            <div>
+                                                <img src="{{  @$array_answer ? asset(current($array_answer)['path_image']) :'' }}" alt="" width="200" />
+                                            </div>
+                                        </td>
+                                        <td>{{ $item }}</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </form>
+            </div>
         </div>
         <input type="hidden" id="report_lists" value="{{json_encode($report_lists)}}">
     </div>
@@ -137,6 +194,18 @@
                     },
                     height:50
                 }
+            },
+            legend: {
+                position: 'inset',
+                inset: {
+                    anchor: 'top-left',
+                    x: 20,
+                    y: -40,
+                    step: 1
+                }
+            },
+            padding: {
+                top: 40
             }
         });
     setTimeout(function () {

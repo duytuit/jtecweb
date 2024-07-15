@@ -80,7 +80,7 @@
                 <div class="col-sm-2">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
+                            <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
                         </div>
                         <input type="text" class="form-control date_picker" name="search_date" id="search_date"
                         value="{{ @$filter['search_date'] }}" placeholder="Ngày kiểm tra" autocomplete="off">
@@ -92,11 +92,41 @@
             </div>
         </form><!-- END #form-search -->
         <!-- START #show list device -->
+        <div class="row col-sm-12">
+            <div class="col-sm-12" style="padding: 5px;">
+                <div style="position: absolute;
+                            top: -10px;
+                            left: 20px;
+                            background-color: white;
+                            font-size: 20px;
+                ">Danh sách máy Ipad chưa được kiểm kê</div>
+                <div style="padding: 15px 5px 5px;border: 1px solid;">
+                   @foreach ($getManger as $index => $value)
+                       @if ($value->manager_by)
+                        @php
+                            $employee = $value->manager;
+                        @endphp
+                        <div style="margin-bottom: 5px">
+                            <span style="display: inline-block;width: 250px;"><strong> Nhóm {{@$employee->code.'-'.$employee->first_name.' '.$employee->last_name}}: </strong></span>
+                            @php
+                                $uncheck = $assetDevices->where('manager_by',$value->manager_by)->all();
+                            @endphp
+                            @if($uncheck)
+                                @foreach ($uncheck as $item)
+                                    <span class="badge badge-warning" style="font-size: 16px">{{$item->name}}</span>
+                                @endforeach
+                            @endif
+                        </div>
+                       @endif
+                   @endforeach
+                </div>
+            </div>
+        </div>
         <div id="location-device" class="row col-sm-12">
                 @if ($lists)
                     @foreach ($positionByDevices as $key => $item)
                         <div class="col-sm-6" style="padding: 5px;">
-                            <div style="padding: 5px;border: 1px solid;height: 120px;display: flex">
+                            <div style="padding: 5px;border: 1px solid;min-height: 135px;display: flex">
                                     <div style="display: flex;
                                     justify-content: center;
                                     align-items: center;
@@ -104,35 +134,50 @@
                                     background-color: blueviolet;color: white;">
                                         {{'Bàn '.$item}}
                                    </div>
-                                    @foreach ($lists as $key1 => $item1)
-                                        @php
-                                            $content_form= json_decode($item1->content_form);
-                                            $employee = @$item1->employee;
-                                        @endphp
-                                        @if ($item == $content_form->position)
-                                            <div class="info-person-device" style="display:inline-block;padding-left: 5px;padding-right: 5px;">
-                                                <div>
-                                                    <img style="object-fit: contain;object-position: top center;" src="{{ '../../public/assets/images/pages/tablet.png' }}" width="50">
+                                   <div style="display: flex;flex-wrap:wrap">
+                                        @foreach ($lists as $key1 => $item1)
+                                            @php
+                                                $content_form= json_decode($item1->content_form);
+                                                $employee = @$item1->employee;
+                                            @endphp
+                                            @if ($item == $content_form->position)
+                                                <div class="info-person-device" style="display:inline-block;padding-left: 5px;padding-right: 5px;">
+                                                    <div>
+                                                        <img style="object-fit: contain;object-position: top center;" src="{{ '../../public/assets/images/pages/tablet.png' }}" width="50">
+                                                    </div>
+                                                    <div>
+                                                        {{$content_form->name}}
+                                                    </div>
+                                                    <div>
+                                                        {{@$employee->code}}
+                                                    </div>
+                                                    <div>
+                                                        {{@$employee->first_name.' '.@$employee->last_name }}
+                                                    </div>
+                                                    <div>
+                                                        {{date('H:i:s',strtotime(@$item1->updated_at))}}
+                                                    </div>
+                                                    <div>
+                                                        {{@$item->content}}
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    {{$content_form->name}}
-                                                </div>
-                                                <div>
-                                                    {{@$employee->code}}
-                                                </div>
-                                                <div>
-                                                    {{@$employee->first_name.' '.@$employee->last_name }}
-                                                </div>
-                                                <div>
-                                                    {{date('h:i:s',strtotime(@$item1->updated_at))}}
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
+                                            @endif
+                                        @endforeach
+                                   </div>
                             </div>
                         </div>
                     @endforeach
                 @endif
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-1">
+                <span class="btn-group">
+                    <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a class="btn-action" data-target="#form_lists" data-method="delete" href="javascript:;"><i class="fa fa-trash" style="color: #cb3030;"></i> Xóa</a></li>
+                    </ul>
+                </span>
+            </div>
         </div>
             <form id="form_lists" action="{{ route('admin.checkdevices.action') }}" method="post">
                 @csrf
@@ -142,6 +187,7 @@
                     <table class="table table-bordered" id="exams_table">
                         <thead class="thead-primary">
                             <tr>
+                                <th width="3%"><input type="checkbox" class="greyCheck checkAll" data-target=".checkSingle" /></th>
                                 <th>TT</th>
                                 <th>Thiết bị</th>
                                 <th>Loại</th>
@@ -159,6 +205,7 @@
                             @php
                             $device = json_decode($item->content_form);
                             @endphp
+                            <td><input type="checkbox" name="ids[]" value="{{ $item->id }}" class="greyCheck checkSingle" /></td>
                             <td>{{ ($index+1) }}</td>
                             <td>{{ @$device->name }}</td>
                             <td>{{ @$device->model }}</td>
@@ -178,7 +225,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-sm-3">
                         <span class="record-total">Tổng: {{ $lists->total() }} bản ghi</span>
                     </div>
@@ -199,7 +246,7 @@
                             </select>
                         </span>
                     </div>
-                </div>
+                </div> --}}
             </form>
     </div>
 @endsection

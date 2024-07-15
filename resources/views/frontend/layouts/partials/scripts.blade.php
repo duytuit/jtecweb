@@ -6,6 +6,7 @@
 <script src="{{ asset('public/assets/backend/js/sweetalert2/sweet-alert.init.js') }}"></script>
 <!-- Main JS File -->
 <script src="{{ asset('public/assets/frontend/js/frontend-main.js') }}"></script>
+<script src="{{ asset('public/assets/frontend/js/socket.io.min.js') }}"></script>
 <script>
 $.ajaxSetup({
     headers: {

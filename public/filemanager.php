@@ -13,7 +13,7 @@ define('APP_TITLE', 'File Manager');
 // Auth with login/password
 // set true/false to enable/disable it
 // Is independent from IP white- and blacklisting
-$use_auth = true;
+$use_auth = false;
 
 // Login user name and password
 // Users: array('Username' => 'Password', 'Username2' => 'Password2', ...)
@@ -51,7 +51,7 @@ $default_timezone = 'Etc/UTC'; // UTC
 
 // Root path for file manager
 // use absolute path of directory i.e: '/var/www/folder' or $_SERVER['DOCUMENT_ROOT'].'/folder'
-$root_path = "//192.168.207.6/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM";
+$root_path = "//192.168.207.6/jtecdata/JTEC_PD_PROGAM/07. Ban ve/man_hinh_1";
 // $root_path = "D:/jtecdata/PDF GOP/CAM/SƠ ĐỒ CẮM";
 
 // Root url for links in file manager.Relative to $http_host. Variants: '', 'path/to/subfolder'
@@ -1682,40 +1682,7 @@ if (isset($_GET['view'])) {
     ?>
     <div class="row">
         <div class="col-12">
-            <div class="d-flex align-items-center mb-3">
-                <form method="post" class="d-inline ms-2" action="?p=<?php echo urlencode(FM_PATH) ?>&amp;dl=<?php echo urlencode($file) ?>">
-                    <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
-                    <button type="submit" class="btn btn-link text-decoration-none fw-bold p-0"><i class="fa fa-cloud-download"></i> <?php echo lng('Download') ?></button> &nbsp;
-                </form>
-               <?php
 
-                // ZIP actions
-                if (!FM_READONLY && ($is_zip || $is_gzip) && $filenames !== false) {
-                    $zip_name = pathinfo($file_path, PATHINFO_FILENAME);
-                    ?>
-                    <form method="post" class="d-inline ms-2">
-                        <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
-                        <input type="hidden" name="unzip" value="<?php echo urlencode($file); ?>">
-                        <button type="submit" class="btn btn-link text-decoration-none fw-bold p-0" style="font-size: 14px;"><i class="fa fa-check-circle"></i> <?php echo lng('UnZip') ?></button>
-                    </form>&nbsp;
-                    <form method="post" class="d-inline ms-2">
-                        <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
-                        <input type="hidden" name="unzip" value="<?php echo urlencode($file); ?>">
-                        <input type="hidden" name="tofolder" value="1">
-                        <button type="submit" class="btn btn-link text-decoration-none fw-bold p-0" style="font-size: 14px;" title="UnZip to <?php echo fm_enc($zip_name) ?>"><i class="fa fa-check-circle"></i> <?php echo lng('UnZipToFolder') ?></button>
-                    </form>&nbsp;
-                    <?php
-                }
-                if ($is_text && !FM_READONLY) {
-                    ?>
-                    <b class="ms-2"><a href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>" class="edit-file"><i class="fa fa-pencil-square"></i> <?php echo lng('Edit') ?>
-                        </a></b> &nbsp;
-                    <b class="ms-2"><a href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>&env=ace"
-                            class="edit-file"><i class="fa fa-pencil-square-o"></i> <?php echo lng('AdvancedEditor') ?>
-                        </a></b> &nbsp;
-                <?php } ?>
-                <b class="ms-2"><a href="?p=<?php echo urlencode(FM_PATH) ?>"><i class="fa fa-chevron-circle-left go-back"></i> <?php echo lng('Back') ?></a></b>
-            </div>
            <?php
            // if($is_onlineViewer) {
            //     if($online_viewer == 'google') {
@@ -1774,8 +1741,8 @@ if (isset($_GET['view'])) {
            // }
            //
            ?>
-           <div>
-               <object data="<?php echo convertPdfToBase64($file_path) ?>" width="100%" style="height:90vh" type="application/pdf"></object>
+           <div style="margin-top: -80px;">
+               <object data="<?php echo convertPdfToBase64($file_path) ?>" width="101%" style="height:114vh;margin-left: -20px;" type="application/pdf"></object>
            </div>
         </div>
     </div>
@@ -3495,7 +3462,7 @@ function fm_show_nav_path($path)
         $getTheme .= " bg-white";
     }
     ?>
-    <nav class="navbar navbar-expand-lg <?php echo $getTheme; ?> mb-4 main-nav <?php echo $isStickyNavBar ?>">
+    <nav class="navbar navbar-expand-lg <?php echo $getTheme; ?> mb-4 main-nav <?php echo $isStickyNavBar ?>" id="auto-hide-nar">
         <a class="navbar-brand"> <?php echo lng('AppTitle') ?> </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -3807,6 +3774,28 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
         .table-hover>tbody>tr:hover>td:first-child { border-left: 1px solid #1b77fd; }
         #main-table tr.even { background-color: #F8F9Fa; }
         .filename>a>i {margin-right: 3px;}
+        /* Initially hide the navbar */
+        .hidden-navbar {
+            top: -60px; /* Adjust based on the height of your navbar */
+        }
+        body::-webkit-scrollbar {
+            -webkit-appearance: none;
+        }
+        body::-webkit-scrollbar:vertical {
+            width: 10px
+        }
+        body::-webkit-scrollbar:horizontal {
+            height: 10px;
+        }
+        body::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            border: 2px solid white;
+            background-color: rgba(0, 0, 0, .5);
+        }
+        body::-webkit-scrollbar-track {
+            background-color: #fff;
+            border-radius: 8px;
+        }
     </style>
     <?php
     if (FM_THEME == "dark"): ?>
@@ -4039,14 +4028,82 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
             }
         }); return false;
     }
+    // auto hide nar
+    // var prevScrollpos = window.pageYOffset;
+    // window.onscroll = function() {
+    // var currentScrollPos = window.pageYOffset;
+    // if (prevScrollpos > currentScrollPos) {
+    //     document.getElementById("auto-hide-nar").style.top = "0";
+    // } else {
+    //     document.getElementById("auto-hide-nar").style.top = "-50px";
+    // }
+    // prevScrollpos = currentScrollPos;
+    // }
     // Search template
-    function search_template(data) {
-        var response = "";
-        $.each(data, function (key, val) {
-            response += `<li><a href="?p=${val.path}&view=${val.name}">${val.path}/${val.name}</a></li>`;
+    // function search_template(data) {
+    //     var response = "";
+    //     $.each(data, function (key, val) {
+    //         response += `<li><a href="?p=${val.path}&view=${val.name}">${val.path}/${val.name}</a></li>`;
+    //     });
+    //     return response;
+    // }
+    document.addEventListener("DOMContentLoaded", function() {
+        let navbar = document.getElementById("auto-hide-nar");
+        let timeout;
+
+        // Initially hide the navbar
+        navbar.classList.add('hidden-navbar');
+
+        // Show the navbar when the mouse moves
+        document.addEventListener('mousemove', function() {
+            navbar.classList.remove('hidden-navbar');
+            clearTimeout(timeout);
+
+            // Hide the navbar after 2 seconds of inactivity
+            timeout = setTimeout(function() {
+                navbar.classList.add('hidden-navbar');
+            }, 2000);
         });
-        return response;
-    }
+    });
+    // drag scroll
+    window.addEventListener('load', () => {
+            const object = document.getElementById('scrollableObject');
+            object.addEventListener('load', () => {
+                const contentDoc = object.contentDocument;
+                const contentBody = contentDoc.body;
+
+                let isDragging = false;
+                let startX, startY, scrollLeft, scrollTop;
+
+                contentBody.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    startX = e.pageX - contentBody.scrollLeft;
+                    startY = e.pageY - contentBody.scrollTop;
+                    scrollLeft = contentBody.scrollLeft;
+                    scrollTop = contentBody.scrollTop;
+                    contentBody.style.cursor = 'grabbing';
+                });
+
+                contentBody.addEventListener('mouseleave', () => {
+                    isDragging = false;
+                    contentBody.style.cursor = 'grab';
+                });
+
+                contentBody.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    contentBody.style.cursor = 'grab';
+                });
+
+                contentBody.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const x = e.pageX - startX;
+                    const y = e.pageY - startY;
+                    contentBody.scrollLeft = scrollLeft - x;
+                    contentBody.scrollTop = scrollTop - y;
+                });
+            });
+        });
     // Advance search
     function fm_search() {
         var searchTxt = $("input#advanced-search").val(), searchWrapper = $("ul#search-wrapper"), path = $("#js-search-modal").attr("href"), _html = "", $loader = $("div.lds-facebook");
@@ -4172,8 +4229,6 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
         });
     </script>
 <?php endif; ?>
-<div id="snackbar"></div>
-</body>
 </html>
 <?php
 }

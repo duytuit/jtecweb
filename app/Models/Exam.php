@@ -33,7 +33,11 @@ class Exam extends Model
         'updated_by',
         'deleted_by',
         'mission',
-        'scores'
+        'scores',
+        'type',
+        'examinations',
+        'date_examinations',
+        'fail_aws'
     ];
 
     public function employee()

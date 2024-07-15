@@ -56,9 +56,19 @@
                             </div>
                             <div class="w-100">
                                 <div class="form-group">
-                                    <label class="control-label" for="image">Ảnh nhân viên 4x6</label>
+                                    <label class="control-label" for="image">Ảnh</label>
                                     <input type="file" class="form-control dropify" data-height="100"
                                         data-allowed-file-extensions="png jpg jpeg webp" id="image" name="image" />
+                                </div>
+                            </div>
+                           <div class="w-100">
+                                <div class="form-group">
+                                    <label class="control-label">Người quản lý</label>
+                                    <div class="select_manager">
+                                        <select name="manager_by" id="manager_by" class="form-control" style="width:100%">
+                                            <option value="">Người quản lý</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="w-100">
@@ -94,6 +104,48 @@
 
 @section('scripts')
     <script>
+        get_data_select_name({
+            object: '#manager_by',
+            url: '{{ url('admin/employees/ajaxGetSelectByName') }}',
+            data_id: 'id',
+            data_code: 'code',
+            data_first_name: 'first_name',
+            data_last_name: 'last_name',
+            title_default: 'Người quản lý',
 
+        });
+
+        function get_data_select_name(options) {
+            $(options.object).select2({
+                ajax: {
+                    url: options.url,
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        }
+                        return query;
+                    },
+                    processResults: function(json, params) {
+                        var results = [{
+                            id: '',
+                            text: options.title_default
+                        }];
+
+                        for (i in json.data) {
+                            var item = json.data[i];
+                            results.push({
+                                id: item[options.data_id],
+                                text: item[options.data_code] + '-' + item[options.data_first_name] + ' ' + item[options.data_last_name]
+                            });
+                        }
+                        return {
+                            results: results,
+                        };
+                    },
+                    minimumInputLength: 3,
+                }
+            });
+        }
     </script>
 @endsection

@@ -17,10 +17,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('code');
             $table->string('name',500);
-            $table->string('image',250);
+            $table->string('image',250)->nullable();
             $table->string('model');
             $table->string('color');
-            $table->string('note',250);
+            $table->string('note',250)->nullable();
             $table->tinyInteger('status');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

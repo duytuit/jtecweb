@@ -114,6 +114,19 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::put('trashed/revert/{id}', 'AssetController@revertFromTrash')->name('trashed.revert');
         Route::get('trashed/destroy/{id}', 'AssetController@destroyTrash')->name('trashed.destroy');
     });
+      /**
+     * Request Form Management Routes
+     */
+    Route::prefix('requestForms')->name('requestForms.')->group(function () {
+        Route::get('', 'RequestFormController@index')->name('index');
+        Route::get('create', 'RequestFormController@create')->name('create');
+        Route::get('edit/{id}', 'RequestFormController@edit')->name('edit');
+        Route::post('store', 'RequestFormController@store')->name('store');
+        Route::post('update/{id}', 'RequestFormController@update')->name('update');
+        Route::post('action', 'RequestFormController@action')->name('action');
+        Route::put('trashed/revert/{id}', 'RequestFormController@revertFromTrash')->name('trashed.revert');
+        Route::get('trashed/destroy/{id}', 'RequestFormController@destroyTrash')->name('trashed.destroy');
+    });
 
     /**
      * Acivity Management Routes
@@ -198,6 +211,7 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::get('', 'EmployeeController@index')->name('index');
         Route::get('create', 'EmployeeController@create')->name('create');
         Route::get('edit/{id}', 'EmployeeController@edit')->name('edit');
+        Route::get('ajaxGetSelectByName', 'EmployeeController@ajaxGetSelectByName')->name('ajaxGetSelectByName');
         Route::get('exportExcel', 'EmployeeController@exportExcel')->name('exportExcel');
         Route::get('importExcelData', 'EmployeeController@importExcelData')->name('importExcelData');
         Route::post('store', 'EmployeeController@store')->name('store');
@@ -280,11 +294,37 @@ Route::namespace('App\Http\Controllers\Backend')->group(function () {
         Route::post('update/{id}', 'AccessoryController@update')->name('update');
     });
 
+     /**
+     * Tool Routes
+     */
+    Route::prefix('tools')->name('tools.')->group(function () {
+        Route::get('', 'ToolsController@index')->name('index');
+        Route::get('create', 'ToolsController@create')->name('create');
+        Route::get('edit/{id}', 'ToolsController@edit')->name('edit');
+        Route::get('exportExcel', 'ToolsController@exportExcel')->name('exportExcel');
+        Route::post('action', 'ToolsController@action')->name('action');
+        Route::post('update/{id}', 'ToolsController@update')->name('update');
+    });
+
+      /**
+     * Test Exam Routes
+     */
+    Route::prefix('testExams')->name('testExams.')->group(function () {
+        Route::get('', 'TestExamsController@index')->name('index');
+        Route::get('create', 'TestExamsController@create')->name('create');
+        Route::get('edit/{id}', 'TestExamsController@edit')->name('edit');
+        Route::get('exportExcel', 'TestExamsController@exportExcel')->name('exportExcel');
+        Route::post('action', 'TestExamsController@action')->name('action');
+        Route::post('update/{id}', 'TestExamsController@update')->name('update');
+    });
+
     /**
      * CheckDevice Management Routes
      */
     Route::prefix('checkdevices')->name('checkdevices.')->group(function () {
         Route::get('', 'CheckDeviceController@index')->name('index');
+        Route::get('list', 'CheckDeviceController@index_list')->name('index_list');
+        Route::get('checklist_realtime', 'CheckDeviceController@checklist_realtime')->name('checklist_realtime');
         Route::get('create', 'CheckDeviceController@create')->name('create');
         Route::get('edit/{id}', 'CheckDeviceController@edit')->name('edit');
         Route::get('exportExcel', 'CheckDeviceController@exportExcel')->name('exportExcel');

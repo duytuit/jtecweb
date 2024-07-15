@@ -81,8 +81,51 @@
 
 @section('scripts')
     <script>
-    $(".categories_select").select2({
-        placeholder: "Select a Category"
-    });
+        $(".categories_select").select2({
+            placeholder: "Select a Category"
+        });
+        get_data_select_name({
+            object: '#manager_by',
+            url: '{{ url('admin/employees/ajaxGetSelectByName') }}',
+            data_id: 'id',
+            data_code: 'code',
+            data_first_name: 'first_name',
+            data_last_name: 'last_name',
+            title_default: 'Người quản lý',
+
+        });
+
+        function get_data_select_name(options) {
+            $(options.object).select2({
+                ajax: {
+                    url: options.url,
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        }
+                        return query;
+                    },
+                    processResults: function(json, params) {
+                        var results = [{
+                            id: '',
+                            text: options.title_default
+                        }];
+
+                        for (i in json.data) {
+                            var item = json.data[i];
+                            results.push({
+                                id: item[options.data_id],
+                                text: item[options.data_code] + '-' + item[options.data_first_name] + ' ' + item[options.data_last_name]
+                            });
+                        }
+                        return {
+                            results: results,
+                        };
+                    },
+                    minimumInputLength: 3,
+                }
+            });
+        }
     </script>
 @endsection

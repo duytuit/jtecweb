@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('unit_price', 20)->comment('đơn vị');
             $table->longText('content')->nullable()->comment('Nội dung yêu cầu');
             $table->integer('size')->comment('kích thước');
-            $table->string('image', 600)->comment('hình ảnh');
+            $table->string('image', 600)->comment('hình ảnh')->nullable();
             $table->string('required_department_id')->comment('bộ phận yêu cầu');
             $table->string('receiving_department_ids')->comment('bộ phận tiếp nhận');
             $table->integer('status');

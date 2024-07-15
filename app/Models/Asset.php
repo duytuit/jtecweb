@@ -17,21 +17,24 @@ class Asset extends Model
         'image',
         'note',
         'status',
+        'model',
+        'color',
+        'manager_by',
         'created_by',
         'updated_by',
         'deleted_by'
     ];
     public function scopeFilter($query, $input)
     {
-        foreach ($this->seachable as $value) {
-            if (isset($input[$value])) {
-                $query->where($value, $input[$value]);
-            }
-        }
+        // foreach ($this->fillable as $value) {
+        //     if (isset($input[$value])) {
+        //         $query->where($value, $input[$value]);
+        //     }
+        // }
         if (isset($input['keyword'])) {
             $search = $input['keyword'];
             $query->where(function ($q) use ($search) {
-                foreach ($this->seachable as $value) {
+                foreach ($this->fillable as $value) {
                     $q->orWhere($value, 'LIKE', '%' . $search . '%');
                 }
             });
@@ -41,5 +44,9 @@ class Asset extends Model
     public function user()
     {
         return $this->belongsTo(Admin::class, 'created_by', 'id');
+    }
+    public function manager()
+    {
+        return $this->belongsTo(Employee::class, 'manager_by', 'id');
     }
 }

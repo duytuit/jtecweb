@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('location_c')->comment('vị trí để linh kiện c');
             $table->string('location')->comment('vị trí để linh kiện');
             $table->integer('material_norms')->comment('định mức linh kiện');
-            $table->string('image',600)->comment('hình ảnh');
+            $table->string('image',600)->comment('hình ảnh')->nullable();
             $table->integer('status');
             $table->softDeletes();
             $table->timestamps();

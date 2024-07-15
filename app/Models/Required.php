@@ -36,6 +36,7 @@ class Required extends Model
         'updated_at',
         'content_form',
         'usage_status',
+        'type',
     ];
 
     public function scopeFilter($query, $input)

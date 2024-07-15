@@ -8,7 +8,7 @@
             <form role="form" action="{{ route('admin.checkCutMachine.create') }}" method="GET">
                 <!-- select -->
                 <span>Máy: </span>
-                <select class="" name="selecMachine" id="selecMachine" data-live-search="true"
+                <select name="selecMachine" id="selecMachine" data-live-search="true"
                     onchange='this.form.submit()'>
                     <option value="">Chọn máy kiểm tra</option>
                     @foreach ($machineLists as $machineName)
@@ -25,11 +25,12 @@
             @endphp
             <span>Người thực hiện: </span><strong>{{ $auth->first_name . ' ' . $auth->last_name }}</strong>
         </div>
+        {{-- <input type="hidden" name="_selecMachine" id="_selecMachine" value="{{@$filter['selecMachine']}}"> --}}
         <form action="{{ route('admin.requireds.requireCheckListMachineCut') }}" method="POST" data-parsley-validate
             data-parsley-focus="first">
             @csrf
-            <input type="hidden" name="machineName" value="{{ $get_machineName }}">
             <input type="hidden" name="departmentId" value="{{ $employee_department->department_id }}">
+            <input type="hidden" name="selecMachine" value="{{ @$filter['selecMachine'] }}">
             <div class="">
                 <div class="row mb-2 ">
                     <div class="col-11 w-75 mx-auto p-md-2 fs-3">
@@ -47,7 +48,7 @@
                                         <div class="pt-2 ">
                                             <strong class="text-uppercase ">Vị trí kiểm tra:</strong>
                                             <p>{{ $formTypeJob['position'] }}</p>
-                                            <strong class="text-uppercase ">Phương pháp kiểm tra:</strong>
+                                            <strong class="text-uppercase ">Nội dung kiểm tra:</strong>
                                             <p>{{ $formTypeJob['method'] }}</p>
                                             <strong class="text-uppercase ">Xử lý:</strong>
                                             <p>{{ $formTypeJob['handle'] }}</p>
@@ -68,22 +69,10 @@
 
                             <div class="col-md-4 p-2 ">
                                 <div class="h-100 p-2 shadow-lg">
-                                    <span class="p-md-2 d-block bg-secondary text-light">Lý lịch sửa chữa</span>
-                                    @foreach ($repairMachines as $index => $item)
-                                        @php
-                                            $contentForm = json_decode($item->content_form, true);
-                                        @endphp
-                                        @if (isset($contentForm['name_machine']) && $contentForm['name_machine'] == $get_machineName)
-                                            <span>{{ @$item->content }}</span><br>
-                                        @endif
-                                    @endforeach
-                                    <span class="p-md-2 d-block bg-primary text-light">Thêm sửa chữa</span>
+                                    <span class="p-md-2 d-block bg-primary text-light">Ghi chú</span>
                                     <div class="pt-2 ">
-                                        <textarea name="repair_history" id="" class="w-100">
-
-                                        </textarea>
+                                        <textarea name="repair_history" id="" class="w-100"></textarea>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -101,5 +90,11 @@
 @endsection
 
 @section('scripts')
-    <script></script>
+    <script>
+        //    $(document).ready( function () {
+        //     if($('#_selecMachine').val()){
+        //         $('#selecMachine').val($('#_selecMachine').val()).change();
+        //     }
+        //   })
+    </script>
 @endsection

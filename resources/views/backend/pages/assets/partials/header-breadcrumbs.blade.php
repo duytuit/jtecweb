@@ -19,7 +19,7 @@
             <div class="d-flex align-items-center justify-content-end">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Trang chủ</a></li>
                         @if (Route::is('admin.assets.index'))
                             <li class="breadcrumb-item active" aria-current="page">Danh sách</li>
                         @elseif(Route::is('admin.assets.create'))

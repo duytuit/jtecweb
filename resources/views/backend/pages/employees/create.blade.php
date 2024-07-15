@@ -185,7 +185,6 @@
                                 <div class="form-group has-success">
                                     <label class="control-label" for="worker">Tình trạng làm việc</label>
                                     <select class="form-control custom-select" id="worker" name="worker">
-                                        <option value="">Chọn tình trạng </option>
                                         @foreach ($workers as $worker)
                                             <option value="{{ $worker['id'] }}">
                                                 {{ $worker['name'] }}</option>

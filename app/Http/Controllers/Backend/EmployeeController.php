@@ -170,11 +170,11 @@ class EmployeeController extends Controller
             $employee->code = $request->code;
             $employee->first_name = $request->first_name;
             $employee->last_name = $request->last_name;
-            $employee->begin_date_company = Carbon::parse($request->begin_date_company)->format('Y-m-d');
+            $employee->begin_date_company =$request->begin_date_company ? Carbon::parse($request->begin_date_company)->format('Y-m-d'):null;
             $employee->status = @$request->status ? 1 : 0;
             $employee->created_by = Auth::user()->id;
             $employee->identity_card = $request->identity_card;
-            $employee->birthday = Carbon::parse($request->birthday)->format('Y-m-d');
+            $employee->birthday =$request->birthday ? Carbon::parse($request->birthday)->format('Y-m-d') : null;
             $employee->addresss = $request->addresss;
             $employee->process_id = $request->process_id;
             $employee->marital = $request->marital;
@@ -184,7 +184,7 @@ class EmployeeController extends Controller
             $employee->email = $request->email;
             $employee->bank_number = $request->bank_number;
             $employee->bank_name = $request->bank_name;
-            $employee->end_date_company = Carbon::parse($request->end_date_company)->format('Y-m-d');
+            $employee->end_date_company =$request->end_date_company ? Carbon::parse($request->end_date_company)->format('Y-m-d') : null;
             if (!is_null($request->avatar)) {
                 $employee->avatar = UploadHelper::upload('avatar', $request->avatar, $request->last_name . '-' . time(), 'public/assets/images/avatar');
             }
@@ -197,22 +197,15 @@ class EmployeeController extends Controller
             if ($request->username) {
                 $admin->username = $request->username;
             } else {
-                // $admin->username = StringHelper::createSlug($request->first_name . $request->last_name, 'Admin', 'username', '');
                 $admin->username = $request->code;
             }
 
-            // if (!is_null($request->avatar)) {
-            //     $admin->avatar = $employee->avatar;
-            // }
-
             $admin->email = $request->email;
             $admin->password = Hash::make($request->code);
-            // $admin->password = $request->code;
 
             $admin->status = $request->status;
-            $admin->created_at = Carbon::now();
             $admin->created_by = Auth::id();
-            $admin->updated_at = Carbon::now();
+            $admin->employee_id = $employee->id;
             $admin->save();
 
             // Assign Roles
@@ -299,17 +292,17 @@ class EmployeeController extends Controller
             $employee->code = $request->input('code');
             $employee->first_name = $request->input('first_name');
             $employee->last_name = $request->input('last_name');
-            $employee->begin_date_company = Carbon::parse($request->input('begin_date_company'))->format('Y-m-d');
+            $employee->begin_date_company = $request->begin_date_company ? Carbon::parse($request->input('begin_date_company'))->format('Y-m-d'):null;
             $employee->status = $request->input('status');
             $employee->created_by = $request->input('created_by');
             $employee->identity_card = $request->input('identity_card');
-            $employee->birthday = Carbon::parse($request->input('birthday'))->format('Y-m-d');
+            $employee->birthday = $request->birthday ? Carbon::parse($request->input('birthday'))->format('Y-m-d'):null;
             $employee->addresss = $request->input('addresss');
             $employee->process_id = $request->input('process_id');
             $employee->marital = $request->input('marital');
             $employee->worker = $request->input('worker');
             $employee->positions = $request->input('positions');
-            $employee->end_date_company = Carbon::parse($request->input('end_date_company'))->format('Y-m-d');
+            $employee->end_date_company = $request->end_date_company ? Carbon::parse($request->input('end_date_company'))->format('Y-m-d') : null;
             // $employee->avatar = $request->input('avatar');
             $employee->phone = $request->input('phone');
             $employee->email = $request->input('email');
@@ -326,6 +319,7 @@ class EmployeeController extends Controller
                     $admin->password = Hash::make($request->input('password'));
                 }
                 $admin->username = $request->input('code');
+                $admin->employee_id = $employee->id;
                 $admin->save();
                 // Detach roles and Assign Roles
                 $admin->roles()->detach();
@@ -370,4 +364,13 @@ class EmployeeController extends Controller
         session()->flash('success', 'Đã xóa bản ghi thành công !!');
         return redirect()->route('admin.employees.index');
     }
+    public function ajaxGetSelectByName(Request $request)
+    {
+        if ($request->search) {
+            $where[] = ['last_name', 'like', '%' . $request->search . '%'];
+            return response()->json(Employee::searchByAll(['where' => $where]));
+        }
+        return response()->json(Employee::searchByAll(['select' => ['id', 'code', 'first_name', 'last_name']]));
+    }
+
 }

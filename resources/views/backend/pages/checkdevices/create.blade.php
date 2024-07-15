@@ -29,19 +29,19 @@
                             <strong>{{@$employeeDepartment->department->name}}</strong>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row form-group">
                         <label class="col-sm-4 control-label" for="name">Máy thao tác</label>
                         <div class="col-sm-8 select_device">
-                            <select name="device" class="form-control select2" style="width: 100%;" required>
+                            <select name="device[]" multiple class="form-control select2" style="width: 100%;" required>
                                 <option value="">Chọn máy thao tác</option>
                                 @foreach ($devicesList as $item)
-                                <option value="{{$item->name}}" {{ @$filter['device']==$item->name ? 'selected' : ''
-                                    }}>{{$item->name.'-'.$item->model.'-'.$item->color}}</option>
+                                    <option value="{{$item->name}}" {{ @$filter['device']==$item->name ? 'selected' : ''
+                                        }}>{{$item->name.'-'.$item->model.'-'.$item->color}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row form-group">
                         <label class="col-sm-4 control-label" for="name">Vị trí máy</label>
                         <div class="col-sm-8">
                             <select name="position" class="form-control" style="width: 100%;" required
@@ -54,7 +54,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row form-group">
+                        <label class="col-sm-4 control-label" for="manager_by">Người quản lý</label>
+                        <div class="col-sm-8 select_manager">
+                            <select name="manager_by" id="manager_by" class="form-control" style="width:100%">
+                                <option value="">Người quản lý</option>
+                            </select>
+                        </div>
+                    </div> --}}
+                    <div class="row form-group">
                         <label class="col-sm-4 control-label" for="description">Đánh giá ngoại quan</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="description" name="description"
@@ -94,15 +102,16 @@
                 <tbody>
                     @foreach ($lists as $index=> $item)
                     @php
-                    $device = json_decode($item->content_form);
+                        $device = json_decode($item->content_form);
+                        $employee =@$item->employee;
                     @endphp
                     <td>{{ ($index+1) }}</td>
                     <td>{{ @$device->name }}</td>
                     <td>{{ @$device->model }}</td>
                     <td>{{ @$device->color }}</td>
                     <td>{{ "Bàn " . @$device->position }}</td>
-                    <td>{{ @$item->employee->code }}</td>
-                    <td>{{ @$item->employee->first_name.' '.@$item->employee->last_name }}</td>
+                    <td>{{ @$employee->code }}</td>
+                    <td>{{ @$employee->first_name.' '.@$employee->last_name }}</td>
                     <td>{{ @$item->created_at }}</td>
                     <td>{{ @$item->content }}</td>
                     <td>
@@ -110,7 +119,7 @@
                             href="{{ route('admin.activitys.index', ['modelId' => $item->id,'content_type' =>get_class($item)]) }}"><i
                                 class="fa fa-history"></i> </a>
                         <a title="Sửa" class="d-inline-block mx-1 btn-purple btn-sm text-white"
-                            onclick="item_edit({{$item}})" href="javascript:;"><i class="fa fa-edit"></i> </a>
+                            onclick="item_edit({{$item}},{{@$employee}})" href="javascript:;"><i class="fa fa-edit"></i> </a>
                     </td>
                     </tr>
                     @endforeach
@@ -144,32 +153,79 @@
 @endsection
 @section('scripts')
 <script>
-    function item_edit(item){
-            console.log(item);
+        function item_edit(item,employee){
+            console.log(employee);
             let content_form= JSON.parse(item.content_form);
             $('#requiredItem').val(JSON.stringify(item));
-            $('select[name="device"]').val(content_form.name).change();
+            $('select[name="device[]"]').val(content_form.name).change();
             $('select[name="position"]').val(content_form.position).change();
-            $('select[name="position"]').val(content_form.position).change();
+            $('select[name="device[]"]').removeAttr('multiple');
+            // $('select[name="manager_by"]').val(content_form.manager_by).change();
+           // $('.select_manager .select2-selection__rendered').text(employee.code+'-'+employee.first_name+' '+employee.last_name);
             $('#description').val(item.content);
+
         }
         function clear_item(){
             $('#input_data').trigger("reset");
             $('#requiredItem').val('');
             $('.select_device .select2-selection__rendered').text('Chọn máy thao tác');
+            $('select[name="device[]"]').attr('multiple','multiple');
+           // $('.select_manager .select2-selection__rendered').text('Người quản lý');
         }
         $(document).ready( function () {
             // Kiểm tra sự hỗ trợ của API WebRTC
             if (navigator.connection) {
                 // Lấy thông tin về wifi
                 navigator.connection.addEventListener('change', function() {
-                    var wifiInfo = navigator.connection.;
+                    var wifiInfo = navigator.connection;
                     console.log('Wifi info:', wifiInfo);
                 });
             } else {
                 console.log('WebRTC API không được hỗ trợ trên thiết bị này.');
             }
         })
+        get_data_select_name({
+            object: '#manager_by',
+            url: '{{ url('admin/employees/ajaxGetSelectByName') }}',
+            data_id: 'id',
+            data_code: 'code',
+            data_first_name: 'first_name',
+            data_last_name: 'last_name',
+            title_default: 'Người quản lý',
 
+        });
+
+        function get_data_select_name(options) {
+            $(options.object).select2({
+                ajax: {
+                    url: options.url,
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        }
+                        return query;
+                    },
+                    processResults: function(json, params) {
+                        var results = [{
+                            id: '',
+                            text: options.title_default
+                        }];
+
+                        for (i in json.data) {
+                            var item = json.data[i];
+                            results.push({
+                                id: item[options.data_id],
+                                text: item[options.data_code] + '-' + item[options.data_first_name] + ' ' + item[options.data_last_name]
+                            });
+                        }
+                        return {
+                            results: results,
+                        };
+                    },
+                    minimumInputLength: 3,
+                }
+            });
+        }
 </script>
 @endsection

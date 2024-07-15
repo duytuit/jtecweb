@@ -16,3 +16,6 @@ npm-debug.log
 yarn-error.log
 .DS_Store
 /public/pull.php
+
+[safe]
+    directory = *

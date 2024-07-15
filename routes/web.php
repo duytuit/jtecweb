@@ -45,6 +45,11 @@ Route::post('/exam/detailReport', [FrontPagesController::class, 'detailReport'])
 Route::post('/exam/detailReport1', [FrontPagesController::class, 'detailReport1'])->name('exam.detailReport1');
 Route::get('/test', [FrontPagesController::class, 'test'])->name('test');
 Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
+Route::get('/check_device_realtime', [FrontPagesController::class, 'check_device_realtime'])->name('check_device_realtime');
+Route::get('/check_device', [FrontPagesController::class, 'check_device'])->name('check_device');
+Route::post('/check_device/store', [FrontPagesController::class, 'check_device_store'])->name('check_device_store');
+Route::get('/test1', [FrontPagesController::class, 'test1'])->name('test1');
+Route::get('/getKeysRedis', [FrontPagesController::class, 'getKeysRedis'])->name('getKeysRedis');
 Route::post('/exam/store', [FrontPagesController::class, 'store'])->name('exam.store');
 Route::post('/exam/storeNew', [FrontPagesController::class, 'storeNew'])->name('exam.storeNew');
 Route::get('/ImportEmp', function () {

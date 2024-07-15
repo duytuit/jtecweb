@@ -8,6 +8,7 @@ use App\Models\Asset;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
@@ -46,7 +47,7 @@ class AssetController extends Controller
            if (isset($request->status) && $request->status != null) {
                $query->where('status', $request->status);
            }
-       })->paginate($data['per_page']);
+       })->orderBy('id','desc')->paginate($data['per_page']);
        return view('backend.pages.assets.index', $data);
     }
 
@@ -87,6 +88,7 @@ class AssetController extends Controller
                 'note'=> $request->note,
                 'model'=> $request->model,
                 'color'=> $request->color,
+                'manager_by' => $request->manager_by,
                 'status'=> @$request->status ? 1 : 0,
                 'created_by'=>Auth::user()->id,
                 'updated_by'=>Auth::user()->id,
@@ -94,6 +96,7 @@ class AssetController extends Controller
             session()->flash('success', 'Thêm mới thành công');
             return redirect()->route('admin.assets.index');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return back();
         }
     }
@@ -122,7 +125,11 @@ class AssetController extends Controller
             return view('errors.403', compact('message'));
         }
         $asset = Asset::find($id);
-        return view('backend.pages.assets.edit', compact('asset'));
+        if($asset){
+            $manager = Employee::find($asset->manager_by);
+        }
+
+        return view('backend.pages.assets.edit', compact('asset','manager'));
     }
 
     /**
@@ -153,6 +160,7 @@ class AssetController extends Controller
             $asset->name = $request->name;
             $asset->code = $request->code;
             $asset->model = $request->model;
+            $asset->manager_by = $request->manager_by;
             $asset->color = $request->color;
             $image ? $asset->image = $image : '';
             $asset->note = $request->note;

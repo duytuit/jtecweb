@@ -7,9 +7,8 @@
     <div class="container-fluid ">
         <form id="form-search" action="{{ route('admin.checkCutMachine.index') }}" method="get">
             @csrf
-
-            <div class="row form-group">
-                <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-1">
                     <span class="btn-group">
                         <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Tác vụ <span
                                 class="caret"></span></button>
@@ -24,89 +23,43 @@
                                     duyệt</a></li>
                         </ul>
                     </span>
-                    {{-- <a href="{{ route('admin.requireds.index') }}" class="btn btn-info"><i class="fa fa-edit"></i> Thêm
-                        mới</a>
-                 <span class="btn-group">
-                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Thêm từ Excel
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu import-excel">
-                            <li>
-                                <form action="{{ route('admin.checkCutMachine.importExcelData') }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="input-group">
-                                        <input type="file" name="import_file" class="form-control" placeholder=" ">
-                                        <button type="submit" class="btn btn-primary" name="upload"><i
-                                                class="fa fa-import"></i>Nhập</button>
-                                    </div>
-                                </form>
-                            </li>
-                        </ul>
-                    </span>
-                    <a href="{{ route('admin.checkCutMachine.exportExcel', Request::all()) }}" class="btn btn-success"><i
-                            class="fa fa-edit"></i> Xuất Excel</a> --}}
                 </div>
-                <div class="col-sm-4 text-right">
-                    <div class="input-group">
-                        <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa"
-                            class="form-control" />
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-info"><span class="fa fa-search"></span></button>
-                            <button type="button" class="btn btn-warning btn-search-advance" data-toggle="show"
-                                data-target=".search-advance"><span class="fa fa-filter"></span></button>
+                <div class="col-sm-11">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input type="text" name="keyword" value="{{ $keyword }}" placeholder="Nhập từ khóa" class="form-control" />
+                        </div>
+                        <div class="col-sm-2">
+                            <select name="employee_name" id="employee_name" class="form-control" style="width:100%">
+                                <option value="">Người thực hiện</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
+                                </div>
+                                <input type="text" class="form-control date_picker" name="search_date" id="search_date"
+                                value="{{ @$filter['search_date'] }}" placeholder="Ngày kiểm tra" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <select class="form-control custom-select select2" name="machine_name" style="width:100%">
+                                <option value="">Chọn máy</option>
+                                @foreach ($machineLists as $machineList)
+                                    <option value="{{ $machineList['name'] }}">
+                                        {{ $machineList['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-warning btn-block">Tìm kiếm</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
         <!-- END #form-search -->
-        <!-- START #form-search-advance -->
-        <form id="form-search-advance" action="{{ route('admin.checkCutMachine.index') }}" method="get" class="hidden">
-            <div id="search-advance" class="search-advance">
-                <div class="row form-group space-5">
-                    <div class="col-sm-2">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
-                            </div>
-                            <input type="text" class="form-control date_picker datepicker" name="from_date"
-                                id="from_date" value="{{ @$filter['from_date'] }}" placeholder="Từ..." autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"> <i class="fa fa-calendar"></i></span>
-                            </div>
-                            <input type="text" class="form-control date_picker datepicker" name="to_date" id="to_date"
-                                value="{{ @$filter['to_date'] }}" placeholder="Đến..." autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <select class="form-control custom-select" name="machine_name">
-                            <option value="">Chọn máy</option>
-                            @foreach ($machineLists as $machineList)
-                                <option value="{{ $machineList['name'] }}">
-                                    {{ $machineList['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    {{-- <div class="col-sm-2">
-                        <select class="form-control custom-select" name="positions">
-                            <option value="">Chức vụ</option>
-                            @foreach ($positions as $position)
-                                <option value="{{ $position['id'] }}">
-                                    {{ $position['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
-                    <div class="col-sm-2">
-                        <button class="btn btn-warning btn-block">Tìm kiếm</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <!-- END #form-search-advance -->
         <form id="form_lists" action="{{ route('admin.checkCutMachine.action') }}" method="post">
             @csrf
             <input type="hidden" name="method" value="" />
@@ -117,7 +70,7 @@
                             <th width="3%"><input type="checkbox" class="greyCheck checkAll"
                                     data-target=".checkSingle" /></th>
                             <th>TT</th>
-                            <th>Mã yêu cầu</th>
+                            <th>Mã check list</th>
                             <th>Người thực hiện</th>
                             <th>Bộ phận</th>
                             <th>Máy</th>
@@ -193,18 +146,10 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown show">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            @if ($item->status)
-                                                <span class="badge badge-success font-weight-100">OK</span>
-                                            @else
-                                                <span class="badge badge-warning">NG</span>
-                                            @endif
-                                        </a>
-
                                         <div class="dropdown-menu z-n1 " aria-labelledby="dropdownMenuLink">
                                             @php
                                                 $contentFormChecks = $contentForm->check_list;
+                                                $check=1; // ok
                                             @endphp
 
                                             @foreach ($contentFormChecks as $index => $item1)
@@ -213,78 +158,42 @@
                                                     @if ($item1->answer)
                                                         <span class="badge badge-success font-weight-100">OK</span>
                                                     @else
+                                                        @php
+                                                            $check=0;
+                                                        @endphp
                                                         <span class="badge badge-warning">NG</span>
                                                     @endif
                                                 </div>
                                             @endforeach
-
                                         </div>
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            @if ($check==1)
+                                                <span class="badge badge-success font-weight-100">OK</span>
+                                            @else
+                                                <span class="badge badge-warning">NG</span>
+                                            @endif
+                                        </a>
                                     </div>
-
                                 </td>
                                 <td>{{ $item->content }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>
-                                    <span class="dropdown show">
-                                        <a title="Xem lịch sử sửa chữa"
-                                            class=" d-inline-block mx-1 btn-purple btn-sm text-white dropdown-toggle"
-                                            href="" role="button" id="dropdownHistory" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <div class="dropdown-menu z-n1 " aria-labelledby="dropdownHistory">
-                                            <div class="dropdown-item">
-                                                <p><strong>Lịch sử sửa chữa:</strong></p>
-                                                @foreach ($lists as $index => $item3)
-                                                    @php
-                                                        $contentForm2 = json_decode($item3->content_form);
-                                                    @endphp
-
-                                                    @if ($contentForm2->name_machine == $contentForm->name_machine)
-                                                        <span>Ngày hỏng: {{ $item3->created_at }}</span><br>
-                                                        <span>{{ $item3->content }}</span><br>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </span>
-                                    @foreach (@$item->signatureSubmission as $index2 => $item2)
-                                        @if ($item2->status != 1)
-                                            <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
-                                                href="{{ route('admin.checkCutMachine.trashed.destroy', ['id' => $item->id]) }}">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        @break
-                                    @endif
-                                @endforeach
+                                    {{-- nếu chưa duyệt có thể xóa --}}
+                                @php
+                                    $signatureSubmission =  @$item->signatureSubmission->where('required_id', $item->id)->where('status', 0)->all();
+                                @endphp
+                                @if (count($signatureSubmission) >0)
+                                    <a title="Xóa" class=" d-inline-block btn-danger btn-sm text-white"
+                                        href="{{ route('admin.checkCutMachine.trashed.destroy', ['id' => $item->id]) }}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <span class="record-total">Tổng: {{ $lists->total() }} bản ghi</span>
-            </div>
-            <div class="col-sm-6 text-center">
-                <div class="pagination-panel">
-                    {{ $lists->appends(Request::all())->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
-                </div>
-            </div>
-            <div class="col-sm-3 text-right">
-                <span>
-                    Hiển thị
-                    <select name="per_page" class="form-control" style="display: inline;width: auto;"
-                        data-target="#form_lists">
-                        @php $list = [5, 10, 20, 50, 100, 200]; @endphp
-                        @foreach ($list as $num)
-                            <option value="{{ $num }}" {{ $num == $per_page ? 'selected' : '' }}>
-                                {{ $num }}</option>
-                        @endforeach
-                    </select>
-                </span>
-            </div>
         </div>
     </form>
 </div>
@@ -315,5 +224,48 @@
             }
         })
     }
+    get_data_select_name({
+            object: '#employee_name',
+            url: '{{ url('admin/employees/ajaxGetSelectByName') }}',
+            data_id: 'id',
+            data_code: 'code',
+            data_first_name: 'first_name',
+            data_last_name: 'last_name',
+            title_default: 'Người thực hiện',
+
+        });
+
+        function get_data_select_name(options) {
+            $(options.object).select2({
+                ajax: {
+                    url: options.url,
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        }
+                        return query;
+                    },
+                    processResults: function(json, params) {
+                        var results = [{
+                            id: '',
+                            text: options.title_default
+                        }];
+
+                        for (i in json.data) {
+                            var item = json.data[i];
+                            results.push({
+                                id: item[options.data_id],
+                                text: item[options.data_code] + '-' + item[options.data_first_name] + ' ' + item[options.data_last_name]
+                            });
+                        }
+                        return {
+                            results: results,
+                        };
+                    },
+                    minimumInputLength: 3,
+                }
+            });
+        }
 </script>
 @endsection

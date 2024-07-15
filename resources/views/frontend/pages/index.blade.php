@@ -53,36 +53,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="cards_item">
-                    <div class="card">
-                        <div class="card_content">
-                            <h2 class="card_title">
-                                <a href="question/import">Thêm câu hỏi từ file excel</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                {{-- <div class="cards_item">
-                    <div class="card">
-                        <div class="card_content">
-                            <h2 class="card_title">
-                                <a href="/admin/checkTension/">Kiểm tra sức căng</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="cards_item">
-                    <div class="card">
-                        <div class="card_content">
-                            <a href="/printMaku/">
-                                <h2 class="card_title">
-                                    In maku <br>
-                                    <span class="card_text">Bộ phận Cắm</span>
-                                </h2>
-                            </a>
-                        </div>
-                    </div>
-                </div>
                 <div class="cards_item js_card_btn" data-type="3">
                     <div class="card">
                         <div class="card_content">
@@ -92,13 +62,48 @@
                         </div>
                     </div>
                 </div>
-                <div class="cards_item">
+                <div class="cards_item js_card_btn" data-type="4">
                     <div class="card">
-                        {{-- <div class="card_image"><img src="https://picsum.photos/500/300/?image=2"></div> --}}
                         <div class="card_content">
-                            <h2 class="card_title">Công đoạn Demo</h2>
-                            <p class="card_text">thay đổi code đoạn này</p>
-                            <a href="#" class="btn card_btn">Bắt đầu làm bài</a>
+                            <h2 class="card_title">Bộ phận Dập</h2>
+                            <p class="card_text">Kiểm tra đánh giá công nhân nhóm Nối</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cards_item js_card_btn" data-type="5">
+                    <div class="card">
+                        <div class="card_content">
+                            <h2 class="card_title">Bộ phận Dập</h2>
+                            <p class="card_text">Kiểm tra đánh giá công nhân Xoắn</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cards_item js_card_btn" data-type="6">
+                    <div class="card">
+                        <div class="card_content">
+                            <h2 class="card_title">Bộ phận Dập</h2>
+                            <p class="card_text">Kiểm tra đánh giá công nhân nhóm Dập</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cards_item js_card_btn" data-type="7">
+                    <div class="card">
+                        <div class="card_content">
+                            <h2 class="card_title">Bộ phận Cắt</h2>
+                            <p class="card_text">Kiểm tra đánh giá công nhân</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cards_item js_card_btn" data-type="8">
+                    <div class="card">
+                        <div class="card_content">
+                            <h2 class="card_title">Bộ phận Kiểm Tra</h2>
+                            <p class="card_text">Kiểm tra đánh giá công nhân trên 1 năm</p>
+                            <a href="javascript:;" class="btn card_btn">Bắt đầu làm bài</a>
                         </div>
                     </div>
                 </div>
@@ -151,7 +156,6 @@
                 $('#confirmCode').attr('action', '{{ route('examNew') }}');
             }
             $('#modalConfirmCode').modal('show');
-
         })
     </script>
 @endsection

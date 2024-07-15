@@ -263,7 +263,6 @@ class DepartmentController extends Controller
     }
     public function ajaxGetSelectCode(Request $request)
     {
-
         if ($request->search) {
             $where[] = ['code', 'like', '%' . $request->search . '%'];
             return response()->json(Employee::searchByAll(['where' => $where]));

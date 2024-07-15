@@ -55,6 +55,7 @@
                             <th>Tên tài sản</th>
                             <th>Hình ảnh</th>
                             <th>Ghi chú</th>
+                            <th>Người quản lý</th>
                             <th>Trang thái</th>
                             <th>Chỉnh sửa lần cuối</th>
                             <th>Thao tác</th>
@@ -64,6 +65,7 @@
                         @foreach ($lists as $index=> $item)
                             @php
                                $user= $item->user;
+                               $manager= $item->manager;
                             @endphp
                             <tr>
                                 <td>{{ $index+1 }}</td>
@@ -74,6 +76,9 @@
                                 </td>
                                 <td>{{$item->note }}</td>
                                 <td>
+                                    {{ @$manager->code.'-'. @$manager->first_name.' '.@$manager->last_name }}
+                                </td>
+                                <td>
                                     @if ( $item->status)
                                         <span class="badge badge-success font-weight-100">Hoạt động</span>
                                     @else
@@ -83,7 +88,6 @@
                                 <td>
                                     <div> {{ @$user->last_name.' '.@$user->last_name }}</div>
                                     <div> {{ $item->updated_at }}</div>
-
                                 </td>
                                 <td>
                                     <a title="Lịch sử thao tác" target="_blank" class="d-inline-block btn-info btn-sm text-white"

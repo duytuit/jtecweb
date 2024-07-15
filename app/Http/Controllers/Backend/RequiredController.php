@@ -41,7 +41,7 @@ class RequiredController extends Controller
         $requireds['per_page'] = $request->input('per_page', Cookie::get('per_page'));
         $requireds['advance'] = 0;
         $requireds['to_dept'] = ArrayHelper::formTypeJobs()[0]['to_dept'];
-        $requireds['lists'] = Required::where('from_type', 0)->where(function ($query) use ($request) {
+        $requireds['lists'] = Required::where('type',0)->where('from_type', 0)->where(function ($query) use ($request) {
             $employeeId = Auth::user()->employee_id;
             $configData = ArrayHelper::formTypeJobs()[0];
             $confirmBy = $configData['confirm_by_from_dept'];
@@ -368,9 +368,9 @@ class RequiredController extends Controller
         // dd($request->all());
         $machineLists = ArrayHelper::machineList();
         // dd($machineLists);
-        $key = array_search($request->machineName, array_column($machineLists, 'name'));
+        $key = array_search($request->selecMachine, array_column($machineLists, 'name'));
         // dd($key);
-        if (is_null($request->machineName) || $request->machineName == '') {
+        if (is_null($request->selecMachine) || $request->selecMachine == '') {
             session()->flash('error', "Bạn phải chọn máy kiểm tra trước khi thực hiện");
             return redirect()->route('admin.checkCutMachine.create');
         }
@@ -379,9 +379,9 @@ class RequiredController extends Controller
         $dataTables = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['data_table'];
         // dd($dataTables);
         $dataTablesIds = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']]['confirm_by_from_dept'];
-        $dataTablesType = ArrayHelper::formTypeJobs()[$machineLists[$key]['type']];
+        $dataTablesType = ArrayHelper::formTypeJobs()[2];
         // dd($dataTablesType);
-        $dataTables['name_machine'] = $request->machineName;
+        $dataTables['name_machine'] = $request->selecMachine;
         $answers = $request->answer;
         // dd($answers);
         $status = 1;
@@ -398,7 +398,7 @@ class RequiredController extends Controller
             }
         }
         $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
-        // dd($json_data);
+        //  dd($json_data);
         // dd($request->repair_history);
         try {
             DB::beginTransaction();
@@ -410,7 +410,7 @@ class RequiredController extends Controller
                 'required_department_id' => $request->departmentId,
                 'code' => '',
                 'content' => $request->repair_history,
-                'from_type' => $dataTablesType['id'],
+                'from_type' => 2,
                 'status' => $status,
             ]);
 
@@ -430,6 +430,7 @@ class RequiredController extends Controller
                     // 'status',
                 ]);
             }
+
             DB::commit();
             session()->flash('success', "successfully.");
             return redirect()->route('admin.checkCutMachine.index');
@@ -439,39 +440,6 @@ class RequiredController extends Controller
             return redirect()->back()->withInput();
         }
     }
-    // public function showCheckCutMachine(Request $request)
-    // {
-    //     $dataTables = ArrayHelper::formTypeJobs()[1]['data_table'];
-    //     $dataTablesType = ArrayHelper::formTypeJobs()[1];
-    //     $dataTables['name_machine'] = $request->selecMachine;
-    //     $answers = $request->answer;
-    //     foreach ($answers as $key => $value) {
-    //         if (!is_null($value) && $value !== '') {
-    //             $dataTables['check_list'][$key]['answer'] = $value;
-    //         } else {
-    //             session()->flash('error', "Bạn phải kiểm tra hết tất cả nội dụng trước khi lưu");
-    //         }
-    //     }
-    //     $json_data = json_encode($dataTables, JSON_UNESCAPED_UNICODE);
-    //     try {
-    //         $requireCode = 'R_' . now()->format('Ymdhis');
-    //         $required = Required::create([
-    //             'code_required' => $requireCode,
-    //             'created_by' => Auth::user()->employee_id,
-    //             'content_form' => $json_data,
-    //             'required_department_id' => $request->selecDepartment,
-    //             'code' => '',
-    //             'content' => $request->repair_history,
-    //             'from_type' => $dataTablesType['id'],
-    //         ]);
-
-    //         session()->flash('success', "successfully.");
-    //         return redirect()->route('admin.checkCutMachine.index');
-    //     } catch (\Exception $e) {
-    //         session()->flash('error', "Failed to update: " . $e->getMessage());
-    //         return redirect()->back()->withInput();
-    //     }
-    // }
     /**
      * Remove the specified resource from storage.
      *
